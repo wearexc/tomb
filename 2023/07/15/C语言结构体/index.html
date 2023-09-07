@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="结构体的基本概念C 语言结构体（Struct）从本质上讲是一种自定义的数据类型，只不过这种数据类型比较复杂，是由 int、 char、 float等基本类型组成的。你可以认为结构体是一种聚合类型。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言结构体">
+<meta property="og:url" content="http://example.com/2023/07/15/C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/index.html">
+<meta property="og:site_name" content="来自星星的弦乐">
+<meta property="og:description" content="结构体的基本概念C 语言结构体（Struct）从本质上讲是一种自定义的数据类型，只不过这种数据类型比较复杂，是由 int、 char、 float等基本类型组成的。你可以认为结构体是一种聚合类型。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/07/15/C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/image-20230718181836280.png">
+<meta property="og:image" content="http://example.com/2023/07/15/C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/image-20230718181858187.png">
+<meta property="og:image" content="http://example.com/2023/07/15/C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/image-20230719001444454.png">
+<meta property="og:image" content="http://example.com/2023/07/15/C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/image-20230719001645782.png">
+<meta property="article:published_time" content="2023-07-15T13:17:34.000Z">
+<meta property="article:modified_time" content="2023-07-18T16:36:34.329Z">
+<meta property="article:author" content="星戏溪行">
+<meta property="article:tag" content="C语言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/07/15/C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/image-20230718181836280.png">
+
+
+<link rel="canonical" href="http://example.com/2023/07/15/C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/07/15/C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/","path":"2023/07/15/C语言结构体/","title":"C语言结构体"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C语言结构体 | 来自星星的弦乐</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?2adf217e938bc0432386afe319c0e750"></script>
+
+
+
+
+
+
+<link rel="dns-prefetch" href="waline-ecru-theta.vercel.app">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">来自星星的弦乐</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">| ❀ ❀ ❀ 踏梦携猫荡蓝海 ❀ ❀ ❀| | ☆ ☆ ☆ 引虹径行启银光 ☆ ☆ ☆|</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-茶馆"><a href="/comments/" rel="section"><i class="fas fa-comments fa-fw"></i>茶馆</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">结构体的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E5%8F%98%E9%87%8F"><span class="nav-number">1.1.</span> <span class="nav-text">结构体变量</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%88%90%E5%91%98%E7%9A%84%E8%8E%B7%E5%8F%96%E5%92%8C%E8%B5%8B%E5%80%BC"><span class="nav-number">1.2.</span> <span class="nav-text">成员的获取和赋值</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E6%95%B0%E7%BB%84"><span class="nav-number">2.</span> <span class="nav-text">结构体数组</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E6%8C%87%E9%92%88%EF%BC%88%E6%8C%87%E5%90%91%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E6%8C%87%E9%92%88%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">结构体指针（指向结构体的指针）</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E7%BB%93%E6%9E%84%E4%BD%93%E6%88%90%E5%91%98"><span class="nav-number">3.1.</span> <span class="nav-text">获取结构体成员</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">结构体指针作为函数参数</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%EF%BC%88enum-%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">枚举类型（enum 关键字）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B1%E7%94%A8%E4%BD%93%EF%BC%88union-%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">共用体（union 关键字）</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%85%B1%E7%94%A8%E4%BD%93%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">5.1.</span> <span class="nav-text">共用体的应用</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%A7%E7%AB%AF%E5%B0%8F%E7%AB%AF%E4%BB%A5%E5%8F%8A%E5%88%A4%E5%88%AB%E6%96%B9%E5%BC%8F"><span class="nav-number">6.</span> <span class="nav-text">大端小端以及判别方式</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9C%89%E5%A4%A7%E5%B0%8F%E7%AB%AF%E6%A8%A1%E5%BC%8F%E4%B9%8B%E5%88%86"><span class="nav-number">6.1.</span> <span class="nav-text">为什么有大小端模式之分</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%8D%E5%9F%9F%EF%BC%88%E4%BD%8D%E6%AE%B5%EF%BC%89"><span class="nav-number">7.</span> <span class="nav-text">位域（位段）</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%97%A0%E5%90%8D%E4%BD%8D%E5%9F%9F"><span class="nav-number">7.1.</span> <span class="nav-text">无名位域</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%8D%E8%BF%90%E7%AE%97"><span class="nav-number">8.</span> <span class="nav-text">位运算</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+			<link rel="stylesheet" href="/dist/APlayer.min.css">  
+			<div id="aplayer"></div>
+			<script type="text/javascript" src="/dist/APlayer.min.js"></script>
+			<script type="text/javascript" src="/dist/music.js"></script>
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="星戏溪行"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">星戏溪行</p>
+  <div class="site-description" itemprop="description">我和挚友的Shelter</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/15/C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="星戏溪行">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="来自星星的弦乐">
+      <meta itemprop="description" content="我和挚友的Shelter">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="C语言结构体 | 来自星星的弦乐">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C语言结构体
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-15 21:17:34" itemprop="dateCreated datePublished" datetime="2023-07-15T21:17:34+08:00">2023-07-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-07-19 00:36:34" itemprop="dateModified" datetime="2023-07-19T00:36:34+08:00">2023-07-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/" itemprop="url" rel="index"><span itemprop="name">C语言学习之路</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2023/07/15/C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2023/07/15/C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>20 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h5 id="结构体的基本概念"><a href="#结构体的基本概念" class="headerlink" title="结构体的基本概念"></a>结构体的基本概念</h5><p>C 语言结构体（Struct）从本质上讲是一种自定义的数据类型，只不过这种数据类型比较复杂，是由 int、 char、 float等基本类型组成的。你可以认为结构体是一种聚合类型。<span id="more"></span>   </p>
+<p>结构体的定义形式为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> 结构体名&#123;</span></span><br><span class="line">结构体所包含的变量或数组</span><br><span class="line">&#125;;  </span><br></pre></td></tr></table></figure>
+
+<p>结构体是一种集合，它里面包含了多个变量或数组，它们的类型可以相同，也可以不同，每个这样的变量或数组都称为结构体的成员（Member） 。例如：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span>&#123;</span></span><br><span class="line"><span class="type">char</span> *name; <span class="comment">//姓名</span></span><br><span class="line"><span class="type">int</span> num; <span class="comment">//学号</span></span><br><span class="line"><span class="type">int</span> age; <span class="comment">//年龄</span></span><br><span class="line"><span class="type">char</span> group; <span class="comment">//所在学习小组</span></span><br><span class="line"><span class="type">float</span> score; <span class="comment">//成绩</span></span><br><span class="line">&#125;;  </span><br></pre></td></tr></table></figure>
+
+<p>stu 为结构体名，它包含了 5 个成员，分别是 name、 num、 age、 group、 score。结构体成员的定义方式与变量和数组的定义方式相同，只是不能初始化。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注意大括号后面的分号;不能少，这是一条完整的语句。</span><br></pre></td></tr></table></figure>
+
+<p>结构体也是一种数据类型，它由程序员自己定义，可以包含多个其他类型的数据。</p>
+<p>像 int、 float、 char 等是由 C 语言本身提供的数据类型，不能再进行分拆，我们称之为基本数据类型；而结构体可<br>以包含多个基本类型的数据，也可以包含其他的结构体，我们将它称为复杂数据类型或构造数据类型。  </p>
+<h6 id="结构体变量"><a href="#结构体变量" class="headerlink" title="结构体变量"></a>结构体变量</h6><p>既然结构体是一种数据类型，那么就可以用它来定义变量。例如：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span> <span class="title">stu1</span>, <span class="title">stu2</span>;</span></span><br></pre></td></tr></table></figure>
+
+<p>定义了两个变量 stu1 和 stu2，它们都是 stu 类型，都由 5 个成员组成。注意关键字 struct 不能少。  </p>
+<p>也可以在定义结构体的同时定义结构体变量：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span>&#123;</span></span><br><span class="line"><span class="type">char</span> *name; <span class="comment">//姓名</span></span><br><span class="line"><span class="type">int</span> num; <span class="comment">//学号  </span></span><br><span class="line"><span class="type">int</span> age; <span class="comment">//年龄</span></span><br><span class="line"><span class="type">char</span> group; <span class="comment">//所在学习小组</span></span><br><span class="line"><span class="type">float</span> score; <span class="comment">//成绩</span></span><br><span class="line">&#125; stu1, stu2;  </span><br></pre></td></tr></table></figure>
+
+<p>将变量放在结构体定义的最后即可。<br>如果只需要 stu1、 stu2 两个变量，后面不需要再使用结构体名定义其他变量，那么在定义时也可以不给出结构体名，如下所示：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span>&#123;</span> <span class="comment">//没有写 stu</span></span><br><span class="line"><span class="type">char</span> *name; <span class="comment">//姓名</span></span><br><span class="line"><span class="type">int</span> num; <span class="comment">//学号</span></span><br><span class="line"><span class="type">int</span> age; <span class="comment">//年龄</span></span><br><span class="line"><span class="type">char</span> group; <span class="comment">//所在学习小组</span></span><br><span class="line"><span class="type">float</span> score; <span class="comment">//成绩</span></span><br><span class="line">&#125; stu1, stu2;  </span><br></pre></td></tr></table></figure>
+
+<p>理论上讲结构体的各个成员在内存中是连续存储的，和数组非常类似，例如上面的结构体变量 stu1、 stu2 的内存<br>分布如下图所示，共占用 4+4+4+1+4 &#x3D; 17 个字节。  </p>
+<img src="/2023/07/15/C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/image-20230718181836280.png" class="" title="image-20230718181836280">
+
+<p>但是在编译器的具体实现中，各个成员之间可能会存在缝隙，对于 stu1、 stu2，成员变量 group 和 score 之间就存在 3 个字节的空白填充（见下图）。这样算来， stu1、 stu2 其实占用了 17 + 3 &#x3D; 20 个字节  </p>
+<img src="/2023/07/15/C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/image-20230718181858187.png" class="" title="image-20230718181858187">
+
+<h6 id="成员的获取和赋值"><a href="#成员的获取和赋值" class="headerlink" title="成员的获取和赋值"></a>成员的获取和赋值</h6><p>结构体使用点号.获取单个成员。获取结构体成员的一般格式为 ：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">结构体变量名.成员名;  </span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">        <span class="type">char</span> *name; <span class="comment">//姓名</span></span><br><span class="line">        <span class="type">int</span> num; <span class="comment">//学号</span></span><br><span class="line">        <span class="type">int</span> age; <span class="comment">//年龄</span></span><br><span class="line">        <span class="type">char</span> group; <span class="comment">//所在小组  </span></span><br><span class="line">        <span class="type">float</span> score; <span class="comment">//成绩</span></span><br><span class="line">    &#125; stu1;</span><br><span class="line">    <span class="comment">//给结构体成员赋值</span></span><br><span class="line">    stu1.name = <span class="string">&quot;Tom&quot;</span>;</span><br><span class="line">    stu1.num = <span class="number">12</span>;</span><br><span class="line">    stu1.age = <span class="number">18</span>;</span><br><span class="line">    stu1.group = <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line">    stu1.score = <span class="number">136.5</span>;</span><br><span class="line">    <span class="comment">//读取结构体成员的值</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s的学号是%d，年龄是%d，在%c组，今年的成绩是%.1f！ \n&quot;</span>, stu1.name, stu1.num, stu1.age,</span><br><span class="line">    stu1.group, stu1.score);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>运行结果<br>Tom 的学号是 12，年龄是 18，在 A 组，今年的成绩是 136.5！ </p>
+<p> 除了可以对成员进行逐一赋值，也可以在定义时整体赋值，例如：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> *name; <span class="comment">//姓名</span></span><br><span class="line">    <span class="type">int</span> num; <span class="comment">//学号</span></span><br><span class="line">    <span class="type">int</span> age; <span class="comment">//年龄</span></span><br><span class="line">    <span class="type">char</span> group; <span class="comment">//所在小组</span></span><br><span class="line">    <span class="type">float</span> score; <span class="comment">//成绩</span></span><br><span class="line">&#125; stu1, stu2 = &#123; <span class="string">&quot;Tom&quot;</span>, <span class="number">12</span>, <span class="number">18</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">136.5</span> &#125;;  </span><br></pre></td></tr></table></figure>
+
+<p>不过整体赋值仅限于定义结构体变量的时候，在使用过程中只能对成员逐一赋值，这和数组的赋值非常类似。</p>
+<p>需要注意的是，结构体是一种自定义的数据类型，是创建变量的模板，不占用内存空间；结构体变量才包含了实实在在的数据，需要内存空间来存储 。</p>
+<h5 id="结构体数组"><a href="#结构体数组" class="headerlink" title="结构体数组"></a>结构体数组</h5><p>所谓结构体数组，是指数组中的每个元素都是一个结构体。在实际应用中， C 语言结构体数组常被用来表示一个拥有相同数据结构的群体，比如一个班的学生、一个车间的职工等。  </p>
+<p>定义结构体数组和定义结构体变量的方式类似，例如：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> *name; <span class="comment">//姓名</span></span><br><span class="line">    <span class="type">int</span> num; <span class="comment">//学号</span></span><br><span class="line">    <span class="type">int</span> age; <span class="comment">//年龄</span></span><br><span class="line">    <span class="type">char</span> group; <span class="comment">//所在小组  </span></span><br><span class="line">    <span class="type">float</span> score; <span class="comment">//成绩</span></span><br><span class="line">&#125;<span class="class"><span class="keyword">class</span>[5];</span></span><br></pre></td></tr></table></figure>
+
+<p>表示一个班级有 5 个学生。<br>结构体数组在定义的同时也可以初始化，例如：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> *name; <span class="comment">//姓名</span></span><br><span class="line">    <span class="type">int</span> num; <span class="comment">//学号</span></span><br><span class="line">    <span class="type">int</span> age; <span class="comment">//年龄</span></span><br><span class="line">    <span class="type">char</span> group; <span class="comment">//所在小组</span></span><br><span class="line">    <span class="type">float</span> score; <span class="comment">//成绩</span></span><br><span class="line">&#125;<span class="class"><span class="keyword">class</span>[5] =</span> &#123;</span><br><span class="line">    &#123;<span class="string">&quot;Li ping&quot;</span>, <span class="number">5</span>, <span class="number">18</span>, <span class="string">&#x27;C&#x27;</span>, <span class="number">145.0</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;Zhang ping&quot;</span>, <span class="number">4</span>, <span class="number">19</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">130.5</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;He fang&quot;</span>, <span class="number">1</span>, <span class="number">18</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">148.5</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;Cheng ling&quot;</span>, <span class="number">2</span>, <span class="number">17</span>, <span class="string">&#x27;F&#x27;</span>, <span class="number">139.0</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;Wang ming&quot;</span>, <span class="number">3</span>, <span class="number">17</span>, <span class="string">&#x27;B&#x27;</span>, <span class="number">144.5</span>&#125;</span><br><span class="line">&#125;;  </span><br></pre></td></tr></table></figure>
+
+<p>当对数组中全部元素赋值时，也可不给出数组长度，例如：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> *name; <span class="comment">//姓名</span></span><br><span class="line">    <span class="type">int</span> num; <span class="comment">//学号</span></span><br><span class="line">    <span class="type">int</span> age; <span class="comment">//年龄</span></span><br><span class="line">    <span class="type">char</span> group; <span class="comment">//所在小组</span></span><br><span class="line">    <span class="type">float</span> score; <span class="comment">//成绩</span></span><br><span class="line">&#125;<span class="class"><span class="keyword">class</span>[] =</span> &#123;</span><br><span class="line">    &#123;<span class="string">&quot;Li ping&quot;</span>, <span class="number">5</span>, <span class="number">18</span>, <span class="string">&#x27;C&#x27;</span>, <span class="number">145.0</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;Zhang ping&quot;</span>, <span class="number">4</span>, <span class="number">19</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">130.5</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;He fang&quot;</span>, <span class="number">1</span>, <span class="number">18</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">148.5</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;Cheng ling&quot;</span>, <span class="number">2</span>, <span class="number">17</span>, <span class="string">&#x27;F&#x27;</span>, <span class="number">139.0</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;Wang ming&quot;</span>, <span class="number">3</span>, <span class="number">17</span>, <span class="string">&#x27;B&#x27;</span>, <span class="number">144.5</span>&#125;</span><br><span class="line">&#125;;  </span><br></pre></td></tr></table></figure>
+
+<p>结构体数组的使用也很简单，例如，获取 Wang ming 的成绩：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span>[4].<span class="title">score</span>;</span></span><br></pre></td></tr></table></figure>
+
+<p>修改 Li ping 的学习小组：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span>[0].<span class="title">group</span> =</span> <span class="string">&#x27;B&#x27;</span>;  </span><br></pre></td></tr></table></figure>
+
+<h5 id="结构体指针（指向结构体的指针）"><a href="#结构体指针（指向结构体的指针）" class="headerlink" title="结构体指针（指向结构体的指针）"></a>结构体指针（指向结构体的指针）</h5><p>当一个指针变量指向结构体时，我们就称它为结构体指针。 C 语言结构体指针的定义形式一般为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> 结构体名 *变量名;</span></span><br></pre></td></tr></table></figure>
+
+<p>例如：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//结构体</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> *name; <span class="comment">//姓名</span></span><br><span class="line">    <span class="type">int</span> num; <span class="comment">//学号</span></span><br><span class="line">    <span class="type">int</span> age; <span class="comment">//年龄</span></span><br><span class="line">    <span class="type">char</span> group; <span class="comment">//所在小组</span></span><br><span class="line">    <span class="type">float</span> score; <span class="comment">//成绩</span></span><br><span class="line">&#125; stu1 = &#123; <span class="string">&quot;Tom&quot;</span>, <span class="number">12</span>, <span class="number">18</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">136.5</span> &#125;;</span><br><span class="line"><span class="comment">//结构体指针</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span> *<span class="title">pstu</span> =</span> &amp;stu1;  </span><br></pre></td></tr></table></figure>
+
+<p>也可以在定义结构体的同时定义结构体指针：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> *name; <span class="comment">//姓名</span></span><br><span class="line">    <span class="type">int</span> num; <span class="comment">//学号</span></span><br><span class="line">    <span class="type">int</span> age; <span class="comment">//年龄</span></span><br><span class="line">    <span class="type">char</span> group; <span class="comment">//所在小组</span></span><br><span class="line">    <span class="type">float</span> score; <span class="comment">//成绩</span></span><br><span class="line">&#125; stu1 = &#123; <span class="string">&quot;Tom&quot;</span>, <span class="number">12</span>, <span class="number">18</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">136.5</span> &#125;, *pstu = &amp;stu1;  </span><br></pre></td></tr></table></figure>
+
+<p>注意，结构体变量名和数组名不同，数组名在表达式中会被转换为数组指针，而结构体变量名不会，无论在任何表<br>达式中它表示的都是整个集合本身，要想取得结构体变量的地址，必须在前面加&amp;，所以给 pstu 赋值只能写作：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span> *<span class="title">pstu</span> =</span> &amp;stu1;</span><br></pre></td></tr></table></figure>
+
+<p>而不能写作：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span> *<span class="title">pstu</span> =</span> stu1;</span><br></pre></td></tr></table></figure>
+
+<p>还应该注意，结构体和结构体变量是两个不同的概念：结构体是一种数据类型，是一种创建变量的模板，编译器不会为它分配内存空间，就像 int、 float、 char 这些关键字本身不占用内存一样；结构体变量才包含实实在在的数据，才需要内存来存储。</p>
+<p>下面的写法是错误的，不可能去取一个结构体名的地址，也不能将它赋值给其他变量：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span> *<span class="title">pstu</span> =</span> &amp;stu;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span> *<span class="title">pstu</span> =</span> stu;  </span><br></pre></td></tr></table></figure>
+
+<h6 id="获取结构体成员"><a href="#获取结构体成员" class="headerlink" title="获取结构体成员"></a>获取结构体成员</h6><p>通过结构体指针可以获取结构体成员，一般形式为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(*pointer).memberName</span><br></pre></td></tr></table></figure>
+
+<p>或者：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pointer-&gt;memberName</span><br></pre></td></tr></table></figure>
+
+<p>第一种写法中， .的优先级高于* ， ( * pointer)两边的括号不能少。如果去掉括号写作* pointer.memberName，那么就<br>等效于*(pointer.memberName)，这样意义就完全不对了。<br>第二种写法中，-&gt;是一个新的运算符，有了它，可以通过结构体指针直接取得结构体成员；</p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line"><span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> *name; <span class="comment">//姓名</span></span><br><span class="line">    <span class="type">int</span> num; <span class="comment">//学号</span></span><br><span class="line">    <span class="type">int</span> age; <span class="comment">//年龄  </span></span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> group; <span class="comment">//所在小组</span></span><br><span class="line">    <span class="type">float</span> score; <span class="comment">//成绩</span></span><br><span class="line">&#125; stu1 = &#123; <span class="string">&quot;Tom&quot;</span>, <span class="number">12</span>, <span class="number">18</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">136.5</span> &#125;, *pstu = &amp;stu1;</span><br><span class="line"><span class="comment">//读取结构体成员的值</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s的学号是%d，年龄是%d，在%c组，今年的成绩是%.1f！ \n&quot;</span>, (*pstu).name, (*pstu).num,(*pstu).age, (*pstu).group, (*pstu).score);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s的学号是%d，年龄是%d，在%c组，今年的成绩是%.1f！ \n&quot;</span>, pstu-&gt;name, pstu-&gt;num, pstu-&gt;age,pstu-&gt;group, pstu-&gt;score);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p>Tom的学号是12，年龄是18，在A组，今年的成绩是136.5！<br>Tom的学号是12，年龄是18，在A组，今年的成绩是136.5！</p>
+<h6 id="结构体指针作为函数参数"><a href="#结构体指针作为函数参数" class="headerlink" title="结构体指针作为函数参数"></a>结构体指针作为函数参数</h6><p>结构体变量名代表的是整个集合本身，作为函数参数时传递的整个集合，也就是所有成员，而不是像数组一样被编<br>译器转换成一个指针。如果结构体成员较多，尤其是成员为数组时，传送的时间和空间开销会很大，影响程序的运<br>行效率。所以最好的办法就是使用结构体指针，这时由实参传向形参的只是一个地址，非常快速。  </p>
+<p>【示例】计算全班学生的总成绩、平均成绩和以及 140 分以下的人数。  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> *name; <span class="comment">//姓名</span></span><br><span class="line">    <span class="type">int</span> num; <span class="comment">//学号</span></span><br><span class="line">    <span class="type">int</span> age; <span class="comment">//年龄</span></span><br><span class="line">    <span class="type">char</span> group; <span class="comment">//所在小组</span></span><br><span class="line">    <span class="type">float</span> score; <span class="comment">//成绩</span></span><br><span class="line">&#125;stus[] = &#123;</span><br><span class="line">    &#123;<span class="string">&quot;Li ping&quot;</span>, <span class="number">5</span>, <span class="number">18</span>, <span class="string">&#x27;C&#x27;</span>, <span class="number">145.0</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;Zhang ping&quot;</span>, <span class="number">4</span>, <span class="number">19</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">130.5</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;He fang&quot;</span>, <span class="number">1</span>, <span class="number">18</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">148.5</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;Cheng ling&quot;</span>, <span class="number">2</span>, <span class="number">17</span>, <span class="string">&#x27;F&#x27;</span>, <span class="number">139.0</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;Wang ming&quot;</span>, <span class="number">3</span>, <span class="number">17</span>, <span class="string">&#x27;B&#x27;</span>, <span class="number">144.5</span>&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="type">void</span> <span class="title function_">average</span><span class="params">(<span class="keyword">struct</span> stu *ps, <span class="type">int</span> len)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> len = <span class="keyword">sizeof</span>(stus) / <span class="keyword">sizeof</span>(<span class="keyword">struct</span> stu);</span><br><span class="line">    average(stus, len);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">average</span><span class="params">(<span class="keyword">struct</span> stu *ps, <span class="type">int</span> len)</span>&#123;</span><br><span class="line">    <span class="type">int</span> i, num_140 = <span class="number">0</span>;</span><br><span class="line">    <span class="type">float</span> average, sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;len; i++)&#123;</span><br><span class="line">        sum += (ps + i) -&gt; score;  </span><br><span class="line">    <span class="keyword">if</span>((ps + i)-&gt;score &lt; <span class="number">140</span>) num_140++;</span><br><span class="line">&#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;sum=%.2f\naverage=%.2f\nnum_140=%d\n&quot;</span>, sum, sum/<span class="number">5</span>, num_140);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：<br>sum&#x3D;707.50<br>average&#x3D;141.50<br>num_140&#x3D;2  </p>
+<h5 id="枚举类型（enum-关键字）"><a href="#枚举类型（enum-关键字）" class="headerlink" title="枚举类型（enum 关键字）"></a>枚举类型（enum 关键字）</h5><p>在实际编程中，有些数据的取值往往是有限的，只能是非常少量的整数，并且最好为每个值都取一个名字，以方便在后续代码中使用，比如一个星期只有七天，一年只有十二个月，一个班每周有六门课程等。</p>
+<p>以每周七天为例，我们可以使用#define 命令来给每天指定一个名字：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> Mon 1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> Tues 2</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> Wed 3</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> Thurs 4</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> Fri 5</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> Sat 6</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> Sun 7</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> day;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;day);</span><br><span class="line">    <span class="keyword">switch</span>(day)&#123;</span><br><span class="line">        <span class="keyword">case</span> Mon: <span class="built_in">puts</span>(<span class="string">&quot;Monday&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> Tues: <span class="built_in">puts</span>(<span class="string">&quot;Tuesday&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> Wed: <span class="built_in">puts</span>(<span class="string">&quot;Wednesday&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> Thurs: <span class="built_in">puts</span>(<span class="string">&quot;Thursday&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> Fri: <span class="built_in">puts</span>(<span class="string">&quot;Friday&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> Sat: <span class="built_in">puts</span>(<span class="string">&quot;Saturday&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> Sun: <span class="built_in">puts</span>(<span class="string">&quot;Sunday&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>: <span class="built_in">puts</span>(<span class="string">&quot;Error!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：<br>5↙<br>Friday  </p>
+<p>#define 命令虽然能解决问题，但也带来了不小的副作用，导致宏名过多，代码松散，看起来总有点不舒服。 C 语言提供了一种枚举（Enum）类型，能够列出所有可能的取值，并给它们取一个名字。  </p>
+<p>枚举类型的定义形式为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">typeName</span>&#123;</span> valueName1, valueName2, valueName3, ...... &#125;;  </span><br></pre></td></tr></table></figure>
+
+<p>enum 是一个新的关键字，专门用来定义枚举类型，这也是它在 C 语言中的唯一用途； typeName 是枚举类型的名字； valueName1, valueName2, valueName3, ……是每个值对应的名字的列表。</p>
+<p>例如，列出一个星期有几天：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">week</span>&#123;</span> Mon, Tues, Wed, Thurs, Fri, Sat, Sun &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，我们仅仅给出了名字，却没有给出名字对应的值，这是因为枚举值默认从 0 开始，往后逐个加 1（增）；也就是说， week 中的 Mon、 Tues …… Sun 对应的值分别为 0、 1 …… 6。<br>我们也可以给每个名字都指定一个值：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">week</span>&#123;</span> Mon = <span class="number">1</span>, Tues = <span class="number">2</span>, Wed = <span class="number">3</span>, Thurs = <span class="number">4</span>, Fri = <span class="number">5</span>, Sat = <span class="number">6</span>, Sun = <span class="number">7</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>更为简单的方法是只给第一个名字指定值：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">week</span>&#123;</span> Mon = <span class="number">1</span>, Tues, Wed, Thurs, Fri, Sat, Sun &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这样枚举值就从 1 开始递增，跟上面的写法是等效的。<br>枚举是一种类型，通过它可以定义枚举变量：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">week</span> <span class="title">a</span>, <span class="title">b</span>, <span class="title">c</span>;</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以在定义枚举类型的同时定义变量：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">week</span>&#123;</span> Mon = <span class="number">1</span>, Tues, Wed, Thurs, Fri, Sat, Sun &#125; a, b, c;</span><br></pre></td></tr></table></figure>
+
+<p>有了枚举变量，就可以把列表中的值赋给它：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">enum week&#123; Mon = 1, Tues, Wed, Thurs, Fri, Sat, Sun &#125;;</span><br><span class="line">enum week a = Mon, b = Wed, c = Sat;</span><br></pre></td></tr></table></figure>
+
+<p>或者：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">week</span>&#123;</span> Mon = <span class="number">1</span>, Tues, Wed, Thurs, Fri, Sat, Sun &#125; a = Mon, b = Wed, c = Sat;  </span><br></pre></td></tr></table></figure>
+
+<p>【示例】判断用户输入的是星期几。  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">enum</span> <span class="title">week</span>&#123;</span> Mon = <span class="number">1</span>, Tues, Wed, Thurs, Fri, Sat, Sun &#125; day;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;day);</span><br><span class="line">    <span class="keyword">switch</span>(day)&#123;  </span><br><span class="line">    <span class="keyword">case</span> Mon: <span class="built_in">puts</span>(<span class="string">&quot;Monday&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> Tues: <span class="built_in">puts</span>(<span class="string">&quot;Tuesday&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> Wed: <span class="built_in">puts</span>(<span class="string">&quot;Wednesday&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> Thurs: <span class="built_in">puts</span>(<span class="string">&quot;Thursday&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> Fri: <span class="built_in">puts</span>(<span class="string">&quot;Friday&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> Sat: <span class="built_in">puts</span>(<span class="string">&quot;Saturday&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> Sun: <span class="built_in">puts</span>(<span class="string">&quot;Sunday&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>: <span class="built_in">puts</span>(<span class="string">&quot;Error!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：<br>4↙<br>Thursday</p>
+<p>需要注意的两点是：</p>
+<p>(1) 枚举列表中的 Mon、 Tues、 Wed 这些标识符的作用范围是全局的（严格来说是 main() 函数内部），不能再定义与它们名字相同的变量。</p>
+<p>(2) Mon、 Tues、 Wed 等都是常量，不能对它们赋值，只能将它们的值赋给其他的变量。</p>
+<p>枚举和宏其实非常类似：宏在预处理阶段将名字替换成对应的值，枚举在编译阶段将名字替换成对应的值。我们可<br>以将枚举理解为编译阶段的宏。  </p>
+<h5 id="共用体（union-关键字）"><a href="#共用体（union-关键字）" class="headerlink" title="共用体（union 关键字）"></a>共用体（union 关键字）</h5><p>共用体（Union）和结构体的语法类似 ，它的定义格式为：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> 共用体名&#123;</span></span><br><span class="line">成员列表</span><br><span class="line">&#125;;  </span><br></pre></td></tr></table></figure>
+
+<p>共用体有时也被称为联合或者联合体，这也是 Union 这个单词的本意。</p>
+<p>结构体和共用体的区别在于：结构体的各个成员会占用不同的内存，互相之间没有影响；而共用体的所有成员占用同一段内存，修改一个成员会影响其余所有成员。</p>
+<p>结构体占用的内存大于等于所有成员占用的内存的总和（成员之间可能会存在缝隙），共用体占用的内存等于最长的成员占用的内存。共用体使用了内存覆盖技术，同一时刻只能保存一个成员的值，如果对新的成员赋值，就会把原来成员的值覆盖掉。  </p>
+<p>共用体也是一种自定义类型，可以通过它来创建变量，例如：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">data</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    <span class="type">char</span> ch;</span><br><span class="line">    <span class="type">double</span> f;  </span><br><span class="line">    &#125;;</span><br><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">data</span> <span class="title">a</span>, <span class="title">b</span>, <span class="title">c</span>;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面是先定义共用体，再创建变量，也可以在定义共用体的同时创建变量：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">data</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    <span class="type">char</span> ch;</span><br><span class="line">    <span class="type">double</span> f;</span><br><span class="line">&#125; a, b, c;  </span><br></pre></td></tr></table></figure>
+
+<p>如果不再定义新的变量，也可以将共用体的名字省略：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    <span class="type">char</span> ch;</span><br><span class="line">    <span class="type">double</span> f;</span><br><span class="line">&#125; a, b, c;  </span><br></pre></td></tr></table></figure>
+
+<p>共用体 data 中，成员 f 占用的内存最多，为 8 个字节，所以 data 类型的变量（也就是 a、 b、 c）也占用 8 个字节的内存，例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">data</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    <span class="type">char</span> ch;</span><br><span class="line">    <span class="type">short</span> m;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">union</span> <span class="title">data</span> <span class="title">a</span>;</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d, %d\n&quot;</span>, <span class="keyword">sizeof</span>(a), <span class="keyword">sizeof</span>(<span class="keyword">union</span> data) );</span><br><span class="line">    a.n = <span class="number">0x40</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%X, %c, %hX\n&quot;</span>, a.n, a.ch, a.m);</span><br><span class="line">    a.ch = <span class="string">&#x27;9&#x27;</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%X, %c, %hX\n&quot;</span>, a.n, a.ch, a.m);</span><br><span class="line">    a.m = <span class="number">0x2059</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%X, %c, %hX\n&quot;</span>, a.n, a.ch, a.m);</span><br><span class="line">    a.n = <span class="number">0x3E25AD54</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%X, %c, %hX\n&quot;</span>, a.n, a.ch, a.m);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p>4, 4<br>40, @, 40<br>39, 9, 39<br>2059, Y, 2059<br>3E25AD54, T, AD54</p>
+<p>这段代码不但验证了共用体的长度，还说明共用体成员之间会相互影响，修改一个成员的值会影响其他成员。<br>要想理解上面的输出结果，弄清成员之间究竟是如何相互影响的，就得了解各个成员在内存中的分布。以上面的data 为例，各个成员在内存中的分布如下：  </p>
+<img src="/2023/07/15/C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/image-20230719001444454.png" class="" title="image-20230719001444454">
+
+<p>成员 n、 ch、 m 在内存中“对齐”到一头，对 ch 赋值修改的是前一个字节，对 m 赋值修改的是前两个字节，对n 赋值修改的是全部字节。也就是说， ch、 m 会影响到 n 的一部分数据，而 n 会影响到 ch、 m 的全部数据。  </p>
+<p>上图是在绝大多数 PC 机上的内存分布情况，如果是 51 单片机，情况就会有所不同：  </p>
+<img src="/2023/07/15/C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/image-20230719001645782.png" class="" title="image-20230719001645782">
+
+<p>这是和机器的存储模式，大端小端有关。</p>
+<h6 id="共用体的应用"><a href="#共用体的应用" class="headerlink" title="共用体的应用"></a>共用体的应用</h6><p>共用体在一般的编程中应用较少，在单片机中应用较多。对于 PC 机，经常使用到的一个实例是： 现有一张关于学生信息和教师信息的表格。学生信息包括姓名、编号、性别、职业、分数，教师的信息包括姓名、编号、性别、职业、教学科目。请看下面的表格：  </p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Num</th>
+<th>Sex</th>
+<th>Profession</th>
+<th>Score &#x2F; Course</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HanXiaoXiao</td>
+<td>501</td>
+<td>f</td>
+<td>s</td>
+<td>89.5</td>
+</tr>
+<tr>
+<td>YanWeiMin</td>
+<td>1011</td>
+<td>m</td>
+<td>t</td>
+<td>math</td>
+</tr>
+<tr>
+<td>LiuZhenTao</td>
+<td>109</td>
+<td>f</td>
+<td>t</td>
+<td>English</td>
+</tr>
+<tr>
+<td>ZhaoFeiYan</td>
+<td>982</td>
+<td>m</td>
+<td>s</td>
+<td>95.0</td>
+</tr>
+</tbody></table>
+<p>f 和 m 分别表示女性和男性， s 表示学生， t 表示教师。可以看出，学生和教师所包含的数据是不同的。现在要求把这些信息放在同一个表格中，并设计程序输入人员信息然后输出。</p>
+<p>如果把每个人的信息都看作一个结构体变量的话，那么教师和学生的前 4 个成员变量是一样的，第 5 个成员变量可能是 score 或者 course。当第 4 个成员变量的值是 s 的时候，第 5 个成员变量就是 score；当第 4 个成员变量的值是 t 的时候，第 5 个成员变量就是 course。</p>
+<p>经过上面的分析，我们可以设计一个包含共用体的结构体，请看下面的代码：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> TOTAL 4 <span class="comment">//人员总数</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> name[<span class="number">20</span>];</span><br><span class="line">    <span class="type">int</span> num;</span><br><span class="line">    <span class="type">char</span> sex;</span><br><span class="line">    <span class="type">char</span> profession;</span><br><span class="line">    <span class="class"><span class="keyword">union</span>&#123;</span></span><br><span class="line">        <span class="type">float</span> score;</span><br><span class="line">        <span class="type">char</span> course[<span class="number">20</span>];</span><br><span class="line">    &#125; sc;</span><br><span class="line">&#125; bodys[TOTAL];</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="comment">//输入人员信息</span></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;TOTAL; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Input info: &quot;</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%s %d %c %c&quot;</span>, bodys[i].name, &amp;(bodys[i].num), &amp;(bodys[i].sex), &amp;(bodys[i].profession));</span><br><span class="line">        <span class="keyword">if</span>(bodys[i].profession == <span class="string">&#x27;s&#x27;</span>)&#123; <span class="comment">//如果是学生</span></span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%f&quot;</span>, &amp;bodys[i].sc.score);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123; <span class="comment">//如果是老师</span></span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, bodys[i].sc.course);</span><br><span class="line">        &#125;</span><br><span class="line">    fflush(<span class="built_in">stdin</span>);</span><br><span class="line">&#125;</span><br><span class="line">    <span class="comment">//输出人员信息</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\nName\t\tNum\tSex\tProfession\tScore / Course\n&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;TOTAL; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(bodys[i].profession == <span class="string">&#x27;s&#x27;</span>)&#123; <span class="comment">//如果是学生</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%s\t%d\t%c\t%c\t\t%f\n&quot;</span>, bodys[i].name, bodys[i].num, bodys[i].sex,bodys[i].profession, bodys[i].sc.score);  </span><br><span class="line">      &#125;<span class="keyword">else</span>&#123; <span class="comment">//如果是老师</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s\t%d\t%c\t%c\t\t%s\n&quot;</span>, bodys[i].name, bodys[i].num, bodys[i].sex,</span><br><span class="line">bodys[i].profession, bodys[i].sc.course);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：<br>Input info: HanXiaoXiao 501 f s 89.5↙<br>Input info: YanWeiMin 1011 m t math↙<br>Input info: LiuZhenTao 109 f t English↙<br>Input info: ZhaoFeiYan 982 m s 95.0↙</p>
+<p>Name Num Sex Profession Score &#x2F; Course<br>HanXiaoXiao 501 f s 89.500000<br>YanWeiMin 1011 m t math<br>LiuZhenTao 109 f t English<br>ZhaoFeiYan 982 m s 95.000000  </p>
+<h5 id="大端小端以及判别方式"><a href="#大端小端以及判别方式" class="headerlink" title="大端小端以及判别方式"></a>大端小端以及判别方式</h5><p>大端和小端是指数据在内存中的存储模式，它由 CPU 决定：<br>(1) 大端模式（ Big-endian） 是指将数据的低位（比如 1234 中的 34 就是低位）放在内存的高地址上，而数据的高位（比如 1234 中的 12 就是高位）放在内存的低地址上。这种存储模式有点儿类似于把数据当作字符串顺序处理，地址由小到大增加，而数据从高位往低位存放。</p>
+<p>(2) 小端模式（ Little-endian） 是指将数据的低位放在内存的低地址上，而数据的高位放在内存的高地址上。这种存储模式将地址的高低和数据的大小结合起来，高地址存放数值较大的部分，低地址存放数值较小的部分，这和我们的思维习惯是一致，比较容易理解。  </p>
+<h6 id="为什么有大小端模式之分"><a href="#为什么有大小端模式之分" class="headerlink" title="为什么有大小端模式之分"></a>为什么有大小端模式之分</h6><p>计算机中的数据是以字节（ Byte）为单位存储的，每个字节都有不同的地址。现代 CPU 的位数（可以理解为一次能处理的数据的位数）都超过了 8 位（一个字节）， PC 机、服务器的 CPU 基本都是 64 位的，嵌入式系统或单片机系统仍然在使用 32 位和 16 位的 CPU。</p>
+<p>对于一次能处理多个字节的 CPU，必然存在着如何安排多个字节的问题，也就是大端和小端模式。以 int 类型的 0x12345678 为例，它占用 4 个字节，如果是小端模式（ Little-endian），那么在内存中的分布情况为（假设从地址 0x 4000 开始存放）：</p>
+<table>
+<thead>
+<tr>
+<th>内存地址</th>
+<th>0x4000</th>
+<th>0x4001</th>
+<th>0x4002</th>
+<th>0x4003</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>存放内容</td>
+<td>0x78</td>
+<td>0x56</td>
+<td>0x34</td>
+<td>0x12</td>
+</tr>
+</tbody></table>
+<p>如果是大端模式（ Big-endian），那么分布情况正好相反：</p>
+<table>
+<thead>
+<tr>
+<th>内存地址</th>
+<th>0x4000</th>
+<th>0x4001</th>
+<th>0x4002</th>
+<th>0x4003</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>存放内容</td>
+<td>0x12</td>
+<td>0x34</td>
+<td>0x56</td>
+<td>0x78</td>
+</tr>
+</tbody></table>
+<p>我们的 PC 机上使用的是 X86 结构的 CPU，它是小端模式； 51 单片机是大端模式；很多 ARM、 DSP 也是小端模式（部分 ARM 处理器还可以由硬件来选择是大端模式还是小端模式）。</p>
+<h5 id="位域（位段）"><a href="#位域（位段）" class="headerlink" title="位域（位段）"></a>位域（位段）</h5><p>有些数据在存储时并不需要占用一个完整的字节，只需要占用一个或几个二进制位即可。例如开关只有通电和断电两种状态，用 0 和 1 表示足以，也就是用一个二进位。正是基于这种考虑， C 语言又提供了一种叫做位域的数据结构。</p>
+<p><strong>在结构体定义时，我们可以指定某个成员变量所占用的二进制位数（Bit），这就是位域。</strong>  例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">bs</span>&#123;</span></span><br><span class="line">    <span class="type">unsigned</span> m;</span><br><span class="line">    <span class="type">unsigned</span> n: <span class="number">4</span>;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> ch: <span class="number">6</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>后面的数字用来限定成员变量占用的位数。成员 m 没有限制，根据数据类型即可推算出它占用 4 个字节（Byte）的内存。成员 n、 ch 被:后面的数字限制，不能再根据数据类型计算长度，它们分别占用 4、 6 位（Bit）的内存。  </p>
+<p>C 语言标准规定，位域的宽度不能超过它所依附的数据类型的长度。通俗地讲，成员变量都是有类型的，这个类型限制了成员变量的最大长度， :后面的数字不能超过这个长度。  </p>
+<p>C 语言标准还规定，只有有限的几种数据类型可以用于位域。在 ANSI C 中，这几种数据类型是 int、 signed int 和unsigned int（int 默认就是 signed int）；到了 C99， _Bool 也被支持了。</p>
+<h6 id="无名位域"><a href="#无名位域" class="headerlink" title="无名位域"></a>无名位域</h6><p>  位域成员可以没有名称，只给出数据类型和位宽，如下所示：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">bs</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> m: <span class="number">12</span>;</span><br><span class="line">    <span class="type">int</span> : <span class="number">20</span>; <span class="comment">//该位域成员不能使用</span></span><br><span class="line">    <span class="type">int</span> n: <span class="number">4</span>;</span><br><span class="line">&#125;;  </span><br></pre></td></tr></table></figure>
+
+<p>无名位域一般用来作填充或者调整成员位置。因为没有名称，无名位域不能使用。  </p>
+<h5 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h5><p>这个在数字电路和单片机学过，C语言的也一样，仅记录。</p>
+<p>C 语言提供了六种位运算符：  </p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>&amp;</th>
+<th>|</th>
+<th>^</th>
+<th>~</th>
+<th>&lt;&lt;</th>
+<th>&gt;&gt;</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>说明</td>
+<td>按位与</td>
+<td>按位或</td>
+<td>按位异或</td>
+<td>取反</td>
+<td>左移</td>
+<td>右移</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C%E8%AF%AD%E8%A8%80/" rel="tag"># C语言</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/15/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/" rel="prev" title="循环结构（未完）">
+                  <i class="fa fa-chevron-left"></i> 循环结构（未完）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/07/16/%E9%9F%B3%E4%B9%90%E5%90%AF%E8%92%99/" rel="next" title="音乐启蒙">
+                  音乐启蒙 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">星戏溪行</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">55k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:21</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("2023/07/01 11:45:43");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "Shelter已建立 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-cn","enable":true,"serverURL":"waline-ecru-theta.vercel.app","cssUrl":"https://unpkg.com/@waline/client@v2/dist/waline.css","commentCount":true,"pageview":false,"locale":{"placeholder":"初相遇，若重逢。右边的猫猫正盯着你，它对君的赠言充满希冀。（或许你需要一个梯子登高阁，拂笔于此）"},"avatar":"mp","meta":["nick","mail","link"],"pageSize":10,"visitor":false,"comment_count":true,"requiredFields":[],"libUrl":"//unpkg.com/@waline/client@v2/dist/waline.js","el":"#waline","comment":true,"path":"/2023/07/15/C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/"}</script>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css">
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => 
+    Waline.init(Object.assign({}, CONFIG.waline,{ el: document.querySelector(CONFIG.waline.el) }))
+  );
+});
+</script>
+
+  
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas>
+    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script src="/js/cursor/explosion.min.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

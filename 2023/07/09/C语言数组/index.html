@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="什么是数组？数组的概念和定义例： 1int a[4];  这样，就在内存中分配了 4 个 int 类型的内存空间，共 4×4&#x3D;16 个字节，并为它们起了一个名字， 叫 a。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言数组">
+<meta property="og:url" content="http://example.com/2023/07/09/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84/index.html">
+<meta property="og:site_name" content="来自星星的弦乐">
+<meta property="og:description" content="什么是数组？数组的概念和定义例： 1int a[4];  这样，就在内存中分配了 4 个 int 类型的内存空间，共 4×4&#x3D;16 个字节，并为它们起了一个名字， 叫 a。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/07/09/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84/image-20230710153027537.png">
+<meta property="article:published_time" content="2023-07-09T02:40:12.000Z">
+<meta property="article:modified_time" content="2023-07-10T09:29:11.132Z">
+<meta property="article:author" content="星戏溪行">
+<meta property="article:tag" content="C语言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/07/09/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84/image-20230710153027537.png">
+
+
+<link rel="canonical" href="http://example.com/2023/07/09/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/07/09/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84/","path":"2023/07/09/C语言数组/","title":"C语言数组"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C语言数组 | 来自星星的弦乐</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?2adf217e938bc0432386afe319c0e750"></script>
+
+
+
+
+
+
+<link rel="dns-prefetch" href="waline-ecru-theta.vercel.app">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">来自星星的弦乐</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">| ❀ ❀ ❀ 踏梦携猫荡蓝海 ❀ ❀ ❀| | ☆ ☆ ☆ 引虹径行启银光 ☆ ☆ ☆|</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-茶馆"><a href="/comments/" rel="section"><i class="fas fa-comments fa-fw"></i>茶馆</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%95%B0%E7%BB%84%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">什么是数组？</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E6%A6%82%E5%BF%B5%E5%92%8C%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">数组的概念和定义</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E5%86%85%E5%AD%98%E6%98%AF%E8%BF%9E%E7%BB%AD%E7%9A%84"><span class="nav-number">1.2.</span> <span class="nav-text">数组内存是连续的</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84"><span class="nav-number">2.</span> <span class="nav-text">二维数组</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%88%E8%B5%8B%E5%80%BC%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">二维数组的初始化（赋值）</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#C-%E8%AF%AD%E8%A8%80%E5%AD%97%E7%AC%A6%E6%95%B0%E7%BB%84%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">3.</span> <span class="nav-text">C 语言字符数组和字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E6%95%B0%E7%BB%84%E7%9A%84%E6%A0%BC%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text">字符数组的格式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%BB%93%E6%9D%9F%E6%A0%87%E5%BF%97"><span class="nav-number">3.2.</span> <span class="nav-text">字符串结束标志</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6"><span class="nav-number">3.3.</span> <span class="nav-text">字符串长度</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%A1%A5%E5%85%85%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E8%BE%93%E5%85%A5"><span class="nav-number">3.4.</span> <span class="nav-text">补充：字符串的输入</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8B%93%E5%B1%95%EF%BC%9AC-%E8%AF%AD%E8%A8%80%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86%E5%87%BD%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">拓展：C 语言字符串处理函数</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BF%9E%E6%8E%A5%E5%87%BD%E6%95%B0-strcat"><span class="nav-number">4.1.</span> <span class="nav-text">字符串连接函数 strcat()</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%8D%E5%88%B6%E5%87%BD%E6%95%B0-strcpy"><span class="nav-number">4.2.</span> <span class="nav-text">字符串复制函数 strcpy()</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%AF%94%E8%BE%83%E5%87%BD%E6%95%B0-strcmp"><span class="nav-number">4.3.</span> <span class="nav-text">字符串比较函数 strcmp()</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">冒泡排序法</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%8E%9F%E7%90%86%E5%92%8C%E4%BB%A3%E7%A0%81"><span class="nav-number">5.1.</span> <span class="nav-text">原理和代码</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%EF%BC%9A"><span class="nav-number">5.2.</span> <span class="nav-text">优化：</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+			<link rel="stylesheet" href="/dist/APlayer.min.css">  
+			<div id="aplayer"></div>
+			<script type="text/javascript" src="/dist/APlayer.min.js"></script>
+			<script type="text/javascript" src="/dist/music.js"></script>
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="星戏溪行"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">星戏溪行</p>
+  <div class="site-description" itemprop="description">我和挚友的Shelter</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/09/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="星戏溪行">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="来自星星的弦乐">
+      <meta itemprop="description" content="我和挚友的Shelter">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="C语言数组 | 来自星星的弦乐">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C语言数组
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-09 10:40:12" itemprop="dateCreated datePublished" datetime="2023-07-09T10:40:12+08:00">2023-07-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-07-10 17:29:11" itemprop="dateModified" datetime="2023-07-10T17:29:11+08:00">2023-07-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/" itemprop="url" rel="index"><span itemprop="name">C语言学习之路</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2023/07/09/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2023/07/09/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>13 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h5 id="什么是数组？"><a href="#什么是数组？" class="headerlink" title="什么是数组？"></a>什么是数组？</h5><h6 id="数组的概念和定义"><a href="#数组的概念和定义" class="headerlink" title="数组的概念和定义"></a>数组的概念和定义</h6><p>例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">4</span>];</span><br></pre></td></tr></table></figure>
+
+<p>这样，就在内存中分配了 4 个 int 类型的内存空间，共 4×4&#x3D;16 个字节，并为它们起了一个名字， 叫 a。<span id="more"></span><br>我们把这样的一组数据的集合称为数组（Array） ，它所包含的每一个数据叫做数组元素（Element） ，所包含的数据的个数称为数组长度（Length） ，例如 int a[4];就定义了一个长度为 4 的整型数组，名字是 a。<br>数组中的每个元素都有一个序号，这个序号从 0 开始，而不是从我们熟悉的 1 开始，称为下标（Index） 。使用数组元素时，指明下标即可，形式为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arrayName[index]</span><br></pre></td></tr></table></figure>
+
+<p>arrayName 为数组名称， index 为下标。例如， a[0] 表示第 0 个元素， a[3] 表示第 3 个元素。    </p>
+<p>所以数组的定义方式为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dataType arrayName[length];  </span><br></pre></td></tr></table></figure>
+
+<p>dataType 为数据类型， arrayName 为数组名称， length 为数组长度。  </p>
+<h6 id="数组内存是连续的"><a href="#数组内存是连续的" class="headerlink" title="数组内存是连续的"></a>数组内存是连续的</h6><p>数组是一个整体，它的内存是连续的；也就是说，数组元素之间是相互挨着的，彼此之间没有一点点缝隙。   </p>
+<h5 id="二维数组"><a href="#二维数组" class="headerlink" title="二维数组"></a>二维数组</h5><p>二维数组定义的一般形式是：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dataType arrayName[length1][length2];  </span><br></pre></td></tr></table></figure>
+
+<p>其中， dataType 为数据类型， arrayName 为数组名， length1 为第一维下标的长度， length2 为第二维下标的长度。<br>我们可以将二维数组看做一个 Excel 表格，有行有列， length1 表示行数， length2 表示列数，要在二维数组中定位某个元素，必须同时指明行和列。 例如：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">3</span>][<span class="number">4</span>];  </span><br></pre></td></tr></table></figure>
+
+<p>定义了一个 3 行 4 列的二维数组，共有 3×4&#x3D;12 个元素，数组名为 a，即：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a[<span class="number">0</span>][<span class="number">0</span>], a[<span class="number">0</span>][<span class="number">1</span>], a[<span class="number">0</span>][<span class="number">2</span>], a[<span class="number">0</span>][<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<p>在 C 语言中，二维数组是按行排列的。 也就是先存放 a[0] 行，再存放 a[1] 行，最后存放 a[2] 行；每行中的 4 个元素也是依次存放。数组 a 为 int 类型，每个元素占用 4 个字节，整个数组共占用 4×(3×4)&#x3D;48 个字节。<br>可以认为，二维数组是由多个长度相同的一维数组构成的。</p>
+<h6 id="二维数组的初始化（赋值）"><a href="#二维数组的初始化（赋值）" class="headerlink" title="二维数组的初始化（赋值）"></a>二维数组的初始化（赋值）</h6><p>二维数组的初始化可以按行分段赋值，也可按行连续赋值。</p>
+<p>例如，对于数组 a[5][3]，按行分段赋值应该写作：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">5</span>][<span class="number">3</span>]=&#123; &#123;<span class="number">80</span>,<span class="number">75</span>,<span class="number">92</span>&#125;, &#123;<span class="number">61</span>,<span class="number">65</span>,<span class="number">71</span>&#125;, &#123;<span class="number">59</span>,<span class="number">63</span>,<span class="number">70</span>&#125;, &#123;<span class="number">85</span>,<span class="number">87</span>,<span class="number">90</span>&#125;, &#123;<span class="number">76</span>,<span class="number">77</span>,<span class="number">85</span>&#125; &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>按行连续赋值应该写作：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">5</span>][<span class="number">3</span>]=&#123;<span class="number">80</span>, <span class="number">75</span>, <span class="number">92</span>, <span class="number">61</span>, <span class="number">65</span>, <span class="number">71</span>, <span class="number">59</span>, <span class="number">63</span>, <span class="number">70</span>, <span class="number">85</span>, <span class="number">87</span>, <span class="number">90</span>, <span class="number">76</span>, <span class="number">77</span>, <span class="number">85</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这两种赋初值的结果是完全相同的。    </p>
+<p>对于二维数组的初始化还要注意以下几点：  </p>
+<p>(1) 可以只对部分元素赋值，未赋值的元素自动取“零”值。例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">3</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">1</span>&#125;, &#123;<span class="number">2</span>&#125;, &#123;<span class="number">3</span>&#125;&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>是对每一行的第一列元素赋值，未赋值的元素的值为 0。赋值后各元素的值为：<br>1 0 0<br>2 0 0<br>3 0 0<br>再如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">3</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">0</span>,<span class="number">1</span>&#125;, &#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">2</span>&#125;, &#123;<span class="number">3</span>&#125;&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>赋值后各元素的值为：<br>0 1 0<br>0 0 2<br>3 0 0<br>(2)如果对全部元素赋值，那么第一维的长度可以不给出。例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">3</span>][<span class="number">3</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>可以写为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[][<span class="number">3</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;  </span><br></pre></td></tr></table></figure>
+
+
+
+<p>(3) 二维数组可以看作是由一维数组嵌套而成的；如果一个数组的每个元素又是一个数组，那么它就是二维数组。当<br>然，前提是各个元素的类型必须相同。根据这样的分析，一个二维数组也可以分解为多个一维数组， C 语言允许这种分解。<br>例如，二维数组 a[3][4]可分解为三个一维数组，它们的数组名分别为 </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a[<span class="number">0</span>]、 a[<span class="number">1</span>]、 a[<span class="number">2</span>]  </span><br></pre></td></tr></table></figure>
+
+<p>这三个一维数组可以直接拿来使用。这三个一维数组都有 4 个元素，比如，一维数组 a[0] 的元素为</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a[<span class="number">0</span>][<span class="number">0</span>]、 a[<span class="number">0</span>][<span class="number">1</span>]、a[<span class="number">0</span>][<span class="number">2</span>]、 a[<span class="number">0</span>][<span class="number">3</span>]。  </span><br></pre></td></tr></table></figure>
+
+<h5 id="C-语言字符数组和字符串"><a href="#C-语言字符数组和字符串" class="headerlink" title="C 语言字符数组和字符串"></a>C 语言字符数组和字符串</h5><h6 id="字符数组的格式"><a href="#字符数组的格式" class="headerlink" title="字符数组的格式"></a>字符数组的格式</h6><p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> a[<span class="number">10</span>]; <span class="comment">//一维字符数组</span></span><br><span class="line"><span class="type">char</span> b[<span class="number">5</span>][<span class="number">10</span>]; <span class="comment">//二维字符数组</span></span><br><span class="line"><span class="type">char</span> c[<span class="number">20</span>] = &#123; <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27; &#x27;</span>, <span class="string">&#x27;p&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;g&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;m&#x27;</span> &#125;; <span class="comment">// 给部分数组元素赋值</span></span><br><span class="line"><span class="type">char</span> d[] = &#123; <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27; &#x27;</span>, <span class="string">&#x27;p&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;g&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;m&#x27;</span> &#125;; <span class="comment">//对全体元素赋值时可以省去长度  </span></span><br></pre></td></tr></table></figure>
+
+<p>字符数组实际上是一系列字符的集合，也就是字符串（String） 。在 C 语言中，没有专门的字符串变量，没有 string类型，通常就用一个字符数组来存放一个字符串。  </p>
+<p>C 语言规定，可以将字符串直接赋值给字符数组，例如：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> str[<span class="number">30</span>] = &#123; <span class="string">&quot;c.biancheng.net&quot;</span> &#125;; </span><br><span class="line"><span class="type">char</span> str[<span class="number">30</span>] = <span class="string">&quot;c.biancheng.net&quot;</span>; <span class="comment">//这种形式更加简洁，实际开发中常用</span></span><br></pre></td></tr></table></figure>
+
+<p>数组第 0 个元素为’c’，第 1 个元素为’.’，第 2 个元素为’b’，后面的元素以此类推。</p>
+<p>为了方便，你也可以不指定数组长度，从而写作： </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> str[] = &#123; <span class="string">&quot;c.biancheng.net&quot;</span> &#125;;</span><br><span class="line"><span class="type">char</span> str[] = <span class="string">&quot;c.biancheng.net&quot;</span>; <span class="comment">//这种形式更加简洁，实际开发中常用  </span></span><br></pre></td></tr></table></figure>
+
+<p>这里需要留意一个坑，字符数组只有在定义时才能将整个字符串一次性地赋值给它，一旦定义完了，就只能一个字符一个字符地赋值了。请看下面的例子：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> str[<span class="number">7</span>];</span><br><span class="line">str = <span class="string">&quot;abc123&quot;</span>; <span class="comment">//错误</span></span><br><span class="line"><span class="comment">//正确</span></span><br><span class="line">str[<span class="number">0</span>] = <span class="string">&#x27;a&#x27;</span>; str[<span class="number">1</span>] = <span class="string">&#x27;b&#x27;</span>; str[<span class="number">2</span>] = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">str[<span class="number">3</span>] = <span class="string">&#x27;1&#x27;</span>; str[<span class="number">4</span>] = <span class="string">&#x27;2&#x27;</span>; str[<span class="number">5</span>] = <span class="string">&#x27;3&#x27;</span>;  </span><br></pre></td></tr></table></figure>
+
+<h6 id="字符串结束标志"><a href="#字符串结束标志" class="headerlink" title="字符串结束标志"></a>字符串结束标志</h6><p>在 C 语言中，字符串总是以’\0’作为结尾，所以’\0’也被称为字符串结束标志，或者字符串结束符。  </p>
+<p>由” “包围的字符串会自动在末尾添加’\0’。 例如， “abc123”从表面看起来只包含了 6 个字符，其实不然， C 语言会在最后隐式地添加一个’\0’。</p>
+<p>比如”C program”在内存中的存储情形：  </p>
+<img src="/2023/07/09/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84/image-20230710153027537.png" class="" title="image-20230710153027537">
+
+<p>需要注意的是，逐个字符地给数组赋值并不会自动添加’\0’，例如：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> str[] = &#123;<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>&#125;;  </span><br></pre></td></tr></table></figure>
+
+<p>数组 str 的长度为 3，而不是 4，因为最后没有’\0’。<br>当用字符数组存储字符串时，要特别注意’\0’，要为’\0’留个位置；这意味着，字符数组的长度至少要比字符串的长度大 1。例如：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> str[<span class="number">7</span>] = <span class="string">&quot;abc123&quot;</span>;  </span><br></pre></td></tr></table></figure>
+
+<p>“bc123”看起来只包含了 6 个字符，我们却将 str 的长度定义为 7，就是为了能够容纳最后的’\0’。如果将 str 的长度定义为 6，它就无法容纳’\0’了  。</p>
+<p>另外，在函数内部定义的变量、数组、结构体、共用体等都称为局部数据。在很多编译器下，局部数据的初始值都是随机的、无意义的，而不是我们通常认为的“零”值。 </p>
+<h6 id="字符串长度"><a href="#字符串长度" class="headerlink" title="字符串长度"></a>字符串长度</h6><p>字符串长度，就是字符串包含了多少个字符（不包括最后的结束符’\0’）。例如”abc”的长度是 3，而不是 4。  </p>
+<p>在 C 语言中，我们使用 string.h 头文件中的 strlen() 函数来求字符串的长度，它的用法为：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">length <span class="title function_">strlen</span><span class="params">(strname)</span>;  </span><br></pre></td></tr></table></figure>
+
+<p>strname 是字符串的名字，或者字符数组的名字； length 是使用 strlen() 后得到的字符串长度，是一个整数。  </p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span> <span class="comment">//记得引入该头文件</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line"><span class="type">char</span> str[] = <span class="string">&quot;wearexc.github.io&quot;</span>;</span><br><span class="line"><span class="type">long</span> len = <span class="built_in">strlen</span>(str);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;The lenth of the string is %ld.\n&quot;</span>, len);</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：<br>The lenth of the string is 17.  </p>
+<h6 id="补充：字符串的输入"><a href="#补充：字符串的输入" class="headerlink" title="补充：字符串的输入"></a>补充：字符串的输入</h6><p>在 C 语言中，有两个函数可以让用户从键盘上输入字符串，它们分别是：<br>     scanf()：通过格式控制符%s 输入字符串。除了字符串， scanf() 还能输入其他类型的数据。<br>    gets()：直接输入字符串，并且只能输入字符串。</p>
+<p>但是， scanf() 和 gets() 是有区别的：</p>
+<p>​	scanf() 读取字符串时以空格为分隔，遇到空格就认为当前字符串结束了，一般无法读取含有空格的字符串。<br>​	 gets() 认为空格也是字符串的一部分，只有遇到回车键时才认为字符串输入结束，所以，不管输入了多少个空格，只要不按下回车键，对 gets() 来说就是一个完整的字符串。换句话说， gets() 用来读取一整行字符串。  </p>
+<p>其实 scanf() 也可以读取带空格的字符串。在C语言基础概念结尾有scanf()函数格式。</p>
+<h5 id="拓展：C-语言字符串处理函数"><a href="#拓展：C-语言字符串处理函数" class="headerlink" title="拓展：C 语言字符串处理函数"></a>拓展：C 语言字符串处理函数</h5><p>string.h 是一个专门用来处理字符串的头文件，它包含了很多字符串处理函数，由于篇幅限制，本节仅讲解几个常用的。</p>
+<h6 id="字符串连接函数-strcat"><a href="#字符串连接函数-strcat" class="headerlink" title="字符串连接函数 strcat()"></a>字符串连接函数 strcat()</h6><p>strcat 是 string catenate 的缩写，意思是把两个字符串拼接在一起，语法格式为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">strcat</span>(arrayName1, arrayName2);</span><br></pre></td></tr></table></figure>
+
+<p>arrayName1、 arrayName2 为需要拼接的字符串。<br>strcat() 将把 arrayName2 连接到 arrayName1 后面，并删除原来 arrayName1 最后的结束标志’\0’。 这意味arrayName1 必须足够长，要能够同时容纳 arrayName1 和 arrayName2，否则会越界（超出范围）。</p>
+<p>strcat() 的返回值为 arrayName1 的地址。  </p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line"><span class="type">char</span> str1[<span class="number">100</span>] = <span class="string">&quot;The URL is &quot;</span>;</span><br><span class="line"><span class="type">char</span> str2[<span class="number">60</span>];</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;Input a URL: &quot;</span>);</span><br><span class="line">gets(str2);</span><br><span class="line"><span class="built_in">strcat</span>(str1, str2);</span><br><span class="line"><span class="built_in">puts</span>(str1);</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：  </p>
+<p>Input a URL: wearexc.github.io<br>The URL is wearexc.github.io</p>
+<h6 id="字符串复制函数-strcpy"><a href="#字符串复制函数-strcpy" class="headerlink" title="字符串复制函数 strcpy()"></a>字符串复制函数 strcpy()</h6><p>strcpy 是 string copy 的缩写，意思是字符串复制，也即将字符串从一个地方复制到另外一个地方，语法格式为：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">strcpy</span>(arrayName1, arrayName2);  </span><br></pre></td></tr></table></figure>
+
+<p>strcpy() 会把 arrayName2 中的字符串拷贝到 arrayName1 中，字符串结束标志’\0’也一同拷贝。</p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line"><span class="type">char</span> str1[<span class="number">50</span>] = <span class="string">&quot;随便什么东西&quot;</span>;</span><br><span class="line"><span class="type">char</span> str2[<span class="number">50</span>]=<span class="string">&quot;wearex&quot;</span>;</span><br><span class="line"><span class="built_in">strcpy</span>(str1, str2);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;str1: %s\n&quot;</span>, str1);</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p>str1: wearex</p>
+<p>另外， strcpy() 要求 arrayName1 要有足够的长度，否则不能全部装入所拷贝的字符串。  </p>
+<h6 id="字符串比较函数-strcmp"><a href="#字符串比较函数-strcmp" class="headerlink" title="字符串比较函数 strcmp()"></a>字符串比较函数 strcmp()</h6><p>strcmp 是 string compare 的缩写，意思是字符串比较，语法格式为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">strcmp</span>(arrayName1, arrayName2);</span><br></pre></td></tr></table></figure>
+
+<p>arrayName1 和 arrayName2 是需要比较的两个字符串。<br>字符本身没有大小之分， strcmp() 以各个字符对应的 ASCII 码值进行比较。 strcmp() 从两个字符串的第 0 个字符开始比较，如果它们相等，就继续比较下一个字符，直到遇见不同的字符，或者到字符串的末尾。<br>返回值：若 arrayName1 和 arrayName2 相同，则返回 0；若 arrayName1 大于 arrayName2，则返回大于 0 的值；若 arrayName1 小于 arrayName2，则返回小于 0 的值。  </p>
+<p>例如：对4 组字符串进行比较</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">char</span> a[] = <span class="string">&quot;aBcDeF&quot;</span>;</span><br><span class="line">        <span class="type">char</span> b[] = <span class="string">&quot;AbCdEf&quot;</span>;</span><br><span class="line">        <span class="type">char</span> c[] = <span class="string">&quot;aacdef&quot;</span>;</span><br><span class="line">        <span class="type">char</span> d[] = <span class="string">&quot;aBcDeF&quot;</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;a VS b: %d\n&quot;</span>, <span class="built_in">strcmp</span>(a, b));</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;a VS c: %d\n&quot;</span>, <span class="built_in">strcmp</span>(a, c));</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;a VS d: %d\n&quot;</span>, <span class="built_in">strcmp</span>(a, d));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：<br>a VS b: 32<br>a VS c: -31<br>a VS d: 0  </p>
+<h5 id="冒泡排序法"><a href="#冒泡排序法" class="headerlink" title="冒泡排序法"></a>冒泡排序法</h5><h6 id="原理和代码"><a href="#原理和代码" class="headerlink" title="原理和代码"></a>原理和代码</h6><p>对数组元素进行排序的方法有很多种，比如冒泡排序、归并排序、选择排序、 插入排序、快速排序等，其中最经典最需要掌握的是「冒泡排序」。  </p>
+<p>以从小到大排序为例，冒泡排序的整体思想是这样的：</p>
+<p>​	从数组头部开始，不断比较相邻的两个元素的大小，让较大的元素逐渐往后移动（交换两个元素的值），直到数组的末尾。经过第一轮的比较，就可以找到最大的元素，并将它移动到最后一个位置。  </p>
+<p>第一轮结束后，继续第二轮。仍然从数组头部开始比较，让较大的元素逐渐往后移动，直到数组的倒数第二个元素为止。经过第二轮的比较，就可以找到次大的元素，并将它放到倒数第二个位置。</p>
+<p>以此类推，进行 n-1（n 为数组长度）轮“冒泡”后，就可以将所有的元素都排列好。  </p>
+<p>整个排序过程就好像气泡不断从水里冒出来，最大的先出来，次大的第二出来，最小的最后出来，所以将这种排序<br>方式称为冒泡排序（Bubble Sort） 。</p>
+<p>下面我们以“3 2 4 1”为例对冒泡排序进行说明。</p>
+<p>第一轮 排序过程<br>3 2 4 1 （最初）<br>2 3 4 1 （比较 3 和 2，交换）<br>2 3 4 1 （比较 3 和 4，不交换）<br>2 3 1 4 （比较 4 和 1，交换）<br>第一轮结束，最大的数字 4 已经在最后面，因此第二轮排序只需要对前面三个数进行比较。</p>
+<p>第二轮 排序过程<br>2 3 1 4 （第一轮排序结果）<br>2 3 1 4 （比较 2 和 3，不交换）<br>2 1 3 4 （比较 3 和 1，交换）<br>第二轮结束，次大的数字 3 已经排在倒数第二个位置，所以第三轮只需要比较前两个元素。</p>
+<p>第三轮 排序过程<br>2 1 3 4 （第二轮排序结果）<br>1 2 3 4 （比较 2 和 1，交换）</p>
+<p>至此，排序结束  </p>
+<p>代码实现</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line"><span class="type">int</span> nums[<span class="number">10</span>] = &#123; <span class="number">4</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span> &#125;;</span><br><span class="line"><span class="type">int</span> i, j, temp;</span><br><span class="line"><span class="comment">//冒泡排序算法：进行 n-1 轮比较  </span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i&lt;<span class="number">10</span> - <span class="number">1</span>; i++) &#123;</span><br><span class="line"><span class="comment">//每一轮比较前 n-1-i 个，也就是说，已经排序好的最后 i 个不用比较</span></span><br><span class="line"><span class="keyword">for</span> (j = <span class="number">0</span>; j&lt;<span class="number">10</span> - <span class="number">1</span> - i; j++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (nums[j] &gt; nums[j + <span class="number">1</span>]) &#123;</span><br><span class="line">        temp = nums[j];</span><br><span class="line">        nums[j] = nums[j + <span class="number">1</span>];</span><br><span class="line">        nums[j + <span class="number">1</span>] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出排序后的数组</span></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, nums[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="优化："><a href="#优化：" class="headerlink" title="优化："></a>优化：</h6><p>上面的算法是大部分教材中提供的算法，其中有一点是可以优化的：当比较到第 i 轮的时候，如果剩下的元素已经排序好了，那么就不用再继续比较了，跳出循环即可，这样就减少了比较的次数，提高了执行效率。</p>
+<p>优化后的代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line"><span class="type">int</span> nums[<span class="number">10</span>] = &#123; <span class="number">4</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span> &#125;;</span><br><span class="line"><span class="type">int</span> i, j, temp, isSorted;</span><br><span class="line"><span class="comment">//优化算法：最多进行 n-1 轮比较</span></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i&lt;<span class="number">10</span> - <span class="number">1</span>; i++) &#123;</span><br><span class="line">    isSorted = <span class="number">1</span>; <span class="comment">//假设剩下的元素已经排序好了</span></span><br><span class="line">    <span class="keyword">for</span> (j = <span class="number">0</span>; j&lt;<span class="number">10</span> - <span class="number">1</span> - i; j++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[j] &gt; nums[j + <span class="number">1</span>]) &#123;</span><br><span class="line">            temp = nums[j];</span><br><span class="line">            nums[j] = nums[j + <span class="number">1</span>];</span><br><span class="line">            nums[j + <span class="number">1</span>] = temp;</span><br><span class="line">            isSorted = <span class="number">0</span>; <span class="comment">//一旦需要交换数组元素，就说明剩下的元素没有排序好</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">    <span class="keyword">if</span> (isSorted) <span class="keyword">break</span>; <span class="comment">//如果没有发生交换，说明剩下的元素已经排序好了</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, nums[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C%E8%AF%AD%E8%A8%80/" rel="tag"># C语言</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/08/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84%E5%92%8C%E9%80%89%E6%8B%A9%E7%BB%93%E6%9E%84/" rel="prev" title="循环结构和选择结构">
+                  <i class="fa fa-chevron-left"></i> 循环结构和选择结构
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/07/10/C%E8%AF%AD%E8%A8%80%E5%87%BD%E6%95%B0/" rel="next" title="C语言函数">
+                  C语言函数 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">星戏溪行</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">55k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:21</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("2023/07/01 11:45:43");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "Shelter已建立 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-cn","enable":true,"serverURL":"waline-ecru-theta.vercel.app","cssUrl":"https://unpkg.com/@waline/client@v2/dist/waline.css","commentCount":true,"pageview":false,"locale":{"placeholder":"初相遇，若重逢。右边的猫猫正盯着你，它对君的赠言充满希冀。（或许你需要一个梯子登高阁，拂笔于此）"},"avatar":"mp","meta":["nick","mail","link"],"pageSize":10,"visitor":false,"comment_count":true,"requiredFields":[],"libUrl":"//unpkg.com/@waline/client@v2/dist/waline.js","el":"#waline","comment":true,"path":"/2023/07/09/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84/"}</script>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css">
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => 
+    Waline.init(Object.assign({}, CONFIG.waline,{ el: document.querySelector(CONFIG.waline.el) }))
+  );
+});
+</script>
+
+  
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas>
+    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script src="/js/cursor/explosion.min.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

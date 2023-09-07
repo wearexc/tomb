@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Hello,World!编写一个能够输出 Hello,World! 的程序。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="顺序结构">
+<meta property="og:url" content="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="来自星星的弦乐">
+<meta property="og:description" content="Hello,World!编写一个能够输出 Hello,World! 的程序。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712000542827.png">
+<meta property="og:image" content="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712000922663.png">
+<meta property="og:image" content="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712003025442.png">
+<meta property="og:image" content="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712003406362.png">
+<meta property="og:image" content="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712004708142.png">
+<meta property="og:image" content="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712004845534.png">
+<meta property="og:image" content="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712005845379.png">
+<meta property="og:image" content="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712103702737.png">
+<meta property="og:image" content="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712104909313.png">
+<meta property="og:image" content="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712104959296.png">
+<meta property="og:image" content="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712164136390.png">
+<meta property="og:image" content="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712175006634.png">
+<meta property="og:image" content="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712180113375.png">
+<meta property="og:image" content="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712180509212.png">
+<meta property="article:published_time" content="2023-07-11T16:03:02.000Z">
+<meta property="article:modified_time" content="2023-09-03T07:41:53.718Z">
+<meta property="article:author" content="星戏溪行">
+<meta property="article:tag" content="C语言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712000542827.png">
+
+
+<link rel="canonical" href="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/","path":"2023/07/12/顺序结构/","title":"顺序结构"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>顺序结构 | 来自星星的弦乐</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?2adf217e938bc0432386afe319c0e750"></script>
+
+
+
+
+
+
+<link rel="dns-prefetch" href="waline-ecru-theta.vercel.app">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">来自星星的弦乐</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">| ❀ ❀ ❀ 踏梦携猫荡蓝海 ❀ ❀ ❀| | ☆ ☆ ☆ 引虹径行启银光 ☆ ☆ ☆|</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-茶馆"><a href="/comments/" rel="section"><i class="fas fa-comments fa-fw"></i>茶馆</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#Hello-World"><span class="nav-number">1.</span> <span class="nav-text">Hello,World!</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E5%AD%97%E7%AC%A6%E8%8F%B1%E5%BD%A2"><span class="nav-number">2.</span> <span class="nav-text">输出字符菱形</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%B6%85%E7%BA%A7%E7%8E%9B%E4%B8%BD%E6%B8%B8%E6%88%8F"><span class="nav-number">3.</span> <span class="nav-text">超级玛丽游戏</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#A-B-Problem"><span class="nav-number">4.</span> <span class="nav-text">A+B Problem</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%89%E8%A7%92%E5%BD%A2"><span class="nav-number">5.</span> <span class="nav-text">字符三角形</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%8B%B9%E6%9E%9C%E9%87%87%E8%B4%AD"><span class="nav-number">6.</span> <span class="nav-text">苹果采购</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AD%97%E6%AF%8D%E8%BD%AC%E6%8D%A2"><span class="nav-number">7.</span> <span class="nav-text">字母转换</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E5%8F%8D%E8%BD%AC"><span class="nav-number">8.</span> <span class="nav-text">数字反转</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%86%8D%E5%88%86%E8%82%A5%E5%AE%85%E6%B0%B4"><span class="nav-number">9.</span> <span class="nav-text">再分肥宅水</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%B8%89%E8%A7%92%E5%BD%A2%E9%9D%A2%E7%A7%AF"><span class="nav-number">10.</span> <span class="nav-text">三角形面积</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%B8%8A%E5%AD%A6%E8%BF%9F%E5%88%B0"><span class="nav-number">11.</span> <span class="nav-text">上学迟到</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%A4%A7%E8%B1%A1%E5%96%9D%E6%B0%B4"><span class="nav-number">12.</span> <span class="nav-text">大象喝水</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%B0%8F%E9%B1%BC%E7%9A%84%E6%B8%B8%E6%B3%B3%E6%97%B6%E9%97%B4"><span class="nav-number">13.</span> <span class="nav-text">小鱼的游泳时间</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%B0%8F%E7%8E%89%E4%B9%B0%E6%96%87%E5%85%B7"><span class="nav-number">14.</span> <span class="nav-text">小玉买文具</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%88%90%E7%BB%A9"><span class="nav-number">15.</span> <span class="nav-text">成绩</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+			<link rel="stylesheet" href="/dist/APlayer.min.css">  
+			<div id="aplayer"></div>
+			<script type="text/javascript" src="/dist/APlayer.min.js"></script>
+			<script type="text/javascript" src="/dist/music.js"></script>
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="星戏溪行"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">星戏溪行</p>
+  <div class="site-description" itemprop="description">我和挚友的Shelter</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="星戏溪行">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="来自星星的弦乐">
+      <meta itemprop="description" content="我和挚友的Shelter">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="顺序结构 | 来自星星的弦乐">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          顺序结构
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-12 00:03:02" itemprop="dateCreated datePublished" datetime="2023-07-12T00:03:02+08:00">2023-07-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-09-03 15:41:53" itemprop="dateModified" datetime="2023-09-03T15:41:53+08:00">2023-09-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B4%9B%E8%B0%B7C%E8%AF%AD%E8%A8%80%E7%BB%83%E4%B9%A0%E9%A2%98%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">洛谷C语言练习题目</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h6 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello,World!"></a>Hello,World!</h6><p>编写一个能够输出 <code>Hello,World!</code> 的程序。<span id="more"></span></p>
+<img src="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712000542827.png" class="" title="image-20230712000542827">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Hello,World!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<p>Hello,World!</p>
+<h6 id="输出字符菱形"><a href="#输出字符菱形" class="headerlink" title="输出字符菱形"></a>输出字符菱形</h6><p>用 <code>*</code> 构造一个对角线长 55 个字符，倾斜放置的菱形。</p>
+<img src="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712000922663.png" class="" title="image-20230712000922663">
+
+<p>简单粗暴法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;  *\n&quot;</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot; ***\n&quot;</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;*****\n&quot;</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot; ***\n&quot;</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;  *\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>慵懒粗暴法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;  *\n ***\n*****\n ***\n  *\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="超级玛丽游戏"><a href="#超级玛丽游戏" class="headerlink" title="超级玛丽游戏"></a>超级玛丽游戏</h6><p>超级玛丽是一个非常经典的游戏。请你用字符画的形式输出超级玛丽中的一个场景。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">                ********</span><br><span class="line">               ************</span><br><span class="line">               ####....#.</span><br><span class="line">             #..###.....##....</span><br><span class="line">             ###.......######              ###            ###</span><br><span class="line">                ...........               #...#          #...#</span><br><span class="line">               ##*#######                 #.#.#          #.#.#</span><br><span class="line">            ####*******######             #.#.#          #.#.#</span><br><span class="line">           ...#***.****.*###....          #...#          #...#</span><br><span class="line">           ....**********##.....           ###            ###</span><br><span class="line">           ....****    *****....</span><br><span class="line">             ####        ####</span><br><span class="line">           ######        ######</span><br><span class="line">##############################################################</span><br><span class="line">#...#......#.##...#......#.##...#......#.##------------------#</span><br><span class="line">###########################################------------------#</span><br><span class="line">#..#....#....##..#....#....##..#....#....#####################</span><br><span class="line">##########################################    #----------#</span><br><span class="line">#.....#......##.....#......##.....#......#    #----------#</span><br><span class="line">##########################################    #----------#</span><br><span class="line">#.#..#....#..##.#..#....#..##.#..#....#..#    #----------#</span><br><span class="line">##########################################    ############</span><br></pre></td></tr></table></figure>
+
+<p>有一种printf多行字符串的写法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(</span><br><span class="line">    <span class="string">&quot;                ********\n&quot;</span></span><br><span class="line">    <span class="string">&quot;               ************\n&quot;</span></span><br><span class="line">    <span class="string">&quot;               ####....#.\n&quot;</span></span><br><span class="line">    <span class="string">&quot;             #..###.....##....\n&quot;</span></span><br><span class="line">    <span class="string">&quot;             ###.......######              ###            ###\n&quot;</span></span><br><span class="line">    <span class="string">&quot;                ...........               #...#          #...#\n&quot;</span></span><br><span class="line">    <span class="string">&quot;               ##*#######                 #.#.#          #.#.#\n&quot;</span></span><br><span class="line">    <span class="string">&quot;            ####*******######             #.#.#          #.#.#\n&quot;</span></span><br><span class="line">    <span class="string">&quot;           ...#***.****.*###....          #...#          #...#\n&quot;</span></span><br><span class="line">    <span class="string">&quot;           ....**********##.....           ###            ###\n&quot;</span></span><br><span class="line">    <span class="string">&quot;           ....****    *****....\n&quot;</span></span><br><span class="line">    <span class="string">&quot;             ####        ####\n&quot;</span></span><br><span class="line">    <span class="string">&quot;           ######        ######\n&quot;</span></span><br><span class="line">    <span class="string">&quot;##############################################################\n&quot;</span></span><br><span class="line">    <span class="string">&quot;#...#......#.##...#......#.##...#......#.##------------------#\n&quot;</span></span><br><span class="line">    <span class="string">&quot;###########################################------------------#\n&quot;</span></span><br><span class="line">    <span class="string">&quot;#..#....#....##..#....#....##..#....#....#####################\n&quot;</span></span><br><span class="line">    <span class="string">&quot;##########################################    #----------#\n&quot;</span></span><br><span class="line">    <span class="string">&quot;#.....#......##.....#......##.....#......#    #----------#\n&quot;</span></span><br><span class="line">    <span class="string">&quot;##########################################    #----------#\n&quot;</span></span><br><span class="line">    <span class="string">&quot;#.#..#....#..##.#..#....#..##.#..#....#..#    #----------#\n&quot;</span></span><br><span class="line">    <span class="string">&quot;##########################################    ############\n&quot;</span></span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="A-B-Problem"><a href="#A-B-Problem" class="headerlink" title="A+B Problem"></a>A+B Problem</h6><p>输入两个整数a,b，输出它们的和；</p>
+<img src="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712003025442.png" class="" title="image-20230712003025442">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a,b,c;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;a,&amp;b);</span><br><span class="line">	c=a+b;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,c);   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="字符三角形"><a href="#字符三角形" class="headerlink" title="字符三角形"></a>字符三角形</h6><p>给定一个字符，用它构造一个底边长 55 个字符，高 33 个字符的等腰字符三角形。</p>
+<p>输入格式：	 输入只有一行，包含一个字符。</p>
+<p>输出格式：	该字符构成的等腰三角形，底边长 55 个字符，高 33 个字符。</p>
+<img src="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712003406362.png" class="" title="image-20230712003406362">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%c&quot;</span>,&amp;a);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;  %c\n %c%c%c\n%c%c%c%c%c&quot;</span>,a,a,a,a,a,a,a,a,a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="苹果采购"><a href="#苹果采购" class="headerlink" title="苹果采购"></a>苹果采购</h6><p>现在需要采购一些苹果，每名同学都可以分到固定数量的苹果，并且已经知道了同学的数量，请问需要采购多少个苹果？</p>
+<p>输入格式：</p>
+<p>输入两个不超过 109109 正整数，分别表示每人分到的数量和同学的人数。</p>
+<p>输出格式：</p>
+<p>一个整数，表示答案。保证输入和答案都在 int 范围内的非负整数。</p>
+<img src="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712004708142.png" class="" title="image-20230712004708142">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a,b,c;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;a,&amp;b);</span><br><span class="line">	c=a*b;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="字母转换"><a href="#字母转换" class="headerlink" title="字母转换"></a>字母转换</h6><p>输入一个小写字母，输出其对应的大写字母。例如输入 q[回车] 时，会输出 Q。</p>
+<img src="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712004845534.png" class="" title="image-20230712004845534">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> a;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%c&quot;</span>,&amp;a);</span><br><span class="line">	a-=<span class="number">32</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>,a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在ASCII码表中，小写字母比大写字母大32.</p>
+<h6 id="数字反转"><a href="#数字反转" class="headerlink" title="数字反转"></a>数字反转</h6><p>输入一个不小于 100100 且小于 10001000，同时包括小数点后一位的一个浮点数，例如 123.4 ，要求把这个数字翻转过来，变成 4.321 并输出。</p>
+<img src="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712005845379.png" class="" title="image-20230712005845379">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">float</span> a,b;</span><br><span class="line">	<span class="type">int</span> c,d;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%f&quot;</span>,&amp;a);</span><br><span class="line">	c=a*<span class="number">10</span>;</span><br><span class="line">	d=c%<span class="number">10</span>*<span class="number">1000</span>+c/<span class="number">10</span>%<span class="number">10</span>*<span class="number">100</span>+c/<span class="number">100</span>%<span class="number">10</span>*<span class="number">10</span>+c/<span class="number">1000</span>;<span class="comment">//反转</span></span><br><span class="line">	b=(<span class="type">float</span>)d/<span class="number">10</span>; </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%5.1f&quot;</span>,b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p>656.8↙<br>865.6</p>
+<p>浮点数不能取余，所以干脆变成整形转换，转换完成后在变回来。可以使用强制类型转换，也可定义中间变量。最后输出时“%5.1f”，意思是至少占5个字符宽度（包括一位小数和一个小数点），且小数点后面有1位小数，小数点占一位，所以整数部分至少占3位。</p>
+<p>懒人法（直接利用字符串）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">char</span> a, b, c, d;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%c%c%c.%c&quot;</span>, &amp;a, &amp;b, &amp;c, &amp;d);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%c.%c%c%c&quot;</span>, d, c, b, a);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="再分肥宅水"><a href="#再分肥宅水" class="headerlink" title="再分肥宅水"></a>再分肥宅水</h6><p>现在有 t 毫升肥宅快乐水，要均分给 n 名同学。每名同学需要 2 个杯子。现在想知道每名同学可以获得多少毫升饮料（严格精确到小数点后3 位），以及一共需要多少个杯子。</p>
+<p>输入格式：</p>
+<p>输入一个实数 t 和一个正整数 n，使用空格隔开。</p>
+<p>输出格式：</p>
+<p>输出两行。</p>
+<p>第一行输出一个三位小数，表示可以获得多少毫升饮料。第二行输出一个正整数，表示一共需要多少个杯子。</p>
+<img src="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712103702737.png" class="" title="image-20230712103702737">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">float</span> a,c;</span><br><span class="line"><span class="type">int</span> b,d;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%f %d&quot;</span>,&amp;a,&amp;b);</span><br><span class="line">	c=a/b;</span><br><span class="line">	d=<span class="number">2</span>*b;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%0.3f\n%d&quot;</span>,c,d);;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="三角形面积"><a href="#三角形面积" class="headerlink" title="三角形面积"></a>三角形面积</h6><img src="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712104909313.png" class="" title="image-20230712104909313">
+
+<p>输入格式：</p>
+<p>第一行输入三个实数a*,<em>b</em>,*c，以空格隔开。</p>
+<p>输出格式：</p>
+<p>输出一个实数，表示三角形面积。精确到小数点后 1位。</p>
+<img src="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712104959296.png" class="" title="image-20230712104959296">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="type">double</span> a,b,c,p,s;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%f %f %f&quot;</span>,&amp;a,&amp;b,&amp;c);</span><br><span class="line">	p=<span class="number">0.5</span>*(a+b+c);</span><br><span class="line">	s=p*(p-a)*(p-b)*(p-c);</span><br><span class="line">	s=<span class="built_in">sqrt</span>(s);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%.1f\n&quot;</span>,s);;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>double精度比float高，sqrt()是开根号的函数，使用时需引入头文件&lt;math.h&gt;。</p>
+<h6 id="上学迟到"><a href="#上学迟到" class="headerlink" title="上学迟到"></a>上学迟到</h6><p>学校和 yyy 的家之间的距离为 s 米，而 yyy 以 v 米每分钟的速度匀速走向学校。</p>
+<p>在上学的路上，yyy 还要额外花费 10 分钟的时间进行垃圾分类。</p>
+<p>学校要求必须在上午 8:00 到达，请计算在不迟到的前提下，yyy 最晚能什么时候出门。</p>
+<p>由于路途遥远，yyy 可能不得不提前一点出发，但是提前的时间不会超过一天。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> s,v,t,a,b,c,d,hour,min;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;s,&amp;v);</span><br><span class="line">	t=s/v+<span class="number">10</span>;  <span class="comment">//计算所需总时间（min) </span></span><br><span class="line">	<span class="keyword">if</span>(s%v) &#123;t=t+<span class="number">1</span>;&#125; <span class="comment">//考虑时间计算，整形数据会忽略小数（秒），当有小数（秒）时，分钟+1； </span></span><br><span class="line">	hour=t/<span class="number">60</span>;  <span class="comment">//划分数据为时和分； </span></span><br><span class="line">	min=t%<span class="number">60</span>;  </span><br><span class="line">	<span class="keyword">if</span>(t&gt;=<span class="number">1440</span>) &#123;<span class="built_in">printf</span>(<span class="string">&quot;输入条件无效，提前时间大于24小时。&quot;</span>);&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">if</span>(hour&gt;<span class="number">8</span>) &#123;hour=<span class="number">8</span>+<span class="number">24</span>-hour;a=hour/<span class="number">10</span>;b=hour%<span class="number">10</span>;&#125;</span><br><span class="line">			<span class="keyword">if</span>(<span class="number">8</span>&gt;hour&gt;<span class="number">0</span>)&#123;a=<span class="number">0</span>;b=<span class="number">8</span>-hour;&#125;</span><br><span class="line">			<span class="keyword">if</span>(hour==<span class="number">0</span>)&#123;a=<span class="number">0</span>;b=<span class="number">7</span>;&#125;</span><br><span class="line">			<span class="keyword">if</span>(min!=<span class="number">0</span>) &#123;min=<span class="number">60</span>-min;c=min/<span class="number">10</span>;d=min%<span class="number">10</span>;&#125;</span><br><span class="line">				<span class="keyword">else</span> &#123;c=d=<span class="number">0</span>;&#125;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%d%d:%d%d\n&quot;</span>,a,b,c,d);</span><br><span class="line">		&#125; </span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>稍有麻烦的就是补零和时间格式。根据chatgpt建议修改代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> s,v,t,hour,min;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;s,&amp;v);</span><br><span class="line">	t=s/v+<span class="number">10</span>;  <span class="comment">//计算所需总时间（min) </span></span><br><span class="line">	<span class="keyword">if</span>(s%v) &#123;t=t+<span class="number">1</span>;&#125; <span class="comment">//考虑时间计算，整形数据会忽略小数（秒），当有小数（秒）时，分钟+1； </span></span><br><span class="line">	hour=t/<span class="number">60</span>;  <span class="comment">//划分数据为时和分； </span></span><br><span class="line">	min=t%<span class="number">60</span>;  </span><br><span class="line">	<span class="keyword">if</span>(t&gt;=<span class="number">1440</span>) &#123;<span class="built_in">printf</span>(<span class="string">&quot;输入条件无效，提前时间大于24小时。&quot;</span>);&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">if</span>(hour&gt;<span class="number">8</span>) &#123;hour=<span class="number">8</span>+<span class="number">24</span>-hour;&#125;</span><br><span class="line">			<span class="keyword">if</span>(hour&lt;<span class="number">8</span>&amp;&amp;hour&gt;<span class="number">0</span>) &#123;hour=<span class="number">8</span>-hour;&#125;</span><br><span class="line">			<span class="keyword">if</span>(hour==<span class="number">0</span>) &#123;hour=<span class="number">7</span>;&#125;</span><br><span class="line">			<span class="keyword">if</span>(min==<span class="number">0</span>) &#123;min=<span class="number">60</span>;&#125;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%02d:%02d\n&quot;</span>,hour,<span class="number">60</span>-min);</span><br><span class="line">		&#125; </span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在条件判断语句 <code>8 &gt; hour &gt; 0</code> 中，C 语言不支持连续的比较操作符(但我的编译器Dve能通过)。四位数的拆分可以通过输出格式前导零简化。<em>不过还是没有通过洛谷的条件检测。可能有瑕疵尚未发现。</em></p>
+<h6 id="大象喝水"><a href="#大象喝水" class="headerlink" title="大象喝水"></a>大象喝水</h6><p>一只大象口渴了，要喝 2020 升水才能解渴，但现在只有一个深 <em>h</em> 厘米，底面半径为 <em>r</em> 厘米的小圆桶 （h* 和 <em>r</em> 都是整数）。问大象至少要喝多少桶水才会解渴。这里我们近似地取圆周率 π&#x3D;3.14。</p>
+<p>输入格式：</p>
+<p>输入有一行：包行两个整数，以一个空格分开，分别表示小圆桶的深 <em>h</em> 和底面半径 <em>r</em>，单位都是厘米。</p>
+<p>输出格式：</p>
+<p>输出一行，包含一个整数，表示大象至少要喝水的桶数。</p>
+<img src="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712164136390.png" class="" title="image-20230712164136390">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> h,r,v,k;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;h,&amp;r);</span><br><span class="line">	v=<span class="number">3.14</span>*r*r*h*<span class="number">100</span>; <span class="comment">//多乘100，保存精度并且是整形方便计算 </span></span><br><span class="line">	k=<span class="number">2000000</span>/v;    <span class="comment">//相应的，20升也变为2000升。 </span></span><br><span class="line">	<span class="keyword">if</span>(<span class="number">2000000</span>%v) &#123;k=k+<span class="number">1</span>;&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,k);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>毕竟没有2.5桶水，也不能四舍五入。所以引入条件判断。</p>
+<h6 id="小鱼的游泳时间"><a href="#小鱼的游泳时间" class="headerlink" title="小鱼的游泳时间"></a>小鱼的游泳时间</h6><p>伦敦奥运会要到了，小鱼在拼命练习游泳准备参加游泳比赛，可怜的小鱼并不知道鱼类是不能参加人类的奥运会的。</p>
+<p>这一天，小鱼给自己的游泳时间做了精确的计时（本题中的计时都按 2424 小时制计算），它发现自己从 <em>a</em> 时 <em>b</em> 分一直游泳到当天的 <em>c</em> 时 d* 分，请你帮小鱼计算一下，它这天一共游了多少时间呢？</p>
+<p>输入格式：</p>
+<p>一行内输入四个整数，以空格隔开，分别表示题目中的 �,�,�,�<em>a</em>,<em>b</em>,<em>c</em>,<em>d</em>。</p>
+<p>输出格式：</p>
+<p>一行内输出两个整数 <em>e</em> 和 <em>f</em>，用空格间隔，依次表示小鱼这天一共游了多少小时多少分钟。其中表示分钟的整数 <em>f</em> 应该小于 6060。</p>
+<img src="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712175006634.png" class="" title="image-20230712175006634">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> a,b,c,d,e,f;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d %d&quot;</span>,&amp;a,&amp;b,&amp;c,&amp;d);</span><br><span class="line">	f=(c-a)*<span class="number">60</span>+d-b;</span><br><span class="line">	e=f/<span class="number">60</span>;</span><br><span class="line">	f=f%<span class="number">60</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d %d&quot;</span>,e,f);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="小玉买文具"><a href="#小玉买文具" class="headerlink" title="小玉买文具"></a>小玉买文具</h6><p>班主任给小玉一个任务，到文具店里买尽量多的签字笔。已知一只签字笔的价格是 11 元 99 角，而班主任给小玉的钱是 <em>a</em> 元 <em>b</em> 角，小玉想知道，她最多能买多少只签字笔呢。</p>
+<p>输入格式：</p>
+<p>输入只有一行两个整数，分别表示 <em>a</em> 和 <em>b</em>。</p>
+<p>输出格式：</p>
+<p>输出一行一个整数，表示小玉最多能买多少只签字笔。</p>
+<img src="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712180113375.png" class="" title="image-20230712180113375">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> a,b,c;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;a,&amp;b);</span><br><span class="line">	c=a*<span class="number">10</span>+b;   <span class="comment">//计算现金为多少角 </span></span><br><span class="line">	c=c/<span class="number">19</span>;    <span class="comment">//1元9角为19角 </span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="成绩"><a href="#成绩" class="headerlink" title="成绩"></a>成绩</h6><p>牛牛最近学习了 C++ 入门课程，这门课程的总成绩计算方法是：</p>
+<p>总成绩&#x3D;作业成绩×20%+小测成绩×30%+期末考试成绩×50%</p>
+<p>牛牛想知道，这门课程自己最终能得到多少分。</p>
+<p>输入格式：</p>
+<p>三个非负整数 A*,<em>B</em>,<em>C</em>，分别表示牛牛的作业成绩、小测成绩和期末考试成绩。相邻两个数之间用一个空格隔开，三项成绩满分都是100 分。</p>
+<p>输出格式：</p>
+<p>一个整数，即牛牛这门课程的总成绩，满分也是 100 分。</p>
+<img src="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/image-20230712180509212.png" class="" title="image-20230712180509212">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> a,b,c,x;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>,&amp;a,&amp;b,&amp;c);</span><br><span class="line">	x=a*<span class="number">0.2</span>+b*<span class="number">0.3</span>+c*<span class="number">0.5</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C%E8%AF%AD%E8%A8%80/" rel="tag"># C语言</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/11/C%E8%AF%AD%E8%A8%80%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4/" rel="prev" title="c语言预处理命令">
+                  <i class="fa fa-chevron-left"></i> c语言预处理命令
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/07/12/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/" rel="next" title="C语言指针">
+                  C语言指针 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">星戏溪行</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">55k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:21</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("2023/07/01 11:45:43");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "Shelter已建立 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-cn","enable":true,"serverURL":"waline-ecru-theta.vercel.app","cssUrl":"https://unpkg.com/@waline/client@v2/dist/waline.css","commentCount":true,"pageview":false,"locale":{"placeholder":"初相遇，若重逢。右边的猫猫正盯着你，它对君的赠言充满希冀。（或许你需要一个梯子登高阁，拂笔于此）"},"avatar":"mp","meta":["nick","mail","link"],"pageSize":10,"visitor":false,"comment_count":true,"requiredFields":[],"libUrl":"//unpkg.com/@waline/client@v2/dist/waline.js","el":"#waline","comment":true,"path":"/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/"}</script>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css">
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => 
+    Waline.init(Object.assign({}, CONFIG.waline,{ el: document.querySelector(CONFIG.waline.el) }))
+  );
+});
+</script>
+
+  
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas>
+    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script src="/js/cursor/explosion.min.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

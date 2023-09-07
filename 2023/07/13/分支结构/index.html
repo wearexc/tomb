@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="小学数学 N 合一题目描述">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分支结构">
+<meta property="og:url" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="来自星星的弦乐">
+<meta property="og:description" content="小学数学 N 合一题目描述">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230712194658604.png">
+<meta property="og:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230714145620724.png">
+<meta property="og:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230714150328891.png">
+<meta property="og:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230714152230449.png">
+<meta property="og:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230714154108172.png">
+<meta property="og:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230714155007534.png">
+<meta property="og:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230714191105581.png">
+<meta property="og:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230715112207643.png">
+<meta property="og:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230716095447576.png">
+<meta property="og:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230716183534384.png">
+<meta property="og:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230718094839494.png">
+<meta property="og:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230718100558164.png">
+<meta property="og:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230718180733934.png">
+<meta property="og:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230716231910507.png">
+<meta property="og:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230718085518325.png">
+<meta property="og:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230718085116792.png">
+<meta property="article:published_time" content="2023-07-13T11:39:38.000Z">
+<meta property="article:modified_time" content="2023-07-18T10:10:42.698Z">
+<meta property="article:author" content="星戏溪行">
+<meta property="article:tag" content="C语言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230712194658604.png">
+
+
+<link rel="canonical" href="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/","path":"2023/07/13/分支结构/","title":"分支结构"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>分支结构 | 来自星星的弦乐</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?2adf217e938bc0432386afe319c0e750"></script>
+
+
+
+
+
+
+<link rel="dns-prefetch" href="waline-ecru-theta.vercel.app">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">来自星星的弦乐</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">| ❀ ❀ ❀ 踏梦携猫荡蓝海 ❀ ❀ ❀| | ☆ ☆ ☆ 引虹径行启银光 ☆ ☆ ☆|</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-茶馆"><a href="/comments/" rel="section"><i class="fas fa-comments fa-fw"></i>茶馆</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B0%8F%E5%AD%A6%E6%95%B0%E5%AD%A6-N-%E5%90%88%E4%B8%80"><span class="nav-number">1.</span> <span class="nav-text">小学数学 N 合一</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%8B%B9%E6%9E%9C%E5%92%8C%E8%99%AB%E5%AD%90"><span class="nav-number">2.</span> <span class="nav-text">苹果和虫子</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">3.</span> <span class="nav-text">数的性质</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%B0%E5%B9%B4%E5%88%A4%E6%96%AD"><span class="nav-number">4.</span> <span class="nav-text">闰年判断</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Apples"><span class="nav-number">5.</span> <span class="nav-text">Apples</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B4%9B%E8%B0%B7%E5%9B%A2%E9%98%9F%E7%B3%BB%E7%BB%9F"><span class="nav-number">6.</span> <span class="nav-text">洛谷团队系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%82%A5%E8%83%96%E9%97%AE%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text">肥胖问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%89%E4%BD%8D%E6%95%B0%E6%8E%92%E5%BA%8F"><span class="nav-number">8.</span> <span class="nav-text">三位数排序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9C%88%E4%BB%BD%E5%A4%A9%E6%95%B0"><span class="nav-number">9.</span> <span class="nav-text">月份天数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%8D%E9%AB%98%E5%85%B4%E7%9A%84%E6%B4%A5%E6%B4%A5"><span class="nav-number">10.</span> <span class="nav-text">不高兴的津津</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B9%B0%E9%93%85%E7%AC%94"><span class="nav-number">11.</span> <span class="nav-text">买铅笔</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%89%E8%A7%92%E5%BD%A2%E5%88%86%E7%B1%BB"><span class="nav-number">12.</span> <span class="nav-text">三角形分类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B0%8F%E7%8E%89%E5%AE%B6%E7%9A%84%E7%94%B5%E8%B4%B9"><span class="nav-number">13.</span> <span class="nav-text">小玉家的电费</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B0%8F%E9%B1%BC%E7%9A%84%E8%88%AA%E7%A8%8B%EF%BC%88%E6%94%B9%E8%BF%9B%E7%89%88%EF%BC%89"><span class="nav-number">14.</span> <span class="nav-text">小鱼的航程（改进版）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0"><span class="nav-number">15.</span> <span class="nav-text">三角函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%99%B6%E9%99%B6%E6%91%98%E8%8B%B9%E6%9E%9C"><span class="nav-number">16.</span> <span class="nav-text">陶陶摘苹果</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ABC"><span class="nav-number">17.</span> <span class="nav-text">ABC</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ISBN-%E5%8F%B7%E7%A0%81"><span class="nav-number">18.</span> <span class="nav-text">ISBN 号码</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+			<link rel="stylesheet" href="/dist/APlayer.min.css">  
+			<div id="aplayer"></div>
+			<script type="text/javascript" src="/dist/APlayer.min.js"></script>
+			<script type="text/javascript" src="/dist/music.js"></script>
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="星戏溪行"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">星戏溪行</p>
+  <div class="site-description" itemprop="description">我和挚友的Shelter</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="星戏溪行">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="来自星星的弦乐">
+      <meta itemprop="description" content="我和挚友的Shelter">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="分支结构 | 来自星星的弦乐">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          分支结构
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-13 19:39:38" itemprop="dateCreated datePublished" datetime="2023-07-13T19:39:38+08:00">2023-07-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-07-18 18:10:42" itemprop="dateModified" datetime="2023-07-18T18:10:42+08:00">2023-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B4%9B%E8%B0%B7C%E8%AF%AD%E8%A8%80%E7%BB%83%E4%B9%A0%E9%A2%98%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">洛谷C语言练习题目</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>21 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h5 id="小学数学-N-合一"><a href="#小学数学-N-合一" class="headerlink" title="小学数学 N 合一"></a>小学数学 N 合一</h5><p><strong>题目描述</strong><span id="more"></span></p>
+<p><strong>问题 1</strong></p>
+<p>请输出 <code>I love Luogu!&lt;!-- more --&gt;</code></p>
+<p><strong>问题 2</strong></p>
+<p>这里有 10 个苹果，小 A 拿走了 2 个，Uim 拿走了 4 个，八尾勇拿走剩下的所有的苹果。我们想知道：</p>
+<ol>
+<li>小A 和 Uim 两个人一共拿走多少苹果？</li>
+<li>八尾勇能拿走多少苹果？</li>
+</ol>
+<p>现在需要编写一个程序，输出两个数字作为答案，中间使用空格分开。</p>
+<p><strong>问题 3</strong></p>
+<p>现在有 14 个苹果。要均分给 4 名同学，分不掉的苹果放回冰箱。请问：</p>
+<ol>
+<li><p>每位同学能分得几个苹果？</p>
+</li>
+<li><p>一共分出去多少苹果？</p>
+</li>
+<li><p>把几个苹果放回冰箱？</p>
+<p>  现在需要编写一个程序，输出三个数字作为答案，每个数字一行。</p>
+</li>
+</ol>
+<p><strong>问题 4</strong></p>
+<p>现在有 500 毫升的肥宅快乐水，要均分给 3 名同学，每位同学可以分到多少毫升？请输出一个数字作为输出。保留 6 位有效数字，且不使用科学计数法。</p>
+<p><strong>问题 5</strong></p>
+<p>甲列火车长 260 米，每秒行 12 米；乙列火车长 220 米，每秒行 20 米，两车相向而行，从两车车头相遇时开始计时，多长时间后两车车尾相离？已知答案是整数。</p>
+<p><strong>问题 6</strong></p>
+<p>一个长方形长宽分别是 6cm、9cm，求它的对角线长度(cm)。直接使用 <code>cout</code> 输出。</p>
+<p><strong>问题 7</strong></p>
+<p>Uim 银行账户里面有 100 元。经过了下面的操作：</p>
+<ol>
+<li><p>往里面存了 10 元；</p>
+</li>
+<li><p>购物花掉了 20 元；</p>
+</li>
+<li><p>把里面的钱全部取出。</p>
+<p>  请在每次操作后输出账户余额，并使用换行符隔开。</p>
+</li>
+</ol>
+<p><strong>问题 8</strong></p>
+<p>当半径为 r&#x3D;5，请输出圆的周长、面积和球体积。取 \pi&#x3D;3.141593。请直接使用 <code>cout</code> 输出答案，每行一个数字。</p>
+<p><strong>问题 9</strong></p>
+<p>一只小猴买了若干个桃子。第一天他刚好吃了这些桃子的一半，又贪嘴多吃了一个；第二天他也刚好吃了剩余桃子的一半，贪嘴多吃了一个；第三天他又刚好吃了剩下的桃子的一半，并贪嘴多吃了一个。第四天起来一看，发现桃子只剩下一个了。请问小猴买了几个桃子？</p>
+<p><strong>问题 10</strong></p>
+<p>洛谷的评测任务是单位时间内均匀增加的。8 台评测机 30 分钟可以刚好把评测队列中的程序评测完毕，10 台评测机 6 分钟可以刚好把评测队列中的程序评测完毕，请问几台评测机可以在 10 分钟时刚好把评测队列中的程序评测完毕？</p>
+<p><strong>问题 11</strong></p>
+<p>小 A 跑步速度 5  m&#x2F;s，八尾勇跑步速度 8  m&#x2F;s，八尾勇在小 A 后面 100  m，他们同时起跑，请问需要多长时间八尾勇可以追上小 A？输出一个数字表示答案，使用 <code>cout</code> 直接输出。</p>
+<p><strong>问题 12</strong></p>
+<p>大家都知道有 26 个英文字母，其中 A 是第一个字母。现在请编程求出：</p>
+<ol>
+<li>M 是字母表中的第几个字母？</li>
+<li>第 18 个字母是什么？</li>
+</ol>
+<p>输出一个数字和一个字母，使用换行隔开。</p>
+<p><strong>问题 13</strong></p>
+<p>小 A 有两块球形橡皮泥，一个半径是 4，一个半径是 10。他想把这两块橡皮泥揉在一起，然后塑造成一个正方体，请问这个正方体的棱长是多少？如果结果不是整数，则舍去小数点之后的数字。取π&#x3D; 3.141593。</p>
+<p><strong>问题 14</strong></p>
+<p>根据咕咕网校的预测，当课程定价为 110 元时，会有 10 人报名。如果课程价格每降低 1 元，就会多 1 名报名者（反之亦然）。如果希望总共能收到 3500 元学费的话，那么应该定价多少呢？已知本题有两个答案符合要求，则取较小的那一个。如果这个答案不是整数，则需四舍五入精确到整数。</p>
+<p><strong>输入格式</strong></p>
+<p>输入一个正整数，表示第几个问题。</p>
+<p><strong>输出格式</strong></p>
+<p>根据所输入的问题编号，输出对应问题的答案。</p>
+<img src="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230712194658604.png" class="" title="image-20230712194658604">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> a;</span><br><span class="line"><span class="type">float</span> b,c,d,e;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;a);</span><br><span class="line">    <span class="keyword">switch</span>(a)&#123;</span><br><span class="line">		<span class="keyword">case</span>  <span class="number">1</span>: <span class="built_in">printf</span>(<span class="string">&quot;I love Luogu!&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span>  <span class="number">2</span>: <span class="built_in">printf</span>(<span class="string">&quot;6 4&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span>  <span class="number">3</span>: <span class="built_in">printf</span>(<span class="string">&quot;3\n12\n2&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span>  <span class="number">4</span>: <span class="built_in">printf</span>(<span class="string">&quot;%.31f&quot;</span>,<span class="number">500</span>/<span class="number">3</span>); <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span>  <span class="number">5</span>: <span class="built_in">printf</span>(<span class="string">&quot;15&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span>  <span class="number">6</span>: b=<span class="built_in">sqrt</span>(<span class="number">6</span>*<span class="number">6</span>+<span class="number">9</span>*<span class="number">9</span>); <span class="built_in">printf</span>(<span class="string">&quot;%0.4f&quot;</span>,b); <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span>  <span class="number">7</span>: <span class="built_in">printf</span>(<span class="string">&quot;110\n90\n0&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span>  <span class="number">8</span>: b=<span class="number">2</span>*<span class="number">3.141593</span>*<span class="number">5</span>; c=<span class="number">3.141593</span>*<span class="number">5</span>*<span class="number">5</span>;d=<span class="number">4</span>/<span class="number">3</span>*<span class="number">3.141593</span>*<span class="number">5</span>*<span class="number">5</span>*<span class="number">5</span>;<span class="built_in">printf</span>(<span class="string">&quot;%.4f\n%.4f\n%.3f&quot;</span>,b,c,d); <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span>  <span class="number">9</span>: <span class="built_in">printf</span>(<span class="string">&quot;22&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span>  <span class="number">10</span>: <span class="built_in">printf</span>(<span class="string">&quot;9&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span>  <span class="number">11</span>: b=<span class="number">100</span>/<span class="number">3</span>; <span class="built_in">printf</span>(<span class="string">&quot;%.4f&quot;</span>,b); <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span>  <span class="number">12</span>: <span class="built_in">printf</span>(<span class="string">&quot;13\nR&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span>  <span class="number">13</span>: <span class="built_in">printf</span>(<span class="string">&quot;16&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span>  <span class="number">14</span>: <span class="built_in">printf</span>(<span class="string">&quot;50&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<h5 id="苹果和虫子"><a href="#苹果和虫子" class="headerlink" title="苹果和虫子"></a>苹果和虫子</h5><p>八尾勇喜欢吃苹果。她现在有 <em>m</em>（1≤<em>m</em>≤100）个苹果，吃完一个苹果需要花费 <em>t</em>（0≤<em>t</em>≤100）分钟，吃完一个后立刻开始吃下一个。现在时间过去了 <em>s</em>（1≤<em>s</em>≤10000）分钟，请问她还有几个完整的苹果？</p>
+<p><strong>输入格式</strong></p>
+<p>输入三个<strong>非负整数</strong>表示 ,<em>m</em>,<em>t</em>,<em>s</em>。</p>
+<p><strong>输出格式</strong></p>
+<p>输出一个整数表示答案。</p>
+<img src="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230714145620724.png" class="" title="image-20230714145620724">
+
+<p>这不简单？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> m,s,t,x;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>,&amp;m,&amp;t,&amp;s);</span><br><span class="line">	x=m-s/t;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,x);</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<img src="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230714150328891.png" class="" title="image-20230714150328891">
+
+<p>考虑到除t&#x3D;0，和苹果完整性问题，修改后如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> m, s, t, x;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>, &amp;m, &amp;t, &amp;s);</span><br><span class="line">    <span class="keyword">if</span> (s &gt;= t) </span><br><span class="line">	&#123;</span><br><span class="line">		x = m - s / t;  <span class="comment">//常规计算</span></span><br><span class="line">    	<span class="keyword">if</span>(s%t) x--;  <span class="comment">//考虑是否刚好吃完的情况</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        x = m<span class="number">-1</span>;  <span class="comment">//开始吃苹果，即使没吃完，完整的苹果也少一个。</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(t==<span class="number">0</span>) x=<span class="number">0</span>;  <span class="comment">//t=0的情况</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,x);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出特例代入计算，没有bug，不过仍未通过检测。</p>
+<h5 id="数的性质"><a href="#数的性质" class="headerlink" title="数的性质"></a>数的性质</h5><p>一些整数可能拥有以下的性质：</p>
+<ul>
+<li>性质 1：是偶数；</li>
+<li>性质 2：大于 44 且不大于 1212。</li>
+</ul>
+<p>小 A 喜欢这两个性质同时成立的整数；Uim 喜欢这至少符合其中一种性质的整数；八尾勇喜欢刚好有符合其中一个性质的整数；正妹喜欢不符合这两个性质的整数。现在给出一个整数 <em>x</em>，请问他们是否喜欢这个整数？</p>
+<p><strong>输入格式</strong></p>
+<p>输入一个整数 (0≤1000)<em>x</em>(0≤<em>x</em>≤1000)</p>
+<p><strong>输出格式</strong></p>
+<p>输出这 44 个人是否喜欢这个数字，如果喜欢则输出 <code>1</code>，否则输出 <code>0</code>，用空格分隔。输出顺序为：小 A、Uim、八尾勇、正妹。</p>
+<img src="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230714152230449.png" class="" title="image-20230714152230449">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a,b,c,d,input,x,y; <span class="comment">//abcd代表四人，xy表示两个性质。 </span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;input);</span><br><span class="line">    <span class="keyword">if</span>(input%<span class="number">2</span>) x=<span class="number">0</span>; <span class="keyword">else</span>&#123;x=<span class="number">1</span>;&#125;</span><br><span class="line">    <span class="keyword">if</span>(input&gt;<span class="number">4</span>&amp;&amp;input&lt;=<span class="number">12</span>) y=<span class="number">1</span>;<span class="keyword">else</span> &#123;y=<span class="number">0</span>;&#125;;</span><br><span class="line">    a=(x&amp;&amp;y); b=(x||y);</span><br><span class="line">	<span class="keyword">if</span>(x*y==<span class="number">0</span>&amp;&amp;(x||y)==<span class="number">1</span>) c=<span class="number">1</span>; <span class="keyword">else</span> &#123;c=<span class="number">0</span>;&#125;;</span><br><span class="line">	<span class="keyword">if</span>(x==<span class="number">0</span>&amp;&amp;y==<span class="number">0</span>) d=<span class="number">1</span>; <span class="keyword">else</span> &#123;d=<span class="number">0</span>;&#125;;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d %d %d %d&quot;</span>,a,b,c,d);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>得亏学过数电和单片机，反哺了。</p>
+<h5 id="闰年判断"><a href="#闰年判断" class="headerlink" title="闰年判断"></a>闰年判断</h5><p>输入一个年份，判断这一年是否是闰年，如果是输出 11，否则输出 00。</p>
+<img src="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230714154108172.png" class="" title="image-20230714154108172">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> input,x;  </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;input);</span><br><span class="line">    <span class="keyword">if</span>(input%<span class="number">4</span>==<span class="number">0</span>&amp;&amp;input%<span class="number">100</span>||input%<span class="number">400</span>==<span class="number">0</span>) x=<span class="number">1</span>; <span class="keyword">else</span>&#123;x=<span class="number">0</span>;&#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,x);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Apples"><a href="#Apples" class="headerlink" title="Apples"></a>Apples</h5><p>八尾勇喜欢吃苹果。她今天吃掉了 <em>x</em> 个苹果。英语课上学到了 apple 这个词语，想用它来造句。如果她吃了 1 个苹果，就输出 <code>Today, I ate 1 apple.</code>；如果她没有吃，那么就把 1 换成 0；如果她吃了不止一个苹果，别忘了 <code>apple</code> 这个单词后面要加上代表复数的 <code>s</code>。你能帮她完成这个句子吗？</p>
+<img src="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230714155007534.png" class="" title="image-20230714155007534">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> input;  </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;input);</span><br><span class="line">    <span class="keyword">if</span>(input&lt;<span class="number">2</span>)</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Today, I ate %d apple.&quot;</span>,input);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">    	<span class="built_in">printf</span>(<span class="string">&quot;Today, I ate %d apples.&quot;</span>,input);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者使用？：语句也可。</p>
+<h5 id="洛谷团队系统"><a href="#洛谷团队系统" class="headerlink" title="洛谷团队系统"></a>洛谷团队系统</h5><p>在洛谷上使用团队系统非常方便的添加自己的题目。如果在自己的电脑上配置题目和测试数据，每题需要花费时间 55 分钟；而在洛谷团队中上传私有题目，每题只需要花费 33 分钟，但是上传题目之前还需要一次性花费 1111 分钟创建与配置团队。现在要配置 n* 道题目，如果本地配置花费的总时间短，请输出 <code>Local</code>，否则输出 <code>Luogu</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> input,x;  </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;input);</span><br><span class="line">    <span class="keyword">if</span>((input*<span class="number">5</span>)&gt;(input*<span class="number">3</span>+<span class="number">11</span>))</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Luogu&quot;</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">    	<span class="built_in">printf</span>(<span class="string">&quot;Local&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="肥胖问题"><a href="#肥胖问题" class="headerlink" title="肥胖问题"></a>肥胖问题</h5><p>BMI 指数是国际上常用的衡量人体胖瘦程度的一个标准，其算法是 m&#x2F;h²其中 <em>m</em> 是指体重（千克），ℎ 是指身高（米）。不同体型范围与判定结果如下：</p>
+<ul>
+<li>小于 18.518.5：体重过轻，输出 <code>Underweight</code>；</li>
+<li>大于等于 18.518.5 且小于 2424：正常体重，输出 <code>Normal</code>；</li>
+<li>大于等于 2424：肥胖，不仅要输出 BMI 值（使用 <code>cout</code> 的默认精度），然后换行，还要输出 <code>Overweight</code>；</li>
+</ul>
+<p>现在给出体重和身高数据，需要根据 BMI 指数判断体型状态并输出对应的判断。</p>
+<p>对于非 C++ 语言，在输出时，请四舍五入保留六位<strong>有效数字</strong>输出，如果小数部分存在后缀 00，不要输出后缀 00。</p>
+<p>请注意，保留六位<strong>有效数字</strong>不是保留六位小数。例如 123.4567 应该输出为 123.457，5432.10 应该输出为 5432.1。</p>
+<p><strong>输入格式</strong></p>
+<p>共一行。</p>
+<p>第一行，共 22 个浮点数，m*,*h，分别表示体重（单位为 kg），身高（单位为 m）。</p>
+<p><strong>输出格式</strong></p>
+<p>输出一行一个字符串，表示根据 BMI 的对应判断。特别地，对于 <code>Overweight</code> 情况的特别处理请参照题目所述。</p>
+<img src="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230714191105581.png" class="" title="image-20230714191105581">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">float</span> m,k,x;  </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%f %f&quot;</span>,&amp;m,&amp;k);</span><br><span class="line">    x=m/k/k;</span><br><span class="line">    <span class="keyword">if</span>(x&lt;<span class="number">18.5</span>) <span class="built_in">printf</span>(<span class="string">&quot;Underweight&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(x&lt;<span class="number">25</span>&amp;&amp;x&gt;=<span class="number">18.5</span>) <span class="built_in">printf</span>(<span class="string">&quot;Normal&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(x&gt;<span class="number">25</span>) <span class="built_in">printf</span>(<span class="string">&quot;%.6g\nOverweight&quot;</span>,x);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>“.6g”意思是输出6位有效数字。</p>
+<h5 id="三位数排序"><a href="#三位数排序" class="headerlink" title="三位数排序"></a>三位数排序</h5><p>给出三个整数a*,<em>b</em>,<em>c</em>(0≤<em>a</em>,<em>b</em>,*c≤100)，要求把这三位整数从小到大排序。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a,b,c,i;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>,&amp;a,&amp;b,&amp;c);</span><br><span class="line">	<span class="keyword">if</span>(a&gt;b)</span><br><span class="line">	&#123;</span><br><span class="line">		i=a; a=b; b=i;  <span class="comment">//a和b互换	</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(a&gt;c)</span><br><span class="line">	&#123;</span><br><span class="line">		i=a; a=c; c=i; <span class="comment">//a和c互换	</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(b&gt;c)</span><br><span class="line">	&#123;</span><br><span class="line">		i=b; b=c; c=i; <span class="comment">//b和c互换</span></span><br><span class="line">	&#125; </span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d %d %d&quot;</span>,a,b,c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总所周知，三位数需要比较三次。也可以用数组和指针的方法。</p>
+<h5 id="月份天数"><a href="#月份天数" class="headerlink" title="月份天数"></a>月份天数</h5><p>输入年份和月份，输出这一年的这一月有多少天。需要考虑闰年。</p>
+<p><strong>输入格式</strong></p>
+<p>输入两个正整数，分别表示年份 <em>y</em> 和月数 <em>m</em>，以空格隔开。</p>
+<p><strong>输出格式</strong></p>
+<p>输出一行一个正整数，表示这个月有多少天。</p>
+<img src="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230715112207643.png" class="" title="image-20230715112207643">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> y,m;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;y,&amp;m);</span><br><span class="line">	<span class="keyword">if</span>(m==<span class="number">2</span>&amp;&amp;(y%<span class="number">4</span>==<span class="number">0</span>&amp;&amp;y%<span class="number">100</span>||y%<span class="number">400</span>==<span class="number">0</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;29&quot;</span>); <span class="comment">//闰年二月</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(m%<span class="number">2</span>&amp;&amp;m!=<span class="number">2</span>||m==<span class="number">8</span>) <span class="built_in">printf</span>(<span class="string">&quot;31&quot;</span>); </span><br><span class="line">		<span class="keyword">if</span>(m%<span class="number">2</span>==<span class="number">0</span>&amp;&amp;m!=<span class="number">2</span>&amp;&amp;m!=<span class="number">8</span>) <span class="built_in">printf</span>(<span class="string">&quot;30&quot;</span>);</span><br><span class="line">		<span class="keyword">if</span>(m==<span class="number">2</span>) <span class="built_in">printf</span>(<span class="string">&quot;28&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>个人检测不出bug，不过仍未通过洛谷测试。</p>
+<h5 id="不高兴的津津"><a href="#不高兴的津津" class="headerlink" title="不高兴的津津"></a>不高兴的津津</h5><p>津津上初中了。妈妈认为津津应该更加用功学习，所以津津除了上学之外，还要参加妈妈为她报名的各科复习班。另外每周妈妈还会送她去学习朗诵、舞蹈和钢琴。但是津津如果一天上课超过八个小时就会不高兴，而且上得越久就会越不高兴。假设津津不会因为其它事不高兴，并且她的不高兴不会持续到第二天。请你帮忙检查一下津津下周的日程安排，看看下周她会不会不高兴；如果会的话，哪天最不高兴。</p>
+<p><strong>输入格式</strong></p>
+<p>输入包括 77 行数据，分别表示周一到周日的日程安排。每行包括两个小于 1010 的非负整数，用空格隔开，分别表示津津在学校上课的时间和妈妈安排她上课的时间。</p>
+<p><strong>输出格式</strong></p>
+<p>一个数字。如果不会不高兴则输出 00，如果会则输出最不高兴的是周几（用 1,2,3,4,5,6,71,2,3,4,5,6,7 分别表示周一，周二，周三，周四，周五，周六，周日）。如果有两天或两天以上不高兴的程度相当，则输出时间最靠前的一天。</p>
+<img src="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230716095447576.png" class="" title="image-20230716095447576">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a[<span class="number">6</span>],b[<span class="number">6</span>],i,x,y;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">7</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;a[i],&amp;b[i]);</span><br><span class="line">		<span class="keyword">if</span>((a[i]+b[i])&gt;x&amp;&amp;(a[i]+b[i])&gt;<span class="number">8</span>) &#123;x=a[i]+b[i]; y=i+<span class="number">1</span>;&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（好像不需要数组），仍未通过洛谷测试点(12个差一)，本人查看无bug。</p>
+<h5 id="买铅笔"><a href="#买铅笔" class="headerlink" title="买铅笔"></a>买铅笔</h5><p>P 老师需要去商店买<em>n</em> 支铅笔作为小朋友们参加 NOIP 的礼物。她发现商店一共有 33 种包装的铅笔，不同包装内的铅笔数量有可能不同，价格也有可能不同。为了公平起 见，P 老师决定只买同一种包装的铅笔。</p>
+<p>商店不允许将铅笔的包装拆开，因此 P 老师可能需要购买超过<em>n</em> 支铅笔才够给小朋友们发礼物。</p>
+<p>现在 P 老师想知道，在商店每种包装的数量都足够的情况下，要买够至少<em>n</em> 支铅笔最少需要花费多少钱。</p>
+<p><strong>输入格式</strong></p>
+<p>第一行包含一个正整数<em>n</em>，表示需要的铅笔数量。</p>
+<p>接下来三行，每行用 2 个正整数描述一种包装的铅笔：其中第 1 个整数表示这种包装内铅笔的数量，第 2 个整数表示这种包装的价格。</p>
+<p>保证所有的 7 个数都是不超过 10000 的正整数。</p>
+<p><strong>输出格式</strong></p>
+<p>11 个整数，表示 P 老师最少需要花费的钱。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i,num,a[<span class="number">6</span>],x,money;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;a[<span class="number">0</span>]);</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;<span class="number">4</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;a[i],&amp;a[i+<span class="number">1</span>]);</span><br><span class="line">		num=a[<span class="number">0</span>]/a[i];</span><br><span class="line">		<span class="keyword">if</span>(a[<span class="number">0</span>]%a[i]) num++;</span><br><span class="line">		x=num*a[i+<span class="number">1</span>];</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">1</span>) money=x;</span><br><span class="line">		<span class="keyword">if</span>(x&lt;money) money=x; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,money);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="三角形分类"><a href="#三角形分类" class="headerlink" title="三角形分类"></a>三角形分类</h5><p>给出三条线段 a*,<em>b</em>,*c 的长度，均是不大于 10000 的正整数。打算把这三条线段拼成一个三角形，它可以是什么三角形呢？</p>
+<ul>
+<li>如果三条线段不能组成一个三角形，输出<code>Not triangle</code>；</li>
+<li>如果是直角三角形，输出<code>Right triangle</code>；</li>
+<li>如果是锐角三角形，输出<code>Acute triangle</code>；</li>
+<li>如果是钝角三角形，输出<code>Obtuse triangle</code>；</li>
+<li>如果是等腰三角形，输出<code>Isosceles triangle</code>；</li>
+<li>如果是等边三角形，输出<code>Equilateral triangle</code>。</li>
+</ul>
+<p>如果这个三角形符合以上多个条件，请按以上顺序分别输出，并用换行符隔开。</p>
+<img src="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230716183534384.png" class="" title="image-20230716183534384">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a,b,c,i;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>,&amp;a,&amp;b,&amp;c);</span><br><span class="line">	<span class="keyword">if</span>(a&gt;b)	&#123;i=a; a=b; b=i;&#125;</span><br><span class="line">	<span class="keyword">if</span>(a&gt;c)	&#123;i=a; a=c; c=i;&#125;</span><br><span class="line">	<span class="keyword">if</span>(b&gt;c)	&#123;i=b; b=c; c=i;&#125; <span class="comment">//排序，方便后续判断</span></span><br><span class="line">	<span class="keyword">if</span>(a+b&gt;c)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(a*a+b*b==c*c) &#123;<span class="built_in">printf</span>(<span class="string">&quot;Right triangle\n&quot;</span>);&#125;</span><br><span class="line">		<span class="keyword">if</span>(a*a+b*b&gt;c*c) &#123;<span class="built_in">printf</span>(<span class="string">&quot;Acute triangle\n&quot;</span>);&#125;</span><br><span class="line">		<span class="keyword">if</span>(a*a+b*b&lt;c*c) &#123;<span class="built_in">printf</span>(<span class="string">&quot;Obtuse triangle\n&quot;</span>);&#125;</span><br><span class="line">		<span class="keyword">if</span>(a==b) &#123;<span class="built_in">printf</span>(<span class="string">&quot;Isosceles triangle\n&quot;</span>);&#125;</span><br><span class="line">		<span class="keyword">if</span>(a==b==c) &#123;<span class="built_in">printf</span>(<span class="string">&quot;Equilateral triangle\n&quot;</span>);&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Not triangle\n&quot;</span>);</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>仍未通过洛谷测试点，本人查看无bug。</p>
+<h5 id="小玉家的电费"><a href="#小玉家的电费" class="headerlink" title="小玉家的电费"></a>小玉家的电费</h5><p>夏天到了，各家各户的用电量都增加了许多，相应的电费也交的更多了。小玉家今天收到了一份电费通知单。小玉看到上面写：据闽价电 [2006]27 号规定，月用电量在 150 千瓦时及以下部分按每千瓦时 0.4463 元执行，月用电量在 151∼400 千瓦时的部分按每千瓦时 0.4663 元执行，月用电量在 401 千瓦时及以上部分按每千瓦时 0.56630.5663 元执行;小玉想自己验证一下，电费通知单上应交电费的数目到底是否正确呢。请编写一个程序，已知用电总计，根据电价规定，计算出应交的电费应该是多少。</p>
+<p><strong>输入格式</strong></p>
+<p>输入一个正整数，表示用电总计（单位以千瓦时计），不超过 10000。</p>
+<p><strong>输出格式</strong></p>
+<p>输出一个数，保留到小数点后 11 位（单位以元计，保留到小数点后 11 位）。</p>
+<img src="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230718094839494.png" class="" title="image-20230718094839494">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> x;</span><br><span class="line">	<span class="type">double</span> y;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;x);</span><br><span class="line">	<span class="keyword">if</span>(x&lt;=<span class="number">150</span>) y=x*<span class="number">0.4463</span>;</span><br><span class="line">	<span class="keyword">if</span>(x&gt;<span class="number">150</span>&amp;&amp;x&lt;<span class="number">400</span>) y=(x<span class="number">-150</span>)*<span class="number">0.4663</span>+<span class="number">150</span>*<span class="number">0.4463</span>;</span><br><span class="line">	<span class="keyword">if</span>(x&gt;<span class="number">400</span>) y=(x<span class="number">-400</span>)*<span class="number">0.5663</span>+<span class="number">250</span>*<span class="number">0.4663</span>+<span class="number">150</span>*<span class="number">0.4463</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%.1f&quot;</span>,y);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="小鱼的航程（改进版）"><a href="#小鱼的航程（改进版）" class="headerlink" title="小鱼的航程（改进版）"></a>小鱼的航程（改进版）</h5><p>有一只小鱼，它平日每天游泳 250250 公里，周末休息（实行双休日)，假设从周 <em>x</em> 开始算起，过了 <em>n</em> 天以后，小鱼一共累计游泳了多少公里呢？</p>
+<p><strong>输入格式</strong></p>
+<p>输入两个正整数 x*,*n，表示从周 x 算起，经过 n天。</p>
+<p><strong>输出格式</strong></p>
+<p>输出一个整数，表示小鱼累计游泳了多少公里。</p>
+<img src="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230718100558164.png" class="" title="image-20230718100558164">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> x,n,y=<span class="number">0</span>,i; </span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;x,&amp;n);</span><br><span class="line">	<span class="keyword">for</span>(i=x;i&lt;x+n;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(i%<span class="number">7</span>!=<span class="number">6</span>&amp;&amp;i%<span class="number">7</span>!=<span class="number">0</span>) &#123;y=y+<span class="number">250</span>;&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,y);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="三角函数"><a href="#三角函数" class="headerlink" title="三角函数"></a>三角函数</h5><p>输入一组勾股数 a*,<em>b</em>,<em>c</em>（<em>a</em>\&#x3D;<em>b</em>\&#x3D;<em>c</em>），用分数格式输出其较小锐角的正弦值。（要求约分。）</p>
+<p><strong>输入格式</strong></p>
+<p>一行，包含三个正整数，即勾股数 a*,<em>b</em>,*c（无大小顺序）。</p>
+<p><strong>输出格式</strong></p>
+<p>一行，包含一个分数，即较小锐角的正弦值</p>
+<img src="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230718180733934.png" class="" title="image-20230718180733934">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a,b,c,i; </span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>,&amp;a,&amp;b,&amp;c);</span><br><span class="line">	<span class="keyword">if</span>(a&gt;b)</span><br><span class="line">	&#123;</span><br><span class="line">		i=a; a=b; b=i;  <span class="comment">//a和b互换	</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(a&gt;c)</span><br><span class="line">	&#123;</span><br><span class="line">		i=a; a=c; c=i; <span class="comment">//a和c互换	</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(b&gt;c)</span><br><span class="line">	&#123;</span><br><span class="line">		i=b; b=c; c=i; <span class="comment">//b和c互换</span></span><br><span class="line">	&#125; </span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">2</span>;i&lt;a+b+c;i++) <span class="comment">//用于约分</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(a%i==<span class="number">0</span>&amp;&amp;c%i==<span class="number">0</span>) &#123;a=a/i;c=c/i;i--;&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d/%d&quot;</span>,a,c);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实际的输出只是最短边&#x2F;斜边，for循环用于暴力约分。假如4&#x2F;8，第一次可约为2&#x2F;4，然后i–,使数据再次尝试约2，直到无法约2位置，然后i++,尝试约3，以此类推。</p>
+<h5 id="陶陶摘苹果"><a href="#陶陶摘苹果" class="headerlink" title="陶陶摘苹果"></a>陶陶摘苹果</h5><p>陶陶家的院子里有一棵苹果树，每到秋天树上就会结出 10 个苹果。苹果成熟的时候，陶陶就会跑去摘苹果。陶陶有个 30 厘米高的板凳，当她不能直接用手摘到苹果的时候，就会踩到板凳上再试试。</p>
+<p>现在已知 10 个苹果到地面的高度，以及陶陶把手伸直的时候能够达到的最大高度，请帮陶陶算一下她能够摘到的苹果的数目。假设她碰到苹果，苹果就会掉下来。</p>
+<p><strong>输入格式</strong></p>
+<p>输入包括两行数据。第一行包含 1010 个 100 到 200 之间（包括 100 和 200 ）的整数（以厘米为单位）分别表示 10 个苹果到地面的高度，两个相邻的整数之间用一个空格隔开。第二行只包括一个 100 到 120 之间（包含 100 和 120 ）的整数（以厘米为单位），表示陶陶把手伸直的时候能够达到的最大高度。</p>
+<p><strong>输出格式</strong></p>
+<p>输出包括一行，这一行只包含一个整数，表示陶陶能够摘到的苹果的数目。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a[<span class="number">9</span>],b,num,i;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d %d %d %d %d %d %d %d&quot;</span>,&amp;a[<span class="number">0</span>],&amp;a[<span class="number">1</span>],&amp;a[<span class="number">2</span>],&amp;a[<span class="number">3</span>],&amp;a[<span class="number">4</span>],&amp;a[<span class="number">5</span>],&amp;a[<span class="number">6</span>],&amp;a[<span class="number">7</span>],&amp;a[<span class="number">8</span>],&amp;a[<span class="number">9</span>]);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;b);</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>((b+<span class="number">30</span>)/a[i]&gt;=<span class="number">1</span>) num++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,num);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="ABC"><a href="#ABC" class="headerlink" title="ABC"></a>ABC</h5><p>三个整数分别为 A*,<em>B</em>,*C。这三个数字不会按照这样的顺序给你，但它们始终满足条件：A&lt;B&lt;C。为了看起来更加简洁明了，我们希望你可以按照给定的顺序重新排列它们。</p>
+<p><strong>【输入格式】</strong></p>
+<p>第一行包含三个正整数 A*,<em>B</em>,*C，不一定是按这个顺序。这三个数字都小于或等于 100100。第二行包含三个大写字母 A、B 和 C（它们之间<strong>没有</strong>空格）表示所需的顺序。</p>
+<p><strong>【输出格式】</strong></p>
+<p>在一行中输出 A，B和 C，用一个 （空格）隔开。</p>
+<img src="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230716231910507.png" class="" title="image-20230716231910507">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//冒泡排序，从小到大</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">BubbleSort</span><span class="params">(<span class="type">int</span> nums[], <span class="type">int</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> q=<span class="number">0</span>;q&lt;n;q++)</span><br><span class="line">	&#123;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n<span class="number">-1</span>;i++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (nums[i]&gt;nums[i+<span class="number">1</span>])  &#123;<span class="type">int</span> x=nums[i];nums[i]=nums[i+<span class="number">1</span>];nums[i+<span class="number">1</span>]=x;&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> nums[<span class="number">3</span>];</span><br><span class="line">	<span class="type">char</span> str[<span class="number">4</span>];</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>,&amp;nums[<span class="number">0</span>],&amp;nums[<span class="number">1</span>],&amp;nums[<span class="number">2</span>]);</span><br><span class="line">	BubbleSort(nums,<span class="number">3</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,str);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; str[i] != <span class="number">0</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">switch</span> (str[i])</span><br><span class="line">		&#123;</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&#x27;A&#x27;</span>:</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, nums[<span class="number">0</span>]);</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&#x27;B&#x27;</span>:</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, nums[<span class="number">1</span>]);</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&#x27;C&#x27;</span>:</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, nums[<span class="number">2</span>]);</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="ISBN-号码"><a href="#ISBN-号码" class="headerlink" title="ISBN 号码"></a>ISBN 号码</h5><p>每一本正式出版的图书都有一个 ISBN 号码与之对应，ISBN 码包括 9 位数字、1 位识别码和 3 位分隔符，其规定格式如 <code>x-xxx-xxxxx-x</code>，其中符号 <code>-</code> 就是分隔符（键盘上的减号），最后一位是识别码，例如 <code>0-670-82162-4</code>就是一个标准的 ISBN 码。ISBN 码的首位数字表示书籍的出版语言，例如 0 代表英语；第一个分隔符 <code>-</code> 之后的三位数字代表出版社，例如 670 代表维京出版社；第二个分隔符后的五位数字代表该书在该出版社的编号；最后一位为识别码。</p>
+<p>识别码的计算方法如下：</p>
+<p>首位数字乘以 1 加上次位数字乘以 2 ……以此类推，用所得的结果 mod11，所得的余数即为识别码，如果余数为 10，则识别码为大写字母 X。例如 ISBN 号码 <code>0-670-82162-4</code> 中的识别码 44 是这样得到的：对 <code>067082162</code> 这 99 个数字，从左至右，分别乘以 1,2,…,9 再求和，即 0×1+6×2+……+2×9&#x3D;1580，然后取 158 mod 11的结果 4 作为识别码。</p>
+<p>你的任务是编写程序判断输入的 ISBN 号码中识别码是否正确，如果正确，则仅输出 <code>Right</code>；如果错误，则输出你认为是正确的 ISBN 号码。</p>
+<p><strong>输入格式</strong></p>
+<p>一个字符序列，表示一本书的 ISBN 号码（保证输入符合 ISBN 号码的格式要求）。</p>
+<p><strong>输出格式</strong></p>
+<p>一行，假如输入的 ISBN 号码的识别码正确，那么输出 <code>Right</code>，否则，按照规定的格式，输出正确的 ISBN 号码（包括分隔符 <code>-</code>）。</p>
+<img src="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230718085518325.png" class="" title="image-20230718085518325">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> b,c,d,x,y,a[<span class="number">9</span>],i,k=<span class="number">0</span>,num;</span><br><span class="line">	<span class="type">char</span> p;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d-%d-%d-%s&quot;</span>,&amp;b,&amp;c,&amp;d,&amp;p);</span><br><span class="line">	a[<span class="number">0</span>]=b;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;<span class="number">4</span>;i++)	<span class="comment">//数据是3位，利用循环逐位取数，放入数组。比如123，分别将1,2,3放入a[1]，a[2]，a[3] </span></span><br><span class="line">	&#123;</span><br><span class="line">		y=<span class="built_in">pow</span>(<span class="number">10</span>,<span class="number">3</span>-i);</span><br><span class="line">		<span class="keyword">if</span>(y!=<span class="number">0</span>) x=c/y; </span><br><span class="line">		c=c%y;</span><br><span class="line">		a[i]=x;         </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">4</span>;i&lt;<span class="number">9</span>;i++)	<span class="comment">//同上，这次数据是5位，从a[4]开始往后取数放 </span></span><br><span class="line">	&#123; </span><br><span class="line">		y=<span class="built_in">pow</span>(<span class="number">10</span>,<span class="number">8</span>-i);</span><br><span class="line">		<span class="keyword">if</span>(y!=<span class="number">0</span>) x=d/y; </span><br><span class="line">		d=d%y;</span><br><span class="line">		a[i]=x;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">9</span>;i++)	<span class="comment">//ISBN计算公式，先求和 </span></span><br><span class="line">	&#123;</span><br><span class="line">		k=k+a[i]*(i+<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	num=k%<span class="number">11</span>;          <span class="comment">//ISBN计算公式，再取余 </span></span><br><span class="line">	<span class="keyword">if</span>(num==<span class="number">10</span>&amp;&amp;p==<span class="number">88</span>)  <span class="comment">//条件判断与输出 </span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Right&quot;</span>); <span class="keyword">goto</span> Break;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(num==<span class="number">10</span>&amp;&amp;p!=<span class="number">88</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d-%d%d%d-%d%d%d%d%d-X&quot;</span>,a[<span class="number">0</span>],a[<span class="number">1</span>],a[<span class="number">2</span>],a[<span class="number">3</span>],a[<span class="number">4</span>],a[<span class="number">5</span>],a[<span class="number">6</span>],a[<span class="number">7</span>],a[<span class="number">8</span>]); <span class="keyword">goto</span> Break;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>((num+<span class="number">48</span>)==p&amp;&amp;p!=<span class="number">88</span>)	&#123;<span class="built_in">printf</span>(<span class="string">&quot;Right&quot;</span>);<span class="keyword">goto</span> Break;&#125;	</span><br><span class="line">	<span class="keyword">if</span>((num+<span class="number">48</span>)!=p)&#123;<span class="built_in">printf</span>(<span class="string">&quot;%d-%d%d%d-%d%d%d%d%d-%d\n&quot;</span>,a[<span class="number">0</span>],a[<span class="number">1</span>],a[<span class="number">2</span>],a[<span class="number">3</span>],a[<span class="number">4</span>],a[<span class="number">5</span>],a[<span class="number">6</span>],a[<span class="number">7</span>],a[<span class="number">8</span>],num);<span class="keyword">goto</span> Break;&#125;</span><br><span class="line"></span><br><span class="line">Break:</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>遇到一个很烦的bug,第二次提取的五位数，在DEV中，输出</p>
+<img src="/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/image-20230718085116792.png" class="" title="image-20230718085116792">
+
+<p>理论上，应该输出为0-670-82162-4。单独提取部分函数出来，进行测试，测试结果正常。怀疑定义时int长度不够，遂定为long，无果。最后换了一下编译器，在VC中结果正常。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C%E8%AF%AD%E8%A8%80/" rel="tag"># C语言</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/12/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88/" rel="prev" title="C语言指针">
+                  <i class="fa fa-chevron-left"></i> C语言指针
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/07/15/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/" rel="next" title="循环结构（未完）">
+                  循环结构（未完） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">星戏溪行</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">55k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:21</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("2023/07/01 11:45:43");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "Shelter已建立 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-cn","enable":true,"serverURL":"waline-ecru-theta.vercel.app","cssUrl":"https://unpkg.com/@waline/client@v2/dist/waline.css","commentCount":true,"pageview":false,"locale":{"placeholder":"初相遇，若重逢。右边的猫猫正盯着你，它对君的赠言充满希冀。（或许你需要一个梯子登高阁，拂笔于此）"},"avatar":"mp","meta":["nick","mail","link"],"pageSize":10,"visitor":false,"comment_count":true,"requiredFields":[],"libUrl":"//unpkg.com/@waline/client@v2/dist/waline.js","el":"#waline","comment":true,"path":"/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/"}</script>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css">
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => 
+    Waline.init(Object.assign({}, CONFIG.waline,{ el: document.querySelector(CONFIG.waline.el) }))
+  );
+});
+</script>
+
+  
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas>
+    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script src="/js/cursor/explosion.min.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

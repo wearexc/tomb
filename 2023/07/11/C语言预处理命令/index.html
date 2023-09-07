@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="预处理命令简谈使用库函数之前，应该用#include 引入对应的头文件。 这种以#号开头的命令称为预处理命令。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c语言预处理命令">
+<meta property="og:url" content="http://example.com/2023/07/11/C%E8%AF%AD%E8%A8%80%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="来自星星的弦乐">
+<meta property="og:description" content="预处理命令简谈使用库函数之前，应该用#include 引入对应的头文件。 这种以#号开头的命令称为预处理命令。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/07/11/C%E8%AF%AD%E8%A8%80%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4/image-20230711171446610.png">
+<meta property="article:published_time" content="2023-07-11T08:44:23.000Z">
+<meta property="article:modified_time" content="2023-07-19T13:33:03.740Z">
+<meta property="article:author" content="星戏溪行">
+<meta property="article:tag" content="C语言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/07/11/C%E8%AF%AD%E8%A8%80%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4/image-20230711171446610.png">
+
+
+<link rel="canonical" href="http://example.com/2023/07/11/C%E8%AF%AD%E8%A8%80%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/07/11/C%E8%AF%AD%E8%A8%80%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4/","path":"2023/07/11/C语言预处理命令/","title":"c语言预处理命令"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>c语言预处理命令 | 来自星星的弦乐</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?2adf217e938bc0432386afe319c0e750"></script>
+
+
+
+
+
+
+<link rel="dns-prefetch" href="waline-ecru-theta.vercel.app">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">来自星星的弦乐</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">| ❀ ❀ ❀ 踏梦携猫荡蓝海 ❀ ❀ ❀| | ☆ ☆ ☆ 引虹径行启银光 ☆ ☆ ☆|</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-茶馆"><a href="/comments/" rel="section"><i class="fas fa-comments fa-fw"></i>茶馆</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4%E7%AE%80%E8%B0%88"><span class="nav-number">1.</span> <span class="nav-text">预处理命令简谈</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#include-%E7%9A%84%E7%94%A8%E6%B3%95%EF%BC%88%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%91%BD%E4%BB%A4%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">#include 的用法（文件包含命令）</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%8F%E5%AE%9A%E4%B9%89%EF%BC%88-define-%E7%9A%84%E7%94%A8%E6%B3%95%EF%BC%89"><span class="nav-number"></span> <span class="nav-text">宏定义（#define 的用法）</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AF%B9-define-%E7%94%A8%E6%B3%95%E7%9A%84%E5%87%A0%E7%82%B9%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">对 #define 用法的几点说明</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E5%AE%8F%E5%AE%9A%E4%B9%89"><span class="nav-number"></span> <span class="nav-text">带参数的宏定义</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AF%B9%E5%B8%A6%E5%8F%82%E5%AE%8F%E5%AE%9A%E4%B9%89%E7%9A%84%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">对带参宏定义的说明</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AE%8F%E5%8F%82%E6%95%B0%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%96%E5%92%8C%E5%AE%8F%E5%8F%82%E6%95%B0%E7%9A%84%E8%BF%9E%E6%8E%A5"><span class="nav-number">2.</span> <span class="nav-text">宏参数的字符串化和宏参数的连接</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#C-%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%87%A0%E4%B8%AA%E9%A2%84%E5%AE%9A%E4%B9%89%E5%AE%8F"><span class="nav-number">3.</span> <span class="nav-text">C 语言中几个预定义宏</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91"><span class="nav-number"></span> <span class="nav-text">条件编译</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#if-%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">#if 的用法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ifdef-%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">#ifdef 的用法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ifndef-%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">#ifndef 的用法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%B8%89%E8%80%85%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">4.</span> <span class="nav-text">三者之间的区别</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#error-%E5%91%BD%E4%BB%A4%EF%BC%8C%E9%98%BB%E6%AD%A2%E7%A8%8B%E5%BA%8F%E7%BC%96%E8%AF%91"><span class="nav-number"></span> <span class="nav-text">#error 命令，阻止程序编译</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#C-%E8%AF%AD%E8%A8%80%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93"><span class="nav-number"></span> <span class="nav-text">C 语言预处理命令总结</span></a></div>
+        </div>
+        <!--/noindex-->
+			<link rel="stylesheet" href="/dist/APlayer.min.css">  
+			<div id="aplayer"></div>
+			<script type="text/javascript" src="/dist/APlayer.min.js"></script>
+			<script type="text/javascript" src="/dist/music.js"></script>
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="星戏溪行"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">星戏溪行</p>
+  <div class="site-description" itemprop="description">我和挚友的Shelter</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/11/C%E8%AF%AD%E8%A8%80%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="星戏溪行">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="来自星星的弦乐">
+      <meta itemprop="description" content="我和挚友的Shelter">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="c语言预处理命令 | 来自星星的弦乐">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          c语言预处理命令
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-11 16:44:23" itemprop="dateCreated datePublished" datetime="2023-07-11T16:44:23+08:00">2023-07-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-07-19 21:33:03" itemprop="dateModified" datetime="2023-07-19T21:33:03+08:00">2023-07-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/" itemprop="url" rel="index"><span itemprop="name">C语言学习之路</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2023/07/11/C%E8%AF%AD%E8%A8%80%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2023/07/11/C%E8%AF%AD%E8%A8%80%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h6 id="预处理命令简谈"><a href="#预处理命令简谈" class="headerlink" title="预处理命令简谈"></a>预处理命令简谈</h6><p>使用库函数之前，应该用#include 引入对应的头文件。 这种以#号开<br>头的命令称为预处理命令。  <span id="more"></span></p>
+<p>预处理是 C 语言的一个重要功能，由预处理程序完成。当对一个源文件进行编译时，系统将自动调用预处理程序对源程序中的预处理部分作处理，处理完毕自动进入对源程序的编译。</p>
+<p>编译器会将预处理的结果保存到和源文件同名的.i 文件中，例如 main.c 的预处理结果在 main.i 中。和.c 一样， .i也是文本文件，可以用编辑器打开直接查看内容。</p>
+<p>C 语言提供了多种预处理功能，如宏定义、文件包含、条件编译等，合理地使用它们会使编写的程序便于阅读、修改、移植和调试，也有利于模块化程序设计。  </p>
+<h6 id="include-的用法（文件包含命令）"><a href="#include-的用法（文件包含命令）" class="headerlink" title="#include 的用法（文件包含命令）"></a>#include 的用法（文件包含命令）</h6><p>#include 叫做文件包含命令，用来引入对应的头文件（.h 文件）  </p>
+<p>用法如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdHeader.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;myHeader.h&quot;</span>  </span></span><br></pre></td></tr></table></figure>
+
+<p>使用尖括号&lt; &gt;和双引号” “的区别在于头文件的搜索路径不同：</p>
+<p>​	使用尖括号&lt; &gt;，编译器会到系统路径下查找头文件；</p>
+<p>​	而使用双引号” “，编译器首先在当前目录下查找头文件，如果没有找到，再到系统路径下查找。</p>
+<p>stdio.h 和 stdlib.h 都是标准头文件，它们存放于系统路径下，所以使用尖括号和双引号都能够成功引入；而我们自己编写的头文件，一般存放于当前项目的路径下，所以不能使用尖括号，只能使用双引号。  </p>
+<p>例如：</p>
+<img src="/2023/07/11/C%E8%AF%AD%E8%A8%80%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4/image-20230711171446610.png" class="" title="image-20230711171446610">
+
+<p>my.c 所包含的代码：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//计算从m加到n的和</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="type">int</span> i, sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = m; i &lt;= n; i++) &#123;</span><br><span class="line">        sum += i;</span><br><span class="line">&#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>my.h 所包含的代码：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//声明函数</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n)</span>;  </span><br></pre></td></tr></table></figure>
+
+<p>main.c 所包含的代码：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;my.h&quot;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, sum(<span class="number">1</span>, <span class="number">100</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>另外，不管是标准头文件，还是自定义头文件，都只能包含变量和函数的声明，不能包含定义，否则在多次引入时会引起重复定义错误。  </p>
+<h5 id="宏定义（-define-的用法）"><a href="#宏定义（-define-的用法）" class="headerlink" title="宏定义（#define 的用法）"></a>宏定义（#define 的用法）</h5><p>#define 叫做宏定义命令，它也是 C 语言预处理命令的一种。所谓宏定义，就是用一个标识符来表示一个字符串，如果在后面的代码中出现了该标识符，那么就全部替换成指定的字符串。  </p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> N 100</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> sum = <span class="number">20</span> + N;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, sum);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>运行结果：<br>120  </p>
+<p>注意第 6 行代码 int sum &#x3D; 20 + N， N 被 100 代替了。</p>
+<p>#define N 100 就是宏定义， N 为宏名， 100 是宏的内容（宏所表示的字符串）。在预处理阶段，对程序中所有出现  的“宏名”，预处理器都会用宏定义中的字符串去代换，这称为“宏替换”或“宏展开”。</p>
+<p>宏定义是由源程序中的宏定义命令#define 完成的，宏替换是由预处理程序完成的。</p>
+<p>宏定义的一般形式为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> 宏名 字符串</span></span><br></pre></td></tr></table></figure>
+
+<p>#表示这是一条预处理命令，所有的预处理命令都以 # 开头。 宏名是标识符的一种，命名规则和变量相同。 字符串可以是数字、表达式、 if 语句、函数等。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这里所说的字符串是一般意义上的字符序列，不要和 C 语言中的字符串等同，它不需要双引号。</span><br></pre></td></tr></table></figure>
+
+<p>程序中反复使用的表达式就可以使用宏定义，例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> M (n*n+3*n)</span></span><br></pre></td></tr></table></figure>
+
+<p>它的作用是指定标识符 M 来表示(y<em>y+3</em>y)这个表达式。在编写代码时，所有出现 (y<em>y+3</em>y) 的地方都可以用 M 来表示，而对源程序编译时，将先由预处理程序进行宏代替，即用 (y<em>y+3</em>y) 去替换所有的宏名 M，然后再进行编译。  </p>
+<h6 id="对-define-用法的几点说明"><a href="#对-define-用法的几点说明" class="headerlink" title="对 #define 用法的几点说明"></a>对 #define 用法的几点说明</h6><p>(1) 宏定义是用宏名来表示一个字符串，在宏展开时又以该字符串取代宏名，这只是一种简单粗暴的替换。字符串中<br>可以含任何字符，它可以是常数、表达式、 if 语句、函数等，预处理程序对它不作任何检查，如有错误，只能在编<br>译已被宏展开后的源程序时发现。<br>(2) 宏定义不是说明或语句，在行末不必加分号，如加上分号则连分号也一起替换。<br>(3) 宏定义必须写在函数之外，其作用域为宏定义命令起到源程序结束。如要终止其作用域可使用#undef 命令。例如：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PI 3.14159</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">// Code</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">undef</span> PI</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">// Code</span></span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>表示 PI 只在 main() 函数中有效，在 func() 中无效。  </p>
+<p>(4) 代码中的宏名如果被引号包围，那么预处理程序不对其作宏代替，例如 :</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> OK 100</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;OK\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>运行结果：<br>OK<br>该例中定义宏名 OK 表示 100，但在 printf 语句中 OK 被引号括起来，因此不作宏替换，而作为字符串处理。  </p>
+<p>(5) 宏定义允许嵌套，在宏定义的字符串中可以使用已经定义的宏名，在宏展开时由预处理程序层层代换。例如：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PI 3.1415926</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> S PI*y*y <span class="comment">/* PI 是已定义的宏名*/</span>  </span></span><br></pre></td></tr></table></figure>
+
+<p>对语句：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%f&quot;</span>, S);  </span><br></pre></td></tr></table></figure>
+
+<p>在宏代换后变为：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%f&quot;</span>, <span class="number">3.1415926</span>*y*y);  </span><br></pre></td></tr></table></figure>
+
+<p>(6) 习惯上宏名用大写字母表示，以便于与变量区别。但也允许用小写字母。<br>(7) 可用宏定义表示数据类型，使书写方便。例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> UINT unsigned int</span></span><br></pre></td></tr></table></figure>
+
+<p>在程序中可用 UINT 作变量说明：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UINT a, b;</span><br></pre></td></tr></table></figure>
+
+<p>应注意用宏定义表示数据类型和用 typedef 定义数据说明符的区别。 宏定义只是简单的字符串替换，由预处理器来处理；而 typedef 是在编译阶段由编译器处理的，它并不是简单的字符串替换，而给原有的数据类型起一个新的名字，将它作为一种新的数据类型。<br>请看下面的例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PIN1 int *</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> *PIN2; <span class="comment">//也可以写作 typedef int (*PIN2);</span></span><br></pre></td></tr></table></figure>
+
+<p>从形式上看这两者相似， 但在实际使用中却不相同。<br>下面用 PIN1， PIN2 说明变量时就可以看出它们的区别：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PIN1 a, b;</span><br></pre></td></tr></table></figure>
+
+<p>在宏代换后变成：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> * a, b;</span><br></pre></td></tr></table></figure>
+
+<p>表示 a 是指向整型的指针变量，而 b 是整型变量。然而：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PIN2 a,b;</span><br></pre></td></tr></table></figure>
+
+<p>表示 a、 b 都是指向整型的指针变量。因为 PIN2 是一个新的、完整的数据类型。 由这个例子可见，宏定义虽然也可表示数据类型， 但毕竟只是简单的字符串替换。在使用时要格外小心，以避出错。  </p>
+<h5 id="带参数的宏定义"><a href="#带参数的宏定义" class="headerlink" title="带参数的宏定义"></a>带参数的宏定义</h5><p>C 语言允许宏带有参数。在宏定义中的参数称为“形式参数”，在宏调用中的参数称为“实际参数”，这点和函数有些类似。<br>对带参数的宏，在展开过程中不仅要进行字符串替换，还要用实参去替换形参。<br>带参宏定义的一般形式为：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> 宏名(形参列表) 字符串  </span></span><br></pre></td></tr></table></figure>
+
+<p>在字符串中可以含有各个形参。<br>带参宏调用的一般形式为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">宏名(实参列表);  </span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> M(y) y*y+3*y <span class="comment">//宏定义</span></span></span><br><span class="line"><span class="comment">// <span class="doctag">TODO:</span></span></span><br><span class="line">k=M(<span class="number">5</span>); <span class="comment">//宏调用</span></span><br></pre></td></tr></table></figure>
+
+<p>在宏展开时，用实参 5 去代替形参 y，经预处理程序展开后的语句为 </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">k=<span class="number">5</span>*<span class="number">5</span>+<span class="number">3</span>*<span class="number">5</span>。 </span><br></pre></td></tr></table></figure>
+
+<h6 id="对带参宏定义的说明"><a href="#对带参宏定义的说明" class="headerlink" title="对带参宏定义的说明"></a>对带参宏定义的说明</h6><p>(1) 带参宏定义中，形参之间可以出现空格，但是宏名和形参列表之间不能有空格出现。例如把：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX(a,b) (a&gt;b)?a:b</span></span><br></pre></td></tr></table></figure>
+
+<p>写为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX (a,b) (a&gt;b)?a:b</span></span><br></pre></td></tr></table></figure>
+
+<p>将被认为是无参宏定义，宏名 MAX 代表字符串(a,b) (a&gt;b)?a:b。宏展开时，宏调用语句：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">max = MAX(x,y);  </span><br></pre></td></tr></table></figure>
+
+<p>将变为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">max = (a,b)(a&gt;b)?a:b(x,y);</span><br></pre></td></tr></table></figure>
+
+<p>这显然是错误的。  </p>
+<p>(2) 在带参宏定义中，不会为形式参数分配内存，因此不必指明数据类型。而在宏调用中，实参包含了具体的数据，要用它们去替换形参，因此实参必须要指明数据类型。</p>
+<p>这一点和函数是不同的：在函数中，形参和实参是两个不同的变量，都有自己的作用域，调用时要把实参的值传递给形参；而在带参数的宏中，只是符号的替换，不存在值传递的问题。  </p>
+<p>带参宏定义和函数的区别 ：</p>
+<p>带参数的宏和函数很相似，但有本质上的区别：宏展开仅仅是字符串的替换，不会对表达式进行计算；宏在编译之前就被处理掉了，它没有机会参与编译，也不会占用内存。而函数是一段可以重复使用的代码，会被编译，会给它分配内存，每次调用函数，就是执行这块内存中的代码。  </p>
+<h6 id="宏参数的字符串化和宏参数的连接"><a href="#宏参数的字符串化和宏参数的连接" class="headerlink" title="宏参数的字符串化和宏参数的连接"></a>宏参数的字符串化和宏参数的连接</h6><p>在宏定义中，有时还会用到#和##两个符号，它们能够对宏参数进行操作。<br><strong># 的用法</strong><br>#用来将宏参数转换为字符串，也就是在宏参数的开头和末尾添加引号。例如有如下宏定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> STR(s) #s</span></span><br></pre></td></tr></table></figure>
+
+<p>那么：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, STR(c.biancheng.net));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, STR(<span class="string">&quot;c.biancheng.net&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>分别被展开为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, <span class="string">&quot;c.biancheng.net&quot;</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, <span class="string">&quot;\&quot;c.biancheng.net\&quot;&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>可以发现，即使给宏参数“传递”的数据中包含引号，使用#仍然会在两头添加新的引号，而原来的引号会被转义。  </p>
+<p><strong>##的用法</strong><br>##称为连接符，用来将宏参数或其他的串连接起来。例如有如下的宏定义：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> CON1(a, b) a##e##b</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CON2(a, b) a##b##00</span></span><br></pre></td></tr></table></figure>
+
+<p>那么：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>, CON1(<span class="number">8.5</span>, <span class="number">2</span>));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, CON2(<span class="number">12</span>, <span class="number">34</span>));</span><br></pre></td></tr></table></figure>
+
+<p>将被展开为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>, <span class="number">8.5e2</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="number">123400</span>);  </span><br></pre></td></tr></table></figure>
+
+<h6 id="C-语言中几个预定义宏"><a href="#C-语言中几个预定义宏" class="headerlink" title="C 语言中几个预定义宏"></a>C 语言中几个预定义宏</h6><p>顾名思义，预定义宏就是已经预先定义好的宏，我们可以直接使用，无需再重新定义。<br>ANSI C 规定了以下几个预定义宏，它们在各个编译器下都可以使用：<br>     __LINE__：表示当前源代码的行号；<br>    __FILE__：表示当前源文件的名称；<br>    __DATE__：表示当前的编译日期；<br>    __TIME__：表示当前的编译时间；<br>    __STDC__：当要求程序严格遵循 ANSI C 标准时该标识被赋值为 1；<br>    __cplusplus：当编写 C++程序时该标识符被定义  </p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Date : %s\n&quot;</span>, __DATE__);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Time : %s\n&quot;</span>, __TIME__);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;File : %s\n&quot;</span>, __FILE__);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Line : %d\n&quot;</span>, __LINE__);</span><br><span class="line">    system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span> ;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<p>Date : Jul 12 2023<br>Time : 18:57:36<br>File : C:\Users\90872\Desktop\未命名1.cpp<br>Line : 7</p>
+<h5 id="条件编译"><a href="#条件编译" class="headerlink" title="条件编译"></a>条件编译</h5><p>简单来说，根据不同情况编译不同代码、产生不同目标文件的机制，称为条件编译。 条件编译是预处理程序的功能，不是编译器的功能。  </p>
+<h6 id="if-的用法"><a href="#if-的用法" class="headerlink" title="#if 的用法"></a>#if 的用法</h6><p>#if 用法的一般格式为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">if</span> 整型常量表达式 1</span></span><br><span class="line">程序段 <span class="number">1</span></span><br><span class="line"><span class="meta">#<span class="keyword">elif</span> 整型常量表达式 2</span></span><br><span class="line">程序段 <span class="number">2</span></span><br><span class="line"><span class="meta">#<span class="keyword">elif</span> 整型常量表达式 3</span></span><br><span class="line">程序段 <span class="number">3</span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">程序段 <span class="number">4</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>它的意思是：如常“表达式 1”的值为真（非 0），就对“程序段 1”进行编译，否则就计算“表达式 2”，结果为真的话就对“程序段 2”进行编译，为假的话就继续往下匹配，直到遇到值为真的表达式，或者遇到 #else。这一点和 if else 非常类似。</p>
+<p>需要注意的是， #if 命令要求判断条件为“整型常量表达式”，也就是说，表达式中不能包含变量，而且结果必须是整数；而 if 后面的表达式没有限制，只要符合语法就行。这是 #if 和 if 的一个重要区别。  </p>
+<p>和 #else 也可以省略，如下所示 ：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> _WIN32</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;This is Windows!\n&quot;</span>);</span><br><span class="line">    <span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Unknown platform!\n&quot;</span>);</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> __linux__</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;This is Linux!\n&quot;</span>);</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<h6 id="ifdef-的用法"><a href="#ifdef-的用法" class="headerlink" title="#ifdef 的用法"></a>#ifdef 的用法</h6><p>#ifdef 用法的一般格式为：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> 宏名</span></span><br><span class="line">    程序段 <span class="number">1</span>  </span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    程序段 <span class="number">2</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>它的意思是，如果当前的宏已被定义过，则对“程序段 1”进行编译，否则对“程序段 2”进行编译。<br>也可以省略 #else：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> 宏名</span></span><br><span class="line">    程序段</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span>  </span></span><br></pre></td></tr></table></figure>
+
+<h6 id="ifndef-的用法"><a href="#ifndef-的用法" class="headerlink" title="#ifndef 的用法"></a>#ifndef 的用法</h6><p>#ifndef 用法的一般格式为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> 宏名</span></span><br><span class="line">	程序段 <span class="number">1</span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">	程序段 <span class="number">2</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span>  </span></span><br></pre></td></tr></table></figure>
+
+<p>与 #ifdef 相比，仅仅是将 #ifdef 改为了 #ifndef。它的意思是，如果当前的宏未被定义，则对“程序段 1”进行编译，否则对“程序段 2”进行编译，这与 #ifdef 的功能正好相反  </p>
+<h6 id="三者之间的区别"><a href="#三者之间的区别" class="headerlink" title="三者之间的区别"></a>三者之间的区别</h6><p>最后需要注意的是， #if 后面跟的是“整型常量表达式”，而 #ifdef 和 #ifndef 后面跟的只能是一个宏名，不能是其他的。  </p>
+<p>#ifdef 可以认为是 #if defined 的缩写  </p>
+<h5 id="error-命令，阻止程序编译"><a href="#error-命令，阻止程序编译" class="headerlink" title="#error 命令，阻止程序编译"></a>#error 命令，阻止程序编译</h5><p>#error 指令用于在编译期间产生错误信息，并阻止程序的编译，其形式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">error</span> error_message</span></span><br></pre></td></tr></table></figure>
+
+<p>例如，我们的程序针对 Linux 编写，不保证兼容 Windows，那么可以这样做：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> WIN32</span></span><br><span class="line"><span class="meta">#<span class="keyword">error</span> This programme cannot compile at Windows Platform</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>WIN32 是 Windows 下的预定义宏。当用户在 Windows 下编译该程序时，由于定义了 WIN32 这个宏，所以<br>会执行 #error 命令，提示用户发生了编译错误，错误信息是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">This programme cannot compile at Windows Platform</span><br></pre></td></tr></table></figure>
+
+<p>这和发生语法错误的效果是一样的，程序编译失败。</p>
+<h5 id="C-语言预处理命令总结"><a href="#C-语言预处理命令总结" class="headerlink" title="C 语言预处理命令总结"></a>C 语言预处理命令总结</h5><p>预处理指令是以#号开头的代码行， # 号必须是该行除了任何空白字符外的第一个字符。 # 后是指令关键字，在关键字和 # 号之间允许存在任意个数的空白字符，整行语句构成了一条预处理指令，该指令将在编译器进行编译之前对源代码做某些转换。  </p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>#</td>
+<td>空指令，无任何效果</td>
+</tr>
+<tr>
+<td>#include</td>
+<td>包含一个源代码文件</td>
+</tr>
+<tr>
+<td>#define</td>
+<td>定义宏</td>
+</tr>
+<tr>
+<td>#undef</td>
+<td>取消已定义的宏</td>
+</tr>
+<tr>
+<td>#if</td>
+<td>如果给定条件为真，则编译下面代码</td>
+</tr>
+<tr>
+<td>#ifdef</td>
+<td>如果宏已经定义，则编译下面代码</td>
+</tr>
+<tr>
+<td>#ifndef</td>
+<td>如果宏没有定义，则编译下面代码</td>
+</tr>
+<tr>
+<td>#elif</td>
+<td>如果前面的#if 给定条件不为真，当前条件为真，则编译下面代码</td>
+</tr>
+<tr>
+<td>#endif</td>
+<td>结束一个#if……#else 条件编译块</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C%E8%AF%AD%E8%A8%80/" rel="tag"># C语言</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/10/%E7%AB%A5%E5%B9%B4%E7%9A%84%E6%AD%A3%E5%8D%88%E5%B0%8F%E8%B7%AF/" rel="prev" title="童年的正午小路">
+                  <i class="fa fa-chevron-left"></i> 童年的正午小路
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/07/12/%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84/" rel="next" title="顺序结构">
+                  顺序结构 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">星戏溪行</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">55k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:21</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("2023/07/01 11:45:43");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "Shelter已建立 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-cn","enable":true,"serverURL":"waline-ecru-theta.vercel.app","cssUrl":"https://unpkg.com/@waline/client@v2/dist/waline.css","commentCount":true,"pageview":false,"locale":{"placeholder":"初相遇，若重逢。右边的猫猫正盯着你，它对君的赠言充满希冀。（或许你需要一个梯子登高阁，拂笔于此）"},"avatar":"mp","meta":["nick","mail","link"],"pageSize":10,"visitor":false,"comment_count":true,"requiredFields":[],"libUrl":"//unpkg.com/@waline/client@v2/dist/waline.js","el":"#waline","comment":true,"path":"/2023/07/11/C%E8%AF%AD%E8%A8%80%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4/"}</script>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css">
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => 
+    Waline.init(Object.assign({}, CONFIG.waline,{ el: document.querySelector(CONFIG.waline.el) }))
+  );
+});
+</script>
+
+  
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas>
+    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script src="/js/cursor/explosion.min.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
