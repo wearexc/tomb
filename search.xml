@@ -1606,9 +1606,9 @@ void EXTI1_IRQHandler(void)
 &#125;
 </code>
 </pre> </details>
-# 定时器
 
-<h2 id="TIM简介"><a href="#TIM简介" class="headerlink" title="TIM简介"></a>TIM简介</h2><p>•TIM（Timer）定时器</p>
+
+<h1 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h1><h2 id="TIM简介"><a href="#TIM简介" class="headerlink" title="TIM简介"></a>TIM简介</h2><p>•TIM（Timer）定时器</p>
 <p>•定时器可以对输入的时钟进行计数，并在计数值达到设定值时触发中断</p>
 <p>•16位计数器、预分频器、自动重装寄存器的时基单元，在72MHz计数时钟下可以实现最大59.65s的定时</p>
 <p>•不仅具备基本的定时中断功能，而且还包含内外时钟源选择、输入捕获、输出比较、编码器接口、主从触发模式等多种功能</p>
@@ -2290,6 +2290,212 @@ int16_t Encoder_Get(void)
 &#125;
 </code> </pre> </details>
 # ADC
+
+<h2 id="ADC简介"><a href="#ADC简介" class="headerlink" title="ADC简介"></a>ADC简介</h2><p>•　ADC（Analog-Digital Converter）模拟 - 数字转换器</p>
+<p>　DAC则是数字 - 模拟转换器，一般可用PWM平替DAC输出电机所需电压。DAC则可用于波形生成。</p>
+<p>•　ADC可以将引脚上连续变化的模拟电压转换为内存中存储的数字变量，建立模拟电路到数字电路的桥梁</p>
+<p>•　12位逐次逼近型ADC，1us转换时间</p>
+<p>•　输入电压范围：0～3.3V，转换结果范围：0～4095</p>
+<p>•　18个输入通道，可测量16个外部和2个内部信号源</p>
+<p>•　规则组（常规使用）和注入组（突发事件）两个转换单元</p>
+<p>•　模拟看门狗自动监测输入电压范围</p>
+<p>•　STM32F103C8T6 ADC资源：ADC1、ADC2，10个外部输入通道</p>
+<h2 id="逐次逼近型ADC"><a href="#逐次逼近型ADC" class="headerlink" title="逐次逼近型ADC"></a>逐次逼近型ADC</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230909134000653.png" class="" title="image-20230909134000653">
+
+<p>首先在通道选择开关选择一路输入（利用地址锁存和译码选择），再通过比较器进行比较，根据比较结果，改变DAC的值，直到和输入电压近似相等，则DAC的值为相应的数字变量。REF为参考电压。比较时通常用二分法，逐次逼近。</p>
+<h2 id="ADC框图"><a href="#ADC框图" class="headerlink" title="ADC框图"></a>ADC框图</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230909141006160.png" class="" title="image-20230909141006160">
+
+<h2 id="ADC基本结构"><a href="#ADC基本结构" class="headerlink" title="ADC基本结构"></a>ADC基本结构</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230909140814309.png" class="" title="image-20230909140814309">
+
+<p>触发控制可选择软件触发或者硬件触发。</p>
+<h2 id="输入通道"><a href="#输入通道" class="headerlink" title="输入通道"></a>输入通道</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230909141225078.png" class="" title="image-20230909141225078">
+
+<h2 id="规则组的四种转换模式"><a href="#规则组的四种转换模式" class="headerlink" title="规则组的四种转换模式"></a>规则组的四种转换模式</h2><h3 id="单次转换，非扫描模式"><a href="#单次转换，非扫描模式" class="headerlink" title="单次转换，非扫描模式"></a>单次转换，非扫描模式</h3><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230909141515783.png" class="" title="image-20230909141515783">
+
+<p>将需要转换的通道2写入序列1，触发转换即可，完成后将数据放入寄存器，同时将EOC（标志位）置1。下次转换将再次实行以上步骤。</p>
+<h3 id="连续转换，非扫描模式"><a href="#连续转换，非扫描模式" class="headerlink" title="连续转换，非扫描模式"></a>连续转换，非扫描模式</h3><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230909145103684.png" class="" title="image-20230909145103684">
+
+<p>与单次转换不同，转换结束后将立即开始下一轮转换。即，触发一次，转换会一直进行下去。</p>
+<h3 id="单次转换，扫描模式"><a href="#单次转换，扫描模式" class="headerlink" title="单次转换，扫描模式"></a>单次转换，扫描模式</h3><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230909145559280.png" class="" title="image-20230909145559280">
+
+<p>相较于单次转换，非扫描模式，可填入多个通道进行转换。</p>
+<h3 id="连续转换，扫描模式"><a href="#连续转换，扫描模式" class="headerlink" title="连续转换，扫描模式"></a>连续转换，扫描模式</h3><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230909145836537.png" class="" title="image-20230909145836537">
+
+<h2 id="触发控制"><a href="#触发控制" class="headerlink" title="触发控制"></a>触发控制</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230909145914699.png" class="" title="image-20230909145914699">
+
+<h2 id="数据对齐"><a href="#数据对齐" class="headerlink" title="数据对齐"></a>数据对齐</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230909150013914.png" class="" title="image-20230909150013914">
+
+<p>一般使用右对齐，可直接得出结果。也可以使用左对齐，然后裁剪数据分辨率。</p>
+<h2 id="转换时间"><a href="#转换时间" class="headerlink" title="转换时间"></a>转换时间</h2><p>•　AD转换的步骤：采样，保持，量化，编码</p>
+<p>•　STM32 ADC的总转换时间为：</p>
+<p>　 TCONV &#x3D; 采样时间 + 12.5个ADC周期</p>
+<p>•　例如：当ADCCLK&#x3D;14MHz，采样时间为1.5个ADC周期</p>
+<p>　 TCONV &#x3D; 1.5 + 12.5 &#x3D; 14个ADC周期 &#x3D; 1μs</p>
+<h2 id="校准"><a href="#校准" class="headerlink" title="校准"></a>校准</h2><p>•　ADC有一个内置自校准模式。校准可大幅减小因内部电容器组的变化而造成的准精度误差。校准期间，在每个电容器上都会计算出一个误差修正码(数字值)，这个码用于消除在随后的转换中每个电容器上产生的误差</p>
+<p>•　建议在每次上电后执行一次校准</p>
+<p>•　启动校准前， ADC必须处于关电状态超过至少两个ADC时钟周期</p>
+<h2 id="硬件电路"><a href="#硬件电路" class="headerlink" title="硬件电路"></a>硬件电路</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230909150438360.png" class="" title="image-20230909150438360">
+
+<h2 id="示例程序-6"><a href="#示例程序-6" class="headerlink" title="示例程序"></a>示例程序</h2><h3 id="一般步骤"><a href="#一般步骤" class="headerlink" title="一般步骤"></a>一般步骤</h3><p>１．开启RCC时钟，ADC,GPIO。</p>
+<p>２．配置GPIO为模拟输入。</p>
+<p>３．配置多路开关，将所要转换的通道接入规则组。</p>
+<p>４．配置ADC转换器</p>
+<p>５．调用ADC_cmd()函数使能ADC。</p>
+<h3 id="AD单通道"><a href="#AD单通道" class="headerlink" title="AD单通道"></a>AD单通道</h3>
+
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"  
+#include "Delay.h"      
+#include "OLED.h"       
+#include "AD.h"         
+//
+uint16_t ADValue;       // 存储AD转换后的数值
+float Voltage;          // 存储计算后的电压值
+//
+int main(void)
+&#123;
+// 初始化
+    OLED_Init();         
+    AD_Init();         
+    OLED_ShowString(1, 1, "ADValue:");    
+    OLED_ShowString(2, 1, "Volatge:0.00V"); 
+    while (1)
+    &#123;
+        ADValue = AD_GetValue();    // 获取AD转换后的数值
+        Voltage = (float)ADValue / 4095 * 3.3; // 计算电压值
+        // 在OLED上显示AD值和电压值（带小数点）
+        OLED_ShowNum(1, 9, ADValue, 4);
+        OLED_ShowNum(2, 9, Voltage, 1);
+        // 在OLED上显示电压值的小数部分（两位小数）
+        OLED_ShowNum(2, 11, (uint16_t)(Voltage * 100) % 100, 2);
+        Delay_ms(100);  // 延时100毫秒
+        &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">AD.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"  
+void AD_Init(void)
+&#123;
+// 使能ADC1和GPIOA的时钟
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+// 配置ADC时钟分频
+    RCC_ADCCLKConfig(RCC_PCLK2_Div6);
+// 配置GPIO
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;  // 配置引脚为模拟输入模式
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;      
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+// 配置ADC的通道、采样时间
+    ADC_RegularChannelConfig(ADC1, ADC_Channel_0, 1, ADC_SampleTime_55Cycles5);
+//利用结构体配置ADC
+    ADC_InitTypeDef ADC_InitStructure;
+    ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;                       // 独立模式
+    ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;                   // 数据右对齐
+    ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;      // 不使用外部触发
+    ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;                      // 单次转换
+    ADC_InitStructure.ADC_ScanConvMode = DISABLE;                						 // 非扫描模式
+    ADC_InitStructure.ADC_NbrOfChannel = 1;                      						 // 转换通道数为1
+    ADC_Init(ADC1, &ADC_InitStructure);
+// 启用ADC1
+    ADC_Cmd(ADC1, ENABLE);  
+//校准
+    ADC_ResetCalibration(ADC1);  // 复位校准寄存器
+    while (ADC_GetResetCalibrationStatus(ADC1) == SET); // 等待校准寄存器复位完成
+    ADC_StartCalibration(ADC1);  // 启动ADC1校准
+    while (ADC_GetCalibrationStatus(ADC1) == SET);  // 等待校准完成
+&#125;
+//转换函数
+uint16_t AD_GetValue(void)
+&#123;
+    ADC_SoftwareStartConvCmd(ADC1, ENABLE);                    // 启动ADC转换
+    while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET);    // 等待转换完成
+    return ADC_GetConversionValue(ADC1);                       // 获取ADC转换结果
+&#125;
+</code> </pre> </details>
+
+<h3 id="AD多通道"><a href="#AD多通道" class="headerlink" title="AD多通道"></a>AD多通道</h3>
+
+<p>采用扫描模式实现多通道，最好配合DMA防止数据覆盖。</p>
+<p>本次利用单次转换非扫描模式，只需在每次触发转换之前，手动更改一下列表第一个位置通道即可。</p>
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"  
+#include "Delay.h"      
+#include "OLED.h"       
+#include "AD.h"        
+// 存储四个ADC通道的转换值
+uint16_t AD0, AD1, AD2, AD3; 
+int main(void)
+&#123;
+// 初始化
+    OLED_Init();   
+    AD_Init();     
+    OLED_ShowString(1, 1, "AD0:"); 
+    OLED_ShowString(2, 1, "AD1:"); 
+    OLED_ShowString(3, 1, "AD2:"); 
+    OLED_ShowString(4, 1, "AD3:"); 
+    while (1)
+    &#123;
+        // 获取ADC通道的转换值
+        AD0 = AD_GetValue(ADC_Channel_0); 
+        AD1 = AD_GetValue(ADC_Channel_1); 
+        AD2 = AD_GetValue(ADC_Channel_2); 
+        AD3 = AD_GetValue(ADC_Channel_3); 
+     // 在OLED上显示
+        OLED_ShowNum(1, 5, AD0, 4);
+        OLED_ShowNum(2, 5, AD1, 4);
+        OLED_ShowNum(3, 5, AD2, 4);
+        OLED_ShowNum(4, 5, AD3, 4);
+     // 延时100毫秒
+        Delay_ms(100); 
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">AD.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"
+void AD_Init(void)
+&#123;
+// 使能ADC1和GPIOA的时钟
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+// 配置ADC时钟分频
+    RCC_ADCCLKConfig(RCC_PCLK2_Div6);
+// 配置GPIO引脚为模拟输入模式
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;  
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3; 
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+// 配置ADC的通道、采样时间等参数
+    ADC_InitTypeDef ADC_InitStructure;
+    ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;                       // 独立模式
+    ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;                  // 数据右对齐
+    ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;    // 不使用外部触发
+    ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;                    // 单次转换
+    ADC_InitStructure.ADC_ScanConvMode = DISABLE;                         // 非扫描模式
+    ADC_InitStructure.ADC_NbrOfChannel = 1;                               // 转换通道数为1
+    ADC_Init(ADC1, &ADC_InitStructure);
+// 启用ADC1
+    ADC_Cmd(ADC1, ENABLE);  
+//校准
+    ADC_ResetCalibration(ADC1);  													// 复位校准寄存器
+    while (ADC_GetResetCalibrationStatus(ADC1) == SET); 	// 等待校准寄存器复位完成
+    ADC_StartCalibration(ADC1);  													// 启动ADC1校准
+    while (ADC_GetCalibrationStatus(ADC1) == SET);  			// 等待校准完成
+&#125;
+//
+uint16_t AD_GetValue(uint8_t ADC_Channel)
+&#123;
+    ADC_RegularChannelConfig(ADC1, ADC_Channel, 1, ADC_SampleTime_55Cycles5);	// 配置ADC
+    ADC_SoftwareStartConvCmd(ADC1, ENABLE);  									// 启动ADC转换
+    while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET); 					// 等待转换完成
+    return ADC_GetConversionValue(ADC1);  										// 获取ADC转换结果
+&#125;
+</code> </pre> </details>
+
 ]]></content>
       <categories>
         <category>stm32归档</category>
