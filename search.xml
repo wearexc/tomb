@@ -1300,6 +1300,423 @@
       </tags>
   </entry>
   <entry>
+    <title>STM32标准库</title>
+    <url>/2023/08/02/STM32%E6%A0%87%E5%87%86%E5%BA%93/</url>
+    <content><![CDATA[<p>整理笔记时发现自己如果列举代码，会更加有效。但插入代码块到其中会比较繁琐，而且各个知识的代码的耦合性较强，反复列举较为麻烦，所以开一个新的文章，专门记录整理标准库代码。仅记录个人常用，建议参考手册，或直接跳转函数定义，浏览官方说明。<span id="more"></span></p>
+<h3 id="时钟控制"><a href="#时钟控制" class="headerlink" title="时钟控制"></a>时钟控制</h3><p>时钟就像人的心跳，人的运动先需要跳动心脏。STM32的片上外设也是一样，如果要使用外设，例如：GPIO，NVIC，ADC等等，需要先开启外设挂载的总线时钟。</p>
+<p>以下是标准库中对时钟控制函数的定义：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//AHB总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_AHBPeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_AHBPeriph, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//APB2总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_APB2PeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_APB2Periph, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//APB1总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_APB1PeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_APB1Periph, FunctionalState NewState)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>第一个参数为外设，例如APB2的外设：RCC_APB2Periph_GPIOA，RCC_APB2Periph_GPIOB，RCC_APB2Periph_TIM1等，</p>
+<p>第二个参数为使能或者失能。（ENABLE&#x2F;DISABLE）</p>
+<p>比如开启APB2的GPIOA为例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);</span><br></pre></td></tr></table></figure>
+
+<p>外设的使用必须先开启时钟。</p>
+<h3 id="GPIO"><a href="#GPIO" class="headerlink" title="GPIO"></a>GPIO</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//指定GPIO初始化为默认值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_DeInit</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//功能复用，重新映射事件控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_AFIODeInit</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="comment">//用结构体参数初始化GPIO</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Init</span><span class="params">(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct)</span>;</span><br><span class="line"><span class="comment">//将结构体的变量，赋为初始值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_StructInit</span><span class="params">(GPIO_InitTypeDef* GPIO_InitStruct)</span>;</span><br><span class="line"><span class="comment">//读取指定输入GPIO口的值，返回0/1</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">GPIO_ReadInputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//读取指定输入GPIO组的数据端口</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">GPIO_ReadInputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//读取指定输出GPIO口的值，返回0/1</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">GPIO_ReadOutputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//读取指定输出GPIO组的数据端口</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">GPIO_ReadOutputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//指定端口输出为高电平</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_SetBits</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//指定端口输出为低电平</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_ResetBits</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//指定GPIO组的某个GPIO并赋值（高低电平）。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_WriteBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin, BitAction BitVal)</span>;</span><br><span class="line"><span class="comment">//指定GPIO组，并写入端口输出数据寄存器（ODR寄存器）的值。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Write</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> PortVal)</span>;</span><br><span class="line"><span class="comment">//锁定GPIO管脚配置寄存器</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_PinLockConfig</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//选择用作事件输出的GPIO引脚</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EventOutputConfig</span><span class="params">(<span class="type">uint8_t</span> GPIO_PortSource, <span class="type">uint8_t</span> GPIO_PinSource)</span>;</span><br><span class="line"><span class="comment">//使能输出事件</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EventOutputCmd</span><span class="params">(FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//改变指定管脚的映射，为了更大利用IO口，部分IO口可以进行复用或者映射。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_PinRemapConfig</span><span class="params">(<span class="type">uint32_t</span> GPIO_Remap, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//选择 GPIO 管脚用作外部中断源</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EXTILineConfig</span><span class="params">(<span class="type">uint8_t</span> GPIO_PortSource, <span class="type">uint8_t</span> GPIO_PinSource)</span>;</span><br><span class="line"><span class="comment">//选择以太网媒体接口</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_ETH_MediaInterfaceConfig</span><span class="params">(<span class="type">uint32_t</span> GPIO_ETH_MediaInterface)</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>结构体</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">uint16_t</span> GPIO_Pin;             <span class="comment">//选择GPIO口</span></span><br><span class="line">  GPIOSpeed_TypeDef GPIO_Speed;  <span class="comment">//选择运行速度</span></span><br><span class="line">  GPIOMode_TypeDef GPIO_Mode;    <span class="comment">//配置G</span></span><br><span class="line">&#125;GPIO_InitTypeDef;</span><br></pre></td></tr></table></figure>
+
+<p><strong>GPIO模式</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span></span></span><br><span class="line"><span class="class">&#123;</span> GPIO_Mode_AIN = <span class="number">0x0</span>,               <span class="comment">//模拟输入</span></span><br><span class="line">  GPIO_Mode_IN_FLOATING = <span class="number">0x04</span>,      <span class="comment">//浮空输入</span></span><br><span class="line">  GPIO_Mode_IPD = <span class="number">0x28</span>,              <span class="comment">//下拉输入</span></span><br><span class="line">  GPIO_Mode_IPU = <span class="number">0x48</span>,              <span class="comment">//上拉输入</span></span><br><span class="line">  GPIO_Mode_Out_OD = <span class="number">0x14</span>,           <span class="comment">//开漏输出</span></span><br><span class="line">  GPIO_Mode_Out_PP = <span class="number">0x10</span>,           <span class="comment">//推挽输出</span></span><br><span class="line">  GPIO_Mode_AF_OD = <span class="number">0x1C</span>,            <span class="comment">//复用开漏</span></span><br><span class="line">  GPIO_Mode_AF_PP = <span class="number">0x18</span>             <span class="comment">//复用推挽</span></span><br><span class="line">&#125;GPIOMode_TypeDef;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="NVIC"><a href="#NVIC" class="headerlink" title="NVIC"></a>NVIC</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">NVIC_PriorityGroupConfig</span><span class="params">(<span class="type">uint32_t</span> NVIC_PriorityGroup)</span>;                  <span class="comment">//设置中断优先级分组</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_Init</span><span class="params">(NVIC_InitTypeDef* NVIC_InitStruct)</span>;                           <span class="comment">//用结构体参数配置NVIC</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_SetVectorTable</span><span class="params">(<span class="type">uint32_t</span> NVIC_VectTab, <span class="type">uint32_t</span> Offset)</span>;            <span class="comment">//设置中断向量表</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_SystemLPConfig</span><span class="params">(<span class="type">uint8_t</span> LowPowerMode, FunctionalState NewState)</span>;    <span class="comment">//系统低功耗配置</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="EXIT"><a href="#EXIT" class="headerlink" title="EXIT"></a>EXIT</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">EXTI_DeInit</span><span class="params">(<span class="type">void</span>)</span>;              	                   <span class="comment">//清除EXTI配置</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_Init</span><span class="params">(EXTI_InitTypeDef* EXTI_InitStruct)</span>;         <span class="comment">//用结构体参数配置EXTI</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_StructInit</span><span class="params">(EXTI_InitTypeDef* EXTI_InitStruct)</span>;   <span class="comment">//给结构体赋予默认值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_GenerateSWInterrupt</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;         <span class="comment">//软件触发外部中断</span></span><br><span class="line">FlagStatus <span class="title function_">EXTI_GetFlagStatus</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;         <span class="comment">//获取指定的的中断标志位</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_ClearFlag</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;                   <span class="comment">//清除中断标志位</span></span><br><span class="line">ITStatus <span class="title function_">EXTI_GetITStatus</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;             <span class="comment">//在中断函数里获取标志位</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_ClearITPendingBit</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;           <span class="comment">//在中断函数里清除标志位</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>结构体</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">uint32_t</span> EXTI_Line;               <span class="comment">//指定配置的中断线</span></span><br><span class="line">  EXTIMode_TypeDef EXTI_Mode;       <span class="comment">//指定中断模式</span></span><br><span class="line">  EXTITrigger_TypeDef EXTI_Trigger; <span class="comment">//指定配置的中断线</span></span><br><span class="line">  FunctionalState EXTI_LineCmd;     <span class="comment">//指定触发中断的模式</span></span><br><span class="line">&#125;EXTI_InitTypeDef;</span><br></pre></td></tr></table></figure>
+
+<h3 id="TIM"><a href="#TIM" class="headerlink" title="TIM"></a>TIM</h3><p>过长，具体参考STM32固件函数库手册。</p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TIM_DeInit</td>
+<td>将外设 TIMx 寄存器重设为缺省值</td>
+</tr>
+<tr>
+<td>TIM_TimeBaseInit</td>
+<td>根据 TIM_TimeBaseInitStruct 中指定的参数初始化   间基数单位</td>
+</tr>
+<tr>
+<td>TIM_OCInit</td>
+<td>根据 TIM_OCInitStruct 中指定的参数初始化外设</td>
+</tr>
+<tr>
+<td>TIM_ICInit</td>
+<td>根据 TIM_ICInitStruct 中指定的参数初始化外设 T</td>
+</tr>
+<tr>
+<td>TIM_TimeBaseStructInit</td>
+<td>把 TIM_TimeBaseInitStruct 中的每一个参数按缺省</td>
+</tr>
+<tr>
+<td>TIM_OCStructInit</td>
+<td>把 TIM_OCInitStruct 中的每一个参数按缺省值填</td>
+</tr>
+<tr>
+<td>TIM_ICStructInit</td>
+<td>把 TIM_ICInitStruct 中的每一个参数按缺省值填入</td>
+</tr>
+<tr>
+<td>TIM_Cmd</td>
+<td>使能或者失能 TIMx 外设</td>
+</tr>
+<tr>
+<td>TIM _ITConfig</td>
+<td>使能或者失能指定的 TIM 中断</td>
+</tr>
+<tr>
+<td>TIM_DMAConfig</td>
+<td>设置 TIMx 的 DMA 接口</td>
+</tr>
+<tr>
+<td>TIM_DMACmd</td>
+<td>使能或者失能指定的 TIMx 的 DMA 请求</td>
+</tr>
+<tr>
+<td>TIM_InternalClockConfig</td>
+<td>设置 TIMx 内部时钟</td>
+</tr>
+<tr>
+<td>TIM_ITRxExternalClockConfig</td>
+<td>设置 TIMx 内部触发为外部时钟模式</td>
+</tr>
+<tr>
+<td>TIM_TIxExternalClockConfig</td>
+<td>设置 TIMx 触发为外部时钟</td>
+</tr>
+<tr>
+<td>TIM_ETRClockMode1Config</td>
+<td>配置 TIMx 外部时钟模式  1</td>
+</tr>
+<tr>
+<td>TIM_ETRClockMode2Config</td>
+<td>配置 TIMx 外部时钟模式  2</td>
+</tr>
+<tr>
+<td>TIM_ETRConfig</td>
+<td>配置 TIMx 外部触发</td>
+</tr>
+<tr>
+<td>TIM_SelectInputTrigger</td>
+<td>选择 TIMx 输入触发源</td>
+</tr>
+<tr>
+<td>TIM_PrescalerConfig</td>
+<td>设置 TIMx 预分频</td>
+</tr>
+<tr>
+<td>TIM_CounterModeConfig</td>
+<td>设置 TIMx 计数器模式</td>
+</tr>
+<tr>
+<td>TIM_ForcedOC1Config</td>
+<td>置 TIMx 输出 1 为活动或者非活动电平</td>
+</tr>
+<tr>
+<td>TIM_ForcedOC2Config</td>
+<td>置 TIMx 输出 2 为活动或者非活动电平</td>
+</tr>
+<tr>
+<td>TIM_ForcedOC3Config</td>
+<td>置 TIMx 输出 3 为活动或者非活动电平</td>
+</tr>
+<tr>
+<td>TIM_ForcedOC4Config</td>
+<td>置 TIMx 输出 4 为活动或者非活动电平</td>
+</tr>
+<tr>
+<td>TIM_ARRPreloadConfig</td>
+<td>使能或者失能 TIMx 在 ARR 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_SelectCCDMA</td>
+<td>选择 TIMx 外设的捕获比较  DMA 源</td>
+</tr>
+<tr>
+<td>TIM_OC1PreloadConfig</td>
+<td>使能或者失能 TIMx 在 CCR1 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_OC2PreloadConfig</td>
+<td>使能或者失能 TIMx 在 CCR2 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_OC3PreloadConfig</td>
+<td>使能或者失能 TIMx 在 CCR3 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_OC4PreloadConfig</td>
+<td>使能或者失能 TIMx 在 CCR4 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_OC1FastConfig</td>
+<td>设置 TIMx 捕获比较  1 快速特征</td>
+</tr>
+<tr>
+<td>TIM_OC2FastConfig</td>
+<td>设置 TIMx 捕获比较 2  快速特征</td>
+</tr>
+<tr>
+<td>TIM_OC3FastConfig</td>
+<td>设置 TIMx 捕获比较 3  快速特征</td>
+</tr>
+<tr>
+<td>TIM_OC4FastConfig</td>
+<td>设置 TIMx 捕获比较 4  快速特征</td>
+</tr>
+<tr>
+<td>TIM_ClearOC1Ref</td>
+<td>在一个外部事件时清除或者保持 OCREF1 信号</td>
+</tr>
+<tr>
+<td>TIM_ClearOC2Ref</td>
+<td>在一个外部事件时清除或者保持 OCREF2 信号</td>
+</tr>
+<tr>
+<td>TIM_ClearOC3Ref</td>
+<td>在一个外部事件时清除或者保持 OCREF3 信号</td>
+</tr>
+<tr>
+<td>TIM_ClearOC4Ref</td>
+<td>在一个外部事件时清除或者保持 OCREF4 信号</td>
+</tr>
+<tr>
+<td>TIM_UpdateDisableConfig</td>
+<td>使能或者失能 TIMx 更新事件</td>
+</tr>
+<tr>
+<td>TIM_EncoderInterfaceConfig</td>
+<td>设置 TIMx 编码界面</td>
+</tr>
+<tr>
+<td>TIM_GenerateEvent</td>
+<td>设置 TIMx 事件由软件产生</td>
+</tr>
+<tr>
+<td>TIM_OC1PolarityConfig</td>
+<td>设置 TIMx 通道 1 极性</td>
+</tr>
+<tr>
+<td>TIM_OC2PolarityConfig</td>
+<td>设置 TIMx 通道 2 极性</td>
+</tr>
+<tr>
+<td>TIM_OC3PolarityConfig</td>
+<td>设置 TIMx 通道 3 极性</td>
+</tr>
+<tr>
+<td>TIM_OC4PolarityConfig</td>
+<td>设置 TIMx 通道 4 极性</td>
+</tr>
+<tr>
+<td>TIM_UpdateRequestConfig</td>
+<td>设置 TIMx 更新请求源</td>
+</tr>
+<tr>
+<td>TIM_SelectHallSensor</td>
+<td>使能或者失能 TIMx 霍尔传感器接口</td>
+</tr>
+<tr>
+<td>TIM_SelectOnePulseMode</td>
+<td>设置 TIMx 单脉冲模式</td>
+</tr>
+<tr>
+<td>TIM_SelectOutputTrigger</td>
+<td>选择 TIMx 触发输出模式</td>
+</tr>
+<tr>
+<td>TIM_SelectSlaveMode</td>
+<td>选择 TIMx 从模式</td>
+</tr>
+<tr>
+<td>TIM_SelectMasterSlaveMode</td>
+<td>设置或者重置 TIMx 主&#x2F;从模式</td>
+</tr>
+<tr>
+<td>TIM_SetCounter</td>
+<td>设置 TIMx 计数器寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetAutoreload</td>
+<td>设置 TIMx 自动重装载寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetCompare1</td>
+<td>设置 TIMx 捕获比较 1  寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetCompare2</td>
+<td>设置 TIMx 捕获比较 2  寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetCompare3</td>
+<td>设置 TIMx 捕获比较 3  寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetCompare4</td>
+<td>设置 TIMx 捕获比较 4  寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetIC1Prescaler</td>
+<td>设置 TIMx 输入捕获 1  预分频</td>
+</tr>
+<tr>
+<td>TIM_SetIC2Prescaler</td>
+<td>设置 TIMx 输入捕获 2  预分频</td>
+</tr>
+<tr>
+<td>TIM_SetIC3Prescaler</td>
+<td>设置 TIMx 输入捕获 3  预分频</td>
+</tr>
+<tr>
+<td>TIM_SetIC4Prescaler</td>
+<td>设置 TIMx 输入捕获 4  预分频</td>
+</tr>
+<tr>
+<td>TIM_SetClockDivision</td>
+<td>设置 TIMx 的时钟分割值</td>
+</tr>
+<tr>
+<td>TIM_GetCapture1</td>
+<td>获得 TIMx 输入捕获 1  的值</td>
+</tr>
+<tr>
+<td>TIM_GetCapture2</td>
+<td>获得 TIMx 输入捕获 2  的值</td>
+</tr>
+<tr>
+<td>TIM_GetCapture3</td>
+<td>获得 TIMx 输入捕获 3  的值</td>
+</tr>
+<tr>
+<td>TIM_GetCapture4</td>
+<td>获得 TIMx 输入捕获 4  的值</td>
+</tr>
+<tr>
+<td>TIM_GetCounter</td>
+<td>获得 TIMx 计数器的值</td>
+</tr>
+<tr>
+<td>TIM_GetPrescaler</td>
+<td>获得 TIMx 预分频值</td>
+</tr>
+<tr>
+<td>TIM_GetFlagStatus</td>
+<td>检查指定的 TIM 标志位设置与否</td>
+</tr>
+<tr>
+<td>TIM_ClearFlag</td>
+<td>清除 TIMx 的待处理标志位</td>
+</tr>
+<tr>
+<td>TIM_GetITStatus</td>
+<td>检查指定的 TIM 中断发生与否</td>
+</tr>
+<tr>
+<td>TIM_ClearITPendingBit</td>
+<td>清除 TIMx 的中断待处理位</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>stm32归档</category>
+      </categories>
+      <tags>
+        <tag>单片机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>stm32综述</title>
+    <url>/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/</url>
+    <content><![CDATA[<p>　　大概有一段时间没看stm32，通过之前学51的经历，大概是明白自己一段时间不看就会忘，虽然随便翻翻又能快速上手，但是东找西翻比较麻烦。所以打算复习的时候，顺便做个笔记记录一下。自己所用的型号为<strong>STM32F103C8T6</strong>。<span id="more"></span></p>
+<h6 id="STM简述"><a href="#STM简述" class="headerlink" title="STM简述"></a>STM简述</h6><p>　　STM32是ST公司基于ARM- Cortex-M内核开发的32位微控制器（MCU）。自己所用的是STM32F1系列，属于Mainstream，内核Cortex-M3。ARM公司设计ARM内核，半导体厂商完善内核周边电路并产生芯片。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104303863.png" class="" title="image-20230724104303863">
+
+<p>图中的ARM由ARM公司设计，芯片内的存储和外设（比如GPIO,定时器）由ST公司设计。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104427576.png" class="" title="image-20230724104427576">
+
+<p>这是一枚STM32F103C8T6的芯片，由芯片可以看出型号和封装。封装为LQFP48，芯片表面左下角有个圆点，圆点下的引脚为1顺着原点逆时针开始数。如果芯片有两个圆点，则从最小的圆点开始数。</p>
+<h6 id="片上资源-x2F-外设"><a href="#片上资源-x2F-外设" class="headerlink" title="片上资源&#x2F;外设"></a><strong>片上资源&#x2F;外设</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104939703.png" class="" title="image-20230724104939703">
+
+<p>绿色背景加黑的是位于内核的外设。另外C8T6并没有表中的DAC,SDIO,FSMC和USB OTG外设。</p>
+<p>NVIC:内核里面用于管理中断的设备，例如配置中断优先级。</p>
+<p>SysTick:用来给操作系统提供定时服务。应为STM32可以加入Freektos，ucos等操作系统，利用SysTick提供定时进行任务切换的功能。</p>
+<p>RCC：复位和时钟控制，可以对系统的时钟进行配置，还能使能各模块的时钟。在STM32中，外设上电后是默认没有时钟。没有时钟，外设无法工作。</p>
+<p>GPIO：通用的IO口，可以用于操控模块，比如灯，马达等。</p>
+<p>AFIO：完成复用功能端口的重定义，还有中断端口的置配。</p>
+<p>EXTI：配置好外部中断后，当引脚有电平变化时，就可以触发中断，让CPU来处理任务。</p>
+<p>TIM定时器：分为基本定时器，通用定时器，高级定时器。不仅可以完成定时中断的任务，还可以用于测频率，生成PWM波形，配置为专用的编码器接口。</p>
+<p>ADC：模数转换器，STM32内置了12位的AD转换器，可以直接读取IO口的模拟电压，无需外置。</p>
+<p>DMA：直接内存访问，可以帮助CPU搬运大量数据等这种繁杂任务。</p>
+<p>I2C&#x2F;SPI：两种常见的通信协议。</p>
+<p>RTC：实时时钟，在STM32内部完成时，分，秒的计时功能，还可以外接电源，即使掉电也能</p>
+<p>正常运行（此时会启用芯片备用电池）。</p>
+<p>CRC：一种数据校验方式，用于判断接受的数据是否正确。</p>
+<p>IWDG&#x2F;WWDG:当单片机因为电磁干扰死机或者程序设计不合理导致的死循环时，看门狗可以及时复位，保证系统稳定。</p>
+<p>DAC：数模转换器，可以在IO口直接输出模拟电压。</p>
+<p>OTG：使STM32作为USB主机去读取其它USB设备。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111613998.png" class="" title="image-20230724111613998">
+
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111625157.png" class="" title="image-20230724111625157">
+
+
+
+<h6 id="系统结构"><a href="#系统结构" class="headerlink" title="系统结构"></a><strong>系统结构</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111735194.png" class="" title="image-20230724111735194">
+
+<p>ICode（指令总线）和Dcode（数据总线）用来连接Flash闪存，Flash存放的是我们编写的程序，ICode用于加载程序指令，Dcode用于加载数据，如常数和调试数据。</p>
+<p>系统总线就连接到如SRAM（用于存储程序运行时的变量数据）</p>
+<p>AHB系统总线：用于挂载主要的外设，AHB指先进高性能总线，挂载最基本的或者性能比较高的外设，如复位和时钟控制  SDIO。</p>
+<p>APB：先进外设总线，用于连接一般的外设。</p>
+<p>DMA：大量的数据搬运，防止覆盖。</p>
+<h6 id="引脚定义"><a href="#引脚定义" class="headerlink" title="引脚定义"></a>引脚定义</h6><p>红色是电源相关的引脚</p>
+<p>蓝色是最小系统相关的引脚</p>
+<p>绿色是IO口&#x2F;功能口相关的引脚</p>
+<p>S代表电源，I&#x2F;O代表输入输出，I&#x2F;O电平代表所能容忍的电压。FT代表能容忍5V，默认复用是IO口上同时连接的外设功能引脚。重定义：如果有2个功能同时复用在了1个IO口上，可以把其中一个复用功能重映射到其他端口上。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230726084013246.png" class="" title="image-20230726084013246">
+
+
+
+<p>1.　　　VBAT：备用电池供电引脚，当系统电源断电时，备用电池可以给内部的RTC时钟和备份寄存器提供电源。</p>
+<p>2.　　　IO口&#x2F;侵入检测&#x2F;RTC：IO口可以根据程序输出读取高低电平</p>
+<p>3.4　IO口&#x2F;接32.768kHZ的RTC晶振</p>
+<p>5,6　接系统的主晶振，芯片内有锁相环电路，对8MHZ进行倍频形成72MHZ。</p>
+<p>7　　系统复位引脚，N代表低电平复位</p>
+<p>8,9　内部模拟部分的电源，如ADC,RC振荡器  VSS(-) VDD(+)</p>
+<p>10-19　都是IO口，10号引脚还兼具了WKUP用于唤醒对于待机模式的STM32</p>
+<p>20　IO口&#x2F;BOOT1引脚，BOOT用来配置启动模式    44.　BOOT0</p>
+<p>21.22.25-33.41-43.45.46 都是IO口</p>
+<p>23,24是系统的主电源口， 35.36.47.48    STM32采用分区供电模式</p>
+<p>34,37-40　IO口&#x2F;调试端口      STM32支持SWD和JTAG两种调试方法</p>
+<p>启动配置（BOOT0和BOOT1）</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140258741.png" class="" title="image-20230801140258741">
+
+<p>作用：指定程序开始运行的位置，一般情况下，程序是在Flash程序存储器开始执行</p>
+<p>接1指3.3V电源正的意思</p>
+<p>系统存储器就是STM32中的一段BootLoader(接受串口数据，然后刷新到主闪存中)</p>
+<p>核心板原理图</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140602387.png" class="" title="image-20230801140602387">
+
+]]></content>
+      <categories>
+        <category>stm32归档</category>
+      </categories>
+      <tags>
+        <tag>单片机</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>STM32归档</title>
     <url>/2023/08/02/STM32%E5%BD%92%E6%A1%A3/</url>
     <content><![CDATA[<p>个人学习笔记，将对知识点进行概述，主要学习请参考B站江科大的视频。或者STM32手册。<span id="more"></span></p>
@@ -2289,9 +2706,9 @@ int16_t Encoder_Get(void)
     return Temp;                  // 返回获取到的值
 &#125;
 </code> </pre> </details>
-# ADC
 
-<h2 id="ADC简介"><a href="#ADC简介" class="headerlink" title="ADC简介"></a>ADC简介</h2><p>•　ADC（Analog-Digital Converter）模拟 - 数字转换器</p>
+
+<h1 id="ADC"><a href="#ADC" class="headerlink" title="ADC"></a>ADC</h1><h2 id="ADC简介"><a href="#ADC简介" class="headerlink" title="ADC简介"></a>ADC简介</h2><p>•　ADC（Analog-Digital Converter）模拟 - 数字转换器</p>
 <p>　DAC则是数字 - 模拟转换器，一般可用PWM平替DAC输出电机所需电压。DAC则可用于波形生成。</p>
 <p>•　ADC可以将引脚上连续变化的模拟电压转换为内存中存储的数字变量，建立模拟电路到数字电路的桥梁</p>
 <p>•　12位逐次逼近型ADC，1us转换时间</p>
@@ -2495,424 +2912,6 @@ uint16_t AD_GetValue(uint8_t ADC_Channel)
     return ADC_GetConversionValue(ADC1);  										// 获取ADC转换结果
 &#125;
 </code> </pre> </details>
-
-]]></content>
-      <categories>
-        <category>stm32归档</category>
-      </categories>
-      <tags>
-        <tag>单片机</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>STM32标准库</title>
-    <url>/2023/08/02/STM32%E6%A0%87%E5%87%86%E5%BA%93/</url>
-    <content><![CDATA[<p>整理笔记时发现自己如果列举代码，会更加有效。但插入代码块到其中会比较繁琐，而且各个知识的代码的耦合性较强，反复列举较为麻烦，所以开一个新的文章，专门记录整理标准库代码。仅记录个人常用，建议参考手册，或直接跳转函数定义，浏览官方说明。<span id="more"></span></p>
-<h3 id="时钟控制"><a href="#时钟控制" class="headerlink" title="时钟控制"></a>时钟控制</h3><p>时钟就像人的心跳，人的运动先需要跳动心脏。STM32的片上外设也是一样，如果要使用外设，例如：GPIO，NVIC，ADC等等，需要先开启外设挂载的总线时钟。</p>
-<p>以下是标准库中对时钟控制函数的定义：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//AHB总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_AHBPeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_AHBPeriph, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//APB2总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_APB2PeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_APB2Periph, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//APB1总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_APB1PeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_APB1Periph, FunctionalState NewState)</span>;</span><br></pre></td></tr></table></figure>
-
-<p>第一个参数为外设，例如APB2的外设：RCC_APB2Periph_GPIOA，RCC_APB2Periph_GPIOB，RCC_APB2Periph_TIM1等，</p>
-<p>第二个参数为使能或者失能。（ENABLE&#x2F;DISABLE）</p>
-<p>比如开启APB2的GPIOA为例：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);</span><br></pre></td></tr></table></figure>
-
-<p>外设的使用必须先开启时钟。</p>
-<h3 id="GPIO"><a href="#GPIO" class="headerlink" title="GPIO"></a>GPIO</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//指定GPIO初始化为默认值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_DeInit</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//功能复用，重新映射事件控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_AFIODeInit</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="comment">//用结构体参数初始化GPIO</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Init</span><span class="params">(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct)</span>;</span><br><span class="line"><span class="comment">//将结构体的变量，赋为初始值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_StructInit</span><span class="params">(GPIO_InitTypeDef* GPIO_InitStruct)</span>;</span><br><span class="line"><span class="comment">//读取指定输入GPIO口的值，返回0/1</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">GPIO_ReadInputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//读取指定输入GPIO组的数据端口</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">GPIO_ReadInputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//读取指定输出GPIO口的值，返回0/1</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">GPIO_ReadOutputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//读取指定输出GPIO组的数据端口</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">GPIO_ReadOutputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//指定端口输出为高电平</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_SetBits</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//指定端口输出为低电平</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_ResetBits</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//指定GPIO组的某个GPIO并赋值（高低电平）。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_WriteBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin, BitAction BitVal)</span>;</span><br><span class="line"><span class="comment">//指定GPIO组，并写入端口输出数据寄存器（ODR寄存器）的值。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Write</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> PortVal)</span>;</span><br><span class="line"><span class="comment">//锁定GPIO管脚配置寄存器</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_PinLockConfig</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//选择用作事件输出的GPIO引脚</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EventOutputConfig</span><span class="params">(<span class="type">uint8_t</span> GPIO_PortSource, <span class="type">uint8_t</span> GPIO_PinSource)</span>;</span><br><span class="line"><span class="comment">//使能输出事件</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EventOutputCmd</span><span class="params">(FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//改变指定管脚的映射，为了更大利用IO口，部分IO口可以进行复用或者映射。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_PinRemapConfig</span><span class="params">(<span class="type">uint32_t</span> GPIO_Remap, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//选择 GPIO 管脚用作外部中断源</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EXTILineConfig</span><span class="params">(<span class="type">uint8_t</span> GPIO_PortSource, <span class="type">uint8_t</span> GPIO_PinSource)</span>;</span><br><span class="line"><span class="comment">//选择以太网媒体接口</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_ETH_MediaInterfaceConfig</span><span class="params">(<span class="type">uint32_t</span> GPIO_ETH_MediaInterface)</span>;</span><br></pre></td></tr></table></figure>
-
-<p><strong>结构体</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">uint16_t</span> GPIO_Pin;             <span class="comment">//选择GPIO口</span></span><br><span class="line">  GPIOSpeed_TypeDef GPIO_Speed;  <span class="comment">//选择运行速度</span></span><br><span class="line">  GPIOMode_TypeDef GPIO_Mode;    <span class="comment">//配置G</span></span><br><span class="line">&#125;GPIO_InitTypeDef;</span><br></pre></td></tr></table></figure>
-
-<p><strong>GPIO模式</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span></span></span><br><span class="line"><span class="class">&#123;</span> GPIO_Mode_AIN = <span class="number">0x0</span>,               <span class="comment">//模拟输入</span></span><br><span class="line">  GPIO_Mode_IN_FLOATING = <span class="number">0x04</span>,      <span class="comment">//浮空输入</span></span><br><span class="line">  GPIO_Mode_IPD = <span class="number">0x28</span>,              <span class="comment">//下拉输入</span></span><br><span class="line">  GPIO_Mode_IPU = <span class="number">0x48</span>,              <span class="comment">//上拉输入</span></span><br><span class="line">  GPIO_Mode_Out_OD = <span class="number">0x14</span>,           <span class="comment">//开漏输出</span></span><br><span class="line">  GPIO_Mode_Out_PP = <span class="number">0x10</span>,           <span class="comment">//推挽输出</span></span><br><span class="line">  GPIO_Mode_AF_OD = <span class="number">0x1C</span>,            <span class="comment">//复用开漏</span></span><br><span class="line">  GPIO_Mode_AF_PP = <span class="number">0x18</span>             <span class="comment">//复用推挽</span></span><br><span class="line">&#125;GPIOMode_TypeDef;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="NVIC"><a href="#NVIC" class="headerlink" title="NVIC"></a>NVIC</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">NVIC_PriorityGroupConfig</span><span class="params">(<span class="type">uint32_t</span> NVIC_PriorityGroup)</span>;                  <span class="comment">//设置中断优先级分组</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_Init</span><span class="params">(NVIC_InitTypeDef* NVIC_InitStruct)</span>;                           <span class="comment">//用结构体参数配置NVIC</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_SetVectorTable</span><span class="params">(<span class="type">uint32_t</span> NVIC_VectTab, <span class="type">uint32_t</span> Offset)</span>;            <span class="comment">//设置中断向量表</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_SystemLPConfig</span><span class="params">(<span class="type">uint8_t</span> LowPowerMode, FunctionalState NewState)</span>;    <span class="comment">//系统低功耗配置</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="EXIT"><a href="#EXIT" class="headerlink" title="EXIT"></a>EXIT</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">EXTI_DeInit</span><span class="params">(<span class="type">void</span>)</span>;              	                   <span class="comment">//清除EXTI配置</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_Init</span><span class="params">(EXTI_InitTypeDef* EXTI_InitStruct)</span>;         <span class="comment">//用结构体参数配置EXTI</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_StructInit</span><span class="params">(EXTI_InitTypeDef* EXTI_InitStruct)</span>;   <span class="comment">//给结构体赋予默认值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_GenerateSWInterrupt</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;         <span class="comment">//软件触发外部中断</span></span><br><span class="line">FlagStatus <span class="title function_">EXTI_GetFlagStatus</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;         <span class="comment">//获取指定的的中断标志位</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_ClearFlag</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;                   <span class="comment">//清除中断标志位</span></span><br><span class="line">ITStatus <span class="title function_">EXTI_GetITStatus</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;             <span class="comment">//在中断函数里获取标志位</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_ClearITPendingBit</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;           <span class="comment">//在中断函数里清除标志位</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>结构体</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">uint32_t</span> EXTI_Line;               <span class="comment">//指定配置的中断线</span></span><br><span class="line">  EXTIMode_TypeDef EXTI_Mode;       <span class="comment">//指定中断模式</span></span><br><span class="line">  EXTITrigger_TypeDef EXTI_Trigger; <span class="comment">//指定配置的中断线</span></span><br><span class="line">  FunctionalState EXTI_LineCmd;     <span class="comment">//指定触发中断的模式</span></span><br><span class="line">&#125;EXTI_InitTypeDef;</span><br></pre></td></tr></table></figure>
-
-<h3 id="TIM"><a href="#TIM" class="headerlink" title="TIM"></a>TIM</h3><p>过长，具体参考STM32固件函数库手册。</p>
-<table>
-<thead>
-<tr>
-<th>函数名</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>TIM_DeInit</td>
-<td>将外设 TIMx 寄存器重设为缺省值</td>
-</tr>
-<tr>
-<td>TIM_TimeBaseInit</td>
-<td>根据 TIM_TimeBaseInitStruct 中指定的参数初始化   间基数单位</td>
-</tr>
-<tr>
-<td>TIM_OCInit</td>
-<td>根据 TIM_OCInitStruct 中指定的参数初始化外设</td>
-</tr>
-<tr>
-<td>TIM_ICInit</td>
-<td>根据 TIM_ICInitStruct 中指定的参数初始化外设 T</td>
-</tr>
-<tr>
-<td>TIM_TimeBaseStructInit</td>
-<td>把 TIM_TimeBaseInitStruct 中的每一个参数按缺省</td>
-</tr>
-<tr>
-<td>TIM_OCStructInit</td>
-<td>把 TIM_OCInitStruct 中的每一个参数按缺省值填</td>
-</tr>
-<tr>
-<td>TIM_ICStructInit</td>
-<td>把 TIM_ICInitStruct 中的每一个参数按缺省值填入</td>
-</tr>
-<tr>
-<td>TIM_Cmd</td>
-<td>使能或者失能 TIMx 外设</td>
-</tr>
-<tr>
-<td>TIM _ITConfig</td>
-<td>使能或者失能指定的 TIM 中断</td>
-</tr>
-<tr>
-<td>TIM_DMAConfig</td>
-<td>设置 TIMx 的 DMA 接口</td>
-</tr>
-<tr>
-<td>TIM_DMACmd</td>
-<td>使能或者失能指定的 TIMx 的 DMA 请求</td>
-</tr>
-<tr>
-<td>TIM_InternalClockConfig</td>
-<td>设置 TIMx 内部时钟</td>
-</tr>
-<tr>
-<td>TIM_ITRxExternalClockConfig</td>
-<td>设置 TIMx 内部触发为外部时钟模式</td>
-</tr>
-<tr>
-<td>TIM_TIxExternalClockConfig</td>
-<td>设置 TIMx 触发为外部时钟</td>
-</tr>
-<tr>
-<td>TIM_ETRClockMode1Config</td>
-<td>配置 TIMx 外部时钟模式  1</td>
-</tr>
-<tr>
-<td>TIM_ETRClockMode2Config</td>
-<td>配置 TIMx 外部时钟模式  2</td>
-</tr>
-<tr>
-<td>TIM_ETRConfig</td>
-<td>配置 TIMx 外部触发</td>
-</tr>
-<tr>
-<td>TIM_SelectInputTrigger</td>
-<td>选择 TIMx 输入触发源</td>
-</tr>
-<tr>
-<td>TIM_PrescalerConfig</td>
-<td>设置 TIMx 预分频</td>
-</tr>
-<tr>
-<td>TIM_CounterModeConfig</td>
-<td>设置 TIMx 计数器模式</td>
-</tr>
-<tr>
-<td>TIM_ForcedOC1Config</td>
-<td>置 TIMx 输出 1 为活动或者非活动电平</td>
-</tr>
-<tr>
-<td>TIM_ForcedOC2Config</td>
-<td>置 TIMx 输出 2 为活动或者非活动电平</td>
-</tr>
-<tr>
-<td>TIM_ForcedOC3Config</td>
-<td>置 TIMx 输出 3 为活动或者非活动电平</td>
-</tr>
-<tr>
-<td>TIM_ForcedOC4Config</td>
-<td>置 TIMx 输出 4 为活动或者非活动电平</td>
-</tr>
-<tr>
-<td>TIM_ARRPreloadConfig</td>
-<td>使能或者失能 TIMx 在 ARR 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_SelectCCDMA</td>
-<td>选择 TIMx 外设的捕获比较  DMA 源</td>
-</tr>
-<tr>
-<td>TIM_OC1PreloadConfig</td>
-<td>使能或者失能 TIMx 在 CCR1 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_OC2PreloadConfig</td>
-<td>使能或者失能 TIMx 在 CCR2 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_OC3PreloadConfig</td>
-<td>使能或者失能 TIMx 在 CCR3 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_OC4PreloadConfig</td>
-<td>使能或者失能 TIMx 在 CCR4 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_OC1FastConfig</td>
-<td>设置 TIMx 捕获比较  1 快速特征</td>
-</tr>
-<tr>
-<td>TIM_OC2FastConfig</td>
-<td>设置 TIMx 捕获比较 2  快速特征</td>
-</tr>
-<tr>
-<td>TIM_OC3FastConfig</td>
-<td>设置 TIMx 捕获比较 3  快速特征</td>
-</tr>
-<tr>
-<td>TIM_OC4FastConfig</td>
-<td>设置 TIMx 捕获比较 4  快速特征</td>
-</tr>
-<tr>
-<td>TIM_ClearOC1Ref</td>
-<td>在一个外部事件时清除或者保持 OCREF1 信号</td>
-</tr>
-<tr>
-<td>TIM_ClearOC2Ref</td>
-<td>在一个外部事件时清除或者保持 OCREF2 信号</td>
-</tr>
-<tr>
-<td>TIM_ClearOC3Ref</td>
-<td>在一个外部事件时清除或者保持 OCREF3 信号</td>
-</tr>
-<tr>
-<td>TIM_ClearOC4Ref</td>
-<td>在一个外部事件时清除或者保持 OCREF4 信号</td>
-</tr>
-<tr>
-<td>TIM_UpdateDisableConfig</td>
-<td>使能或者失能 TIMx 更新事件</td>
-</tr>
-<tr>
-<td>TIM_EncoderInterfaceConfig</td>
-<td>设置 TIMx 编码界面</td>
-</tr>
-<tr>
-<td>TIM_GenerateEvent</td>
-<td>设置 TIMx 事件由软件产生</td>
-</tr>
-<tr>
-<td>TIM_OC1PolarityConfig</td>
-<td>设置 TIMx 通道 1 极性</td>
-</tr>
-<tr>
-<td>TIM_OC2PolarityConfig</td>
-<td>设置 TIMx 通道 2 极性</td>
-</tr>
-<tr>
-<td>TIM_OC3PolarityConfig</td>
-<td>设置 TIMx 通道 3 极性</td>
-</tr>
-<tr>
-<td>TIM_OC4PolarityConfig</td>
-<td>设置 TIMx 通道 4 极性</td>
-</tr>
-<tr>
-<td>TIM_UpdateRequestConfig</td>
-<td>设置 TIMx 更新请求源</td>
-</tr>
-<tr>
-<td>TIM_SelectHallSensor</td>
-<td>使能或者失能 TIMx 霍尔传感器接口</td>
-</tr>
-<tr>
-<td>TIM_SelectOnePulseMode</td>
-<td>设置 TIMx 单脉冲模式</td>
-</tr>
-<tr>
-<td>TIM_SelectOutputTrigger</td>
-<td>选择 TIMx 触发输出模式</td>
-</tr>
-<tr>
-<td>TIM_SelectSlaveMode</td>
-<td>选择 TIMx 从模式</td>
-</tr>
-<tr>
-<td>TIM_SelectMasterSlaveMode</td>
-<td>设置或者重置 TIMx 主&#x2F;从模式</td>
-</tr>
-<tr>
-<td>TIM_SetCounter</td>
-<td>设置 TIMx 计数器寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetAutoreload</td>
-<td>设置 TIMx 自动重装载寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetCompare1</td>
-<td>设置 TIMx 捕获比较 1  寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetCompare2</td>
-<td>设置 TIMx 捕获比较 2  寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetCompare3</td>
-<td>设置 TIMx 捕获比较 3  寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetCompare4</td>
-<td>设置 TIMx 捕获比较 4  寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetIC1Prescaler</td>
-<td>设置 TIMx 输入捕获 1  预分频</td>
-</tr>
-<tr>
-<td>TIM_SetIC2Prescaler</td>
-<td>设置 TIMx 输入捕获 2  预分频</td>
-</tr>
-<tr>
-<td>TIM_SetIC3Prescaler</td>
-<td>设置 TIMx 输入捕获 3  预分频</td>
-</tr>
-<tr>
-<td>TIM_SetIC4Prescaler</td>
-<td>设置 TIMx 输入捕获 4  预分频</td>
-</tr>
-<tr>
-<td>TIM_SetClockDivision</td>
-<td>设置 TIMx 的时钟分割值</td>
-</tr>
-<tr>
-<td>TIM_GetCapture1</td>
-<td>获得 TIMx 输入捕获 1  的值</td>
-</tr>
-<tr>
-<td>TIM_GetCapture2</td>
-<td>获得 TIMx 输入捕获 2  的值</td>
-</tr>
-<tr>
-<td>TIM_GetCapture3</td>
-<td>获得 TIMx 输入捕获 3  的值</td>
-</tr>
-<tr>
-<td>TIM_GetCapture4</td>
-<td>获得 TIMx 输入捕获 4  的值</td>
-</tr>
-<tr>
-<td>TIM_GetCounter</td>
-<td>获得 TIMx 计数器的值</td>
-</tr>
-<tr>
-<td>TIM_GetPrescaler</td>
-<td>获得 TIMx 预分频值</td>
-</tr>
-<tr>
-<td>TIM_GetFlagStatus</td>
-<td>检查指定的 TIM 标志位设置与否</td>
-</tr>
-<tr>
-<td>TIM_ClearFlag</td>
-<td>清除 TIMx 的待处理标志位</td>
-</tr>
-<tr>
-<td>TIM_GetITStatus</td>
-<td>检查指定的 TIM 中断发生与否</td>
-</tr>
-<tr>
-<td>TIM_ClearITPendingBit</td>
-<td>清除 TIMx 的中断待处理位</td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>stm32归档</category>
-      </categories>
-      <tags>
-        <tag>单片机</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>stm32综述</title>
-    <url>/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/</url>
-    <content><![CDATA[<p>　　大概有一段时间没看stm32，通过之前学51的经历，大概是明白自己一段时间不看就会忘，虽然随便翻翻又能快速上手，但是东找西翻比较麻烦。所以打算复习的时候，顺便做个笔记记录一下。自己所用的型号为<strong>STM32F103C8T6</strong>。<span id="more"></span></p>
-<h6 id="STM简述"><a href="#STM简述" class="headerlink" title="STM简述"></a>STM简述</h6><p>　　STM32是ST公司基于ARM- Cortex-M内核开发的32位微控制器（MCU）。自己所用的是STM32F1系列，属于Mainstream，内核Cortex-M3。ARM公司设计ARM内核，半导体厂商完善内核周边电路并产生芯片。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104303863.png" class="" title="image-20230724104303863">
-
-<p>图中的ARM由ARM公司设计，芯片内的存储和外设（比如GPIO,定时器）由ST公司设计。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104427576.png" class="" title="image-20230724104427576">
-
-<p>这是一枚STM32F103C8T6的芯片，由芯片可以看出型号和封装。封装为LQFP48，芯片表面左下角有个圆点，圆点下的引脚为1顺着原点逆时针开始数。如果芯片有两个圆点，则从最小的圆点开始数。</p>
-<h6 id="片上资源-x2F-外设"><a href="#片上资源-x2F-外设" class="headerlink" title="片上资源&#x2F;外设"></a><strong>片上资源&#x2F;外设</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104939703.png" class="" title="image-20230724104939703">
-
-<p>绿色背景加黑的是位于内核的外设。另外C8T6并没有表中的DAC,SDIO,FSMC和USB OTG外设。</p>
-<p>NVIC:内核里面用于管理中断的设备，例如配置中断优先级。</p>
-<p>SysTick:用来给操作系统提供定时服务。应为STM32可以加入Freektos，ucos等操作系统，利用SysTick提供定时进行任务切换的功能。</p>
-<p>RCC：复位和时钟控制，可以对系统的时钟进行配置，还能使能各模块的时钟。在STM32中，外设上电后是默认没有时钟。没有时钟，外设无法工作。</p>
-<p>GPIO：通用的IO口，可以用于操控模块，比如灯，马达等。</p>
-<p>AFIO：完成复用功能端口的重定义，还有中断端口的置配。</p>
-<p>EXTI：配置好外部中断后，当引脚有电平变化时，就可以触发中断，让CPU来处理任务。</p>
-<p>TIM定时器：分为基本定时器，通用定时器，高级定时器。不仅可以完成定时中断的任务，还可以用于测频率，生成PWM波形，配置为专用的编码器接口。</p>
-<p>ADC：模数转换器，STM32内置了12位的AD转换器，可以直接读取IO口的模拟电压，无需外置。</p>
-<p>DMA：直接内存访问，可以帮助CPU搬运大量数据等这种繁杂任务。</p>
-<p>I2C&#x2F;SPI：两种常见的通信协议。</p>
-<p>RTC：实时时钟，在STM32内部完成时，分，秒的计时功能，还可以外接电源，即使掉电也能</p>
-<p>正常运行（此时会启用芯片备用电池）。</p>
-<p>CRC：一种数据校验方式，用于判断接受的数据是否正确。</p>
-<p>IWDG&#x2F;WWDG:当单片机因为电磁干扰死机或者程序设计不合理导致的死循环时，看门狗可以及时复位，保证系统稳定。</p>
-<p>DAC：数模转换器，可以在IO口直接输出模拟电压。</p>
-<p>OTG：使STM32作为USB主机去读取其它USB设备。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111613998.png" class="" title="image-20230724111613998">
-
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111625157.png" class="" title="image-20230724111625157">
-
-
-
-<h6 id="系统结构"><a href="#系统结构" class="headerlink" title="系统结构"></a><strong>系统结构</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111735194.png" class="" title="image-20230724111735194">
-
-<p>ICode（指令总线）和Dcode（数据总线）用来连接Flash闪存，Flash存放的是我们编写的程序，ICode用于加载程序指令，Dcode用于加载数据，如常数和调试数据。</p>
-<p>系统总线就连接到如SRAM（用于存储程序运行时的变量数据）</p>
-<p>AHB系统总线：用于挂载主要的外设，AHB指先进高性能总线，挂载最基本的或者性能比较高的外设，如复位和时钟控制  SDIO。</p>
-<p>APB：先进外设总线，用于连接一般的外设。</p>
-<p>DMA：大量的数据搬运，防止覆盖。</p>
-<h6 id="引脚定义"><a href="#引脚定义" class="headerlink" title="引脚定义"></a>引脚定义</h6><p>红色是电源相关的引脚</p>
-<p>蓝色是最小系统相关的引脚</p>
-<p>绿色是IO口&#x2F;功能口相关的引脚</p>
-<p>S代表电源，I&#x2F;O代表输入输出，I&#x2F;O电平代表所能容忍的电压。FT代表能容忍5V，默认复用是IO口上同时连接的外设功能引脚。重定义：如果有2个功能同时复用在了1个IO口上，可以把其中一个复用功能重映射到其他端口上。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230726084013246.png" class="" title="image-20230726084013246">
-
-
-
-<p>1.　　　VBAT：备用电池供电引脚，当系统电源断电时，备用电池可以给内部的RTC时钟和备份寄存器提供电源。</p>
-<p>2.　　　IO口&#x2F;侵入检测&#x2F;RTC：IO口可以根据程序输出读取高低电平</p>
-<p>3.4　IO口&#x2F;接32.768kHZ的RTC晶振</p>
-<p>5,6　接系统的主晶振，芯片内有锁相环电路，对8MHZ进行倍频形成72MHZ。</p>
-<p>7　　系统复位引脚，N代表低电平复位</p>
-<p>8,9　内部模拟部分的电源，如ADC,RC振荡器  VSS(-) VDD(+)</p>
-<p>10-19　都是IO口，10号引脚还兼具了WKUP用于唤醒对于待机模式的STM32</p>
-<p>20　IO口&#x2F;BOOT1引脚，BOOT用来配置启动模式    44.　BOOT0</p>
-<p>21.22.25-33.41-43.45.46 都是IO口</p>
-<p>23,24是系统的主电源口， 35.36.47.48    STM32采用分区供电模式</p>
-<p>34,37-40　IO口&#x2F;调试端口      STM32支持SWD和JTAG两种调试方法</p>
-<p>启动配置（BOOT0和BOOT1）</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140258741.png" class="" title="image-20230801140258741">
-
-<p>作用：指定程序开始运行的位置，一般情况下，程序是在Flash程序存储器开始执行</p>
-<p>接1指3.3V电源正的意思</p>
-<p>系统存储器就是STM32中的一段BootLoader(接受串口数据，然后刷新到主闪存中)</p>
-<p>核心板原理图</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140602387.png" class="" title="image-20230801140602387">
-
 ]]></content>
       <categories>
         <category>stm32归档</category>
