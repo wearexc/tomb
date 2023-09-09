@@ -2190,85 +2190,106 @@ uint32_t IC_GetDuty(void)
     return (TIM_GetCapture2(TIM3) + 1) * 100 / (TIM_GetCapture1(TIM3) + 1);
 &#125;
 </code> </pre> </details>
-]]></content>
-      <categories>
-        <category>stm32归档</category>
-      </categories>
-      <tags>
-        <tag>单片机</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>stm32综述</title>
-    <url>/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/</url>
-    <content><![CDATA[<p>　　大概有一段时间没看stm32，通过之前学51的经历，大概是明白自己一段时间不看就会忘，虽然随便翻翻又能快速上手，但是东找西翻比较麻烦。所以打算复习的时候，顺便做个笔记记录一下。自己所用的型号为<strong>STM32F103C8T6</strong>。<span id="more"></span></p>
-<h6 id="STM简述"><a href="#STM简述" class="headerlink" title="STM简述"></a>STM简述</h6><p>　　STM32是ST公司基于ARM- Cortex-M内核开发的32位微控制器（MCU）。自己所用的是STM32F1系列，属于Mainstream，内核Cortex-M3。ARM公司设计ARM内核，半导体厂商完善内核周边电路并产生芯片。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104303863.png" class="" title="image-20230724104303863">
-
-<p>图中的ARM由ARM公司设计，芯片内的存储和外设（比如GPIO,定时器）由ST公司设计。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104427576.png" class="" title="image-20230724104427576">
-
-<p>这是一枚STM32F103C8T6的芯片，由芯片可以看出型号和封装。封装为LQFP48，芯片表面左下角有个圆点，圆点下的引脚为1顺着原点逆时针开始数。如果芯片有两个圆点，则从最小的圆点开始数。</p>
-<h6 id="片上资源-x2F-外设"><a href="#片上资源-x2F-外设" class="headerlink" title="片上资源&#x2F;外设"></a><strong>片上资源&#x2F;外设</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104939703.png" class="" title="image-20230724104939703">
-
-<p>绿色背景加黑的是位于内核的外设。另外C8T6并没有表中的DAC,SDIO,FSMC和USB OTG外设。</p>
-<p>NVIC:内核里面用于管理中断的设备，例如配置中断优先级。</p>
-<p>SysTick:用来给操作系统提供定时服务。应为STM32可以加入Freektos，ucos等操作系统，利用SysTick提供定时进行任务切换的功能。</p>
-<p>RCC：复位和时钟控制，可以对系统的时钟进行配置，还能使能各模块的时钟。在STM32中，外设上电后是默认没有时钟。没有时钟，外设无法工作。</p>
-<p>GPIO：通用的IO口，可以用于操控模块，比如灯，马达等。</p>
-<p>AFIO：完成复用功能端口的重定义，还有中断端口的置配。</p>
-<p>EXTI：配置好外部中断后，当引脚有电平变化时，就可以触发中断，让CPU来处理任务。</p>
-<p>TIM定时器：分为基本定时器，通用定时器，高级定时器。不仅可以完成定时中断的任务，还可以用于测频率，生成PWM波形，配置为专用的编码器接口。</p>
-<p>ADC：模数转换器，STM32内置了12位的AD转换器，可以直接读取IO口的模拟电压，无需外置。</p>
-<p>DMA：直接内存访问，可以帮助CPU搬运大量数据等这种繁杂任务。</p>
-<p>I2C&#x2F;SPI：两种常见的通信协议。</p>
-<p>RTC：实时时钟，在STM32内部完成时，分，秒的计时功能，还可以外接电源，即使掉电也能</p>
-<p>正常运行（此时会启用芯片备用电池）。</p>
-<p>CRC：一种数据校验方式，用于判断接受的数据是否正确。</p>
-<p>IWDG&#x2F;WWDG:当单片机因为电磁干扰死机或者程序设计不合理导致的死循环时，看门狗可以及时复位，保证系统稳定。</p>
-<p>DAC：数模转换器，可以在IO口直接输出模拟电压。</p>
-<p>OTG：使STM32作为USB主机去读取其它USB设备。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111613998.png" class="" title="image-20230724111613998">
-
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111625157.png" class="" title="image-20230724111625157">
 
 
+<h2 id="编码器接口"><a href="#编码器接口" class="headerlink" title="编码器接口"></a>编码器接口</h2><h3 id="编码器接口简介"><a href="#编码器接口简介" class="headerlink" title="编码器接口简介"></a>编码器接口简介</h3><p>•Encoder Interface 编码器接口</p>
+<p>•编码器接口可接收增量（正交）编码器的信号，根据编码器旋转产生的正交信号脉冲，自动控制CNT自增或自减，从而指示编码器的位置、旋转方向和旋转速度</p>
+<p>•每个高级定时器和通用定时器都拥有1个编码器接口</p>
+<p>•两个输入引脚借用了输入捕获的通道1和通道2（CH1和CH2引脚）</p>
+<h3 id="正交编码器"><a href="#正交编码器" class="headerlink" title="正交编码器"></a>正交编码器</h3><p>正交编码器可以输出两个相位相差90°的方波信号。接入stm32，可看成一个带有方向控制的外部时钟。</p>
+<img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230908100020216.png" class="" title="image-20230908100020216">
 
-<h6 id="系统结构"><a href="#系统结构" class="headerlink" title="系统结构"></a><strong>系统结构</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111735194.png" class="" title="image-20230724111735194">
+<p>使用正交信号精度更高，相当于AB相都参与计次，提高计次频率的同时，也可以抗干扰。</p>
+<h3 id="编码器接口基本结构"><a href="#编码器接口基本结构" class="headerlink" title="编码器接口基本结构"></a>编码器接口基本结构</h3><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230908105311721.png" class="" title="image-20230908105311721">
 
-<p>ICode（指令总线）和Dcode（数据总线）用来连接Flash闪存，Flash存放的是我们编写的程序，ICode用于加载程序指令，Dcode用于加载数据，如常数和调试数据。</p>
-<p>系统总线就连接到如SRAM（用于存储程序运行时的变量数据）</p>
-<p>AHB系统总线：用于挂载主要的外设，AHB指先进高性能总线，挂载最基本的或者性能比较高的外设，如复位和时钟控制  SDIO。</p>
-<p>APB：先进外设总线，用于连接一般的外设。</p>
-<p>DMA：大量的数据搬运，防止覆盖。</p>
-<h6 id="引脚定义"><a href="#引脚定义" class="headerlink" title="引脚定义"></a>引脚定义</h6><p>红色是电源相关的引脚</p>
-<p>蓝色是最小系统相关的引脚</p>
-<p>绿色是IO口&#x2F;功能口相关的引脚</p>
-<p>S代表电源，I&#x2F;O代表输入输出，I&#x2F;O电平代表所能容忍的电压。FT代表能容忍5V，默认复用是IO口上同时连接的外设功能引脚。重定义：如果有2个功能同时复用在了1个IO口上，可以把其中一个复用功能重映射到其他端口上。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230726084013246.png" class="" title="image-20230726084013246">
+<h3 id="工作模式"><a href="#工作模式" class="headerlink" title="工作模式"></a>工作模式</h3><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230908105519483.png" class="" title="image-20230908105519483">
 
+<h3 id="实例（均不反相）"><a href="#实例（均不反相）" class="headerlink" title="实例（均不反相）"></a>实例（均不反相）</h3><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230908105542093.png" class="" title="image-20230908105542093">
 
+<h3 id="实例（TI1反相）"><a href="#实例（TI1反相）" class="headerlink" title="实例（TI1反相）"></a>实例（TI1反相）</h3><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230908211901582.png" class="" title="image-20230908211901582">
 
-<p>1.　　　VBAT：备用电池供电引脚，当系统电源断电时，备用电池可以给内部的RTC时钟和备份寄存器提供电源。</p>
-<p>2.　　　IO口&#x2F;侵入检测&#x2F;RTC：IO口可以根据程序输出读取高低电平</p>
-<p>3.4　IO口&#x2F;接32.768kHZ的RTC晶振</p>
-<p>5,6　接系统的主晶振，芯片内有锁相环电路，对8MHZ进行倍频形成72MHZ。</p>
-<p>7　　系统复位引脚，N代表低电平复位</p>
-<p>8,9　内部模拟部分的电源，如ADC,RC振荡器  VSS(-) VDD(+)</p>
-<p>10-19　都是IO口，10号引脚还兼具了WKUP用于唤醒对于待机模式的STM32</p>
-<p>20　IO口&#x2F;BOOT1引脚，BOOT用来配置启动模式    44.　BOOT0</p>
-<p>21.22.25-33.41-43.45.46 都是IO口</p>
-<p>23,24是系统的主电源口， 35.36.47.48    STM32采用分区供电模式</p>
-<p>34,37-40　IO口&#x2F;调试端口      STM32支持SWD和JTAG两种调试方法</p>
-<p>启动配置（BOOT0和BOOT1）</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140258741.png" class="" title="image-20230801140258741">
+<p>如果接入编码器后，需要调整数据加减的方向，可直接调用极性选择。</p>
+<h3 id="示例程序-5"><a href="#示例程序-5" class="headerlink" title="示例程序"></a>示例程序</h3><h4 id="编码器测速"><a href="#编码器测速" class="headerlink" title="编码器测速"></a>编码器测速</h4>
 
-<p>作用：指定程序开始运行的位置，一般情况下，程序是在Flash程序存储器开始执行</p>
-<p>接1指3.3V电源正的意思</p>
-<p>系统存储器就是STM32中的一段BootLoader(接受串口数据，然后刷新到主闪存中)</p>
-<p>核心板原理图</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140602387.png" class="" title="image-20230801140602387">
+<p>选择上拉输入或下拉输入时，应参考外部模块的默认输出电平，保持一致。防止电平冲突。</p>
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"       
+#include "Delay.h"             
+#include "OLED.h"              
+#include "Timer.h"             
+#include "Encoder.h"           
+//
+int16_t Speed;                  
+//
+int main(void)
+&#123;
+//初始化
+    OLED_Init();               
+    Timer_Init();              
+    Encoder_Init();            
+    OLED_ShowString(1, 1, "Speed:");
+    while (1)
+    &#123;
+        Speed = Encoder_Get();  						 	// 获取编码器的值并存储在Speed变量中
+        OLED_ShowSignedNum(1, 7, Speed, 5);   // 在OLED上显示Speed的值
+    &#125;
+&#125;
+//
+void TIM2_IRQHandler(void)
+&#123;
+    if (TIM_GetITStatus(TIM2, TIM_IT_Update) == SET)
+    &#123;
+        Speed = Encoder_Get();                            // 获取编码器的值并存储在Speed变量中
+        TIM_ClearITPendingBit(TIM2, TIM_IT_Update);       // 清除定时器2更新中断标志位
+    &#125;
+&#125;
+</code> </pre> </details>
 
+<details>  <summary><font size="4" color="orange">Encoder.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"  // 包含STM32标准库的头文件
+void Encoder_Init(void)
+&#123;
+//开启时钟
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);  
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE); 
+// 配置GPIO引脚模式、速度、和上拉输入
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+// 配置TIM3定时器为编码器模式
+    TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
+    TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+    TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    TIM_TimeBaseInitStructure.TIM_Period = 65536 - 1;
+    TIM_TimeBaseInitStructure.TIM_Prescaler = 1 - 1;
+    TIM_TimeBaseInitStructure.TIM_RepetitionCounter = 0;
+    TIM_TimeBaseInit(TIM3, &TIM_TimeBaseInitStructure);
+// 配置TIM3的输入捕获通道1和通道2
+    TIM_ICInitTypeDef TIM_ICInitStructure;
+    TIM_ICStructInit(&TIM_ICInitStructure);
+    TIM_ICInitStructure.TIM_Channel = TIM_Channel_1;
+    TIM_ICInitStructure.TIM_ICFilter = 0xF;
+    TIM_ICInit(TIM3, &TIM_ICInitStructure);
+    TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
+    TIM_ICInitStructure.TIM_ICFilter = 0xF;
+    TIM_ICInit(TIM3, &TIM_ICInitStructure);
+// 配置编码器接口
+    TIM_EncoderInterfaceConfig(TIM3, TIM_EncoderMode_TI12, TIM_ICPolarity_Rising, TIM_ICPolarity_Rising);
+// 启动TIM3定时器
+    TIM_Cmd(TIM3, ENABLE);  
+&#125;
+//
+int16_t Encoder_Get(void)
+&#123;
+    int16_t Temp;
+    Temp = TIM_GetCounter(TIM3);  // 获取TIM3计数器的值
+    TIM_SetCounter(TIM3, 0);     // 清零TIM3计数器的值
+    return Temp;                  // 返回获取到的值
+&#125;
+</code> </pre> </details>
+# ADC
 ]]></content>
       <categories>
         <category>stm32归档</category>
@@ -2616,6 +2637,85 @@ uint32_t IC_GetDuty(void)
       </tags>
   </entry>
   <entry>
+    <title>stm32综述</title>
+    <url>/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/</url>
+    <content><![CDATA[<p>　　大概有一段时间没看stm32，通过之前学51的经历，大概是明白自己一段时间不看就会忘，虽然随便翻翻又能快速上手，但是东找西翻比较麻烦。所以打算复习的时候，顺便做个笔记记录一下。自己所用的型号为<strong>STM32F103C8T6</strong>。<span id="more"></span></p>
+<h6 id="STM简述"><a href="#STM简述" class="headerlink" title="STM简述"></a>STM简述</h6><p>　　STM32是ST公司基于ARM- Cortex-M内核开发的32位微控制器（MCU）。自己所用的是STM32F1系列，属于Mainstream，内核Cortex-M3。ARM公司设计ARM内核，半导体厂商完善内核周边电路并产生芯片。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104303863.png" class="" title="image-20230724104303863">
+
+<p>图中的ARM由ARM公司设计，芯片内的存储和外设（比如GPIO,定时器）由ST公司设计。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104427576.png" class="" title="image-20230724104427576">
+
+<p>这是一枚STM32F103C8T6的芯片，由芯片可以看出型号和封装。封装为LQFP48，芯片表面左下角有个圆点，圆点下的引脚为1顺着原点逆时针开始数。如果芯片有两个圆点，则从最小的圆点开始数。</p>
+<h6 id="片上资源-x2F-外设"><a href="#片上资源-x2F-外设" class="headerlink" title="片上资源&#x2F;外设"></a><strong>片上资源&#x2F;外设</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104939703.png" class="" title="image-20230724104939703">
+
+<p>绿色背景加黑的是位于内核的外设。另外C8T6并没有表中的DAC,SDIO,FSMC和USB OTG外设。</p>
+<p>NVIC:内核里面用于管理中断的设备，例如配置中断优先级。</p>
+<p>SysTick:用来给操作系统提供定时服务。应为STM32可以加入Freektos，ucos等操作系统，利用SysTick提供定时进行任务切换的功能。</p>
+<p>RCC：复位和时钟控制，可以对系统的时钟进行配置，还能使能各模块的时钟。在STM32中，外设上电后是默认没有时钟。没有时钟，外设无法工作。</p>
+<p>GPIO：通用的IO口，可以用于操控模块，比如灯，马达等。</p>
+<p>AFIO：完成复用功能端口的重定义，还有中断端口的置配。</p>
+<p>EXTI：配置好外部中断后，当引脚有电平变化时，就可以触发中断，让CPU来处理任务。</p>
+<p>TIM定时器：分为基本定时器，通用定时器，高级定时器。不仅可以完成定时中断的任务，还可以用于测频率，生成PWM波形，配置为专用的编码器接口。</p>
+<p>ADC：模数转换器，STM32内置了12位的AD转换器，可以直接读取IO口的模拟电压，无需外置。</p>
+<p>DMA：直接内存访问，可以帮助CPU搬运大量数据等这种繁杂任务。</p>
+<p>I2C&#x2F;SPI：两种常见的通信协议。</p>
+<p>RTC：实时时钟，在STM32内部完成时，分，秒的计时功能，还可以外接电源，即使掉电也能</p>
+<p>正常运行（此时会启用芯片备用电池）。</p>
+<p>CRC：一种数据校验方式，用于判断接受的数据是否正确。</p>
+<p>IWDG&#x2F;WWDG:当单片机因为电磁干扰死机或者程序设计不合理导致的死循环时，看门狗可以及时复位，保证系统稳定。</p>
+<p>DAC：数模转换器，可以在IO口直接输出模拟电压。</p>
+<p>OTG：使STM32作为USB主机去读取其它USB设备。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111613998.png" class="" title="image-20230724111613998">
+
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111625157.png" class="" title="image-20230724111625157">
+
+
+
+<h6 id="系统结构"><a href="#系统结构" class="headerlink" title="系统结构"></a><strong>系统结构</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111735194.png" class="" title="image-20230724111735194">
+
+<p>ICode（指令总线）和Dcode（数据总线）用来连接Flash闪存，Flash存放的是我们编写的程序，ICode用于加载程序指令，Dcode用于加载数据，如常数和调试数据。</p>
+<p>系统总线就连接到如SRAM（用于存储程序运行时的变量数据）</p>
+<p>AHB系统总线：用于挂载主要的外设，AHB指先进高性能总线，挂载最基本的或者性能比较高的外设，如复位和时钟控制  SDIO。</p>
+<p>APB：先进外设总线，用于连接一般的外设。</p>
+<p>DMA：大量的数据搬运，防止覆盖。</p>
+<h6 id="引脚定义"><a href="#引脚定义" class="headerlink" title="引脚定义"></a>引脚定义</h6><p>红色是电源相关的引脚</p>
+<p>蓝色是最小系统相关的引脚</p>
+<p>绿色是IO口&#x2F;功能口相关的引脚</p>
+<p>S代表电源，I&#x2F;O代表输入输出，I&#x2F;O电平代表所能容忍的电压。FT代表能容忍5V，默认复用是IO口上同时连接的外设功能引脚。重定义：如果有2个功能同时复用在了1个IO口上，可以把其中一个复用功能重映射到其他端口上。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230726084013246.png" class="" title="image-20230726084013246">
+
+
+
+<p>1.　　　VBAT：备用电池供电引脚，当系统电源断电时，备用电池可以给内部的RTC时钟和备份寄存器提供电源。</p>
+<p>2.　　　IO口&#x2F;侵入检测&#x2F;RTC：IO口可以根据程序输出读取高低电平</p>
+<p>3.4　IO口&#x2F;接32.768kHZ的RTC晶振</p>
+<p>5,6　接系统的主晶振，芯片内有锁相环电路，对8MHZ进行倍频形成72MHZ。</p>
+<p>7　　系统复位引脚，N代表低电平复位</p>
+<p>8,9　内部模拟部分的电源，如ADC,RC振荡器  VSS(-) VDD(+)</p>
+<p>10-19　都是IO口，10号引脚还兼具了WKUP用于唤醒对于待机模式的STM32</p>
+<p>20　IO口&#x2F;BOOT1引脚，BOOT用来配置启动模式    44.　BOOT0</p>
+<p>21.22.25-33.41-43.45.46 都是IO口</p>
+<p>23,24是系统的主电源口， 35.36.47.48    STM32采用分区供电模式</p>
+<p>34,37-40　IO口&#x2F;调试端口      STM32支持SWD和JTAG两种调试方法</p>
+<p>启动配置（BOOT0和BOOT1）</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140258741.png" class="" title="image-20230801140258741">
+
+<p>作用：指定程序开始运行的位置，一般情况下，程序是在Flash程序存储器开始执行</p>
+<p>接1指3.3V电源正的意思</p>
+<p>系统存储器就是STM32中的一段BootLoader(接受串口数据，然后刷新到主闪存中)</p>
+<p>核心板原理图</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140602387.png" class="" title="image-20230801140602387">
+
+]]></content>
+      <categories>
+        <category>stm32归档</category>
+      </categories>
+      <tags>
+        <tag>单片机</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>分支结构</title>
     <url>/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/</url>
     <content><![CDATA[<h5 id="小学数学-N-合一"><a href="#小学数学-N-合一" class="headerlink" title="小学数学 N 合一"></a>小学数学 N 合一</h5><p><strong>题目描述</strong><span id="more"></span></p>
@@ -2867,9 +2967,30 @@ uint32_t IC_GetDuty(void)
       </tags>
   </entry>
   <entry>
+    <title>实用软件</title>
+    <url>/2023/08/10/%E5%AE%9E%E7%94%A8%E8%BD%AF%E4%BB%B6/</url>
+    <content><![CDATA[<p>有段时间，对于某些需求挺强烈的，但是也花了不少时间，不过可能也就那段时间用用罢了。或许可以整理一下，已经容易忘事了。<span id="more"></span></p>
+<h3 id="远程屏幕分享"><a href="#远程屏幕分享" class="headerlink" title="远程屏幕分享"></a>远程屏幕分享</h3><p>单纯的一对一进行屏幕分享，按照分享的画面质量，延迟，帧率，大致可以做一个排名。当然，都是白嫖的。</p>
+<p>发送方是电脑，接收方可以是电脑，或者是手机。</p>
+<p>B站直播&gt;网页&gt;Skype&gt;钉钉&gt;qq</p>
+<p>B站直播简单易行，除非是注意隐私，或者分享禁播游戏。</p>
+<p>网页：<a href="https://easychuan.cn/">轻松传 - 传文件，传文本，传屏幕，传实时视频 (easychuan.cn)</a></p>
+<p>网页分享屏幕帧率上限30帧，画面比较清晰，偶有卡顿。</p>
+<p>Skype：免费注册，使用无需翻墙（或许注册的时候要），本质是一个网络电话，可以视频通话并分享屏幕，非常稳定。</p>
+<p>钉钉和qq懂的都懂，不做评价。</p>
+<h3 id="远程同乐"><a href="#远程同乐" class="headerlink" title="远程同乐"></a>远程同乐</h3><p>steam自带的远程同乐，Parsec(网络要求较高，需要公网，参考比特彗星黄绿灯），搭建局域网可用樱花映射（账号需要实名认证，并在支付宝扫脸，支付宝必须是实名认证时所填的身份信息并且18+，需要扫脸。软件较为良心）。</p>
+]]></content>
+      <categories>
+        <category>储物间</category>
+      </categories>
+      <tags>
+        <tag>杂七杂八</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>循环结构（未完）</title>
     <url>/2023/07/15/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[<h6 id="找最小值"><a href="#找最小值" class="headerlink" title="找最小值"></a>找最小值</h6><p>给出 .<em>n</em> 和 .<em>n</em> 个整数a<del>i</del> ，求这 <em>n</em> 个整数中最小值是什么。<span id="more"></span></p>
+    <content><![CDATA[<h3 id="找最小值"><a href="#找最小值" class="headerlink" title="找最小值"></a>找最小值</h3><p>给出 .<em>n</em> 和 .<em>n</em> 个整数a<del>i</del> ，求这 <em>n</em> 个整数中最小值是什么。<span id="more"></span></p>
 <p><strong>输入格式</strong></p>
 <p>第一行输入一个正整数 <em>n</em>，表示数字个数。</p>
 <p>第二行输入 <em>n</em> 个非负整数，表示 a<del>1</del> ,a<del>2</del> …..a<del>n</del>，以空格隔开。</p>
@@ -2879,7 +3000,7 @@ uint32_t IC_GetDuty(void)
 
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> n,i,num;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">    <span class="type">int</span> a[n];</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;a[i]);</span><br><span class="line">    	<span class="keyword">if</span>(i==<span class="number">0</span>) num=a[<span class="number">0</span>];</span><br><span class="line">    	<span class="keyword">if</span>(a[i]&lt;num) num=a[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,num);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
 
-<h6 id="分类平均"><a href="#分类平均" class="headerlink" title="分类平均"></a>分类平均</h6><p>给定 <em>n</em> 和 <em>k</em>，将从 1 到 <em>n</em> 之间的所有正整数可以分为两类：A 类数可以被 <em>k</em> 整除（也就是说是 <em>k</em> 的倍数），而 B 类数不能。请输出这两类数的平均数，精确到小数点后 1 位，用空格隔开。</p>
+<h3 id="分类平均"><a href="#分类平均" class="headerlink" title="分类平均"></a>分类平均</h3><p>给定 <em>n</em> 和 <em>k</em>，将从 1 到 <em>n</em> 之间的所有正整数可以分为两类：A 类数可以被 <em>k</em> 整除（也就是说是 <em>k</em> 的倍数），而 B 类数不能。请输出这两类数的平均数，精确到小数点后 1 位，用空格隔开。</p>
 <p>数据保证两类数的个数都不会是 0。</p>
 <p><strong>输入格式</strong></p>
 <p>输入两个正整数 <em>n</em> 与 <em>k</em>。</p>
@@ -2890,7 +3011,7 @@ uint32_t IC_GetDuty(void)
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> n,k,i,num=<span class="number">0</span>;</span><br><span class="line">    <span class="type">float</span> a,b;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;n,&amp;k);</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)   <span class="comment">//累加</span></span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">if</span>(i%k==<span class="number">0</span>) &#123;a+=i;num=num+<span class="number">1</span>;&#125; </span><br><span class="line">		<span class="keyword">else</span>&#123;b+=i;&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(k&gt;n) &#123;num=<span class="number">1</span>;	n=n+<span class="number">1</span>;&#125; <span class="comment">//如果k&gt;n，完善代码</span></span><br><span class="line">	a=a/(<span class="type">float</span>)num;         <span class="comment">//取平均数。</span></span><br><span class="line">	b=b/(<span class="type">float</span>)(n-num);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%.1f %.1f&quot;</span>,a,b);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
 
 <p>仍未通过洛谷测试点。</p>
-<h6 id="一尺之棰"><a href="#一尺之棰" class="headerlink" title="一尺之棰"></a>一尺之棰</h6><p>《庄子》中说到，“一尺之棰，日取其半，万世不竭”。第一天有一根长度为 <em>a</em> 的木棍，从第二天开始，每天都要将这根木棍锯掉一半（每次除 2，向下取整）。第几天的时候木棍的长度会变为 1？</p>
+<h3 id="一尺之棰"><a href="#一尺之棰" class="headerlink" title="一尺之棰"></a>一尺之棰</h3><p>《庄子》中说到，“一尺之棰，日取其半，万世不竭”。第一天有一根长度为 <em>a</em> 的木棍，从第二天开始，每天都要将这根木棍锯掉一半（每次除 2，向下取整）。第几天的时候木棍的长度会变为 1？</p>
 <p><strong>输入格式</strong></p>
 <p>输入一个正整数 <em>a</em>，表示木棍长度。</p>
 <p><strong>输出格式</strong></p>
@@ -2899,7 +3020,7 @@ uint32_t IC_GetDuty(void)
 
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> a,k,i,num=<span class="number">0</span>;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;a);</span><br><span class="line">    <span class="keyword">if</span>(a==<span class="number">1</span>) num=<span class="number">1</span>; <span class="comment">//应付测试点，当a=1时，表示第1天木棍长度为1，若不加，则a=1时，第0天木棍长度为1。</span></span><br><span class="line">    <span class="keyword">while</span>(a<span class="number">-1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">if</span>(a%<span class="number">2</span>&amp;&amp;a!=<span class="number">1</span>) &#123;a++;&#125;</span><br><span class="line">    	a=a/<span class="number">2</span>;</span><br><span class="line">    	num++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,num);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
 
-<h6 id="数字直角三角形"><a href="#数字直角三角形" class="headerlink" title="数字直角三角形"></a>数字直角三角形</h6><p>给出 <em>n</em>，请输出一个直角边长度是 <em>n</em> 的数字直角三角形。所有数字都是 2 位组成的，如果没有 2 位则加上前导 0。</p>
+<h3 id="数字直角三角形"><a href="#数字直角三角形" class="headerlink" title="数字直角三角形"></a>数字直角三角形</h3><p>给出 <em>n</em>，请输出一个直角边长度是 <em>n</em> 的数字直角三角形。所有数字都是 2 位组成的，如果没有 2 位则加上前导 0。</p>
 <p><strong>输入格式</strong></p>
 <p>输入一个正整数 <em>n</em>。</p>
 <p><strong>输出格式</strong></p>
@@ -2908,7 +3029,7 @@ uint32_t IC_GetDuty(void)
 
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> a,k,i,j,num=<span class="number">0</span>;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;a);</span><br><span class="line">    j=a;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;a;i++)</span><br><span class="line">	&#123;</span><br><span class="line">			<span class="keyword">for</span>(k=<span class="number">0</span>;k&lt;j;k++)</span><br><span class="line">			&#123;</span><br><span class="line">				num++;</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;%02d&quot;</span>,num);	</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">			j--;	</span><br><span class="line">	 &#125; </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
 
-<h6 id="阶乘之和（高精度）"><a href="#阶乘之和（高精度）" class="headerlink" title="阶乘之和（高精度）"></a>阶乘之和（高精度）</h6><p>用高精度计算出!<em>S</em>&#x3D;1!+2!+3!+⋯+<em>n</em>!（n*≤50）。</p>
+<h3 id="阶乘之和（高精度）"><a href="#阶乘之和（高精度）" class="headerlink" title="阶乘之和（高精度）"></a>阶乘之和（高精度）</h3><p>用高精度计算出!<em>S</em>&#x3D;1!+2!+3!+⋯+<em>n</em>!（n*≤50）。</p>
 <p>其中 <code>!</code> 表示阶乘，定义为n*!&#x3D;*n×(n−1)×(n−2)×⋯×1。例如，5!&#x3D;5×4×3×2×1&#x3D;120。</p>
 <p><strong>输入格式</strong></p>
 <p>一个正整数 <em>n</em>。</p>
@@ -2932,33 +3053,19 @@ uint32_t IC_GetDuty(void)
 <p>高精度乘法的实现可能涉及到数组的遍历、进位处理和结果转换等操作。根据具体的需求和实现方式，代码可能会有所不同。在实际应用中，还可以使用现有的高精度计算库或使用其他更高效的算法来进行大整数乘法运算。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;windows.h&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;math.h&gt;</span><br><span class="line"></span><br><span class="line">void AddStaff(void);</span><br><span class="line">int StaffNum=0;</span><br><span class="line">int Staff[10];</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	AddStaff();</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">void AddStaff(void)  //添加员工 </span><br><span class="line">&#123;</span><br><span class="line">	int i,j,a;</span><br><span class="line">	printf(&quot;您需要录入几位员工的数据，请输入：&quot;);</span><br><span class="line">	scanf(&quot;%d&quot;,&amp;a);</span><br><span class="line">	if(a&lt;=0) &#123;printf(&quot;ERROR！请输入正确的格式&quot;);&#125;</span><br><span class="line">	else</span><br><span class="line">	&#123;</span><br><span class="line">		printf(&quot;开始录入员工编号\n&quot;);</span><br><span class="line">		for(i=1;i&lt;=a;i++)</span><br><span class="line">		&#123;</span><br><span class="line">			printf(&quot;您正在录入第%d位员工的编号，输入完毕后请按回车键。\n&quot;,StaffNum+i);</span><br><span class="line">			scanf(&quot;%d&quot;,&amp;Staff[StaffNum+i]);</span><br><span class="line">			for(j=1;j&lt;StaffNum+i;j++)      //判断输入数据是否和之前的一样。 </span><br><span class="line">			&#123;</span><br><span class="line">				if(Staff[StaffNum+i]==Staff[j])</span><br><span class="line">				&#123;</span><br><span class="line">					printf(&quot;系统已收录该员工编号，请重新输入。\n&quot;); </span><br><span class="line">					i--;	</span><br><span class="line">				&#125;	</span><br><span class="line">			&#125; </span><br><span class="line">		</span><br><span class="line">			if(Staff[StaffNum+i]/10000000==0||Staff[StaffNum+i]/10000000&gt;10)  //判断输入编号格式 </span><br><span class="line">			&#123;</span><br><span class="line">				printf(&quot;请按照正确格式输入，该次输入无效。\n&quot;);</span><br><span class="line">				i--;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; </span><br><span class="line">		printf(&quot;输入成功，已录入系统。&quot;);</span><br><span class="line">		StaffNum+=a; 	</span><br><span class="line">	&#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">void LookStaff(void)   //查看录入的员工编号 </span><br><span class="line">&#123;</span><br><span class="line">	int i;</span><br><span class="line">	if(StaffNum==0)</span><br><span class="line">	&#123;</span><br><span class="line">		printf(&quot;您还未录入员工编号，请先录入。&quot;);</span><br><span class="line">	 &#125; </span><br><span class="line">	 else</span><br><span class="line">	 &#123;</span><br><span class="line">		 printf(&quot;以下是系统已录入的员工编号：&quot;);</span><br><span class="line">		for(i=1;i&lt;=StaffNum;i++)</span><br><span class="line">		&#123;</span><br><span class="line">			printf(&quot;第%d位员工：&quot;,StaffNum);</span><br><span class="line">			printf(&quot;%d\n&quot;,Staff[StaffNum]);</span><br><span class="line">		&#125;</span><br><span class="line">	  &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+<h3 id="计数问题"><a href="#计数问题" class="headerlink" title="计数问题"></a>计数问题</h3><p><strong>题目描述</strong></p>
+<p>试计算在区间 1 到 n 的所有整数中，数字 x（0 ≤ x ≤ 9）共出现了多少次？例如，在 1 到 11 中，即在 1,2,3,4,5,6,7,8,9,10,11中，数字 1 出现了 4 次。</p>
+<p><strong>输入格式</strong></p>
+<p>2 个整数 n,x，之间用一个空格隔开。</p>
+<p><strong>输出格式</strong></p>
+<p>1 个整数，表示 x 出现的次数。</p>
+<img src="/2023/07/15/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/image-20230908221427186.png" class="" title="image-20230908221427186">
 ]]></content>
       <categories>
         <category>洛谷C语言练习题目</category>
       </categories>
       <tags>
         <tag>C语言</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实用软件</title>
-    <url>/2023/08/10/%E5%AE%9E%E7%94%A8%E8%BD%AF%E4%BB%B6/</url>
-    <content><![CDATA[<p>有段时间，对于某些需求挺强烈的，但是也花了不少时间，不过可能也就那段时间用用罢了。或许可以整理一下，已经容易忘事了。<span id="more"></span></p>
-<h3 id="远程屏幕分享"><a href="#远程屏幕分享" class="headerlink" title="远程屏幕分享"></a>远程屏幕分享</h3><p>单纯的一对一进行屏幕分享，按照分享的画面质量，延迟，帧率，大致可以做一个排名。当然，都是白嫖的。</p>
-<p>发送方是电脑，接收方可以是电脑，或者是手机。</p>
-<p>B站直播&gt;网页&gt;Skype&gt;钉钉&gt;qq</p>
-<p>B站直播简单易行，除非是注意隐私，或者分享禁播游戏。</p>
-<p>网页：<a href="https://easychuan.cn/">轻松传 - 传文件，传文本，传屏幕，传实时视频 (easychuan.cn)</a></p>
-<p>网页分享屏幕帧率上限30帧，画面比较清晰，偶有卡顿。</p>
-<p>Skype：免费注册，使用无需翻墙（或许注册的时候要），本质是一个网络电话，可以视频通话并分享屏幕，非常稳定。</p>
-<p>钉钉和qq懂的都懂，不做评价。</p>
-<h3 id="远程同乐"><a href="#远程同乐" class="headerlink" title="远程同乐"></a>远程同乐</h3><p>steam自带的远程同乐，Parsec(网络要求较高，需要公网，参考比特彗星黄绿灯），搭建局域网可用樱花映射（账号需要实名认证，并在支付宝扫脸，支付宝必须是实名认证时所填的身份信息并且18+，需要扫脸。软件较为良心）。</p>
-]]></content>
-      <categories>
-        <category>储物间</category>
-      </categories>
-      <tags>
-        <tag>杂七杂八</tag>
       </tags>
   </entry>
   <entry>
@@ -3089,7 +3196,8 @@ uint32_t IC_GetDuty(void)
 <p>　　</p>
 <img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/image-20230907193520666.png" class="" title="image-20230907193520666">
 
-<p>难得今天大更一下，灾难性的目录栏，自己甚至考虑到要更换音乐插件，为底部模式了，</p>
+<p>难得今天大更一下，灾难性的目录栏，自己甚至考虑到要更换音乐插件，为底部模式了，然后是各种头疼，自己当初可是东一铲西一铲，自己都不知道该翻哪里的屎堆，所幸只是hexo解析md目录只能支持逐级目录，而我经常越级，改好后上传，还算可以。</p>
+<img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/image-20230907194355312.png" class="" title="image-20230907194355312">
 ]]></content>
       <categories>
         <category>说说</category>
