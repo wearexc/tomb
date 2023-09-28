@@ -1728,8 +1728,7 @@
 <h3 id="GPIO基本结构"><a href="#GPIO基本结构" class="headerlink" title="GPIO基本结构"></a>GPIO基本结构</h3><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230802090509772.png" class="" title="image-20230802090509772">
 
 <p>所有GPIO都挂载在APB2总线上。PA0~PB15为GPIO外设引脚</p>
-<p><strong>寄存器</strong>是一段特殊的存储器，内核可以通过APB2总线对寄存器进行读写</p>
-<p>，以完成输出电平和读取电平的功能，但只有低16位才有对应端口。</p>
+<p><strong>寄存器</strong>是一段特殊的存储器，内核可以通过APB2总线对寄存器进行读写，以完成输出电平和读取电平的功能，但只有低16位才有对应端口。</p>
 <p><strong>驱动器</strong>负责增大驱动能力。</p>
 <h4 id="GPIO位结构"><a href="#GPIO位结构" class="headerlink" title="GPIO位结构"></a>GPIO位结构</h4><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230802092111160.png" class="" title="image-20230802092111160">
 
@@ -2621,12 +2620,15 @@ uint32_t IC_GetDuty(void)
 
 <h3 id="工作模式"><a href="#工作模式" class="headerlink" title="工作模式"></a>工作模式</h3><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230908105519483.png" class="" title="image-20230908105519483">
 
-<h3 id="实例（均不反相）"><a href="#实例（均不反相）" class="headerlink" title="实例（均不反相）"></a>实例（均不反相）</h3><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230908105542093.png" class="" title="image-20230908105542093">
+<p><strong>实例（均不反相）</strong></p>
+<img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230908105542093.png" class="" title="image-20230908105542093">
 
-<h3 id="实例（TI1反相）"><a href="#实例（TI1反相）" class="headerlink" title="实例（TI1反相）"></a>实例（TI1反相）</h3><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230908211901582.png" class="" title="image-20230908211901582">
+<p><strong>实例（TI1反相）</strong></p>
+<img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230908211901582.png" class="" title="image-20230908211901582">
 
 <p>如果接入编码器后，需要调整数据加减的方向，可直接调用极性选择。</p>
-<h3 id="示例程序-5"><a href="#示例程序-5" class="headerlink" title="示例程序"></a>示例程序</h3><h4 id="编码器测速"><a href="#编码器测速" class="headerlink" title="编码器测速"></a>编码器测速</h4>
+<h3 id="示例程序-5"><a href="#示例程序-5" class="headerlink" title="示例程序"></a>示例程序</h3><p><strong>编码器测速</strong></p>
+
 
 <p>选择上拉输入或下拉输入时，应参考外部模块的默认输出电平，保持一致。防止电平冲突。</p>
 <details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
@@ -2912,6 +2914,929 @@ uint16_t AD_GetValue(uint8_t ADC_Channel)
     return ADC_GetConversionValue(ADC1);  										// 获取ADC转换结果
 &#125;
 </code> </pre> </details>
+
+
+<h1 id="DMA"><a href="#DMA" class="headerlink" title="DMA"></a>DMA</h1><h2 id="DMA简介"><a href="#DMA简介" class="headerlink" title="DMA简介"></a>DMA简介</h2><p>•　DMA（Direct Memory Access）直接存储器存取</p>
+<p>•　DMA可以提供外设和存储器或者存储器和存储器之间的高速数据传输，无须CPU干预，节省了CPU的资源（可直接访问32内部存储器，包括内存SRAM，Flash）</p>
+<p>•　12个独立可配置的通道： DMA1（7个通道）， DMA2（5个通道）</p>
+<p>•　每个通道都支持软件触发和特定的硬件触发</p>
+<p>•　STM32F103C8T6 DMA资源：DMA1（7个通道）</p>
+<h2 id="存储器映像"><a href="#存储器映像" class="headerlink" title="存储器映像"></a>存储器映像</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230913212035982.png" class="" title="image-20230913212035982">
+
+<h2 id="DMA框图"><a href="#DMA框图" class="headerlink" title="DMA框图"></a>DMA框图</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230913212111665.png" class="" title="image-20230913212111665">
+
+<h2 id="DMA基本结构"><a href="#DMA基本结构" class="headerlink" title="DMA基本结构"></a>DMA基本结构</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230913212244338.png" class="" title="image-20230913212244338">
+
+<p>DMA无法进行SRAM到Flash，Flash到Flash操作。M2M用于选择硬件触发或软件触发，EN位为DMA的开关控制。</p>
+<h2 id="DMA请求"><a href="#DMA请求" class="headerlink" title="DMA请求"></a>DMA请求</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230913212521710.png" class="" title="image-20230913212521710">
+
+<p>使用硬件触发需选择专门的通道，选择软件触发则可任意选择。</p>
+<h2 id="数据宽度与对齐"><a href="#数据宽度与对齐" class="headerlink" title="数据宽度与对齐"></a>数据宽度与对齐</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230913213052577.png" class="" title="image-20230913213052577">
+
+<p>源端宽度&#x3D;目标宽度，数据正常传输。</p>
+<p>源端宽度＜目标宽度，目标前面空位补零。</p>
+<p>源端宽度＞目标宽度，舍弃源端高位。</p>
+<h2 id="数据转运-DMA"><a href="#数据转运-DMA" class="headerlink" title="数据转运+DMA"></a>数据转运+DMA</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230913213356192.png" class="" title="image-20230913213356192">
+
+<p>将DataA转运到DataB，外设地址给DataA数组地址，存储器地址给DataB的首地址，宽度都为8位传输，且两地址都自增，传输计数器赋值为7，无需自动重装，使用软件触发，调用DMA_cmd();</p>
+<h2 id="ADC扫描模式-DMA"><a href="#ADC扫描模式-DMA" class="headerlink" title="ADC扫描模式+DMA"></a>ADC扫描模式+DMA</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230913213909958.png" class="" title="image-20230913213909958">
+
+<h2 id="示例程序-7"><a href="#示例程序-7" class="headerlink" title="示例程序"></a>示例程序</h2><h3 id="DMA数据转运"><a href="#DMA数据转运" class="headerlink" title="DMA数据转运"></a>DMA数据转运</h3>
+
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"     // 包含STM32标准库的头文件
+#include "Delay.h"         // 包含自定义延时函数的头文件
+#include "OLED.h"          // 包含OLED显示屏的头文件
+#include "MyDMA.h"         // 包含自定义DMA初始化和传输函数的头文件
+// 定义两个数组，DataA和DataB，分别用于存储数据
+uint8_t DataA[] = &#123;0x01, 0x02, 0x03, 0x04&#125;;
+uint8_t DataB[] = &#123;0, 0, 0, 0&#125;;
+int main(void)
+&#123;
+// 初始化OLED显示屏
+    OLED_Init();
+// 使用自定义的DMA初始化函数初始化DMA，并配置数据源和目标地址
+    MyDMA_Init((uint32_t)DataA, (uint32_t)DataB, 4);
+// 在OLED上显示文本和数据的初始状态
+    OLED_ShowString(1, 1, "DataA");
+    OLED_ShowString(3, 1, "DataB");
+    OLED_ShowHexNum(1, 8, (uint32_t)DataA, 8);
+    OLED_ShowHexNum(3, 8, (uint32_t)DataB, 8);
+    while (1)
+    &#123;
+// 修改DataA数组的值
+        DataA[0]++;
+        DataA[1]++;
+        DataA[2]++;
+        DataA[3]++;
+// 在OLED上显示DataA和DataB的各个元素的值
+        OLED_ShowHexNum(2, 1, DataA[0], 2);
+        OLED_ShowHexNum(2, 4, DataA[1], 2);
+        OLED_ShowHexNum(2, 7, DataA[2], 2);
+        OLED_ShowHexNum(2, 10, DataA[3], 2);
+        OLED_ShowHexNum(4, 1, DataB[0], 2);
+        OLED_ShowHexNum(4, 4, DataB[1], 2);
+        OLED_ShowHexNum(4, 7, DataB[2], 2);
+        OLED_ShowHexNum(4, 10, DataB[3], 2);    
+// 使用自定义的延时函数延时1秒
+        Delay_ms(1000);   
+// 使用DMA传输数据
+        MyDMA_Transfer();
+// 再次在OLED上显示DataA和DataB的各个元素的值
+        OLED_ShowHexNum(2, 1, DataA[0], 2);
+        OLED_ShowHexNum(2, 4, DataA[1], 2);
+        OLED_ShowHexNum(2, 7, DataA[2], 2);
+        OLED_ShowHexNum(2, 10, DataA[3], 2);
+        OLED_ShowHexNum(4, 1, DataB[0], 2);
+        OLED_ShowHexNum(4, 4, DataB[1], 2);
+        OLED_ShowHexNum(4, 7, DataB[2], 2);
+        OLED_ShowHexNum(4, 10, DataB[3], 2);
+// 使用自定义的延时函数延时1秒
+        Delay_ms(1000);
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MyDMA.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"  
+// 定义一个全局变量，用于存储DMA传输的数据大小
+uint16_t MyDMA_Size; 
+// DMA初始化函数，用于配置DMA通道
+void MyDMA_Init(uint32_t AddrA, uint32_t AddrB, uint16_t Size)
+&#123;
+    MyDMA_Size = Size;                                      // 将传入的数据大小保存到全局变量中
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);     // 启用DMA1时钟
+//结构体配置DMA
+    DMA_InitTypeDef DMA_InitStructure;
+    DMA_InitStructure.DMA_PeripheralBaseAddr = AddrA;                          // 配置外设基地址
+    DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;    // 配置外设数据大小为字节
+    DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Enable;            // 允许外设地址递增
+    DMA_InitStructure.DMA_MemoryBaseAddr = AddrB;                              // 配置内存基地址
+    DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;            // 配置内存数据大小为字节
+    DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;                    // 允许内存地址递增
+    DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;                         // 数据传输方向：从外设到内存
+    DMA_InitStructure.DMA_BufferSize = Size;                                   // 配置DMA传输的数据大小
+    DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;                              // DMA工作模式为普通模式
+    DMA_InitStructure.DMA_M2M = DMA_M2M_Enable;                                // 启用内存到内存传输
+    DMA_InitStructure.DMA_Priority = DMA_Priority_Medium;                      // 配置DMA优先级为中等
+    DMA_Init(DMA1_Channel1, &DMA_InitStructure);                               // 使用通道1初始化DMA
+// 禁用DMA通道1，等待启动传输
+    DMA_Cmd(DMA1_Channel1, DISABLE); 
+&#125;
+// DMA传输函数，用于启动DMA传输
+void MyDMA_Transfer(void)
+&#123;
+    DMA_Cmd(DMA1_Channel1, DISABLE);                         // 禁用DMA通道1，准备重新配置
+    DMA_SetCurrDataCounter(DMA1_Channel1, MyDMA_Size);       // 配置当前数据传输计数器的值
+    DMA_Cmd(DMA1_Channel1, ENABLE);                          // 启用DMA通道1，开始传输
+    while (DMA_GetFlagStatus(DMA1_FLAG_TC1) == RESET);       // 等待传输完成，检查传输完成标志
+    DMA_ClearFlag(DMA1_FLAG_TC1);                            // 清除传输完成标志
+&#125;
+</code> </pre> </details>
+
+
+
+<h3 id="DMA-AD多通道"><a href="#DMA-AD多通道" class="headerlink" title="DMA+AD多通道"></a>DMA+AD多通道</h3>
+
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h" 
+#include "AD.h"        
+#include "OLED.h"      
+#include "Delay.h"     
+int main(void)
+&#123;
+// 初始化	
+    OLED_Init();     
+    AD_Init();       
+    OLED_ShowString(1, 1, "AD0:");
+    OLED_ShowString(2, 1, "AD1:");
+    OLED_ShowString(3, 1, "AD2:");
+    OLED_ShowString(4, 1, "AD3:");
+    while (1)
+    &#123;
+// 读取ADC模块的四个通道（AD0、AD1、AD2、AD3）的值，并显示在OLED屏上
+        OLED_ShowNum(1, 5, AD_Value[0], 4);
+        OLED_ShowNum(2, 5, AD_Value[1], 4);
+        OLED_ShowNum(3, 5, AD_Value[2], 4);
+        OLED_ShowNum(4, 5, AD_Value[3], 4);
+// 延时100毫秒
+        Delay_ms(100); 
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">AD.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h" 
+// 用于存储ADC模块的转换结果
+uint16_t AD_Value[4]; 
+void AD_Init(void)
+&#123;
+// 启用ADC1、GPIOA和DMA1的时钟
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+// 配置ADC时钟分频
+    RCC_ADCCLKConfig(RCC_PCLK2_Div6);
+// 配置ADC通道对应的GPIO引脚为模拟输入模式
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+// 配置ADC通道和采样时间
+    ADC_RegularChannelConfig(ADC1, ADC_Channel_0, 1, ADC_SampleTime_55Cycles5);
+    ADC_RegularChannelConfig(ADC1, ADC_Channel_1, 2, ADC_SampleTime_55Cycles5);
+    ADC_RegularChannelConfig(ADC1, ADC_Channel_2, 3, ADC_SampleTime_55Cycles5);
+    ADC_RegularChannelConfig(ADC1, ADC_Channel_3, 4, ADC_SampleTime_55Cycles5);
+// 配置ADC工作模式和DMA模式
+    ADC_InitTypeDef ADC_InitStructure;
+    ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
+    ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
+    ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
+    ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
+    ADC_InitStructure.ADC_ScanConvMode = ENABLE;
+    ADC_InitStructure.ADC_NbrOfChannel = 4;
+    ADC_Init(ADC1, &ADC_InitStructure);
+// 配置DMA通道，用于传输ADC数据
+    DMA_InitTypeDef DMA_InitStructure;
+    DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR;
+    DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
+    DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+    DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)AD_Value;
+    DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
+    DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+    DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
+    DMA_InitStructure.DMA_BufferSize = 4;
+    DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
+    DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
+    DMA_InitStructure.DMA_Priority = DMA_Priority_Medium;
+    DMA_Init(DMA1_Channel1, &DMA_InitStructure);
+// 启用DMA通道
+    DMA_Cmd(DMA1_Channel1, ENABLE);
+// 启用ADC的DMA传输
+    ADC_DMACmd(ADC1, ENABLE);
+// 启用ADC
+    ADC_Cmd(ADC1, ENABLE);
+// 复位ADC校准
+    ADC_ResetCalibration(ADC1);
+    while (ADC_GetResetCalibrationStatus(ADC1) == SET);
+// 开始ADC校准
+    ADC_StartCalibration(ADC1);
+    while (ADC_GetCalibrationStatus(ADC1) == SET);
+// 启动ADC转换
+    ADC_SoftwareStartConvCmd(ADC1, ENABLE);
+&#125;
+</code> </pre> </details>
+
+
+<h1 id="USART串口"><a href="#USART串口" class="headerlink" title="USART串口"></a>USART串口</h1><h2 id="通信接口"><a href="#通信接口" class="headerlink" title="通信接口"></a>通信接口</h2><p>•　通信的目的：将一个设备的数据传送到另一个设备，扩展硬件系统</p>
+<p>•　通信协议：制定通信的规则，通信双方按照协议规则进行数据收发</p>
+<img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230923092407230.png" class="" title="image-20230923092407230">
+
+<p><strong>引脚：</strong><br>TX：数据发送引脚</p>
+<p>RX：数据接收引脚</p>
+<p>SCL：时钟线</p>
+<p>SDA：数据线</p>
+<p>SCLK：时钟</p>
+<p>MOSI：主机输出数据脚</p>
+<p>MISO：主机输入数据脚</p>
+<p>CS：片选，用于指定通信对象</p>
+<p>CAN和USB：表中的双引脚用于表示差分信号。</p>
+<p><strong>双工：</strong></p>
+<p>全双工：双方可同时互相发送和接受信息。</p>
+<p>半双工：任意一方发送的时候，另一方只能接收。</p>
+<p>单工：只能一方发送，另一方接收，单向传输。</p>
+<p><strong>时钟：</strong></p>
+<p>同步：双方通信配有时钟线</p>
+<p>异步：自定义时钟</p>
+<p>单端：引脚的高低电平为GND的电压差，所以双方需要共地。</p>
+<h2 id="硬件电路-1"><a href="#硬件电路-1" class="headerlink" title="硬件电路"></a>硬件电路</h2><p>•　简单双向串口通信有两根通信线（发送端TX和接收端RX）</p>
+<p>•　TX与RX要交叉连接</p>
+<p>•　当只需单向的数据传输时，可以只接一根通信线</p>
+<p>•　当电平标准不一致时，需要加电平转换芯片</p>
+<img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230926133507630.png" class="" title="image-20230926133507630">
+
+<h2 id="电平标准"><a href="#电平标准" class="headerlink" title="电平标准"></a>电平标准</h2><p>电平标准是数据1和数据0的表达方式，是传输线缆中人为规定的电压与数据的对应关系，串口常用的电平标准有如下三种：</p>
+<p>•　TTL电平：+3.3V或+5V表示1，0V表示0</p>
+<p>•　RS232电平：-3 ~ -15V表示1，+3 ~ +15V表示0</p>
+<p>•　RS485电平：两线压差+2 ~ +6V表示1，-2 ~ -6V表示0（差分信号）</p>
+<h2 id="串口参数及时序"><a href="#串口参数及时序" class="headerlink" title="串口参数及时序"></a>串口参数及时序</h2><p>•　波特率：串口通信的速率</p>
+<p>•　起始位：标志一个数据帧的开始，固定为低电平</p>
+<p>•　数据位：数据帧的有效载荷，1为高电平，0为低电平，低位先行</p>
+<p>•　校验位：用于数据验证，根据数据位计算得来</p>
+<p>•　停止位：用于数据帧间隔，固定为高电平</p>
+<img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230926134153532.png" class="" title="image-20230926134153532">
+
+<p>右图RB8&#x2F;TB8为奇偶校验位。</p>
+<h3 id="串口时序"><a href="#串口时序" class="headerlink" title="串口时序"></a>串口时序</h3><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230926134322264.png" class="" title="image-20230926134322264">
+
+<p>各种情况下，串口发送数据的时序。</p>
+<h2 id="USART外设简介"><a href="#USART外设简介" class="headerlink" title="USART外设简介"></a>USART外设简介</h2><p>•　USART（Universal Synchronous&#x2F;Asynchronous Receiver&#x2F;Transmitter）通用同步&#x2F;异步收发器</p>
+<p>•　USART是STM32内部集成的硬件外设，可根据数据寄存器的一个字节数据自动生成数据帧时序，从TX引脚发送出去，也可自动接收RX引脚的数据帧时序，拼接为一个字节数据，存放在数据寄存器里</p>
+<p>•　自带波特率发生器，最高达4.5Mbits&#x2F;s（可理解为分频器）</p>
+<p>•　可配置数据位长度（8&#x2F;9）、停止位长度（0.5&#x2F;1&#x2F;1.5&#x2F;2）</p>
+<p>•　可选校验位（无校验&#x2F;奇校验&#x2F;偶校验）</p>
+<p>•　支持同步模式（CLK时钟输出）、硬件流控制、DMA、智能卡、IrDA、LIN</p>
+<p>•　STM32F103C8T6 USART资源： USART1、 USART2、 USART3</p>
+<h2 id="USART框图"><a href="#USART框图" class="headerlink" title="USART框图"></a>USART框图</h2><img src="STM32%E5%BD%92%E6%A1%A3/image-20230926210423747.png" alt="image-20230926210423747" style="zoom:200%;" />
+
+<h2 id="USART基本结构"><a href="#USART基本结构" class="headerlink" title="USART基本结构"></a>USART基本结构</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230926210537974.png" class="" title="image-20230926210537974">
+
+<h3 id="数据帧"><a href="#数据帧" class="headerlink" title="数据帧"></a>数据帧</h3><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230926210641784.png" class="" title="image-20230926210641784">
+
+<img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230926210653469.png" class="" title="image-20230926210653469">
+
+<h3 id="起始位侦测"><a href="#起始位侦测" class="headerlink" title="起始位侦测"></a>起始位侦测</h3><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230926210745962.png" class="" title="image-20230926210745962">
+
+<h3 id="数据采样"><a href="#数据采样" class="headerlink" title="数据采样"></a>数据采样</h3><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230926210802474.png" class="" title="image-20230926210802474">
+
+<h2 id="波特率发生器"><a href="#波特率发生器" class="headerlink" title="波特率发生器"></a>波特率发生器</h2><p>•　发送器和接收器的波特率由波特率寄存器BRR里的DIV确定</p>
+<p>•　计算公式：波特率 &#x3D; fPCLK2&#x2F;1 &#x2F; (16 * DIV)</p>
+<img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230926210847282.png" class="" title="image-20230926210847282">
+
+<h2 id="数据模式"><a href="#数据模式" class="headerlink" title="数据模式"></a>数据模式</h2><p>•　HEX模式&#x2F;十六进制模式&#x2F;二进制模式：以原始数据的形式显示</p>
+<p>•　文本模式&#x2F;字符模式：以原始数据编码后的形式显示</p>
+<img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230926210952604.png" class="" title="image-20230926210952604"><img src="STM32%E5%BD%92%E6%A1%A3/image-20230926211002416.png" alt="image-20230926211002416" style="zoom: 67%;" />
+
+<h2 id="示例程序-8"><a href="#示例程序-8" class="headerlink" title="示例程序"></a>示例程序</h2><h3 id="串口发送-x2F-接收数据"><a href="#串口发送-x2F-接收数据" class="headerlink" title="串口发送&#x2F;接收数据"></a>串口发送&#x2F;接收数据</h3>
+
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"                  
+#include "Delay.h"
+#include "OLED.h"
+#include "Serial.h"
+//定义接收数据
+uint8_t RxData;
+int main(void)
+&#123;
+//初始化数据
+    OLED_Init();
+    OLED_ShowString(1, 1, "RxData:");
+    Serial_Init();
+    while (1)
+    &#123;
+//实现功能为数据互传，当上位机发送数据，从机接收到数据时，将收到的数据回传发送。
+        if (Serial_GetRxFlag() == 1)
+        &#123;
+            RxData = Serial_GetRxData();
+            Serial_SendByte(RxData);
+            OLED_ShowHexNum(1, 8, RxData, 2);
+        &#125;
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">Serial.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"                  // Device header
+#include <stdio.h>
+#include <stdarg.h>
+//定义临时变量
+uint8_t Serial_RxData;
+uint8_t Serial_RxFlag;
+//初始化函数
+void Serial_Init(void)
+&#123;
+//开启GPIO和USART的时钟
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+//初始化GPIO
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;   //复用推挽输出模式
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+//用于接收
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;  //上拉输入模式
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+//配置USART
+    USART_InitTypeDef USART_InitStructure;
+    USART_InitStructure.USART_BaudRate = 9600;    //配置波特率
+    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;  //不使用硬件流控制
+    USART_InitStructure.USART_Mode = USART_Mode_Tx | USART_Mode_Rx;  //配置USART为发送和接收模式
+    USART_InitStructure.USART_Parity = USART_Parity_No;   //配置校验位，无校验
+    USART_InitStructure.USART_StopBits = USART_StopBits_1;   //停止位为1位
+    USART_InitStructure.USART_WordLength = USART_WordLength_8b;  //子长为8字节
+    USART_Init(USART1, &USART_InitStructure);
+//开启USART中断
+    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
+//用NVIC进行分组
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+//配置中断
+    NVIC_InitTypeDef NVIC_InitStructure;
+    NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+    NVIC_Init(&NVIC_InitStructure);
+//使能USART
+    USART_Cmd(USART1, ENABLE);
+&#125;
+//发送一个字节，调用标准库函数发送字节，并判断标志位等待发送。
+void Serial_SendByte(uint8_t Byte)  
+&#123;
+    USART_SendData(USART1, Byte);
+    while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
+&#125;
+//发送一个数组
+void Serial_SendArray(uint8_t *Array, uint16_t Length)
+&#123;
+    uint16_t i;
+    for (i = 0; i < Length; i ++)
+    &#123;
+        Serial_SendByte(Array[i]);
+    &#125;
+&#125;
+//发送字符串
+void Serial_SendString(char *String)
+&#123;
+    uint8_t i;
+    for (i = 0; String[i] != '\0'; i ++)
+    &#123;
+        Serial_SendByte(String[i]);
+    &#125;
+&#125;
+//求平方
+uint32_t Serial_Pow(uint32_t X, uint32_t Y)
+&#123;
+    uint32_t Result = 1;
+    while (Y --)
+    &#123;
+        Result *= X;
+    &#125;
+    return Result;
+&#125;
+//发送数字
+void Serial_SendNumber(uint32_t Number, uint8_t Length)
+&#123;
+    uint8_t i;
+    for (i = 0; i < Length; i ++)
+    &#123;
+        Serial_SendByte(Number / Serial_Pow(10, Length - i - 1) % 10 + '0');
+    &#125;
+&#125;
+//printf调用fputc打印，此函数使fputc为发送到串口。
+int fputc(int ch, FILE *f)
+&#123;
+    Serial_SendByte(ch);
+    return ch;
+&#125;
+//printf重定向，用于在程序中，调用printf，可打印数据至串口
+void Serial_Printf(char *format, ...)
+&#123;
+    char String[100];
+    va_list arg;
+    va_start(arg, format);
+    vsprintf(String, format, arg);
+    va_end(arg);
+    Serial_SendString(String);
+&#125;
+//自定义函数，获取读标志位
+uint8_t Serial_GetRxFlag(void)
+&#123;
+    if (Serial_RxFlag == 1)
+    &#123;
+        Serial_RxFlag = 0;
+        return 1;
+    &#125;
+    return 0;
+&#125;
+//自定义函数，获取读标志位
+uint8_t Serial_GetRxData(void)
+&#123;
+    return Serial_RxData;
+&#125;
+//USART中断，读取接收数据
+void USART1_IRQHandler(void)
+&#123;
+    if (USART_GetITStatus(USART1, USART_IT_RXNE) == SET)
+    &#123;
+        Serial_RxData = USART_ReceiveData(USART1);
+        Serial_RxFlag = 1;
+        USART_ClearITPendingBit(USART1, USART_IT_RXNE);
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<p>具体函数功能已有注释，值得一提的是发送数字的功能，除了示例程序中，求数字次方再提取数字（此方法在博客C语言循环结构中的题目《计数问题》有更好的处理）。也可以利用发送字符串的功能。利用C语言函数，可将数字转换为字符串再发送。当然，别忘了引入C语言头文件&lt;stdio.h&gt;。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> VoltageStr[<span class="number">10</span>];  <span class="comment">// 定义一个足够大的字符数组来存储转换后的字符串    </span></span><br><span class="line">Num = <span class="number">1245</span>;    </span><br><span class="line"><span class="built_in">sprintf</span>(VoltageStr, <span class="string">&quot;%d&quot;</span>, Num);  <span class="comment">// 使用sprintf将整数转换为字符串     </span></span><br><span class="line">SendString(VoltageStr);  <span class="comment">// 发送字符串</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="数据包"><a href="#数据包" class="headerlink" title="数据包"></a>数据包</h3><p><strong>HEX数据包</strong></p>
+<img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230928112711694.png" class="" title="image-20230928112711694">
+
+<p><strong>文本数据包</strong></p>
+<img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230928112818035.png" class="" title="image-20230928112818035">
+
+<p><strong>HEX数据包接收</strong></p>
+<img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230928113322761.png" class="" title="image-20230928113322761">
+
+<p><strong>文本数据包接收</strong></p>
+<img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230928113344291.png" class="" title="image-20230928113344291">
+
+<p>在程序设计中，需设计一个能记住不同状态的机制，称为状态机。</p>
+<p><strong>示例程序</strong></p>
+<p><strong>串口收发HEX数据包</strong></p>
+
+
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"  
+#include "Delay.h"
+#include "OLED.h"
+#include "Serial.h"
+#include "Key.h"
+// 用于存储按键的状态
+uint8_t KeyNum;  
+int main(void)
+&#123;
+//初始化
+    OLED_Init();   
+    Key_Init();    
+    Serial_Init(); 
+    OLED_ShowString(1, 1, "TxPacket"); 
+    OLED_ShowString(3, 1, "RxPacket");
+// 预设串口发送数据的内容
+    Serial_TxPacket[0] = 0x01; 
+    Serial_TxPacket[1] = 0x02;
+    Serial_TxPacket[2] = 0x03;
+    Serial_TxPacket[3] = 0x04;
+    while (1)
+    &#123;
+//获取按键状态
+        KeyNum = Key_GetNum(); 
+// 如果按键被按下，将递增串口发送数据的内容
+        if (KeyNum == 1) 
+        &#123;
+            Serial_TxPacket[0]++;
+            Serial_TxPacket[1]++;
+            Serial_TxPacket[2]++;
+            Serial_TxPacket[3]++;
+// 发送串口数据
+            Serial_SendPacket(); 
+// 在OLED上显示发送数据的十六进制值
+            OLED_ShowHexNum(2, 1, Serial_TxPacket[0], 2);
+            OLED_ShowHexNum(2, 4, Serial_TxPacket[1], 2);
+            OLED_ShowHexNum(2, 7, Serial_TxPacket[2], 2);
+            OLED_ShowHexNum(2, 10, Serial_TxPacket[3], 2);
+        &#125;
+// 如果收到串口接收标志位
+        if (Serial_GetRxFlag() == 1) 
+        &#123;
+// 在OLED上显示接收到的数据的十六进制值
+            OLED_ShowHexNum(4, 1, Serial_RxPacket[0], 2);
+            OLED_ShowHexNum(4, 4, Serial_RxPacket[1], 2);
+            OLED_ShowHexNum(4, 7, Serial_RxPacket[2], 2);
+            OLED_ShowHexNum(4, 10, Serial_RxPacket[3], 2);
+        &#125;
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">Serial.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"  // 包含STM32的设备头文件
+#include <stdio.h>
+#include <stdarg.h>
+//定义数据
+uint8_t Serial_TxPacket[4];  // 用于存储串口发送的数据
+uint8_t Serial_RxPacket[4];  // 用于存储串口接收的数据
+uint8_t Serial_RxFlag;       // 串口接收标志位
+// 初始化串口
+void Serial_Init(void)
+&#123;
+// 使能USART1和GPIOA的时钟
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+//配置GPIO发送端口
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;         // USART1的TX引脚
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+//配置GPIO接收端口
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;        // USART1的RX引脚
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+//配置USART
+    USART_InitTypeDef USART_InitStructure;
+    USART_InitStructure.USART_BaudRate = 9600;         // 波特率设置为9600
+    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    USART_InitStructure.USART_Mode = USART_Mode_Tx | USART_Mode_Rx;
+    USART_InitStructure.USART_Parity = USART_Parity_No;
+    USART_InitStructure.USART_StopBits = USART_StopBits_1;
+    USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+    USART_Init(USART1, &USART_InitStructure);
+// 使能USART1的接收中断
+    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);     
+// 设置NVIC的优先级分组为组2
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);    
+// 配置USART1的中断
+    NVIC_InitTypeDef NVIC_InitStructure;
+    NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;  
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+    NVIC_Init(&NVIC_InitStructure);
+// 使能USART1
+    USART_Cmd(USART1, ENABLE);                         
+&#125;
+// 发送单个字节
+void Serial_SendByte(uint8_t Byte)
+&#123;
+    USART_SendData(USART1, Byte);
+    while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
+&#125;
+// 发送字节数组
+void Serial_SendArray(uint8_t *Array, uint16_t Length)
+&#123;
+    uint16_t i;
+    for (i = 0; i < Length; i ++)
+    &#123;
+        Serial_SendByte(Array[i]);
+    &#125;
+&#125;
+// 发送字符串
+void Serial_SendString(char *String)
+&#123;
+    uint8_t i;
+    for (i = 0; String[i] != '\0'; i ++)
+    &#123;
+        Serial_SendByte(String[i]);
+    &#125;
+&#125;
+// 计算X的Y次方
+uint32_t Serial_Pow(uint32_t X, uint32_t Y)
+&#123;
+    uint32_t Result = 1;
+    while (Y --)
+    &#123;
+        Result *= X;
+    &#125;
+    return Result;
+&#125;
+// 发送数字
+void Serial_SendNumber(uint32_t Number, uint8_t Length)
+&#123;
+    uint8_t i;
+    for (i = 0; i < Length; i ++)
+    &#123;
+        Serial_SendByte(Number / Serial_Pow(10, Length - i - 1) % 10 + '0');
+    &#125;
+&#125;
+// 重定向printf函数
+int fputc(int ch, FILE *f)
+&#123;
+    Serial_SendByte(ch);
+    return ch;
+&#125;
+// 带格式的字符串发送
+void Serial_Printf(char *format, ...)
+&#123;
+    char String[100];
+    va_list arg;
+    va_start(arg, format);
+    vsprintf(String, format, arg);
+    va_end(arg);
+    Serial_SendString(String);
+&#125;
+// 发送串口数据包
+void Serial_SendPacket(void)
+&#123;
+    Serial_SendByte(0xFF);                 //数据包包头
+    Serial_SendArray(Serial_TxPacket, 4);  //数据包数据
+    Serial_SendByte(0xFE);                 //数据包包尾
+&#125;
+// 获取串口接收标志位
+uint8_t Serial_GetRxFlag(void)
+&#123;
+    if (Serial_RxFlag == 1)
+    &#123;
+        Serial_RxFlag = 0;
+        return 1;
+    &#125;
+    return 0;
+&#125;
+// USART1的中断处理函数，内有状态机，处理数据包各种情况
+void USART1_IRQHandler(void)
+&#123;
+    static uint8_t RxState = 0;
+    static uint8_t pRxPacket = 0;
+    if (USART_GetITStatus(USART1, USART_IT_RXNE) == SET)
+    &#123;
+        uint8_t RxData = USART_ReceiveData(USART1);
+        if (RxState == 0)
+        &#123;
+            if (RxData == 0xFF)
+            &#123;
+                RxState = 1;
+                pRxPacket = 0;
+            &#125;
+        &#125;
+        else if (RxState == 1)
+        &#123;
+            Serial_RxPacket[pRxPacket] = RxData;
+            pRxPacket ++;
+            if (pRxPacket >= 4)
+            &#123;
+                RxState = 2;
+            &#125;
+        &#125;
+        else if (RxState == 2)
+        &#123;
+            if (RxData == 0xFE)
+            &#123;
+                RxState = 0;
+                Serial_RxFlag = 1;
+            &#125;
+        &#125;
+        USART_ClearITPendingBit(USART1, USART_IT_RXNE);
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">Serial.h</font></summary>  <pre><code class="language-c">
+#ifndef __SERIAL_H
+#define __SERIAL_H
+//
+#include <stdio.h>
+//定义变量时用extern，可被主函数调用。
+extern uint8_t Serial_TxPacket[];
+extern uint8_t Serial_RxPacket[];
+//
+void Serial_Init(void);                                          //初始化
+void Serial_SendByte(uint8_t Byte);                              //发送字节
+void Serial_SendArray(uint8_t *Array, uint16_t Length);          //发送数组
+void Serial_SendString(char *String);                            //发送字符串
+void Serial_SendNumber(uint32_t Number, uint8_t Length);         //发送数字
+void Serial_Printf(char *format, ...);                           //打印至串口
+void Serial_SendPacket(void);                                    //发送数据包
+uint8_t Serial_GetRxFlag(void);                                  //获取接收标志位
+//
+#endif
+</code> </pre> </details>
+
+<p>这里引入.h文件是因为定义到Sericl.c的变量，需要在main.c调用。</p>
+<p>各函数功能和串口收发数据区别不大，但在中断函数中引入的状态机，先等待包头，收到包头后开启接受数据的函数，并保存至数组。接受完毕后等待包尾，完成一个数据包的传输。</p>
+<p>主函数的功能是按下按钮时，将发送以“FF 02 03 04 05 FE”为格式的数据包，按键每按下一次，数据包内的数据将自增1。也可以用同样的格式发送数据包，发送和接受的数据包的数据（不含包头包尾）将在OLED显示。</p>
+<p><strong>串口收发文本数据包</strong></p>
+
+
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"  
+#include "Delay.h"
+#include "OLED.h"
+#include "Serial.h"
+#include "LED.h"
+#include "string.h"
+int main(void)
+&#123;
+//初始化
+    OLED_Init();        
+    LED_Init();         
+    Serial_Init();      
+    OLED_ShowString(1, 1, "TxPacket");
+    OLED_ShowString(3, 1, "RxPacket");
+    while (1)
+    &#123;
+        if (Serial_RxFlag == 1)  // 如果收到串口接收标志位
+        &#123;
+            OLED_ShowString(4, 1, "                ");  // 清除OLED上的数据
+            OLED_ShowString(4, 1, Serial_RxPacket);     // 在OLED上显示收到的数据
+            if (strcmp(Serial_RxPacket, "LED_ON") == 0)  // 如果收到 "LED_ON" 命令
+            &#123;
+                LED1_ON();  // 打开LED1
+                Serial_SendString("LED_ON_OK\r\n");         // 发送成功消息给串口
+                OLED_ShowString(2, 1, "                ");  // 清除OLED上的数据
+                OLED_ShowString(2, 1, "LED_ON_OK");         // 在OLED上显示 "LED_ON_OK"
+            &#125;
+            else if (strcmp(Serial_RxPacket, "LED_OFF") == 0)  // 如果收到 "LED_OFF" 命令
+            &#123;
+                LED1_OFF();  // 关闭LED1
+                Serial_SendString("LED_OFF_OK\r\n");         // 发送成功消息给串口
+                OLED_ShowString(2, 1, "                ");   // 清除OLED上的数据
+                OLED_ShowString(2, 1, "LED_OFF_OK");         // 在OLED上显示 "LED_OFF_OK"
+            &#125;
+            else
+            &#123;
+                Serial_SendString("ERROR_COMMAND\r\n");      // 发送错误消息给串口
+                OLED_ShowString(2, 1, "                ");   // 清除OLED上的数据
+                OLED_ShowString(2, 1, "ERROR_COMMAND");      // 在OLED上显示 "ERROR_COMMAND"
+            &#125;
+            Serial_RxFlag = 0;  // 重置串口接收标志位
+        &#125;
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">Serial.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"  
+#include <stdio.h>
+#include <stdarg.h>
+//
+char Serial_RxPacket[100]; // 存储串口接收的数据，最大长度为100
+uint8_t Serial_RxFlag;     // 串口接收标志位
+// 初始化串口
+void Serial_Init(void)
+&#123;
+// 使能USART1和GPIOA的时钟
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+//配置GPIO发送端
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;      // USART1的TX引脚
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+//配置GPIO接收端
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;     // USART1的RX引脚
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+//配置USART
+    USART_InitTypeDef USART_InitStructure;
+    USART_InitStructure.USART_BaudRate = 9600;      // 波特率设置为9600
+    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    USART_InitStructure.USART_Mode = USART_Mode_Tx | USART_Mode_Rx;
+    USART_InitStructure.USART_Parity = USART_Parity_No;
+    USART_InitStructure.USART_StopBits = USART_StopBits_1;
+    USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+    USART_Init(USART1, &USART_InitStructure);
+// 使能USART1的接收中断
+    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);  
+// 设置NVIC的优先级分组为组2
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); 
+// 配置USART1的中断
+    NVIC_InitTypeDef NVIC_InitStructure;
+    NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn; 
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+    NVIC_Init(&NVIC_InitStructure);
+// 使能USART1
+    USART_Cmd(USART1, ENABLE);                      
+&#125;
+// 发送单个字节
+void Serial_SendByte(uint8_t Byte)
+&#123;
+    USART_SendData(USART1, Byte);
+    while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
+&#125;
+// 发送字节数组
+void Serial_SendArray(uint8_t *Array, uint16_t Length)
+&#123;
+    uint16_t i;
+    for (i = 0; i < Length; i ++)
+    &#123;
+        Serial_SendByte(Array[i]);
+    &#125;
+&#125;
+// 发送字符串
+void Serial_SendString(char *String)
+&#123;
+    uint8_t i;
+    for (i = 0; String[i] != '\0'; i ++)
+    &#123;
+        Serial_SendByte(String[i]);
+    &#125;
+&#125;
+// 计算X的Y次方
+uint32_t Serial_Pow(uint32_t X, uint32_t Y)
+&#123;
+    uint32_t Result = 1;
+    while (Y --)
+    &#123;
+        Result *= X;
+    &#125;
+    return Result;
+&#125;
+// 发送数字
+void Serial_SendNumber(uint32_t Number, uint8_t Length)
+&#123;
+    uint8_t i;
+    for (i = 0; i < Length; i ++)
+    &#123;
+        Serial_SendByte(Number / Serial_Pow(10, Length - i - 1) % 10 + '0');
+    &#125;
+&#125;
+// 重定向printf函数
+int fputc(int ch, FILE *f)
+&#123;
+    Serial_SendByte(ch);
+    return ch;
+&#125;
+// 带格式的字符串发送
+void Serial_Printf(char *format, ...)
+&#123;
+    char String[100];
+    va_list arg;
+    va_start(arg, format);
+    vsprintf(String, format, arg);
+    va_end(arg);
+    Serial_SendString(String);
+&#125;
+// USART1的中断处理函数，内有状态机，处理数据包各种情况
+void USART1_IRQHandler(void)
+&#123;
+    static uint8_t RxState = 0;
+    static uint8_t pRxPacket = 0;
+    if (USART_GetITStatus(USART1, USART_IT_RXNE) == SET)
+    &#123;
+        uint8_t RxData = USART_ReceiveData(USART1);
+        if (RxState == 0)
+        &#123;
+            if (RxData == '@' && Serial_RxFlag == 0) // 如果接收到'@'字符且标志位为0
+            &#123;
+                RxState = 1;
+                pRxPacket = 0;
+            &#125;
+        &#125;
+        else if (RxState == 1)
+        &#123;
+            if (RxData == '\r') // 如果接收到'\r'字符
+            &#123;
+                RxState = 2;
+            &#125;
+            else
+            &#123;
+                Serial_RxPacket[pRxPacket] = RxData; // 存储接收到的字符
+                pRxPacket ++;
+            &#125;
+        &#125;
+        else if (RxState == 2)
+        &#123;
+            if (RxData == '\n') // 如果接收到'\n'字符
+            &#123;
+                RxState = 0;
+                Serial_RxPacket[pRxPacket] = '\0'; // 在末尾添加字符串结束符
+                Serial_RxFlag = 1; // 设置串口接收标志位为1，表示接收完成
+            &#125;
+        &#125;
+//清除标志位
+        USART_ClearITPendingBit(USART1, USART_IT_RXNE);
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">Serial.h</font></summary>  <pre><code class="language-c">
+#ifndef __SERIAL_H
+#define __SERIAL_H
+#include <stdio.h>
+// 定义串口接收缓冲区和接收标志位，这些变量可在main中引用
+extern char Serial_RxPacket[];
+extern uint8_t Serial_RxFlag;
+//
+void Serial_Init(void);                                  // 串口初始化函数
+void Serial_SendByte(uint8_t Byte);                      // 发送单个字节到串口
+void Serial_SendArray(uint8_t *Array, uint16_t Length);  // 发送字节数组到串口
+void Serial_SendString(char *String);                    // 发送字符串到串口
+void Serial_SendNumber(uint32_t Number, uint8_t Length); // 发送一个数字到串口，Length 表示数字的位数
+void Serial_Printf(char *format, ...);                   // 带格式的字符串发送，类似于 printf
+//
+#endif
+</code> </pre> </details>
+
+<p>和HEX数据包类似，只是将数据形式换成了字符型。就不做过多说明。</p>
+<p>main函数实现的功能为，在上位机输入‘@’为包头，输入‘LED_ON’为数据，换行为包尾，发送后将点亮LED，并回传“LED_ON_OK”，输入‘LED_OFF’为数据，发送后将熄灭LED，并回传“LED_OFF_OK”。输入其它指令将无法控制LED，并收到回传“ERROE_COMMAND”。</p>
 ]]></content>
       <categories>
         <category>stm32归档</category>
@@ -3172,6 +4097,28 @@ uint16_t AD_GetValue(uint8_t ADC_Channel)
       </tags>
   </entry>
   <entry>
+    <title>？？？？？（未解密）</title>
+    <url>/2023/09/26/%E5%A4%A9%E4%BD%BF%E7%9A%84%E6%95%85%E4%BA%8B/</url>
+    <content><![CDATA[<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="啥？你不知道？不知道还输。你到底在期待什么？？_____:(´□`」 ∠):_____蒙暗号是没用的，或许你贿赂城主（博主）能满足你的小小好奇心¯\_(ツ)_/¯" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="f7e99edb25d26f7ff1ad16af4231d911ee4bd7785f7390f1f9ae06561f781416">76fc3ae391b3c4b89afc7f8f81acab4b0facec444c9ab14049f3e8c6e11c3a0c327385e5a1e3fd0cdb23d6ed5089b048a233072e5754b2d32d2ccef5a98a924b1bfe7cb942d1c861cb3cd43fe1f345be1e4671e86f4491b4171c74ef14632d32647b1410d06bf2918d9cc63b0b05cef8787e36849a4cc7b6e29a6ab979cdc9392dad1bdf225ad047373fe56f7967f4a35da810a9c2c12ff536e02527777dc98fa24eb7199416b40ebb1acd79acb6c7e1722ff2d166ea040631bcf1a623c7e4c48d79beaa5726919457d2e218bf816649d078b913ed560b8abdb63a2e5b572146f1fbed729c75072a8bda27e66e0a10cf82ad0186ff453159857d2754e59caa43718b7de6d775235719f0e61f1d47cd0eb6c7aaf312beb68d26239f876eb32f33fc4f3c7428667fdbf0a554cb6a18ff1a387b963de19dfc16adaca1a73ef0764890d2c4fd0026eba687a7f8d48111c21f100fd05eb139e7db721389419dedad8d02981941c57aaf1835d25f88e0345bcd17edff45f87b21ce271762ffd24f5f220997885926cc8ac85a37ff6503b82543895961475a3525360c671410211cc569dc1bf1365d9d7ca5451fdec565ec81f063833e534868c0bd6305b51e047aeef497808d0447b39da99a6fb18fb10967e4b6a11d74898c42801f67e0b5cd86689ffe50968079eeb13589250917e48c31673bcb0714c3607ab42cfb26c7c354f2d21a82eadb3e2f639ac8165dd9fc6458c38d7f547f8036577f6d808013bcf22f54e4857d21e93202cbe79c13d503c4686b94291e93b3fde24cff3ba9eaf0dc2efea6b5d260680ef59efe152fb4d78026d94f2836dc9b15ee5f4cfc6dc4cecb87cb6786f3a5e9709a30c23249f653b71074ab10be939b50f609b829a5cec308b8bdf1d74735b56aa29f4d4c7827d4f36ddfbb394e2688e7874ab5bd765e160f5ddf9bb051a83eb4ac23ae1a6547a0dc85b6ecdd4f21065c3d56d48e157e81cd38f68a1196b0b666a8862d629790278ee580113761c08ba9215624b86d35b4b2ea7aa1429cd49fbdf74fd26b6f4d533af09e81091c316cb801e3bd3cf4cccc3a0592405850770a39ec53d0eec27cfe1852a1a43929f8abc7e0a4a26673697e5a4d559818c6d9600613b991778d2c30f6984ce6a50b49d458997980fe974af5dd81d6f45de6818a8a605ef307d878e2931ec89cf6d9f48a615b3a50b7a4ad1b4b65ecb9969797ad2e3ce00b47369ab4a096fb542051d30b8620580ae41e5adc813ac5b71b69d2d5c9edeff65c1ea712628764a75a5f2cd9e90a259ed60919aeca39164460029e7d2ae5bd7fc6ecdfbc311fa89e077b7963ad07a33d54ee8345147c3b6667830b9ccfa47cdeb13de91101dc80b033a5fc5a19cb77a0cbf48935ab2905827c565a19e00b121ed6186125cceb696dfe986431601f4423559bab7b2754a94b947a5666dc461aac3b39cef5da58b97136f24a0e9cc7b88e2597da4d159a150bc730d3d7c2b61837592a2a3886035f6f30cef693621836c2a09a52e77e817edf6f26b04820e749e7609f969a9ef1dc7d1f3ceedaad9d54920c7ce1d65a48193a6c2bdd3334b352a8731f78cb69a586f421893a4068dd7855a0e8555333d89da584a79e29d4f6c652b8ff92c7575e25236b1940479de700aac6992a0d5fcf4b812e53c1ca3d6faa32e6bf4c3290a12d1c16bfd0d863b714b3c8db085d533fe0a7e29250adbd61b44c10895505e30dc0fd43a3a1b9ef378a78b0bae38eddf69b61294ca791c345fdc9eeda63fe5ae518b35a35210edba7143069b920bcbbcdab022be80a4213dfd7918af4cd7162f5c487c7198ff9b336928251c94dbe551ef8f1243c57a2bc17f908bd879d72d317a8ad4718d244d91df4cc7bd6162c6beffcf061425ce28e00635147871cb4a71b65d82274e91c7474ab151d695f7fba4e2cfd43b31a022b6918b6f793a4a3298bfc4f0e4ef4bd45d9496e610fbf1e118f111c024f9198abeb104c311aea9bb46d6a6411a0b8555122a1b2945d6e9b364fa9993edc987202caf22a3b0373d7fe42ded72d72b0eb02f851022b14be9e735155ddc6e1e1bef3959bce1aeb022fc5fff45fd98ab5b104bfc2b518d6ef2333987d8e622a8f2f4ef80fd6cf6a1421aef4f383801c59aca8fb997dc5b6da7c49a20242b34ee107b26ae9f67c68fc19fd47874fbffbc74d46493c256f7983385f037e7c1014ee708243d22c199b53cdbf1be5690c06044903d9886952b67872b58ac03e704055ae909f5c95e4c90e120c840f649584320523e75d12cad1bae558a0d47502b5ef292f8c387315d61e36a70b6cbd283504ba4dc59c7dbea3b51085b16e667e2ca0030159882c146f8b404c182ec90432577850658f2b16093f797f81db633e6324b261154e4b8cfc6a8961d2db7a4c9d84503c42b93efca0bed7af66fa2453170f1148aeaf2e852443eee8dcfeaa5a0dc7ed1357794f2097ae8991afb99f14a5adbc9f35fa2214d763c4b0f5b9c677a49aa70fca732bedaea50f2169ad543e20d5a62a4190283dddf82b62941384b1d57697cd6b55e1788ea8e09759f58216bb51011f5632a6a9142cbdb90c14a27a13ccf5107b03b3d4fc434790bb46750676360b237fbdadb3d88d9426b995b96f9c355c2dca937132d58e9d798d145e296170f381de0bf8e3aabbfef58f5111126d3750d6c1fbff166ad4ae2423cd99ca76ceb0312df833c08ab3ccd1c52b65da01938aa4cfeb49546b5272a10e71273d4233a8779cf27c22bca298dd9b29b5800c9c55c46b9876e7140e4e4c7e4b613af36aa1957e9318ddffc1b2ce975441f0ca8cff90229af0a839b7087ed1f2766e6c23da611c627d6e8c451c03a5a6fcd926b4bdbb0c8d6a9a1d83c9c30c17f66aba2616373237349d6ff1f27434e9956617febe4bc041faaeebf1c0a4a53688e271b41f23ccce3a07431e1c6fe052b0a7d13de059fed7d616da86ccc5f59d33eff4e06c9faf084227a6cab7cc669a5ff161957f6d63f2ea7138ec3985891fa6aea5ccdfd85b3e4b83090374d92bfb0b78956eaf27e924ddc378d38509db1f38c9ada0e246520f9a81022fb7fd694cac9c55f4ac4a97f6a5539dfefa23033f433821cbf4278d5ac4d2e383160dd6efeaec0355edd5aa43e9af641a0e4a6aba2d8cb524aeacbcac460acb20618db5b018001a1af240745d010e548a1235fc03f306760466ad96bc733e6a6dd5384a351c13c5db6fd0ef3479b3fb8ba966ffa52111bdad44e6892ec9af65201f6c678e8531ba5919c3e44f8ba7a4e341037cb8647ddccf98f412029a9ef2d08c7e51bf637fa2b04a103c679f917e8a0e280637c9afbe845bacc0fd43dbbc5c665baf41ea35a42d1d11f394ae2cf081623beccf124fb42a2a1b4a603725429881d98046612e6d480ab1d304f0e201e558d6735fc64698df1f029f3b45dc484fe23b22ed19cd16336aa1beb738f6c8ca5c4d5b124cb57b9ce8f9dc89b88f4774a3eb3191dd8d26d5230d55adf5aa0f2233f3ae0a292b766a3d498e06439877821e1255cef578b47ddf336252f97c05c1927dc994b5e4f2a743c73964bbd84da9fa3096c13c92f10bd9cb6383d914c6a27efc4fc56c239a06754d8261273740fb78320f48a55c6726cff4f44b778c2e1d1abb50d7c65c566d1323ecf74b336e3224cf2f7a81f9c5a0af8c515d7ed813185129151c6514e08b93b2f7bd1f549e8c3bba038f4b2ebc87190fe6205957be8b312c3dd6e9857b030036050ef7d6cab37550b107a72e2e3266c5c01a6faf589db486811b9bcb84a03b4cde3a7cd3a96c5a2330d1ab0af875aff8538758a1ce3060fd05fbdfbac0e12e4cc28ca61613fcbcd553f002593ebc76a12c094a1882c536bda56b388b29127fcf9361107be96f5b4c2426075ec4ec66a72d639aae1372751fde9173d28224f861d97548f2f19d9c1282f0fecd0175658e34ec17873faef1a4c86ad51c28b12fbebd7bf80120ec866a1d3d0160103f5c672988a02be0bb8e8145c4e20ff33cc406d6e6a88824f372bcb2c2f0d576a04e77fa62504cfeab9b390dc8cce87c5740fb6b2710c48901e01cf8e36e38be049fb0ef2b37ff7dce2814d975c6f6dab5baa9ee7128ee7705d1f3de4c85779441b4d624d22a99b2ff8a03f1a0347e640922d2726e22aedbc584b81c2939c074f66c29414d8df21629d1167c9038b5c650fb46f83fe77f32a710e2ab391d1efc41f6e0a9cd2e94fef4eb951a7f988fed2b47cb2bf2ecbd906ff931080746cb8e3f044d34997d04029a869caf8082532bdaba648f739d984ee719e67195b9f4534f75c6e2ee635d84810ab8eefde6ea5be901a2eec24949317c49c38243d0d89a01f0f77ea18dbea6dbd9879da72d287e69e714dd0c5053fb5fb4f7fd76c588e9a70759442d9a2ffbd52b0cf4daad7e2e9c9981dfd528f324b57bdf1e52f7487dfc0d9636e812a647033a9a16c8887797aaf8ee8e843244a092213729e821a7655536f0f4e322ed56310068b44ce85c4755168cc252407482a05d4852bfe826f97ffe19b17d7d8b7c43156b2151fb117e3cd176ba84aaa2bc4922c893639ff9e5f5848867077b66b74f44dc2d969503f322cbc2762092f924917f905c9f6813dbf01e4052707157fb4c28f3771f4704443531194082a12285454bde2e95a992947a9d096a1500aea16abb14697c4bf7fb4b31689f2f64fe5a3afadc77008dcc1c4744395f313e8ee688364d2ee4d6a31447093951c039d1ae68a92780755bf9f3ff516f47c14167ffc1a0b87aa4a1f9b126ca6faaf7738ea1ed4aa2df3b19f1a45a62e31de5df6a3f5a564584d0db94c40bca9b6d7654cb2536c8243190d3cec015f5cfeb3d9623bfc5a3508b255911710012dfdfc0fe9b2cecf7fdf9a692a0359db84973d7e803c0d11a49ccd6326a73731267f02baa20f705f9bb961c609b9ab67e1816b21c43df7cdbc3f2c5fc9426753baccff164182d222033c0b12aabaa8a8f4d9c20d88b218383c64b1b2be89cdec9876ed0b40a3360b3e1c3ff7c4ac41fff449c66e09de69f1d6629a391ba0a3a468acc7cb93b74e796604d8c0f982fd5ab376bf1a056bfb27938bbb9325feab9aad4723be09ff4c41e31320c0a7db396916ace8b09358235252e36e1e372960aa25c2b9c032cf10903ec8efd17289fe1e870b4dfb8b73201878d61a0773fecd12a78ce4fe8e7794b4db984741fcc8ef507e4ff2ed05e13494684db622266cdd5fe942a744b385524e1b939b9bda247f3b21177a78aede4327dd0ec1391211de5c9f100987aecc55feab8b56f0c779fe186cbbb6d03a273af6391176860d3e4c571b14902839ee07332ede744d8db9463c8d1a32338265da9db6368e0ce9385bb95b2adcdb4c589ac9a1d33d28172f139386f3d40e19c3577cbb1a857c64bedcd8e7a17bb2f02955845fcd846b962d33e38a7e6174d65a4a0041f5d02a3b8477ee6ac69e76f6ddab37a28b7c9e6786f851eeb70c40ef55fcd3cfe03855271f1b20b91ade175395bff05ffae865c5c5ad24c5d384b76cd4ed710b0cd5a9b914b0178b3b22aaed3a62552951beee99fe95c2a6ecf0d65e4b0c91ccd7818b04d15b4ebfea88042c637f58a37c17cbc32998956ec8b65c9c30c7d3992f40839b6365c25a1ec59cb7a5895b639f82ac370342c369d7c58ff684ad2ac0d2ca384f741138c1ffda0b87dada749d075122fc73400223aa2a278f812184d6855b4cb0577a84ab66f24992f193a4872a64c09a692feb57c8186f5036c72bac7e885b3016734478cf872d947af2934a9de7ac55514a04010461721571a094d4ad22e6c4dcb1b7c2503f80d215c22917839dfc5c816bdddf3a02440632c4f845e77cb3b1b16feaba3b52daf00976259cba1bde5131eb74b91bcc09d3d0ab1abe57e6ddccd710a4d9dc73e5609859d5ebc5ce65474a53863e3388b6ea20f6e28c55ca0622c55c30ed5d45ea49b9bd14bbf0420581776c6166e0739beb62f3b134bb295eb4a66403db108e932ef623ab111fef67b29a72dd086acfa6f97f890a1fddedb81d9bbce3ffa13d9edce13688eed27e39ec580a3c98508363a470331672e79f180b3a807071c79aed0a376c2ec2402c40ef7b4d53c093486027020bfdc89ccbcfd1e70a61f88d145e26636cb4c1e8e2a35120ab503a3862d0f0ee1202610e72cdd455a237bf59199fda87dc3b27940e93643a7ace4e2ee031505d33ee6bad40e809efc107f8b96371cae50927825b93b1174263c5083b2516a4e4f30335fa14c10b86f6c6037a00e6af7d9c1b9fa107b494ebac6f216a0c6453e895e92f254b6a5f8070c18b35e2ac53026d4d242a0db133a20ad058e554b0482c83f4424c8d69a73d6edeca565ad6c99170251abdca55b2f5b246a5ca0a2d1abbbfd15d58de83ec6ee3f84f493a3ddb85ad4eee2cabbe2e0cf84ad02b8cde807d08dddbea7b0905d21ae19872d59595ed4bd6474226e343b6d82a5fc11539517263b393692c1110c86a7f814a3456f5a7afa5198ebacd72297c08676d9ebf810eaeeebd727da49dca43ad4d4af1302f558d5265768645d17d969be042be152af0cc6e4a5319cf655a3854d620c01378fa0f67e494ac255fd965c7840da32f8a334e3ba23bc5656296e93a56ebc22d20d2bd7e3725d8bbd0cf2408364cf72fb260ba2236039f8ff62745e0007f1e3241ced824db432fc5125a4c6287e0a8f2fcec942d1688a1eacaa25002d4ea82106f25e02fdd273f219ef9255c912006cbfa2a384e0939bcac2de10337d946e2132c85a892daebf4111b77f34705c7afb453549773bdadc38c9e9b54437fb6a80d2fb5b7cb2c1e0c5973cb33436b87c045bcd0f1715e929cbc86cbce7488f7e3ca9f789ff2327b005c83d382e40d006d256b3a0d426f301ddf14b3fa752f6ea472cc48ffa580dbf0ba0754fc0038a505e9a209c769b5f100aea32b18e55da5d9330a273383f8859502d0eb4ccb703457fe7ee0ec58b1cc5b446fcd52a6fe21d2d9db21c4b9be7560db6a5aece1838ec504db27528b51ec9497b3aefa453153c5897bc8e66f0db858e908f8c504ce13b49aa05810fac0403cc2bda811ee1cd529594b0220785feeba659538cf704b74f7ae0d6772310f95202d515b0303db682d430842a74bf114b2334db5b35e3e63c7f1cef0795a752f67bb307af4db43eaad54c670b15aea3ac0e07e0611f90032b56c5dd05754c2a42a90384197e5e2537fc27370e45362e5d79e88965de013f42ba5907ac7c2456f8910abf51cc2602e90bad3fb2f4421965561aa21d197a421d62040c8cbf720b00c74d58dbf0a244279560287ec5ccee84161df51126595edaccbdbe6827e24b7a9de0148fccb8f3c3b86a29295ef78c465af85f3bd07ebf20550656e78cac848099199f4dbc1381b63236cff5f2332884d8cb99b1dbd81ed461c9865197914639477312b2286a5b1b7befd698b0a0a2a3bd64f8c13c8bcf47bc76b44cd1e6fb0f90e1b2c2969ea1a1bd4930d9bd402f3556ee3a78b98e3340783f059f426b725b83e16f424e8851f72d124a9c1270eaf3f904e16cfc7588bb3a689415f5f001df19290bbd63175ae0f34559997d688cd07acc1eaeebe45d52c76cbde4ef2c627adccb4b135e4c1b20e2024c0289c916ff9b65316c9cf43395ff830e9d336cd712df4764b4d66842e91c9c72aa7c70317c3b133bff5bfe75ba8290094275b117e0505e6dd1a01702873a7397e0502928b56db29bdd32dcb50ccfb186479eb26b473b620a161ba15d55cdc957b38c664f40706f1ef691b793850bfba665a6776fbc7d5b33bf8dc1e85219b5d10dcac937606a545bd12ad1e2bf650fc047827e21a72ec63de18431d9e389b16787c4987dd3b7fc047a928bde6e2d9503d05e43d5db529b4b03d144cc7c231a000644d781cf15441d9a9b0f2d0194557f857a638636644c86fae36a1461a1156d67f62506cbb30ff88f6a5c5106db97d13b86a2d24a9f41eb8950c97ae275ac7cd84c854f6781af7bfce6e0cd6d0bed9914ee4451306b1d7cd7267029245f6671f541870a0de2d2de41e7e11553b6a5afaeae465907f326adfb86d4b29c48aff1e6d54af0cd0222e3244476ea0a7c3d2c039011e1980090e36b61d6cdde76bfef36a9f966d33b1ba4868f07528e827b24755e91210c00c8dc5c5281e121378551a7e0b462b3a253ad62aa10e2d2494acef4b337cc45430b4608b814f917e7de7a22907cf5143af761cfbfb5a820be847c3a56dd300711e172cdafa6eec1a751c7791fa866ca4473bb4adf668f4f8c550e729066d679f2c17e0d02e4f8edd5b853e81f16ccfd0dc3cafa4a1228e6c38de61824a6d1fcf7b2f0063e88e9591e0f04d34ce4dbe4a0ab2ef4ba6189901bd694e800d9b965e5d5b09d7ee9dd9946d6b80a8e0d934443a69926603dc112bcf587032c46343a3cb1c458535b355ab5ed4edbd619cd7278eb82b1f6899f47cdf9b496edf57223f4f076034543867786d306e6c08708fe2149bfb43f2b6047d662e1ab21910d6fd065e58184c39f0ad7006f40ba68b6521487afd308175a6a06b01c3459393743c085aab351919a790ec1d6b8979dac63c7dcd893be33e0cc66bd0797cbf62bbe14f92ae3069ea89e8131ef11613a6badf420ce8eaa3c06f58594de8c56e4325cdfc39ec4e7f6bb014f5fd2d3cc113d666f145c4258438a9a3cda3964bfb5719b9a2f8245e1dc5094d192e035c16303d94dd404d6f3be6e53af396e063baee81964e3e3fcc479816da259789456bbe83dbda7568168dc4cf95d8d4835551a4800a678de5e27be3d6f73525a05c6f58dcf7a180deebc207b30ec8b5e9cc85ecc8632cc88afc515bba41f298eba49fca9177b98aa8e8a5f58b5c02138bd7009a7f76e1ffd6f7d841a28b7217a4cba3f40d5cc928f0b9d3741a356aa60566c489e536783111e4886b1d4e9754793d993bb24219a202c73a6f882bf29355d4992a0135b8e623264c1172506a930b9ff8e879587912c1ee6f025965876acc3e1db9333a2dfda852b3e4c06f7accdee82911e82f6fa5eda1b710966d0a2021268e451c5a2b5e85b99a85ebd6ee32feb9b05d3b6540fbb5adbe2e362a185df810fac72d164ca11ed7122c49e675a630dfebc5e91d1bba0da493560c8723150fdba54fa4744ca3f093f6cd40d78fea6fd9a39ea5204d4124656e5e9d683b3969a78979e071b68f76548e2e8ffba51bf306d70fb163af7fb8d9d51bc2306f791f6635b39ce81a4309d2e1d629b54024e6217a4aa77599c2f161f70d82f0db4eaf702e382806b27fa6a9d3f594e8dea49e84b2d611f504386bfbe6b0b7043233f113d28a1bab024dd1db55798464b0fd891e622b0fb4bef8b3ecd2702d339e18969f38e399df9a88a20e28ee00d0415005964b842a07fe86e5b9de83f48723ff1b909c2c100d44b9afae2c44a7d78ff22c8be988b93bbbf0dad84b55ab831dbd68cc3c5cd6ae1c65009ae518887b89be099e6eab5ad818d1ac789892e9b2e3f96d1c35f63bbbedeb1cefd3222270af3272f2ab33a41a18c67e98e8dbf644040b6c6951938080b1005132c56412cf865229bf99f1caf915f333005d0b05ccb39d40294eb979107499938ff6c7d7daf2bc712c5e1522a7b7faee192c55d269abd4746d0ddab456d4926b7c05f0f143261baee886dd92875d5c5a1c83d0f3a6323a34cd3a1896b8c2a263ef3738a334e082244f74e222d3ff588de1b48976bd7ca4173b33e44df07df222d8bd480ef922314cdd9026275da3260e0e6c61994b55cfb8cb2b2ab323d23e572dc5f8c5054a3410e8b0e71e8b71109974d32ac7d89d4fc1cfc2f2470d81cc19b3f7d60cdb67bbe7f7632ca09088906951e78ff63f189d34e5ab35df5eb9bfd2a6abd0c32fd68e40adcebb99bcba5f9cfb132b928fb8903a2f8a9a2573222e1dd75a0cb4b611eec6c1d74c0fbd38d3f90a460777163c278bed58cff12808cefef31ccc2166d1770bbc60855478f8a14a259347dea43878bd23ac6ed09f068d60cf0a6d7a0f54b9cc5d35bd5bb4157d8f1347f15c069e0cc4e074a9399f012d96b5bb9e0a06bd185e1cbbd8f41442aab29955fb304e340f1c6bab071e8daae34adc4135a025a54fec9fcff97369522acd54d65fe0f78a6238f78ba4b7f4c0325f1e917e27112f407990f87594aa8bdce5b3330f89231574cc85ce2ec3666a09e340bbd67bc00f8229431b24297634eb44d011425cdd225e17cbdbff5e0040f6ec23063a2c157295269eaeea30be7b02aa905dac91d223614449199f7b523f97ea1c3c05be0ea72e29f1004df2f8cb424d082ac4c54c6b0f5365b006400450fe917fd4ac0b1dc24fc7348acada3d9844d9d8e022fcd21c4a7e988b978f562b38e5b6c1b78c9c70641ca7509cceda29a35b7854df33a5f5aac6c7e5bf2f2867f6e655697aabb8b928a519686fabf2b2040604116ee20d42b8e93682aa7d5c4de0f5831d9b9c699c53bc4061fd553d457105742968eb57c34054bb7f6fe724746b524cd48eed3032141870393706d6b35b664d5ea9cc924c7de9afb09ac5d9902cfa362df9d71e1f7016d215dd7922d6a778ffc563f522a4662441ae9e4ed26be0e723fbfc6435897e8f894ffde8de55aedb390a8db23557cf98909e0ce690a4724200faa84935ae867668948631c0bfc50bbde3bd9c2dd9efa1c709b550db7a4631c9adfd2c787ef32a96d44ce19ba3e546d72c3af93472a92705444c5064916c59870a9764dad3f217b7eb253afdf37e532fcf353e9605154c7f7171bc335ae164028541630d51cd7fdc0abe5df7183cd745870e4458be8e01f79e31b789bf09ec71ef6f8840a62eb98a29f444ae9d21269065042374c1462cbf17080178e4f8920834e92e324de6c4fdcc4b1b15e19d8d625998330aa864504895e0b4859cb3df1575a06331488d5c4d15c191a5fd5f1870534f7cf31c96c5dfddaa69150dc00701ca8aa2c7ce3fc29df8b92ebf7a09986376438a74f07ed7727b9836a416625be98068899411a4849aace5a0dc6ea3f82b3a7ec93a5399d76dd3a4d9b470b918ccf6128325c87837d6705f7fd14e0406b34645a9d31040fb98d69c38edec2df9c22ea5dd537df94b0abccf5833d9647b460fbac4f1c6d45c918d772dba353eb3fef41eeab550cb9251a4c45e9ab2fdf93cb4e0ebfde2f66a86c57cd1dc0afcfea52848cf64d4c61981aa16cafff64809e2be549655d5fe9e7bc9e9c29674b7e7d3d07b88ef275c1e89159e7caece0e7bbaa1e4f17ee738d0653465054ffd2c7db5a45880ff0f37bb34a5c3f360a3b63590696e3ff7b47057daa0c254156c12f8e59145cc9c5448240696060a1bb7b51610610b09f8fd15bdb866ff7441a9a8cbb6a7bd926d237e4ea4329c4782934186b7f272512d2614a47e5f21d72811dc74d232e4944aa901fb6fc27b7c064c73322ba6968a99e045c2f76972fdf3c7947dc5a55f409fd3ef88be7429d5ba3940284a907a872db42eb8da0e8f01f773455b2e53397b8f51a5815a6c259a959eb8685453e0e156090628bd773399a99e2200cfb8f463f798d070c1ad819d0e998bb4ccc31663f34109140a49f19d67fcbc14a2c28f71a77930a7c90b182b41522da0671670029c795185609b7707042f572849a260db1b7f940fe2f3921ce7c555c5e14e279bd142ac14d316c6a84f5ec8cfe6fd51719ded43d317da0f36af1874d9df47cdd877936de65ae1aeb13527b91f5a204442b40d1d43c480e197c253a158701d71fdf672997687d7912599c8b37bce766f6b36b112b1ecc710e4fada7a2bb55d2be0a3f3aa7db0dcca90ca5c340d2abdc64b7104d21e57dcb3477b02806397a681d19192191dd11ff0c366e94d747dc258200430b60f27b66cb28bcf6c21f033db805fe5645472d58ae6bbfb1216c6bcd875fb36614bc7ddd0b5b64185bd6397ee755e410937fcf29cb6454ce674d950f761700a4fabc7ac319c95ec041b9da1b4646b45727015a71e2143cde1a4459bb47a06a5764abfd85e22badc9d58b8609b0da3b36a0e7e6587f23776d306282d90cf71520767968df3ac249d7f6e28b305007bb9c08c5c64487b1560afee3358c2e6640244cbdd7880d3020038b8b06c8b5d5db895a4b9e4b89c3393ff17bf405987a018e6a0e6d559088561cc5c65988897c28e54ecaf26a62d80e7ed7402bcad72516896088c1a12b9b5cbc9565aedf16243d5aa854c42d89efa6e05b93cfd097b9ae2ac85325a98d085f29938f927abfca24fd39f393630a75b7ead932407ffda35c678861740bc8dee60174f9f23d9edb3323e156502ee52fa569cf702a9bb38c919f089f7f1f1d3a29aa5ecf16acfc8f152f5823adcd359b9a43ddc71634d82a89fafbd0dba3d31925fa72ca5044f331d026b9cc00d3ce7013d00d74635bb6339462e62ae51a928a5fc7ae1a2e792761d19a809377078ca2c9745144c5ed43d26540b44ddd884a66c2210c0e9c283fbdae09b51ee78ecab37e656d5793289179227f45f1fa34f71d5d555c44a41c0aba92134b6e11c71477af9878f4ace4929c0a29fd6ed211326217e19805fbc41fe639a8857caf6cc65e936c4102d434204a7dc45f4d0aaf1f1cc72aec28e01039536a8615735f52109f9549a7e079590e98f589e5a324713f53541607092950a5f1ddb1c3bd8c3b440355663ddedbb21443bf4950edcc6b51375b8f33a732c367a00564c7f78fd77c61f8e3094eef4c5984726143970a75179f8c99bd9f43b6affb22abfe5472039d2f983a59443a2f836dca0cb23d52e67017e053bcbbe17a70875e82c616971b3e231aadc579816ad4184f61fa3c8a606c09da077a9c2a6dcbcef6846f5bcab7ab41b8e42873f08d16f65102b27e2b6631077c2705696f963669f350962417baa338624379228eed301e2edaec769ceae5cd5026961efcda0ec2f65e3b39f530c7eab884609f11969a8e819f63ce8ebe006f6a1b6b19171ec6149df74758bc832cd6557079f0946d5b2403b62f1f61a1382dfa901517b1fdd3c0be38f8b80ab3222437b459dfe65c6c19fd0e18275994af74e10b8914056f2faa663da17474ee64d1b98f527049a559db5fdf05697be4f17e2c0f3732068fe47b53e8c6ee776ab2b9f86831e69c0097e3fdee497ed9d07c9548b3c95a060eac4ac574f6a6d6a0f5352233b63a44390834ecf38bfa04fdddb1274c235df02cb88626e0b45e80770fd5630e8fab8e10fd9a42edaf13cccdb47e1f42ad76408757b84d6267e6fd63c81b2faa14a35fa3d8df372c778d226ac336dcb71cbe9eb10abbd5ef0d62cbe1c61e9dc14b4d4ddaa00a3071311e914987c7379e20c3a8c30db3e9c76208a6280cdfaf304224b4ffc4e7722ad9802eb97ad263357c296ec0315f30942a15335527242e66d1e8f53fd94beb659a921a78657222859b13e0b61370c374ef130fd5542e457a07c923b2cdbb6c7755de0aff47396d98f181067ac77ae5518873ede4ee058c2e09c26cb92ec18fb6a8badfb9cde5514b53e57453bfd02690e57ca82818fc9dd81ddf90b98207dde31b0ebec6a5d3ba5ee7ffe6810eabf4fbbade802e85a417762f41317d7283c91dc1e60075f22445b249127d7688b90b140de78406f0bb1362cdceba12039a2a1dbb0c76cc42307ee872cf9d31b4a8078542b06660ae5e36f55fb15c4bfeff23ca3a81cd665af506daba97e7ba4ab1f1d171dfd4032669fcda7394bafc9f185f46cdf8be13b1347d15be41c0e8a42bce1696a917ff1c2aa55b0d34d5d8d07839123460b7de11e02cf3e1ddaf68f31e0e18cd701367401b6ce878772baa0dc1119a6914440d2987fcd2755617c49a9c35ae5a6a5a46fccd7ce757025708d3ebd3dc5d4f0fc53ed789a188832a280693c522d38f8d3e73dc58d7164956ad141a5106bfc10b7020304b013e6ce453b2b42b59ddf42f931fea449320fb16ee1c20daba32649a3d61e8a9ba14b638638ab5fe03ddbde5ff17167ed57e924eabebd6574edfa4a25fd4a9fa9f79639914c6f29e4085c78fb1556bee522842084a02ef0ab529fc341d1adc324a16d251e9ad1790251280dbdba97c031968916e04c57f7877ef7df56068f90b8c7eccafbb68fb78294f98f4e28a7413a7ca4cf1dfba465e51e45115733dc08d07f6ebdf3a4f3c63a2a875749edb5edf7c9c85504e1be61bdb52532f74addc7ed6943c1cd1a4f5ce8922c285156449ad0b7d19b9716e7c4136eed1278b8590a82610fec337e9099ca0a4f2040cc2bdbebd2b44d144a63162a60187a6c2a9c3b98ddff88cd5220bca98f0e3f5019491a0d846990407bbed30c3f2de75dd57160a3e6a066a4437ef3228af03e09b739d651730afbd1441324ba2aafc112c3428dfaf44e8cd2b86f57d6630fb7529b89c967f7ea24f35ce555c437328ddf747b21c9d1180103ee7cbe0b73357aedc1260a28192a87d57a976daf2fd946ab45f00f70d178d7e13666440f121d351d345f9671daf07f6aa8057a415234add7b3393ad22ba4928a8cb9e95e5b3c0bf708a9d48504eecaade80f641c315d27408b6c22e574f92c460261dd78598d6cf61974fda5b7bb83600248d687887134c982bd9100906377db774fb5c74573d16860a342ef1898ffd216464e6bf53f277b3addbd236e4221798c1a2d18a5a02dd76c493488bf80297b60a689582070ad4ff806a6201edf2bae9a3f3f6d42c0a9f1890a8afb76320c6f58b99a384e2a07bb1a431cf7a17582b0199227705c2c56d8d4d7d06d6484097e4dbea32abc283c5ac449a4a44e7d9658b62da494d8f6d422f2d063265f84dd624f3c28984082ddc75d02c9e135b69a388574d0ae114166133d42f96166465d93df3a0cfee5c8fdb07ef1c262231167d60b503f53dda378fd61e653907695cd8d76a843d4b4980a81289a3d7786f1fda2db0b0f28fa20ca647483a81ffef514fb5d97f0772409ccb1a6298a423e60344cf0d3e0420a9921ad7bbd0798b63d644afa2c96b997008055ed91f183659737b9d6c562b7599c64c3db4e4fccb4cf8853c7b3eafcb7f8405b212fe27cfacae52702043809d7c961ff93b906d47a7e8e0baa5b23b7c7f25d6a0550e40f05daa666f4c48cf079225294885ed52ca6d789521ba82313184e3996fb5b94895612efa39426f71aff98ba621276c149afbdc440a35912af81b7c16214d753f7ea1e7037cf6be355cb7e3a0d21704804b363726ee6593c71e7897a91bf71a7642b288cb949e8c7d5f7bd9ae00503a1474d75468296de6d84f8b4fb757e0322c1b145dafdf5481e159f2beeef0be906fbc2d2efe02a91a92e6fcbff45949c2fdb06ae5ca16d8482b04876ef0a9ac359dc207dcf75a31fa038248c8d3becba6e65a388aedd612eaef722b7a0a1358a762d36af962473c6e553ba7d2f1355ca6a3b998e85a0e51ccb9f271e30eb5cd68ca6f9897a4df9ec5be678d94e939b6f953b08072601b6869737dd4c7c07768dbb4089adf1a0c98e07fe5b6db2d67555400ddbc5f35eed8264e4e8233f21f17e9668803fd6b94f3bc9781222a4cc47e06791fec83889b555f160e7cefe230990958e6455430d9709ddeb743d9dd8003d16016df444b9ffc01d7a868e9e77bed976849473db2be28b8a5d78b324475a983954a276831a1b30372cb3b36c374744ef8cf8337edc4d365621a0d6a5cbab2b991425b20b90ea1eb75ec50b5b7e9a7262713678d72bf4c38964a5154f16161be207603aece756afc2dfc66569127cefecc9e5529de795059452fc130a1141e6a08032dc1dddbfd8fe6f93d5ddad85c141821978a182a0b035854c208f2f040d72994a2953b74797cbcb0364661a438373d3c85f05174ce11710dde869cd23f2bb2bf965ecb06c1c407151f976f219e4fb8728c657a7a752ed8b9d1423c78802ce77304d8591e9d95b9cf4750f4cb5e08d31476be2eb5d876513e4f842746d9a60c66bd35269cf6ce4f12547b6bb9bc69a1da55ce436ee3f177251dad80e9ed9fa64dacc5b845bf9f0bf129176bd311bb4ae53651d9c6955005a99e4a49f6bc9b454db34efa9a5ccc3b10a29277524a949cba36816cc0887abc9b336d2d15b50985956fe8a3b6fbe07db3a324c335e0a2592ee82313e5a5cb6bb9a35d37cdc1c0b40d33667a7110fcc61f3015636f0e1d05e09b5fbc79a3177cdb3dfe343f6404a4f4cbe437fc43b4c5b52b172980bd9aaeea89bb1525ce9b3f2a9fcbf439eaedfcd4261cd173c0394679a49b1285a20d95f7784bb9b81c6532fce898733db89a1c44b2aef61bacf27c35bc295253728329144529864ba0612fc561442795a1117e40b63ce2da815313671d32a8b81117eb122fffc2002afa124f445c17850476cfa29b21c0203be43a36bfa02031704b18ff443e05f81d888f6bb9f9058de601469e04829f016e11cc161d404af74107f3f08bf3c0129c24d68e21efd0deb1a08ffd717d0e714292a4cdb52a3658a5c52b247269b9b08e1f19dc23894cef2524c35c5aaea057ab4b655bc184fcdf32d7214da7c936c386fe9b674df772aaf638f90593a5467d052db0c8d4806934e5b4afaeb944668a4798aceb1f01374f3fc078119dd5590c31b47c35f992bd8e918f772b4fb4ffa2b4d353b30d3b9132c9b755892016feddc9a32dd4f03843aaf3b551c4441ce8518fe55e9aed5c2eeed1ea0dd3928fb2fe9cb38cf0cbd2e4fa0574d90af9f49eb5a71847aa930317c83964cf26e4aab1f04d2505767064097505b6e9e14f32a7e20aa627c7931eed7fea967be2ac58208455074bc5a2564d3fe9559dc1aba973570ec0a84504e3ad4eccb63930a1bea5b00fd43cb7def1c5a33e73df0f7be0e88441ad603a408d53fa8e3af697649ad3b3c9fdebea40d75adb7200cc229c9a805421dc051feb2c2d11aac7795d8e498e1d3cc1499eef9cda799704d815b91e1c5b768c3ad196ad16476799e76f028d6732c6e4fb430dc4b93b66c0dbe772e77aca46cc9b563510667cb58bbba71d3c8b702e922fec64ac66c503009f7f618f711e489b6d7d3e0598a1bfa39cb2dd4d9e4b8c576168b034b00f6ed131ad52e1eceaf73776fe1b20986aedac9363525ef920f24d0b7499f400d2a70f92fcb9940f06e91c377196397746718b9736ae1020d8752ef5ff432e19ddeb32103f32b0c4c7e42926a47fd9332f26042d2c33b38c19a8b91c328511aba0f758f066c86ea873e51e4e77c0fcef6f0c4e1f0a40fd8186eef176b0bc6c2904b75d9aa0ea474c5ef17ddd9f64b28a7667fd50874059b28df275b25d7e73af421b9c8c6d4cf8cc867cdac5240ea04b25f5f79d7d1a4e3d888eab51a134f8af5a8a7d55a8dafcaf081ea988640af7cdb645de611cdd03913e4980c77c93337f2fb87a78cd0d97ac1056a173284ee3de162d03b06ecd9a12ee36a6d240b8b21b98aadc0260f3bd35d8059c2769d8514269249abf276d63290310b8fe74897bd0bf0d05d683d0ea3b54cdddb5ba49acac6fe3ac2819a086b4fc07963edf0e77e286a36c5d09b0a7676297bf4e185628f4b79afda069bcc1f2d1ff392679501fcdd5d33a61f61927a9a6b06720c34c7833d05c22ba2272942942f996c1bc9e4e2cee0d2888fed38d8e5cc8e4f383b394c9f2a73039f716be0d11978e68cc46c282dcaae8554764d305e59b55dc71699701e3be7b8f71d4ef9a25cb9955839ec630a34e9568fc1dfbc5249546c701e84b7645e628776b20787361ca8b7cea344294aea7069a732d7a20b763e6eea6e6ac26820141310ac76ab6b93166b9346aadfb60ca25bc7e97b02d50429a32a0036e40443b7720ddd3454ad877e977d5764e97540075458b07c2ef424447676bdcffa6e14be48b3722f5816532dd2866af80535334b191c8a954b7033a57ad108483e87998e4c95ce7b35eaedbcc5c80b2442cff895771e7c14ed581f9c23c606b871f7e93ed0d3613cd965a9d0ca9da5f604005f36ace4547901b974a7f668fcef6a7585572ae2b4c6b2db164984026a98b0cae51cd677dc28fb083b9a598e78fe9c82ff37f34f75dedf8ec9ae196e3b28bd152955be6a37d4fb2f7caacd456021cda57e0049cc8c02dbb3a0a23dd380f18d1ac9dd8beb077ab6f0e9b2bed99696b17e845864dea72a3f0b6c1bb181ae8f9f344715c9467bce7f1b7164c332e544868d925041d0868b7093e4b3c6909c02ca6264d2e1cc0bdbe0419836d694fedf4bf7bcc430cb58e5798fc25e12bd6b2ccf22142f2960f7190b6bdb0c0675060c17dc1fe75875eddf0ccb91fcdbdf32665289cd6c84ca695a0e5bc3b6e5f92ef4321c082242bca5e1e4ddc6044644056e56b3bb2abd860f709f7bf6a5f5bb5cc63be1ca371fbec2b1f40bc9ee7eb48fc4c5da260c1dc7a077baeffda78497423b6fe2ed9c2360054ca697b63255eff2e4a512a4a9571f7f740954716b8d3c8423dadf1757b456230e28eeda9550d4c60e31a5c961bc41b83fe0b2b1361b27cf056843aebbc4e5108e25b65f9a365f8cbeb54b2c2e1cfc81a7231ac121c74ff477366e4615844c75432546f51f99e566bdf6b62f45d68337c07b29cc3da134ba7026fd75553267c78387b16e9ee0caa47930d8d03b6cb8fe96871493c50c9e3a9ec45043eaa02b71f0226d591f413f8805a82cc5e2c952a217f3bc9c81652b6429d8a62cd15c0749b8636dede51a0c1836fc1f761348b2bebbc84a5ba647d352659dca61ac9a779de07b5a2fdde24cf0bac998e22e2735ea854b836205ac674d0274e7e77eab22a7fefb002de8496134f092eb84b87d70f8f6ac1ddc8fe9117ccbc2764ec04032e5f3d9fd3ebd62d0d0087b8885b20cebfb6b4017c53e4b36fefa7ce764bc61f1cc6c633e4732b1a40c9aefeb3921125a57652db57613c31f69731709525d4d158177766f6ed8ce9fcc7bd535228bb560bd77512709784f823c0c1700bf55d05784856e7d63f419aa2d01d2e342e790df0a8f54cbc199792ee4113eaa79e6819e0aa47519109eccf91867bb6abcb6a069087bdf93d73105eaa77e3ef66665ba078f52f0638b02d195db20f06676f1278cc3e70e161e48680d6c2bd097d5b9671c2e98b6348f1238da060b72b19468bfce065d75a5b4b51122dd6add56398b10265ae47922f43c0f8eac0fc5074b16eb9773b0dc400f45c655855daf11ead71119618c3af4b00dc0b3ba5f7c1c94fcde18e544ed67d19b24430d241cbc0e32031421bc6b93a2089e778a5f033d694c708be6a18c8b431afb90e3b61db8d73d8c517ce1ab47798e2f9a9c4b0c251c117c198a6ca188af90c13e0907a58c25ece72df5405d32e1b54c1a31cf7756a414b2beca99814508b48d5e67c67e09d909c3b8d6977b48876327e2ef4a7c0fb53cac0fdf3e4f0c073ce875349618062537c23ba8ba83ca7bb48f817bb6600e7f9f662e06a8194d968c2df600dd77d0ad2f98701a9722098f32aabdc2c56b2cc39840ec3d97d050a9620e92514db0434cc25913eeb00f3eee0973ad2e2f1222d3e3b2b038f17099cbca039a57696529ac58b671bbfd91fcde4d8a858bb5fe049413f9cfb1e281e76946cf8996dbeb586a3c3def4c6b142f0143082615337c77206ff639c769a4b9cfb77f565346548c5ef16d2390a3c72edf9fb459daa1a78fe2fe371e5dc34401f354c48293b9e187dabbf43a4b34e40d7688ee2cb6208e77d45d5b2244d4bed9b153a74404d4ce29dcb6527cea0261216940258a880597705352535ca147719c95632979fc345c767d65baf2a7e6d86d48609d5635d8fd353b380714239d23dca07b9fca8b2bc3d5c1f8f0d25bef02e8ae1a0f50373de7539a11726dca2d318f934eb93e2cff5b7bde8f38838352c1a4e50b124c3ddad9d83a080e6b4d34a7076b414bc40ada97c84c842665b5fae0a4bcfa0fdef443bf5dc1c3ac7174397fb60cf13a70d02494cae75dc9a796be15857561083f2f5d47ffe75765fd5371ce570669f7c8114dd646e7eed828e2d121d0d95b30dfcba588c5db68ba40611804670304d577aeae31b01d7e0d7297ba88287ee9b75b98889164301d3dd5557fd7364c982271c0132d4d07c3250fbb8ad61f3aa4a5e13af3fb83c96bd5c2b33e9789f1c5082a7cd809082e8eebb0b54362c8e82c918434961cb7c7963a6a83f67582f70f84c857726b83d44218dcbb826856ddd12204d922c2bd952ece2ab5ff32ad81daa25c1e6d933de2b53c28be0c2adf19e0d96be050cb643f83b8c637322035bd5ccb636eeab11935319c7979fc2e6b13123aa23422a4208d481d7efa3c0f7c159d420e7339b7630f8cb5f3f0a35644e06f2c972d65a5671956dd0251bec624a95ad4f5c6f0b8dd1f17ea33c96973065f942158dc48a26e078912acdbf1eb780359cbcc353a4e1d91d90fa3425c0689b44c78ea093075715978245d72e81cfa84e2309ac492e2e6f66fd13efaf0e1c4d8760c1bfdddb8e6659b49bc11c9202f40d4403377b26d70eb681f10bce921ea5bf80e00c470c69b16c6fe8ea2ae3a546b7c2c49e6720c3644038235ac7c9fa9abbf7a32d92e0647ceba8211f67fb28d68d91ea13abdf95e24cd33e3d1814f6efd6f1f483b60129b93e5a3f1af06d33b2037c7fce3abb786b2df32a70b914e3931514b400c299dcee14649efb6efbb62824cb3a5c590bbc8d4ec442e772530619b43d0099ccdac694d7f184474ba8e3084def3a49139af9a2b73fe14ae8343e4672ce321df09c0163bfe6618eff4f58f88d2e1da4203a243f4ec17e78036a71f2ebfbbb42a7d7fb6108650cc7be79e5275bc29c07094b7f3f4cd655298cf21c9bb61be2710b1702913a416b18e2b3ad9aba7ec343aa36c9309effe52c166b1dde3e960971e7f218b9c0a6cda941019bda45af0bb4a728e1f9a52e40206722c8e53c819050b6dbab545ccd79ce6980e0a8aa1ca036892500920c1d94edd3d4c24e8dd124338984f03be5fffcc34d321876ae235cb1fdc314f762afaedcc14beb2e8a374f07e730963c70e1237dbaff9c86d12f196a7497205d743ba35da218468ec3b5bc00334e427f6e829a3132b970f4f581bc74a3afa89683312ee9274d0050ff9c39bb5b757fa3878db4931571ee2edca176357f1eabc06b703272c0e4d3eddb6d30e7b9c7288cbe540080825359ad6d7c3417e27925943bdc504001a85ca9ac16d348826be7bc9105c1777e435ad8e723950a53ff79f5c5e8aa6bf78d5aa516d7a8f498bf21983381b835098ffe82fe27ccfd1afba055b35a3d6a12dd21bc7ea6e9a5d85d4a003e6edf1978ad94ac04c1b6a8ef99b115bebec0c4f9115de3948a653bb370be6c6f5a85b91993e94e9bad83e5426fea1276a238f0f15cba334d9c38a10c0396c72a28e9fafe9920d444cf4e34e32ddd89e5c98e4e0fe64003ed3822474d24d14fc7708adc8480ba80c20def233a7513aa8c0c4a6782819d6cf2a923b3f7d47cfb5cc1a17b35a3000ca7d4bae1e332d57c1b2dafe0a76e90ae8c587ab0d004df0cce8376f260cd28a28dac3611bf7d9e89e8d075c0d0335e271a6fad5a0a1540af52e612e36d79d5040775e6ecce390147c9e280671d0bd510d15d82e8461104cdeb0dcec7b728210547c464ffa845bff11d6f0922c0e85febb1632d22bbbf41c97da697875ed4fcb72a80d059bde369f3c540f7d059397c5d0347906cbd126b4d8804b13431d700102f8a32505c54643a3f625c71e7e9680546a06d12cdad445c5b4f2d550923894b967aca7fce5ce7e1b61a889e9e51fd1082e290cc9d39c7e90061e518bfe5e147d5d81ac3388a1198cc108ec9a6f772fc7e43661820064df095519904e0e987ca2e522c5e6956978367b1f8f4eb090be94cbd56622f6ab374e4382ec4807a76d89587ba6613aa457f0e1458d3d6ee2dac6eb1dc6780beb8623980a886038ba26acf52c6df3e55292ac78e55</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">站住！！！请输入暗号！_(:3 」∠ )_</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">]]></content>
+      <categories>
+        <category>朝花夕拾</category>
+      </categories>
+      <tags>
+        <tag>秘密</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实用软件</title>
     <url>/2023/08/10/%E5%AE%9E%E7%94%A8%E8%BD%AF%E4%BB%B6/</url>
     <content><![CDATA[<p>有段时间，对于某些需求挺强烈的，但是也花了不少时间，不过可能也就那段时间用用罢了。或许可以整理一下，已经容易忘事了。<span id="more"></span></p>
@@ -3264,7 +4211,32 @@ uint16_t AD_GetValue(uint8_t ADC_Channel)
 <p>2 个整数 n,x，之间用一个空格隔开。</p>
 <p><strong>输出格式</strong></p>
 <p>1 个整数，表示 x 出现的次数。</p>
-<img src="/2023/07/15/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/image-20230908221427186.png" class="" title="image-20230908221427186">
+<img src="/2023/07/15/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/image-20230926104854978.png" class="" title="image-20230926104854978">
+
+<p>　　原本的想法是int两三个变量，用于存储n的每位数，比如123，存储为1,2,3，利用for循坏递增进位，每次个位数+1，都分别与x进行比对。but循环难写，而且n的输入范围达不到要求。</p>
+<p>　　也想到一个较为巧妙的方法，比如x&#x3D;1,当i（0 ≤ i ≤ 9）,x&#x3D;i时，输出的y都为+1，当i&gt;10,则x&#x3D;i时，输出的y都为+2，因为10的十位都有1，所以个位+1时，y也要+1，以此类推。但是这种往后增加的方法，只能写固定的for循环，除非你真的写了很多很多很多很多个for循环，不然n的输入范围取决于你的for循坏和考虑的位数。</p>
+<p>　　也想过用数组存储1234的每位数1,2,3,4。不过还是不太可行，直到我看题解，看到了一个很巧妙的方法。借此写出我的代码。</p>
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include<stdio.h>
+int main()
+&#123;
+    int n,x,y,i,a,b;
+    scanf("%d %d",&n,&x);
+    for(i=n;i>0;i--)
+    &#123;
+        b=i;
+        while(b)
+        &#123;
+            a=b%10;
+            if(a==x) y++;
+            b=b/10; 
+        &#125;    	
+    &#125;	
+    printf("%d\n",y);
+&#125;
+</code> </pre> </details>
+
+<p>这个思路，很巧妙的将n“尾巴”进行“删减”，并提取出个位数进行比较。再通过for循环实行。</p>
 ]]></content>
       <categories>
         <category>洛谷C语言练习题目</category>
@@ -3345,6 +4317,19 @@ uint16_t AD_GetValue(uint8_t ADC_Channel)
       </tags>
   </entry>
   <entry>
+    <title>第一篇博客</title>
+    <url>/2023/07/02/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>　　其实做一个私人博客，是很早前就有的想法。最早是追溯到小学吧，觉得这是一件很酷的事情。就像是精心的养QQ空间的花给来访者看或者是配置背景音乐（后来需要绿钻）。<span id="more"></span>大抵在初中和高中，觉得自己会有一些比较有趣的想法，或者一些想做的事情，先记着，以后会做。当然，现在慢慢淡忘了，仅有一些，记载在高中的笔记本，亦或是回忆。那时候懒，不想写东西，也不愿留下什么。拍照也仅仅是消遣。  </p>
+<p>　　再后来，觉得有些东西还是记下来好。出现记录的想法，源于我当初玩过的游戏，追过的漫画，看过的小说。明明当初很沉浸，或是冒险救公主，或是探索世界，或是征战一方。但渐渐的，就忘却当初的感觉。仅有一些印象极深的bgm和cg。再看再听时，能回忆起创作者们精心构建的世界。我是想把自己此刻喜欢的东西，记录下来。最好的办法应该是把它们构建成一幅画。比如：库巴顶着豌豆射手和坚果地刺构成的防线，就为了摘到后排的向日葵送给桃花公主。亚瑟深吸一口气，死亡之眼后，左轮已回腰间。百尺外的酒瓶岿然不动，倒是有个刺猬蓝毛小子戏谑的把玩子弹。如此如此，或许可以把一生所爱，都绘成一幅画。尽管有Ai，但构图和规模都是难以企及的。<br>​　　扯远了，私人博客除了分享我个人的一些东西。也是自己的归档。电脑和手机里有太多太多东西，草草被留在各处，现在打算给它们做个坟墓，也算是朝花夕拾。也想着来访的人，仅能在那一天，能见到墓碑。不过自己懒，或许只会给碑上刻一些自己才能看懂的墓志铭。既是赛博坟墓，自应万古长存。静态博客将在云端和硬盘中进行双备份。并挂载到github。</p>
+]]></content>
+      <categories>
+        <category>杂谈与想法</category>
+      </categories>
+      <tags>
+        <tag>杂谈</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>童年的正午小路</title>
     <url>/2023/07/10/%E7%AB%A5%E5%B9%B4%E7%9A%84%E6%AD%A3%E5%8D%88%E5%B0%8F%E8%B7%AF/</url>
     <content><![CDATA[<p>​		在我小学的时候，蛮喜欢玩的。有邻居好友，有同学玩伴。上课学习一下，中午跑到学校附近一个类似于“托管班”的地儿。<span id="more"></span>应该是一个私人住宅，主人是原先小学的老师，应该退休了。叫“陈老师”。和班上几位同学，同校的一些校友在里头吃中午饭，年纪小的要睡午觉，大孩子则到二楼闹腾。</p>
@@ -3357,19 +4342,6 @@ uint16_t AD_GetValue(uint8_t ADC_Channel)
       <categories>
         <category>朝花夕拾</category>
       </categories>
-  </entry>
-  <entry>
-    <title>第一篇博客</title>
-    <url>/2023/07/02/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<p>　　其实做一个私人博客，是很早前就有的想法。最早是追溯到小学吧，觉得这是一件很酷的事情。就像是精心的养QQ空间的花给来访者看或者是配置背景音乐（后来需要绿钻）。<span id="more"></span>大抵在初中和高中，觉得自己会有一些比较有趣的想法，或者一些想做的事情，先记着，以后会做。当然，现在慢慢淡忘了，仅有一些，记载在高中的笔记本，亦或是回忆。那时候懒，不想写东西，也不愿留下什么。拍照也仅仅是消遣。  </p>
-<p>　　再后来，觉得有些东西还是记下来好。出现记录的想法，源于我当初玩过的游戏，追过的漫画，看过的小说。明明当初很沉浸，或是冒险救公主，或是探索世界，或是征战一方。但渐渐的，就忘却当初的感觉。仅有一些印象极深的bgm和cg。再看再听时，能回忆起创作者们精心构建的世界。我是想把自己此刻喜欢的东西，记录下来。最好的办法应该是把它们构建成一幅画。比如：库巴顶着豌豆射手和坚果地刺构成的防线，就为了摘到后排的向日葵送给桃花公主。亚瑟深吸一口气，死亡之眼后，左轮已回腰间。百尺外的酒瓶岿然不动，倒是有个刺猬蓝毛小子戏谑的把玩子弹。如此如此，或许可以把一生所爱，都绘成一幅画。尽管有Ai，但构图和规模都是难以企及的。<br>​　　扯远了，私人博客除了分享我个人的一些东西。也是自己的归档。电脑和手机里有太多太多东西，草草被留在各处，现在打算给它们做个坟墓，也算是朝花夕拾。也想着来访的人，仅能在那一天，能见到墓碑。不过自己懒，或许只会给碑上刻一些自己才能看懂的墓志铭。既是赛博坟墓，自应万古长存。静态博客将在云端和硬盘中进行双备份。并挂载到github。</p>
-]]></content>
-      <categories>
-        <category>杂谈与想法</category>
-      </categories>
-      <tags>
-        <tag>杂谈</tag>
-      </tags>
   </entry>
   <entry>
     <title>说说(2023)</title>
@@ -3403,6 +4375,24 @@ uint16_t AD_GetValue(uint8_t ADC_Channel)
 
 <p>难得今天大更一下，灾难性的目录栏，自己甚至考虑到要更换音乐插件，为底部模式了，然后是各种头疼，自己当初可是东一铲西一铲，自己都不知道该翻哪里的屎堆，所幸只是hexo解析md目录只能支持逐级目录，而我经常越级，改好后上传，还算可以。</p>
 <img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/image-20230907194355312.png" class="" title="image-20230907194355312">
+
+<h3 id="2023-9-13"><a href="#2023-9-13" class="headerlink" title="2023-9-13"></a>2023-9-13</h3><img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/Screenshot_2023-09-13-20-25-16-34_0b2fce7a16bf2b7.jpg" class="" title="Screenshot_2023-09-13-20-25-16-34_0b2fce7a16bf2b7">
+
+<p>　　想不到这么快就48周年了啊，时间过得真快，这是我入坑pinkfloyd的歌。虽然当初乐队的其它歌一首也听不进，但有一天，我听不惯的歌，它的旋律在我心中响起，从此就一发不可收拾了一段时间。看到类似的构图，有人在底下评论“wish you were here?”仍会觉得感动。似乎真有可以共鸣的人。不过顺提一嘴，现在看哆啦A梦比小时候感动多了，似乎更能理解藤子老师构筑的世界。不过我要是有一件道具能让我喜欢的人也喜欢我，那就好了。或许自己以后也不需要这个道具。</p>
+<h3 id="2023-9-22"><a href="#2023-9-22" class="headerlink" title="2023-9-22"></a>2023-9-22</h3><p>　　今天把我妹的小玩意重新摆了一下，感觉还不错！</p>
+<img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/IMG20230922001205.jpg" class="" title="IMG20230922001205">
+
+<img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/IMG20230922001359.jpg" class="" title="IMG20230922001359">
+
+<img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/IMG20230922000826.jpg" class="" title="IMG20230922000826">
+
+<img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/IMG20230922001554.jpg" class="" title="IMG20230922001554">
+
+<p>　　可能这是小废灯唯一的用处了。（不得不说磨砂的光线真的比全透的好）。看着就感觉我是个生活讲究，富有高雅情操的人。</p>
+<h3 id="2023-9-27"><a href="#2023-9-27" class="headerlink" title="2023-9-27"></a>2023-9-27</h3><p>　　期待国庆ing…..</p>
+<p>　　收到老哥反馈博客评论系统炸了，后看上线一看是给我归档了，可能是最近一个月没有API？又想着这个评论系统需要翻墙，本来打算换一个，不过Waline实在太主流了，评论系统的管理也很轻松。自己引入系统或者维护都需要网上大量的经验，怕自己没地方抄，这方面属于知识盲区，没有独立解决问题的能力。</p>
+<p>　　还是决定不换系统吧，国内无法访问或许有其他办法，现在已经在<strong>EU.org</strong>上申请注册了一个域名了，（当然是白嫖的），坐等申请结果。或许能解决这个问题。</p>
+<p>　　尝试引入加密博客，当然，都是自己的小秘密一类，现在比较担心的，只是挂载在github容易被破解？（一般没人这么闲的吧）。加密博客应该不难，希望自己不要滥用。如果能实现自动定期开放，那么Tomb的功能也能实现了。 不过自己希望能在进入加密博客时，背景和挂件与首页不同。比如炫酷乱飞的七彩代码，阴暗幽冥的BGM，仿佛你发现了美丽的shelter暗藏在阴影处的秘密！或许会很好玩吧，或许。。。</p>
 ]]></content>
       <categories>
         <category>说说</category>
