@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>C语言基础概念</title>
+    <url>/2023/07/07/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/</url>
+    <content><![CDATA[<h6 id="原码，反码和补码"><a href="#原码，反码和补码" class="headerlink" title="原码，反码和补码"></a>原码，反码和补码</h6><p>数据在C语言是以二进制的方式存储。因为二进制的加减运算问题。数据存储为补码。反码是原码逐一取反，补码为反码+1。</p>
+<span id="more"></span>
+
+<h6 id="进制中小数的转换"><a href="#进制中小数的转换" class="headerlink" title="进制中小数的转换"></a>进制中小数的转换</h6><p>十进制小数转换成 N 进制小数采用“乘 N 取整，顺序排列”法。具体做法是：<br>　　用 N 乘以十进制小数，可以得到一个积，这个积包含了整数部分和小数部分；<br>　　将积的整数部分取出，再用 N 乘以余下的小数部分，又得到一个新的积；<br>　　再将积的整数部分取出，继续用 N 乘以余下的小数部分；<br>　　……<br>　　如此反复进行，每次都取出整数部分，用 N 接着乘以小数部分，直到积中的小数部分为 0，或者达到所要求<br>的精度为止。  </p>
+<img src="/2023/07/07/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/002.png" class="">
+
+<p>　十进制小数 0.6875 转换成二进制小数的结果为 0.1011。  </p>
+<h6 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h6><p>　　当程序运行需要的空间大于内存容量时，会将内存中暂时不用的数据再写回硬盘；需要这些数据时再从硬盘中读取，并将另外一部分不用的数据写入硬盘。这样，硬盘中就会有一部分空间用来存放内存中暂时不用的数据。这一部分空间就叫做虚拟内存（Virtual Memory） 。  </p>
+<h6 id="ASCII-编码"><a href="#ASCII-编码" class="headerlink" title="ASCII 编码"></a>ASCII 编码</h6><p>　　用固定的二进制数表示固定的字符。各国字符集在ASCII基础上扩展，原来 ASCII 中已经包含的字符，在国家编码（地区编码）中的位置不变（也就是编码值不变），只是在这些字符的后面增添了新的字符。  </p>
+<h6 id="编码方案"><a href="#编码方案" class="headerlink" title="编码方案"></a>编码方案</h6><p>UTF-8：一种变长的编码方案，使用 1~6 个字节来存储；</p>
+<p>如果只有一个字节， 那么最高的比特位为 0，这样可以兼容 ASCII；<br>如果有多个字节，那么第一个字节从最高位开始，连续有几个比特位的值为 1，就使用几个字节编码，剩下的<br>字节均以 10 开头。</p>
+<p>UTF-32：一种固定长度的编码方案，不管字符编号大小，始终使用 4 个字节来存储；</p>
+<p>特点：空间换效率</p>
+<p>UTF-16：介于 UTF-8 和 UTF-32 之间，使用 2 个或者 4 个字节来存储，长度既固定又可变。  </p>
+<h6 id="全角和半角输入法的区别"><a href="#全角和半角输入法的区别" class="headerlink" title="全角和半角输入法的区别"></a>全角和半角输入法的区别</h6><p>在计算机屏幕上，一个汉字要占两个英文字符的位置，人们把一个英文字符所占的位置称为“半角”，相对地把一个汉字所占的位置称为“全角”。</p>
+<p> “相同”字符在全角和半角状态下对应的编码值（例如 Unicode 编码、 GBK 编码等）不一样，所以它们是不同的字符。  </p>
+<h6 id="C语言程序的执行"><a href="#C语言程序的执行" class="headerlink" title="C语言程序的执行"></a>C语言程序的执行</h6><p>先把代码编译（转换成二进制），再链接（“打包”将所有二进制形式的目标文件和系统组件组合成一个可执行文件  ）。最后生成可执行文件。</p>
+<h6 id="整形的长度"><a href="#整形的长度" class="headerlink" title="整形的长度"></a>整形的长度</h6><p>C 语言并没有严格规定 short、 int、 long 的长度，只做了宽泛的限制：<br>　short 至少占用 2 个字节。<br>　int 建议为一个机器字长。 32 位环境下机器字长为 4 字节， 64 位环境下机器字长为 8 字节。<br>　short 的长度不能大于 int， long 的长度不能小于 int。  </p>
+<p>  获取某个数据类型的长度可以使用 sizeof 操作符  </p>
+<h6 id="进制的表示"><a href="#进制的表示" class="headerlink" title="进制的表示"></a>进制的表示</h6><img src="/2023/07/07/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/001.png" class="">
+
+<h6 id="转义字符"><a href="#转义字符" class="headerlink" title="转义字符"></a>转义字符</h6><p>​        转义字符以\或者\x 开头，以\开头表示后跟八进制形式的编码值，以\x 开头表示后跟十六进制形式的编码值。 对于<br>转义字符来说，只能使用八进制或者十六进制。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;\x31\x32\x33\x61\x62\x63&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  输出结果为“123abc”</p>
+<h6 id="加减乘除的优先性"><a href="#加减乘除的优先性" class="headerlink" title="加减乘除的优先性"></a>加减乘除的优先性</h6><p>和数学上的优先级相同。如果符号的优先级相同，则更具结合性判断。先执行左边的叫左结合性，先执行右边的叫右结合性。  </p>
+<h6 id="对取余运算的说明"><a href="#对取余运算的说明" class="headerlink" title="对取余运算的说明"></a>对取余运算的说明</h6><p>余数可以是正数也可以是负数，由 % 左边的整数决定：<br>　　如果 % 左边是正数，那么余数也是正数；<br>　　如果 % 左边是负数，那么余数也是负数  </p>
+<h6 id="printf-的高级用法"><a href="#printf-的高级用法" class="headerlink" title="printf() 的高级用法"></a>printf() 的高级用法</h6><p>printf() 格式控制符的完整形式如下：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">%[flag][width][.precision]type</span><br></pre></td></tr></table></figure>
+
+<p>[ ] 表示此处的内容可有可无，是可以省略的。  </p>
+<p>　　type 表示输出类型，比如 %d、 %f、 %c、 %lf， type 就分别对应 d、 f、 c、 lf；再如， %-9d 中 type 对应 d。<br>type 这一项必须有，这意味着输出时必须要知道是什么类型。<br>　　width 表示最小输出宽度，也就是至少占用几个字符的位置；例如， %-9d 中 width 对应 9，表示输出结果最少<br>占用 9 个字符的宽度。<br>　　当输出结果的宽度不足 width 时，以空格补齐（如果没有指定对齐方式，默认会在左边补齐空格）；当输出结果的<br>宽度超过 width 时， width 不再起作用，按照数据本身的宽度来输出。  </p>
+<h6 id="缓存区"><a href="#缓存区" class="headerlink" title="缓存区"></a>缓存区</h6><p>　　缓冲区位于用户程序和硬件设备之间，用来缓存数据，目的是让快速的 CPU 不必等待慢速的输入输出设备，同时减少操作硬件的次数。对于 IO 密集型的网络应用程序，比如网站、数据库、 DNS、 CDN 等，缓冲区的设计至关重要，它能十倍甚至一百倍得提高程序性能。  </p>
+<h6 id="scanf-控制字符串"><a href="#scanf-控制字符串" class="headerlink" title="scanf()控制字符串"></a>scanf()控制字符串</h6><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">%&#123;*&#125; &#123;width&#125; type</span><br></pre></td></tr></table></figure>
+
+<p>其中， { } 表示可有可无。各个部分的具体含义是：</p>
+<p>type 表示读取什么类型的数据，例如 %d、 %s、 %[a-z]、 %[^\n] 等； type 必须有。</p>
+<p>width 表示最大读取宽度，可有可无。<br>*表示丢弃读取到的数据，可有可无。</p>
+]]></content>
+      <categories>
+        <category>C语言学习之路</category>
+      </categories>
+      <tags>
+        <tag>C语言</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>C语言函数</title>
     <url>/2023/07/10/C%E8%AF%AD%E8%A8%80%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h5 id="函数定义（C-语言自定义函数）"><a href="#函数定义（C-语言自定义函数）" class="headerlink" title="函数定义（C 语言自定义函数）"></a>函数定义（C 语言自定义函数）</h5><p>函数是一段可以重复使用的代码，用来独立地完成某个功能，它可以接收用户传递的数据，也可以不接收。<span id="more"></span>接收用户数据的函数在定义时要指明参数，不接收用户数据的不需要指明，根据这一点可以将函数分为有参函数和无参函数。<br>将代码段封装成函数的过程叫做函数定义。  </p>
@@ -237,55 +286,6 @@
 <p>运行结果</p>
 <p>Input a number: 42<br>Fib_recursion(42) &#x3D; 267914296<br>run time with recursion: 0.854000s<br>Fib_iteration(42) &#x3D; 267914296<br>run time with iteration: 0.000000s</p>
 <p>可以看出迭代还是比递归快一点点的。</p>
-]]></content>
-      <categories>
-        <category>C语言学习之路</category>
-      </categories>
-      <tags>
-        <tag>C语言</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>C语言基础概念</title>
-    <url>/2023/07/07/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/</url>
-    <content><![CDATA[<h6 id="原码，反码和补码"><a href="#原码，反码和补码" class="headerlink" title="原码，反码和补码"></a>原码，反码和补码</h6><p>数据在C语言是以二进制的方式存储。因为二进制的加减运算问题。数据存储为补码。反码是原码逐一取反，补码为反码+1。</p>
-<span id="more"></span>
-
-<h6 id="进制中小数的转换"><a href="#进制中小数的转换" class="headerlink" title="进制中小数的转换"></a>进制中小数的转换</h6><p>十进制小数转换成 N 进制小数采用“乘 N 取整，顺序排列”法。具体做法是：<br>　　用 N 乘以十进制小数，可以得到一个积，这个积包含了整数部分和小数部分；<br>　　将积的整数部分取出，再用 N 乘以余下的小数部分，又得到一个新的积；<br>　　再将积的整数部分取出，继续用 N 乘以余下的小数部分；<br>　　……<br>　　如此反复进行，每次都取出整数部分，用 N 接着乘以小数部分，直到积中的小数部分为 0，或者达到所要求<br>的精度为止。  </p>
-<img src="/2023/07/07/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/002.png" class="">
-
-<p>　十进制小数 0.6875 转换成二进制小数的结果为 0.1011。  </p>
-<h6 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h6><p>　　当程序运行需要的空间大于内存容量时，会将内存中暂时不用的数据再写回硬盘；需要这些数据时再从硬盘中读取，并将另外一部分不用的数据写入硬盘。这样，硬盘中就会有一部分空间用来存放内存中暂时不用的数据。这一部分空间就叫做虚拟内存（Virtual Memory） 。  </p>
-<h6 id="ASCII-编码"><a href="#ASCII-编码" class="headerlink" title="ASCII 编码"></a>ASCII 编码</h6><p>　　用固定的二进制数表示固定的字符。各国字符集在ASCII基础上扩展，原来 ASCII 中已经包含的字符，在国家编码（地区编码）中的位置不变（也就是编码值不变），只是在这些字符的后面增添了新的字符。  </p>
-<h6 id="编码方案"><a href="#编码方案" class="headerlink" title="编码方案"></a>编码方案</h6><p>UTF-8：一种变长的编码方案，使用 1~6 个字节来存储；</p>
-<p>如果只有一个字节， 那么最高的比特位为 0，这样可以兼容 ASCII；<br>如果有多个字节，那么第一个字节从最高位开始，连续有几个比特位的值为 1，就使用几个字节编码，剩下的<br>字节均以 10 开头。</p>
-<p>UTF-32：一种固定长度的编码方案，不管字符编号大小，始终使用 4 个字节来存储；</p>
-<p>特点：空间换效率</p>
-<p>UTF-16：介于 UTF-8 和 UTF-32 之间，使用 2 个或者 4 个字节来存储，长度既固定又可变。  </p>
-<h6 id="全角和半角输入法的区别"><a href="#全角和半角输入法的区别" class="headerlink" title="全角和半角输入法的区别"></a>全角和半角输入法的区别</h6><p>在计算机屏幕上，一个汉字要占两个英文字符的位置，人们把一个英文字符所占的位置称为“半角”，相对地把一个汉字所占的位置称为“全角”。</p>
-<p> “相同”字符在全角和半角状态下对应的编码值（例如 Unicode 编码、 GBK 编码等）不一样，所以它们是不同的字符。  </p>
-<h6 id="C语言程序的执行"><a href="#C语言程序的执行" class="headerlink" title="C语言程序的执行"></a>C语言程序的执行</h6><p>先把代码编译（转换成二进制），再链接（“打包”将所有二进制形式的目标文件和系统组件组合成一个可执行文件  ）。最后生成可执行文件。</p>
-<h6 id="整形的长度"><a href="#整形的长度" class="headerlink" title="整形的长度"></a>整形的长度</h6><p>C 语言并没有严格规定 short、 int、 long 的长度，只做了宽泛的限制：<br>　short 至少占用 2 个字节。<br>　int 建议为一个机器字长。 32 位环境下机器字长为 4 字节， 64 位环境下机器字长为 8 字节。<br>　short 的长度不能大于 int， long 的长度不能小于 int。  </p>
-<p>  获取某个数据类型的长度可以使用 sizeof 操作符  </p>
-<h6 id="进制的表示"><a href="#进制的表示" class="headerlink" title="进制的表示"></a>进制的表示</h6><img src="/2023/07/07/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/001.png" class="">
-
-<h6 id="转义字符"><a href="#转义字符" class="headerlink" title="转义字符"></a>转义字符</h6><p>​        转义字符以\或者\x 开头，以\开头表示后跟八进制形式的编码值，以\x 开头表示后跟十六进制形式的编码值。 对于<br>转义字符来说，只能使用八进制或者十六进制。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;\x31\x32\x33\x61\x62\x63&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>  输出结果为“123abc”</p>
-<h6 id="加减乘除的优先性"><a href="#加减乘除的优先性" class="headerlink" title="加减乘除的优先性"></a>加减乘除的优先性</h6><p>和数学上的优先级相同。如果符号的优先级相同，则更具结合性判断。先执行左边的叫左结合性，先执行右边的叫右结合性。  </p>
-<h6 id="对取余运算的说明"><a href="#对取余运算的说明" class="headerlink" title="对取余运算的说明"></a>对取余运算的说明</h6><p>余数可以是正数也可以是负数，由 % 左边的整数决定：<br>　　如果 % 左边是正数，那么余数也是正数；<br>　　如果 % 左边是负数，那么余数也是负数  </p>
-<h6 id="printf-的高级用法"><a href="#printf-的高级用法" class="headerlink" title="printf() 的高级用法"></a>printf() 的高级用法</h6><p>printf() 格式控制符的完整形式如下：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">%[flag][width][.precision]type</span><br></pre></td></tr></table></figure>
-
-<p>[ ] 表示此处的内容可有可无，是可以省略的。  </p>
-<p>　　type 表示输出类型，比如 %d、 %f、 %c、 %lf， type 就分别对应 d、 f、 c、 lf；再如， %-9d 中 type 对应 d。<br>type 这一项必须有，这意味着输出时必须要知道是什么类型。<br>　　width 表示最小输出宽度，也就是至少占用几个字符的位置；例如， %-9d 中 width 对应 9，表示输出结果最少<br>占用 9 个字符的宽度。<br>　　当输出结果的宽度不足 width 时，以空格补齐（如果没有指定对齐方式，默认会在左边补齐空格）；当输出结果的<br>宽度超过 width 时， width 不再起作用，按照数据本身的宽度来输出。  </p>
-<h6 id="缓存区"><a href="#缓存区" class="headerlink" title="缓存区"></a>缓存区</h6><p>　　缓冲区位于用户程序和硬件设备之间，用来缓存数据，目的是让快速的 CPU 不必等待慢速的输入输出设备，同时减少操作硬件的次数。对于 IO 密集型的网络应用程序，比如网站、数据库、 DNS、 CDN 等，缓冲区的设计至关重要，它能十倍甚至一百倍得提高程序性能。  </p>
-<h6 id="scanf-控制字符串"><a href="#scanf-控制字符串" class="headerlink" title="scanf()控制字符串"></a>scanf()控制字符串</h6><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">%&#123;*&#125; &#123;width&#125; type</span><br></pre></td></tr></table></figure>
-
-<p>其中， { } 表示可有可无。各个部分的具体含义是：</p>
-<p>type 表示读取什么类型的数据，例如 %d、 %s、 %[a-z]、 %[^\n] 等； type 必须有。</p>
-<p>width 表示最大读取宽度，可有可无。<br>*表示丢弃读取到的数据，可有可无。</p>
 ]]></content>
       <categories>
         <category>C语言学习之路</category>
@@ -4140,6 +4140,68 @@ void Serial_Printf(char *format, ...);                   // 带格式的字符�
       </tags>
   </entry>
   <entry>
+    <title>求生之路2双人分屏归档</title>
+    <url>/2023/10/06/%E6%B1%82%E7%94%9F%E4%B9%8B%E8%B7%AF2%E5%8F%8C%E4%BA%BA%E5%88%86%E5%B1%8F%E5%BD%92%E6%A1%A3/</url>
+    <content><![CDATA[<p>本方式无需MOD，无需虚拟键盘等杂七杂八的玩意。可用于求生之路2本地分屏双人游玩。</p>
+<span id="more"></span>
+
+<p>按~键打开控制台。</p>
+<p>ss_map c1m1 　　　　　　　　　　　　　（选地图，默认为旅馆）</p>
+<details>  <summary><font size="4" color="orange">其余地图指令</font></summary>  <pre><code class="language-c">
+一，死亡中心
+c1m1_hotel            1旅馆
+c1m2_streets          2街道
+c1m3_mall             3购物中心
+c1m4_atrium           4中厅
+二，黑色狂欢节          
+c2m1_highway          1高速公路
+c2m2_fairgrounds      2游乐场
+c2m3_coaster          3过山车
+c2m4_barns            4谷仓
+c2m5_concert          5音乐会
+三，沼泽激战
+c3m1_plankcountry     1乡村
+c3m2_swamp            2沼泽
+c3m3_shantytown       3贫民窟
+c3m4_plantation       4种植园
+四，暴风骤雨
+c4m1_milltown_a       1密尔城
+c4m2_sugarmill_a      2糖厂
+c4m3_sugarmill_b      3逃离工厂
+c4m4_milltown_b       4重返小镇
+c4m5_milltown_escape  5逃离小镇
+五，郊区
+c5m1_waterfront       1码头
+c5m2_park             2公园
+c5m3_cemetery         3墓地
+c5m4_quarter          4特区
+c5m5_bridge           5桥
+</code> </pre> </details>
+
+<p>connect_splitscreen localhost 2　　　　　　（屏幕一分为二）</p>
+<p>sv_cheats 1　　　　　　　　　　　　　　（添加一位玩家，算是这么理解吧）</p>
+<p>ss_splitmode 1　　　　　　　　　　　　（上下分屏）</p>
+<p>ss_splitmode 2　　　　　　　　　　　　（左右分屏）</p>
+<p>BindToggle z in_forceuser 　　　　　　　（按z切换操控角色）</p>
+<p>此后则需要手动打开按键配置，设置键鼠端的操控按键（麻烦）。</p>
+<p>手柄的操控按键。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">十字键：</span><br><span class="line">↑开灯 ↓物品栏  ←医药包 →物品栏</span><br><span class="line">左摇杆：控制移动</span><br><span class="line">右摇杆：控制视角</span><br><span class="line">A跳跃 B换子弹 Y切换主/副武器 X互动</span><br><span class="line">LB蹲 LT推 RB转身 RT射击</span><br><span class="line">RS开镜 LS不知道</span><br></pre></td></tr></table></figure>
+
+
+
+<p>附两张键鼠默认按键配置图</p>
+
+
+<img src="/2023/10/06/%E6%B1%82%E7%94%9F%E4%B9%8B%E8%B7%AF2%E5%8F%8C%E4%BA%BA%E5%88%86%E5%B1%8F%E5%BD%92%E6%A1%A3/@4@U2OQ2HTHW_Q26F76C5D.png" class="" title="@4@U2OQ2HTHW_Q26F76C~5D">
+]]></content>
+      <categories>
+        <category>储物间</category>
+      </categories>
+      <tags>
+        <tag>杂七杂八</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>循环结构（未完）</title>
     <url>/2023/07/15/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/</url>
     <content><![CDATA[<h3 id="找最小值"><a href="#找最小值" class="headerlink" title="找最小值"></a>找最小值</h3><p>给出 .<em>n</em> 和 .<em>n</em> 个整数a<del>i</del> ，求这 <em>n</em> 个整数中最小值是什么。<span id="more"></span></p>
@@ -4216,27 +4278,39 @@ void Serial_Printf(char *format, ...);                   // 带格式的字符�
 <p>　　原本的想法是int两三个变量，用于存储n的每位数，比如123，存储为1,2,3，利用for循坏递增进位，每次个位数+1，都分别与x进行比对。but循环难写，而且n的输入范围达不到要求。</p>
 <p>　　也想到一个较为巧妙的方法，比如x&#x3D;1,当i（0 ≤ i ≤ 9）,x&#x3D;i时，输出的y都为+1，当i&gt;10,则x&#x3D;i时，输出的y都为+2，因为10的十位都有1，所以个位+1时，y也要+1，以此类推。但是这种往后增加的方法，只能写固定的for循环，除非你真的写了很多很多很多很多个for循环，不然n的输入范围取决于你的for循坏和考虑的位数。</p>
 <p>　　也想过用数组存储1234的每位数1,2,3,4。不过还是不太可行，直到我看题解，看到了一个很巧妙的方法。借此写出我的代码。</p>
-<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
-#include<stdio.h>
-int main()
-&#123;
-    int n,x,y,i,a,b;
-    scanf("%d %d",&n,&x);
-    for(i=n;i>0;i--)
-    &#123;
-        b=i;
-        while(b)
-        &#123;
-            a=b%10;
-            if(a==x) y++;
-            b=b/10; 
-        &#125;    	
-    &#125;	
-    printf("%d\n",y);
-&#125;
-</code> </pre> </details>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> n,x,y,i,a,b;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;n,&amp;x);</span><br><span class="line">    <span class="keyword">for</span>(i=n;i&gt;<span class="number">0</span>;i--)</span><br><span class="line">    &#123;</span><br><span class="line">    	b=i;</span><br><span class="line">		<span class="keyword">while</span>(b)</span><br><span class="line">		&#123;</span><br><span class="line">			a=b%<span class="number">10</span>;</span><br><span class="line">			<span class="keyword">if</span>(a==x) y++;</span><br><span class="line">			b=b/<span class="number">10</span>; </span><br><span class="line">		&#125;    	</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>这个思路，很巧妙的将n“尾巴”进行“删减”，并提取出个位数进行比较。再通过for循环实行。</p>
+<h3 id="级数求和"><a href="#级数求和" class="headerlink" title="级数求和"></a>级数求和</h3><p><strong>题目描述</strong></p>
+<img src="/2023/07/15/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/image-20231009195011571.png" class="" title="image-20231009195011571">
+
+<p><strong>输入格式</strong></p>
+<p>一个正整数<em>k</em>。</p>
+<p><strong>输出格式</strong></p>
+<p>一个正整数 <em>n</em>。</p>
+<img src="/2023/07/15/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/image-20231009195042957.png" class="" title="image-20231009195042957">
+
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">float</span> s; </span><br><span class="line">	<span class="type">int</span> i,k;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;k);</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		s=s+(<span class="number">1</span>/(<span class="type">float</span>)i);</span><br><span class="line">		<span class="keyword">if</span>((s-k)&gt;<span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">		i++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>无法通过洛谷测试，经过chatgpt检查和提供的代码验证，代码的确可行，可能是超时了？但chatgpt的代码却通过了，还是在下面贴上它的代码。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> k;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;k);</span><br><span class="line">    <span class="type">double</span> Sn = <span class="number">0.0</span>;</span><br><span class="line">    <span class="type">int</span> n = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (Sn &lt;= k)</span><br><span class="line">    &#123;</span><br><span class="line">        Sn += <span class="number">1.0</span> / n;</span><br><span class="line">        n++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="金币"><a href="#金币" class="headerlink" title="金币"></a>金币</h3><p><strong>题目描述</strong></p>
+<p>国王将金币作为工资，发放给忠诚的骑士。第一天，骑士收到一枚金币;之后两天(第二天和第三天)，每天收到两枚金币;之后三天(第四、五、六天)，每天收到三枚金币;之后四天(第七、八、九、十天)，每天收到四枚金币….这种工资发放模式会一直这样延续下去:当连续n天每天收到n枚金币后，骑士会在之后的连续n＋1天里，每天收到n＋1枚金币。</p>
+<p><strong>输入格式</strong></p>
+<p>—个正整数k，表示发放金币的天数。</p>
+<p><strong>输出格式</strong></p>
+<p>—个正整数，即骑士收到的金币数。</p>
+<img src="/2023/07/15/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/image-20231009200509498.png" class="" title="image-20231009200509498">
+
+<p>这简单，随便套几个循环暴力解决就行了。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> k,i,n,num,x=<span class="number">1</span>; </span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;k);</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(i=x;i&gt;<span class="number">0</span>;i--)</span><br><span class="line">		&#123;</span><br><span class="line">			n += x;</span><br><span class="line">			num++;</span><br><span class="line">			<span class="keyword">if</span>(num==k) <span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		x++;</span><br><span class="line">		<span class="keyword">if</span>(num==k) <span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,n<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不过时间复杂度太高了，无法通过，解决问题容易，优化难。这种循环的主要问题，是不知道循环的天数，如果这个能解决，就不必用while。</p>
+<p>贴一个别人的答案吧</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> k,i,j,t=<span class="number">0</span>,s=<span class="number">0</span>;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;k);</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=k;i++)          <span class="comment">//其实就是简单模拟，这里的i表示的是多少轮</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(t+i&lt;=k)              <span class="comment">//如果下一轮没有超过k天，直接加平方</span></span><br><span class="line">        &#123;</span><br><span class="line">            t+=i;                <span class="comment">//记天数</span></span><br><span class="line">            s+=i*i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(t+i&gt;k)            <span class="comment">//如果下一轮超过k天，加这一轮与k的差乘当前轮数</span></span><br><span class="line">        &#123;</span><br><span class="line">            s+=i*(k-t);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,s);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我的方法是逐层相加，并在每一步进行天数比较。其它的求解则是干脆完整的执行一轮又一轮，比如5天，先求出“1+2+2+3+3+3”，再减一个3.而我是“1+2+2+3+3”，每一步都进行的比较。看来还是太暴力了，懒~</p>
 ]]></content>
       <categories>
         <category>洛谷C语言练习题目</category>
@@ -4244,20 +4318,6 @@ int main()
       <tags>
         <tag>C语言</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>童年的正午小路</title>
-    <url>/2023/07/10/%E7%AB%A5%E5%B9%B4%E7%9A%84%E6%AD%A3%E5%8D%88%E5%B0%8F%E8%B7%AF/</url>
-    <content><![CDATA[<p>​		在我小学的时候，蛮喜欢玩的。有邻居好友，有同学玩伴。上课学习一下，中午跑到学校附近一个类似于“托管班”的地儿。<span id="more"></span>应该是一个私人住宅，主人是原先小学的老师，应该退休了。叫“陈老师”。和班上几位同学，同校的一些校友在里头吃中午饭，年纪小的要睡午觉，大孩子则到二楼闹腾。</p>
-<p>​		小学生嘛，流行什么玩什么。在那里，玩过老鹰抓小鸡，蒙过眼睛抓人，玩过弹珠，比过陀螺，也有那种砸卡。硬币大小的卡套，可以放几张圆形的卡进去。卡套两边有个小坡，可以被其他卡套滑上去。一般规则就是谁被滑上去了，卡套里的卡归就归谁了，有时候卡套也算在内。后面五六年级，就是打扑克，三国杀为主了。也有一些西游杀等等。</p>
-<p>​		那附近也有一个小卖部。有卖一根葱之类的小零食。印象比较深的是小卖部有一次进了那种花钱抽奖的小纸片。5毛还是1块钱一张。同学第一次中了5块，老板娘不认账了。说这5块只能继续拿来抽卡，然后气不过，又没办法。只能再抽，不过爆率是真的高。后续是一盒纸片，给我们抽了个六成，倒是过了把瘾。后面就没再见过店里有这个了。</p>
-<p>​		中午闹腾够了，下午则结伴上学去了。路途有一个废弃的房子，斑驳的锁，关不严的门。曾偷偷顺着门缝儿往里面看去。一片土地，零星的水泥，几点的杂草。还有一滩白骨和一个猫脑袋的骷髅。白骨看上去像是粉末一般，已经是一片了，看不出是什么。看那骷髅脑袋推断的。当初是很想拿出来瞅瞅的，感觉如果带到学校去，一定很酷。</p>
-<p>​		也在下午结伴的时候，甩书包玩，像是电视里甩链球的动画一样，抓着书包，原地转圈甩出去。有个玩伴，丢的时候，书包正好飞向小河的方向。好巧不巧，那里正好有个小石凳，书包磕到石凳边缘。然后从石凳上缓慢滚了一下，最后还是滑下去了。冲过去的时候，书包正飘在水面上。自己当时觉得这个画面太滑稽了，笑的上气不接下气，还是叫住了前面另一个玩伴。然后他用树枝想把书包划到岸边，结果书包在水的一阵阵涟漪中反复横跳。不肯走也不肯来，小孩子的喧哗倒是惊动了附近的一位老太太。她从家中找了跟长竹竿，最后书包才得以上岸，最后作业当然是全湿了。</p>
-<p>​		也是那条路，傍晚回家的时候，每每走到巷子里的时候，总会远远地见到一直猫，黑猫，但它会笑，而且笑起来特别诡异。令我毛骨悚然。它的微笑直接咧到耳根子。一向它走去，它就扭头撒丫子跑了。一连几天。那时候自己看了老哥送的《笑猫日记——寻找黑骑士》。似乎还看了《马小跳》。杨红樱的作品看了零星点点。当初是有点相信世界上有会笑的猫的，不过也没见过，想象中应该笑的很可爱。后续啊后续，终于它有一次从我面前跳了出来。瞟了我一眼，我清晰的看到它脸上有两条印。就两条黄黑色的线，从嘴巴斜着到眼睛，两边都很均匀。配合它一身黑毛，远远的看上去，就像是只看到一双眼睛，和眼睛下的一个“V”。非常渗人。还好最后还是明白的它的笑是怎么一回事。不过后面就再也没有见过它了。</p>
-]]></content>
-      <categories>
-        <category>朝花夕拾</category>
-      </categories>
   </entry>
   <entry>
     <title>循环结构和选择结构</title>
@@ -4331,6 +4391,33 @@ int main()
       </tags>
   </entry>
   <entry>
+    <title>童年的正午小路</title>
+    <url>/2023/07/10/%E7%AB%A5%E5%B9%B4%E7%9A%84%E6%AD%A3%E5%8D%88%E5%B0%8F%E8%B7%AF/</url>
+    <content><![CDATA[<p>​		在我小学的时候，蛮喜欢玩的。有邻居好友，有同学玩伴。上课学习一下，中午跑到学校附近一个类似于“托管班”的地儿。<span id="more"></span>应该是一个私人住宅，主人是原先小学的老师，应该退休了。叫“陈老师”。和班上几位同学，同校的一些校友在里头吃中午饭，年纪小的要睡午觉，大孩子则到二楼闹腾。</p>
+<p>​		小学生嘛，流行什么玩什么。在那里，玩过老鹰抓小鸡，蒙过眼睛抓人，玩过弹珠，比过陀螺，也有那种砸卡。硬币大小的卡套，可以放几张圆形的卡进去。卡套两边有个小坡，可以被其他卡套滑上去。一般规则就是谁被滑上去了，卡套里的卡归就归谁了，有时候卡套也算在内。后面五六年级，就是打扑克，三国杀为主了。也有一些西游杀等等。</p>
+<p>​		那附近也有一个小卖部。有卖一根葱之类的小零食。印象比较深的是小卖部有一次进了那种花钱抽奖的小纸片。5毛还是1块钱一张。同学第一次中了5块，老板娘不认账了。说这5块只能继续拿来抽卡，然后气不过，又没办法。只能再抽，不过爆率是真的高。后续是一盒纸片，给我们抽了个六成，倒是过了把瘾。后面就没再见过店里有这个了。</p>
+<p>​		中午闹腾够了，下午则结伴上学去了。路途有一个废弃的房子，斑驳的锁，关不严的门。曾偷偷顺着门缝儿往里面看去。一片土地，零星的水泥，几点的杂草。还有一滩白骨和一个猫脑袋的骷髅。白骨看上去像是粉末一般，已经是一片了，看不出是什么。看那骷髅脑袋推断的。当初是很想拿出来瞅瞅的，感觉如果带到学校去，一定很酷。</p>
+<p>​		也在下午结伴的时候，甩书包玩，像是电视里甩链球的动画一样，抓着书包，原地转圈甩出去。有个玩伴，丢的时候，书包正好飞向小河的方向。好巧不巧，那里正好有个小石凳，书包磕到石凳边缘。然后从石凳上缓慢滚了一下，最后还是滑下去了。冲过去的时候，书包正飘在水面上。自己当时觉得这个画面太滑稽了，笑的上气不接下气，还是叫住了前面另一个玩伴。然后他用树枝想把书包划到岸边，结果书包在水的一阵阵涟漪中反复横跳。不肯走也不肯来，小孩子的喧哗倒是惊动了附近的一位老太太。她从家中找了跟长竹竿，最后书包才得以上岸，最后作业当然是全湿了。</p>
+<p>​		也是那条路，傍晚回家的时候，每每走到巷子里的时候，总会远远地见到一直猫，黑猫，但它会笑，而且笑起来特别诡异。令我毛骨悚然。它的微笑直接咧到耳根子。一向它走去，它就扭头撒丫子跑了。一连几天。那时候自己看了老哥送的《笑猫日记——寻找黑骑士》。似乎还看了《马小跳》。杨红樱的作品看了零星点点。当初是有点相信世界上有会笑的猫的，不过也没见过，想象中应该笑的很可爱。后续啊后续，终于它有一次从我面前跳了出来。瞟了我一眼，我清晰的看到它脸上有两条印。就两条黄黑色的线，从嘴巴斜着到眼睛，两边都很均匀。配合它一身黑毛，远远的看上去，就像是只看到一双眼睛，和眼睛下的一个“V”。非常渗人。还好最后还是明白的它的笑是怎么一回事。不过后面就再也没有见过它了。</p>
+]]></content>
+      <categories>
+        <category>朝花夕拾</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>第一篇博客</title>
+    <url>/2023/07/02/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>　　其实做一个私人博客，是很早前就有的想法。最早是追溯到小学吧，觉得这是一件很酷的事情。就像是精心的养QQ空间的花给来访者看或者是配置背景音乐（后来需要绿钻）。<span id="more"></span>大抵在初中和高中，觉得自己会有一些比较有趣的想法，或者一些想做的事情，先记着，以后会做。当然，现在慢慢淡忘了，仅有一些，记载在高中的笔记本，亦或是回忆。那时候懒，不想写东西，也不愿留下什么。拍照也仅仅是消遣。  </p>
+<p>　　再后来，觉得有些东西还是记下来好。出现记录的想法，源于我当初玩过的游戏，追过的漫画，看过的小说。明明当初很沉浸，或是冒险救公主，或是探索世界，或是征战一方。但渐渐的，就忘却当初的感觉。仅有一些印象极深的bgm和cg。再看再听时，能回忆起创作者们精心构建的世界。我是想把自己此刻喜欢的东西，记录下来。最好的办法应该是把它们构建成一幅画。比如：库巴顶着豌豆射手和坚果地刺构成的防线，就为了摘到后排的向日葵送给桃花公主。亚瑟深吸一口气，死亡之眼后，左轮已回腰间。百尺外的酒瓶岿然不动，倒是有个刺猬蓝毛小子戏谑的把玩子弹。如此如此，或许可以把一生所爱，都绘成一幅画。尽管有Ai，但构图和规模都是难以企及的。<br>​　　扯远了，私人博客除了分享我个人的一些东西。也是自己的归档。电脑和手机里有太多太多东西，草草被留在各处，现在打算给它们做个坟墓，也算是朝花夕拾。也想着来访的人，仅能在那一天，能见到墓碑。不过自己懒，或许只会给碑上刻一些自己才能看懂的墓志铭。既是赛博坟墓，自应万古长存。静态博客将在云端和硬盘中进行双备份。并挂载到github。</p>
+]]></content>
+      <categories>
+        <category>杂谈与想法</category>
+      </categories>
+      <tags>
+        <tag>杂谈</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>说说(2023)</title>
     <url>/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/</url>
     <content><![CDATA[<p>　　<span id="more"></span>曾在初中高中的时候，想过说说的意义。当初是觉得别人发一条说说，很多人点赞，好厉害的样子。当时自己是不爱发说说的，那时候有相机记录生活，有kindle阅读世界，也有游戏机。不过到现在，自己倒是很平常的分享自己的日常了，说是分享，其实更多是记录，记录自己的生活，所以也开始发说说了，原本是仅自己可见，不过有些事，还是希望能让更多人知道。像是传教般，也渴望有人能在自己感兴趣的东西上交流。原来我的好友里，也有对这方面有兴趣的人啊。。。。。。不过直到现在，还是觉得自己记录就好了，或许现在还不习惯博客的载体，觉得比动动手指，发个QQ空间或者朋友圈要麻烦的多，希望自己能在这记载。相较于云上的存储，自己更安心能在本地，或者硬盘上存储自己的回忆。</p>
@@ -4380,25 +4467,13 @@ int main()
 <p>　　收到老哥反馈博客评论系统炸了，后看上线一看是给我归档了，可能是最近一个月没有API？又想着这个评论系统需要翻墙，本来打算换一个，不过Waline实在太主流了，评论系统的管理也很轻松。自己引入系统或者维护都需要网上大量的经验，怕自己没地方抄，这方面属于知识盲区，没有独立解决问题的能力。</p>
 <p>　　还是决定不换系统吧，国内无法访问或许有其他办法，现在已经在<strong>EU.org</strong>上申请注册了一个域名了，（当然是白嫖的），坐等申请结果。或许能解决这个问题。</p>
 <p>　　尝试引入加密博客，当然，都是自己的小秘密一类，现在比较担心的，只是挂载在github容易被破解？（一般没人这么闲的吧）。加密博客应该不难，希望自己不要滥用。如果能实现自动定期开放，那么Tomb的功能也能实现了。 不过自己希望能在进入加密博客时，背景和挂件与首页不同。比如炫酷乱飞的七彩代码，阴暗幽冥的BGM，仿佛你发现了美丽的shelter暗藏在阴影处的秘密！或许会很好玩吧，或许。。。</p>
+<h3 id="2023-10-8"><a href="#2023-10-8" class="headerlink" title="2023-10-8"></a>2023-10-8</h3><p>　　国庆带电脑回去，结果忘带充电器了，包括nds和3ds都没带。最后还是捡起了我吃灰的kindle，看着里面一大堆杂乱的漫画。当然想整理，却发现只能在kindle设备上一本一本的勾选，繁琐。我无法在电脑上像建文件夹一样对漫画归类。然后开始越狱，然后发现自己的版本过高，即使是短接或者TTL，都没有公开的办法。（当然，淘宝店可以）。随后还是作罢，这笔账我先记着。亚马逊都退出中国了，给你关上门的时候，顺手帮你把窗给关了。临走前升级系统，堵了各种漏洞。（当然，老任的3ds也是，所幸我还是手快）。</p>
 ]]></content>
       <categories>
         <category>说说</category>
       </categories>
       <tags>
         <tag>杂七杂八</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第一篇博客</title>
-    <url>/2023/07/02/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<p>　　其实做一个私人博客，是很早前就有的想法。最早是追溯到小学吧，觉得这是一件很酷的事情。就像是精心的养QQ空间的花给来访者看或者是配置背景音乐（后来需要绿钻）。<span id="more"></span>大抵在初中和高中，觉得自己会有一些比较有趣的想法，或者一些想做的事情，先记着，以后会做。当然，现在慢慢淡忘了，仅有一些，记载在高中的笔记本，亦或是回忆。那时候懒，不想写东西，也不愿留下什么。拍照也仅仅是消遣。  </p>
-<p>　　再后来，觉得有些东西还是记下来好。出现记录的想法，源于我当初玩过的游戏，追过的漫画，看过的小说。明明当初很沉浸，或是冒险救公主，或是探索世界，或是征战一方。但渐渐的，就忘却当初的感觉。仅有一些印象极深的bgm和cg。再看再听时，能回忆起创作者们精心构建的世界。我是想把自己此刻喜欢的东西，记录下来。最好的办法应该是把它们构建成一幅画。比如：库巴顶着豌豆射手和坚果地刺构成的防线，就为了摘到后排的向日葵送给桃花公主。亚瑟深吸一口气，死亡之眼后，左轮已回腰间。百尺外的酒瓶岿然不动，倒是有个刺猬蓝毛小子戏谑的把玩子弹。如此如此，或许可以把一生所爱，都绘成一幅画。尽管有Ai，但构图和规模都是难以企及的。<br>​　　扯远了，私人博客除了分享我个人的一些东西。也是自己的归档。电脑和手机里有太多太多东西，草草被留在各处，现在打算给它们做个坟墓，也算是朝花夕拾。也想着来访的人，仅能在那一天，能见到墓碑。不过自己懒，或许只会给碑上刻一些自己才能看懂的墓志铭。既是赛博坟墓，自应万古长存。静态博客将在云端和硬盘中进行双备份。并挂载到github。</p>
-]]></content>
-      <categories>
-        <category>杂谈与想法</category>
-      </categories>
-      <tags>
-        <tag>杂谈</tag>
       </tags>
   </entry>
   <entry>
