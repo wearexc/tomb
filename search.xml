@@ -1,55 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>C语言基础概念</title>
-    <url>/2023/07/07/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/</url>
-    <content><![CDATA[<h6 id="原码，反码和补码"><a href="#原码，反码和补码" class="headerlink" title="原码，反码和补码"></a>原码，反码和补码</h6><p>数据在C语言是以二进制的方式存储。因为二进制的加减运算问题。数据存储为补码。反码是原码逐一取反，补码为反码+1。</p>
-<span id="more"></span>
-
-<h6 id="进制中小数的转换"><a href="#进制中小数的转换" class="headerlink" title="进制中小数的转换"></a>进制中小数的转换</h6><p>十进制小数转换成 N 进制小数采用“乘 N 取整，顺序排列”法。具体做法是：<br>　　用 N 乘以十进制小数，可以得到一个积，这个积包含了整数部分和小数部分；<br>　　将积的整数部分取出，再用 N 乘以余下的小数部分，又得到一个新的积；<br>　　再将积的整数部分取出，继续用 N 乘以余下的小数部分；<br>　　……<br>　　如此反复进行，每次都取出整数部分，用 N 接着乘以小数部分，直到积中的小数部分为 0，或者达到所要求<br>的精度为止。  </p>
-<img src="/2023/07/07/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/002.png" class="">
-
-<p>　十进制小数 0.6875 转换成二进制小数的结果为 0.1011。  </p>
-<h6 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h6><p>　　当程序运行需要的空间大于内存容量时，会将内存中暂时不用的数据再写回硬盘；需要这些数据时再从硬盘中读取，并将另外一部分不用的数据写入硬盘。这样，硬盘中就会有一部分空间用来存放内存中暂时不用的数据。这一部分空间就叫做虚拟内存（Virtual Memory） 。  </p>
-<h6 id="ASCII-编码"><a href="#ASCII-编码" class="headerlink" title="ASCII 编码"></a>ASCII 编码</h6><p>　　用固定的二进制数表示固定的字符。各国字符集在ASCII基础上扩展，原来 ASCII 中已经包含的字符，在国家编码（地区编码）中的位置不变（也就是编码值不变），只是在这些字符的后面增添了新的字符。  </p>
-<h6 id="编码方案"><a href="#编码方案" class="headerlink" title="编码方案"></a>编码方案</h6><p>UTF-8：一种变长的编码方案，使用 1~6 个字节来存储；</p>
-<p>如果只有一个字节， 那么最高的比特位为 0，这样可以兼容 ASCII；<br>如果有多个字节，那么第一个字节从最高位开始，连续有几个比特位的值为 1，就使用几个字节编码，剩下的<br>字节均以 10 开头。</p>
-<p>UTF-32：一种固定长度的编码方案，不管字符编号大小，始终使用 4 个字节来存储；</p>
-<p>特点：空间换效率</p>
-<p>UTF-16：介于 UTF-8 和 UTF-32 之间，使用 2 个或者 4 个字节来存储，长度既固定又可变。  </p>
-<h6 id="全角和半角输入法的区别"><a href="#全角和半角输入法的区别" class="headerlink" title="全角和半角输入法的区别"></a>全角和半角输入法的区别</h6><p>在计算机屏幕上，一个汉字要占两个英文字符的位置，人们把一个英文字符所占的位置称为“半角”，相对地把一个汉字所占的位置称为“全角”。</p>
-<p> “相同”字符在全角和半角状态下对应的编码值（例如 Unicode 编码、 GBK 编码等）不一样，所以它们是不同的字符。  </p>
-<h6 id="C语言程序的执行"><a href="#C语言程序的执行" class="headerlink" title="C语言程序的执行"></a>C语言程序的执行</h6><p>先把代码编译（转换成二进制），再链接（“打包”将所有二进制形式的目标文件和系统组件组合成一个可执行文件  ）。最后生成可执行文件。</p>
-<h6 id="整形的长度"><a href="#整形的长度" class="headerlink" title="整形的长度"></a>整形的长度</h6><p>C 语言并没有严格规定 short、 int、 long 的长度，只做了宽泛的限制：<br>　short 至少占用 2 个字节。<br>　int 建议为一个机器字长。 32 位环境下机器字长为 4 字节， 64 位环境下机器字长为 8 字节。<br>　short 的长度不能大于 int， long 的长度不能小于 int。  </p>
-<p>  获取某个数据类型的长度可以使用 sizeof 操作符  </p>
-<h6 id="进制的表示"><a href="#进制的表示" class="headerlink" title="进制的表示"></a>进制的表示</h6><img src="/2023/07/07/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/001.png" class="">
-
-<h6 id="转义字符"><a href="#转义字符" class="headerlink" title="转义字符"></a>转义字符</h6><p>​        转义字符以\或者\x 开头，以\开头表示后跟八进制形式的编码值，以\x 开头表示后跟十六进制形式的编码值。 对于<br>转义字符来说，只能使用八进制或者十六进制。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;\x31\x32\x33\x61\x62\x63&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>  输出结果为“123abc”</p>
-<h6 id="加减乘除的优先性"><a href="#加减乘除的优先性" class="headerlink" title="加减乘除的优先性"></a>加减乘除的优先性</h6><p>和数学上的优先级相同。如果符号的优先级相同，则更具结合性判断。先执行左边的叫左结合性，先执行右边的叫右结合性。  </p>
-<h6 id="对取余运算的说明"><a href="#对取余运算的说明" class="headerlink" title="对取余运算的说明"></a>对取余运算的说明</h6><p>余数可以是正数也可以是负数，由 % 左边的整数决定：<br>　　如果 % 左边是正数，那么余数也是正数；<br>　　如果 % 左边是负数，那么余数也是负数  </p>
-<h6 id="printf-的高级用法"><a href="#printf-的高级用法" class="headerlink" title="printf() 的高级用法"></a>printf() 的高级用法</h6><p>printf() 格式控制符的完整形式如下：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">%[flag][width][.precision]type</span><br></pre></td></tr></table></figure>
-
-<p>[ ] 表示此处的内容可有可无，是可以省略的。  </p>
-<p>　　type 表示输出类型，比如 %d、 %f、 %c、 %lf， type 就分别对应 d、 f、 c、 lf；再如， %-9d 中 type 对应 d。<br>type 这一项必须有，这意味着输出时必须要知道是什么类型。<br>　　width 表示最小输出宽度，也就是至少占用几个字符的位置；例如， %-9d 中 width 对应 9，表示输出结果最少<br>占用 9 个字符的宽度。<br>　　当输出结果的宽度不足 width 时，以空格补齐（如果没有指定对齐方式，默认会在左边补齐空格）；当输出结果的<br>宽度超过 width 时， width 不再起作用，按照数据本身的宽度来输出。  </p>
-<h6 id="缓存区"><a href="#缓存区" class="headerlink" title="缓存区"></a>缓存区</h6><p>　　缓冲区位于用户程序和硬件设备之间，用来缓存数据，目的是让快速的 CPU 不必等待慢速的输入输出设备，同时减少操作硬件的次数。对于 IO 密集型的网络应用程序，比如网站、数据库、 DNS、 CDN 等，缓冲区的设计至关重要，它能十倍甚至一百倍得提高程序性能。  </p>
-<h6 id="scanf-控制字符串"><a href="#scanf-控制字符串" class="headerlink" title="scanf()控制字符串"></a>scanf()控制字符串</h6><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">%&#123;*&#125; &#123;width&#125; type</span><br></pre></td></tr></table></figure>
-
-<p>其中， { } 表示可有可无。各个部分的具体含义是：</p>
-<p>type 表示读取什么类型的数据，例如 %d、 %s、 %[a-z]、 %[^\n] 等； type 必须有。</p>
-<p>width 表示最大读取宽度，可有可无。<br>*表示丢弃读取到的数据，可有可无。</p>
-]]></content>
-      <categories>
-        <category>C语言学习之路</category>
-      </categories>
-      <tags>
-        <tag>C语言</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>C语言函数</title>
     <url>/2023/07/10/C%E8%AF%AD%E8%A8%80%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h5 id="函数定义（C-语言自定义函数）"><a href="#函数定义（C-语言自定义函数）" class="headerlink" title="函数定义（C 语言自定义函数）"></a>函数定义（C 语言自定义函数）</h5><p>函数是一段可以重复使用的代码，用来独立地完成某个功能，它可以接收用户传递的数据，也可以不接收。<span id="more"></span>接收用户数据的函数在定义时要指明参数，不接收用户数据的不需要指明，根据这一点可以将函数分为有参函数和无参函数。<br>将代码段封装成函数的过程叫做函数定义。  </p>
@@ -286,6 +237,55 @@
 <p>运行结果</p>
 <p>Input a number: 42<br>Fib_recursion(42) &#x3D; 267914296<br>run time with recursion: 0.854000s<br>Fib_iteration(42) &#x3D; 267914296<br>run time with iteration: 0.000000s</p>
 <p>可以看出迭代还是比递归快一点点的。</p>
+]]></content>
+      <categories>
+        <category>C语言学习之路</category>
+      </categories>
+      <tags>
+        <tag>C语言</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C语言基础概念</title>
+    <url>/2023/07/07/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/</url>
+    <content><![CDATA[<h6 id="原码，反码和补码"><a href="#原码，反码和补码" class="headerlink" title="原码，反码和补码"></a>原码，反码和补码</h6><p>数据在C语言是以二进制的方式存储。因为二进制的加减运算问题。数据存储为补码。反码是原码逐一取反，补码为反码+1。</p>
+<span id="more"></span>
+
+<h6 id="进制中小数的转换"><a href="#进制中小数的转换" class="headerlink" title="进制中小数的转换"></a>进制中小数的转换</h6><p>十进制小数转换成 N 进制小数采用“乘 N 取整，顺序排列”法。具体做法是：<br>　　用 N 乘以十进制小数，可以得到一个积，这个积包含了整数部分和小数部分；<br>　　将积的整数部分取出，再用 N 乘以余下的小数部分，又得到一个新的积；<br>　　再将积的整数部分取出，继续用 N 乘以余下的小数部分；<br>　　……<br>　　如此反复进行，每次都取出整数部分，用 N 接着乘以小数部分，直到积中的小数部分为 0，或者达到所要求<br>的精度为止。  </p>
+<img src="/2023/07/07/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/002.png" class="">
+
+<p>　十进制小数 0.6875 转换成二进制小数的结果为 0.1011。  </p>
+<h6 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h6><p>　　当程序运行需要的空间大于内存容量时，会将内存中暂时不用的数据再写回硬盘；需要这些数据时再从硬盘中读取，并将另外一部分不用的数据写入硬盘。这样，硬盘中就会有一部分空间用来存放内存中暂时不用的数据。这一部分空间就叫做虚拟内存（Virtual Memory） 。  </p>
+<h6 id="ASCII-编码"><a href="#ASCII-编码" class="headerlink" title="ASCII 编码"></a>ASCII 编码</h6><p>　　用固定的二进制数表示固定的字符。各国字符集在ASCII基础上扩展，原来 ASCII 中已经包含的字符，在国家编码（地区编码）中的位置不变（也就是编码值不变），只是在这些字符的后面增添了新的字符。  </p>
+<h6 id="编码方案"><a href="#编码方案" class="headerlink" title="编码方案"></a>编码方案</h6><p>UTF-8：一种变长的编码方案，使用 1~6 个字节来存储；</p>
+<p>如果只有一个字节， 那么最高的比特位为 0，这样可以兼容 ASCII；<br>如果有多个字节，那么第一个字节从最高位开始，连续有几个比特位的值为 1，就使用几个字节编码，剩下的<br>字节均以 10 开头。</p>
+<p>UTF-32：一种固定长度的编码方案，不管字符编号大小，始终使用 4 个字节来存储；</p>
+<p>特点：空间换效率</p>
+<p>UTF-16：介于 UTF-8 和 UTF-32 之间，使用 2 个或者 4 个字节来存储，长度既固定又可变。  </p>
+<h6 id="全角和半角输入法的区别"><a href="#全角和半角输入法的区别" class="headerlink" title="全角和半角输入法的区别"></a>全角和半角输入法的区别</h6><p>在计算机屏幕上，一个汉字要占两个英文字符的位置，人们把一个英文字符所占的位置称为“半角”，相对地把一个汉字所占的位置称为“全角”。</p>
+<p> “相同”字符在全角和半角状态下对应的编码值（例如 Unicode 编码、 GBK 编码等）不一样，所以它们是不同的字符。  </p>
+<h6 id="C语言程序的执行"><a href="#C语言程序的执行" class="headerlink" title="C语言程序的执行"></a>C语言程序的执行</h6><p>先把代码编译（转换成二进制），再链接（“打包”将所有二进制形式的目标文件和系统组件组合成一个可执行文件  ）。最后生成可执行文件。</p>
+<h6 id="整形的长度"><a href="#整形的长度" class="headerlink" title="整形的长度"></a>整形的长度</h6><p>C 语言并没有严格规定 short、 int、 long 的长度，只做了宽泛的限制：<br>　short 至少占用 2 个字节。<br>　int 建议为一个机器字长。 32 位环境下机器字长为 4 字节， 64 位环境下机器字长为 8 字节。<br>　short 的长度不能大于 int， long 的长度不能小于 int。  </p>
+<p>  获取某个数据类型的长度可以使用 sizeof 操作符  </p>
+<h6 id="进制的表示"><a href="#进制的表示" class="headerlink" title="进制的表示"></a>进制的表示</h6><img src="/2023/07/07/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/001.png" class="">
+
+<h6 id="转义字符"><a href="#转义字符" class="headerlink" title="转义字符"></a>转义字符</h6><p>​        转义字符以\或者\x 开头，以\开头表示后跟八进制形式的编码值，以\x 开头表示后跟十六进制形式的编码值。 对于<br>转义字符来说，只能使用八进制或者十六进制。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;\x31\x32\x33\x61\x62\x63&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  输出结果为“123abc”</p>
+<h6 id="加减乘除的优先性"><a href="#加减乘除的优先性" class="headerlink" title="加减乘除的优先性"></a>加减乘除的优先性</h6><p>和数学上的优先级相同。如果符号的优先级相同，则更具结合性判断。先执行左边的叫左结合性，先执行右边的叫右结合性。  </p>
+<h6 id="对取余运算的说明"><a href="#对取余运算的说明" class="headerlink" title="对取余运算的说明"></a>对取余运算的说明</h6><p>余数可以是正数也可以是负数，由 % 左边的整数决定：<br>　　如果 % 左边是正数，那么余数也是正数；<br>　　如果 % 左边是负数，那么余数也是负数  </p>
+<h6 id="printf-的高级用法"><a href="#printf-的高级用法" class="headerlink" title="printf() 的高级用法"></a>printf() 的高级用法</h6><p>printf() 格式控制符的完整形式如下：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">%[flag][width][.precision]type</span><br></pre></td></tr></table></figure>
+
+<p>[ ] 表示此处的内容可有可无，是可以省略的。  </p>
+<p>　　type 表示输出类型，比如 %d、 %f、 %c、 %lf， type 就分别对应 d、 f、 c、 lf；再如， %-9d 中 type 对应 d。<br>type 这一项必须有，这意味着输出时必须要知道是什么类型。<br>　　width 表示最小输出宽度，也就是至少占用几个字符的位置；例如， %-9d 中 width 对应 9，表示输出结果最少<br>占用 9 个字符的宽度。<br>　　当输出结果的宽度不足 width 时，以空格补齐（如果没有指定对齐方式，默认会在左边补齐空格）；当输出结果的<br>宽度超过 width 时， width 不再起作用，按照数据本身的宽度来输出。  </p>
+<h6 id="缓存区"><a href="#缓存区" class="headerlink" title="缓存区"></a>缓存区</h6><p>　　缓冲区位于用户程序和硬件设备之间，用来缓存数据，目的是让快速的 CPU 不必等待慢速的输入输出设备，同时减少操作硬件的次数。对于 IO 密集型的网络应用程序，比如网站、数据库、 DNS、 CDN 等，缓冲区的设计至关重要，它能十倍甚至一百倍得提高程序性能。  </p>
+<h6 id="scanf-控制字符串"><a href="#scanf-控制字符串" class="headerlink" title="scanf()控制字符串"></a>scanf()控制字符串</h6><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">%&#123;*&#125; &#123;width&#125; type</span><br></pre></td></tr></table></figure>
+
+<p>其中， { } 表示可有可无。各个部分的具体含义是：</p>
+<p>type 表示读取什么类型的数据，例如 %d、 %s、 %[a-z]、 %[^\n] 等； type 必须有。</p>
+<p>width 表示最大读取宽度，可有可无。<br>*表示丢弃读取到的数据，可有可无。</p>
 ]]></content>
       <categories>
         <category>C语言学习之路</category>
@@ -642,6 +642,226 @@
 <p>优化后的代码：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line"><span class="type">int</span> nums[<span class="number">10</span>] = &#123; <span class="number">4</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span> &#125;;</span><br><span class="line"><span class="type">int</span> i, j, temp, isSorted;</span><br><span class="line"><span class="comment">//优化算法：最多进行 n-1 轮比较</span></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i&lt;<span class="number">10</span> - <span class="number">1</span>; i++) &#123;</span><br><span class="line">    isSorted = <span class="number">1</span>; <span class="comment">//假设剩下的元素已经排序好了</span></span><br><span class="line">    <span class="keyword">for</span> (j = <span class="number">0</span>; j&lt;<span class="number">10</span> - <span class="number">1</span> - i; j++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[j] &gt; nums[j + <span class="number">1</span>]) &#123;</span><br><span class="line">            temp = nums[j];</span><br><span class="line">            nums[j] = nums[j + <span class="number">1</span>];</span><br><span class="line">            nums[j + <span class="number">1</span>] = temp;</span><br><span class="line">            isSorted = <span class="number">0</span>; <span class="comment">//一旦需要交换数组元素，就说明剩下的元素没有排序好</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">    <span class="keyword">if</span> (isSorted) <span class="keyword">break</span>; <span class="comment">//如果没有发生交换，说明剩下的元素已经排序好了</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, nums[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+]]></content>
+      <categories>
+        <category>C语言学习之路</category>
+      </categories>
+      <tags>
+        <tag>C语言</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>c语言预处理命令</title>
+    <url>/2023/07/11/C%E8%AF%AD%E8%A8%80%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h6 id="预处理命令简谈"><a href="#预处理命令简谈" class="headerlink" title="预处理命令简谈"></a>预处理命令简谈</h6><p>使用库函数之前，应该用#include 引入对应的头文件。 这种以#号开<br>头的命令称为预处理命令。  <span id="more"></span></p>
+<p>预处理是 C 语言的一个重要功能，由预处理程序完成。当对一个源文件进行编译时，系统将自动调用预处理程序对源程序中的预处理部分作处理，处理完毕自动进入对源程序的编译。</p>
+<p>编译器会将预处理的结果保存到和源文件同名的.i 文件中，例如 main.c 的预处理结果在 main.i 中。和.c 一样， .i也是文本文件，可以用编辑器打开直接查看内容。</p>
+<p>C 语言提供了多种预处理功能，如宏定义、文件包含、条件编译等，合理地使用它们会使编写的程序便于阅读、修改、移植和调试，也有利于模块化程序设计。  </p>
+<h6 id="include-的用法（文件包含命令）"><a href="#include-的用法（文件包含命令）" class="headerlink" title="#include 的用法（文件包含命令）"></a>#include 的用法（文件包含命令）</h6><p>#include 叫做文件包含命令，用来引入对应的头文件（.h 文件）  </p>
+<p>用法如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdHeader.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;myHeader.h&quot;</span>  </span></span><br></pre></td></tr></table></figure>
+
+<p>使用尖括号&lt; &gt;和双引号” “的区别在于头文件的搜索路径不同：</p>
+<p>​	使用尖括号&lt; &gt;，编译器会到系统路径下查找头文件；</p>
+<p>​	而使用双引号” “，编译器首先在当前目录下查找头文件，如果没有找到，再到系统路径下查找。</p>
+<p>stdio.h 和 stdlib.h 都是标准头文件，它们存放于系统路径下，所以使用尖括号和双引号都能够成功引入；而我们自己编写的头文件，一般存放于当前项目的路径下，所以不能使用尖括号，只能使用双引号。  </p>
+<p>例如：</p>
+<img src="/2023/07/11/C%E8%AF%AD%E8%A8%80%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4/image-20230711171446610.png" class="" title="image-20230711171446610">
+
+<p>my.c 所包含的代码：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//计算从m加到n的和</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="type">int</span> i, sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = m; i &lt;= n; i++) &#123;</span><br><span class="line">        sum += i;</span><br><span class="line">&#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>my.h 所包含的代码：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//声明函数</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n)</span>;  </span><br></pre></td></tr></table></figure>
+
+<p>main.c 所包含的代码：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;my.h&quot;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, sum(<span class="number">1</span>, <span class="number">100</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>另外，不管是标准头文件，还是自定义头文件，都只能包含变量和函数的声明，不能包含定义，否则在多次引入时会引起重复定义错误。  </p>
+<h5 id="宏定义（-define-的用法）"><a href="#宏定义（-define-的用法）" class="headerlink" title="宏定义（#define 的用法）"></a>宏定义（#define 的用法）</h5><p>#define 叫做宏定义命令，它也是 C 语言预处理命令的一种。所谓宏定义，就是用一个标识符来表示一个字符串，如果在后面的代码中出现了该标识符，那么就全部替换成指定的字符串。  </p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> N 100</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> sum = <span class="number">20</span> + N;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, sum);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>运行结果：<br>120  </p>
+<p>注意第 6 行代码 int sum &#x3D; 20 + N， N 被 100 代替了。</p>
+<p>#define N 100 就是宏定义， N 为宏名， 100 是宏的内容（宏所表示的字符串）。在预处理阶段，对程序中所有出现  的“宏名”，预处理器都会用宏定义中的字符串去代换，这称为“宏替换”或“宏展开”。</p>
+<p>宏定义是由源程序中的宏定义命令#define 完成的，宏替换是由预处理程序完成的。</p>
+<p>宏定义的一般形式为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> 宏名 字符串</span></span><br></pre></td></tr></table></figure>
+
+<p>#表示这是一条预处理命令，所有的预处理命令都以 # 开头。 宏名是标识符的一种，命名规则和变量相同。 字符串可以是数字、表达式、 if 语句、函数等。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">这里所说的字符串是一般意义上的字符序列，不要和 C 语言中的字符串等同，它不需要双引号。</span><br></pre></td></tr></table></figure>
+
+<p>程序中反复使用的表达式就可以使用宏定义，例如：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> M (n*n+3*n)</span></span><br></pre></td></tr></table></figure>
+
+<p>它的作用是指定标识符 M 来表示(y<em>y+3</em>y)这个表达式。在编写代码时，所有出现 (y<em>y+3</em>y) 的地方都可以用 M 来表示，而对源程序编译时，将先由预处理程序进行宏代替，即用 (y<em>y+3</em>y) 去替换所有的宏名 M，然后再进行编译。  </p>
+<h6 id="对-define-用法的几点说明"><a href="#对-define-用法的几点说明" class="headerlink" title="对 #define 用法的几点说明"></a>对 #define 用法的几点说明</h6><p>(1) 宏定义是用宏名来表示一个字符串，在宏展开时又以该字符串取代宏名，这只是一种简单粗暴的替换。字符串中<br>可以含任何字符，它可以是常数、表达式、 if 语句、函数等，预处理程序对它不作任何检查，如有错误，只能在编<br>译已被宏展开后的源程序时发现。<br>(2) 宏定义不是说明或语句，在行末不必加分号，如加上分号则连分号也一起替换。<br>(3) 宏定义必须写在函数之外，其作用域为宏定义命令起到源程序结束。如要终止其作用域可使用#undef 命令。例如：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PI 3.14159</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">// Code</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">undef</span> PI</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">// Code</span></span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>表示 PI 只在 main() 函数中有效，在 func() 中无效。  </p>
+<p>(4) 代码中的宏名如果被引号包围，那么预处理程序不对其作宏代替，例如 :</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> OK 100</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;OK\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>运行结果：<br>OK<br>该例中定义宏名 OK 表示 100，但在 printf 语句中 OK 被引号括起来，因此不作宏替换，而作为字符串处理。  </p>
+<p>(5) 宏定义允许嵌套，在宏定义的字符串中可以使用已经定义的宏名，在宏展开时由预处理程序层层代换。例如：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PI 3.1415926</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> S PI*y*y <span class="comment">/* PI 是已定义的宏名*/</span>  </span></span><br></pre></td></tr></table></figure>
+
+<p>对语句：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%f&quot;</span>, S);  </span><br></pre></td></tr></table></figure>
+
+<p>在宏代换后变为：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%f&quot;</span>, <span class="number">3.1415926</span>*y*y);  </span><br></pre></td></tr></table></figure>
+
+<p>(6) 习惯上宏名用大写字母表示，以便于与变量区别。但也允许用小写字母。<br>(7) 可用宏定义表示数据类型，使书写方便。例如：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> UINT unsigned int</span></span><br></pre></td></tr></table></figure>
+
+<p>在程序中可用 UINT 作变量说明：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">UINT a, b;</span><br></pre></td></tr></table></figure>
+
+<p>应注意用宏定义表示数据类型和用 typedef 定义数据说明符的区别。 宏定义只是简单的字符串替换，由预处理器来处理；而 typedef 是在编译阶段由编译器处理的，它并不是简单的字符串替换，而给原有的数据类型起一个新的名字，将它作为一种新的数据类型。<br>请看下面的例子：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PIN1 int *</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> *PIN2; <span class="comment">//也可以写作 typedef int (*PIN2);</span></span><br></pre></td></tr></table></figure>
+
+<p>从形式上看这两者相似， 但在实际使用中却不相同。<br>下面用 PIN1， PIN2 说明变量时就可以看出它们的区别：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">PIN1 a, b;</span><br></pre></td></tr></table></figure>
+
+<p>在宏代换后变成：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> * a, b;</span><br></pre></td></tr></table></figure>
+
+<p>表示 a 是指向整型的指针变量，而 b 是整型变量。然而：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">PIN2 a,b;</span><br></pre></td></tr></table></figure>
+
+<p>表示 a、 b 都是指向整型的指针变量。因为 PIN2 是一个新的、完整的数据类型。 由这个例子可见，宏定义虽然也可表示数据类型， 但毕竟只是简单的字符串替换。在使用时要格外小心，以避出错。  </p>
+<h5 id="带参数的宏定义"><a href="#带参数的宏定义" class="headerlink" title="带参数的宏定义"></a>带参数的宏定义</h5><p>C 语言允许宏带有参数。在宏定义中的参数称为“形式参数”，在宏调用中的参数称为“实际参数”，这点和函数有些类似。<br>对带参数的宏，在展开过程中不仅要进行字符串替换，还要用实参去替换形参。<br>带参宏定义的一般形式为：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> 宏名(形参列表) 字符串  </span></span><br></pre></td></tr></table></figure>
+
+<p>在字符串中可以含有各个形参。<br>带参宏调用的一般形式为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">宏名(实参列表);  </span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> M(y) y*y+3*y <span class="comment">//宏定义</span></span></span><br><span class="line"><span class="comment">// <span class="doctag">TODO:</span></span></span><br><span class="line">k=M(<span class="number">5</span>); <span class="comment">//宏调用</span></span><br></pre></td></tr></table></figure>
+
+<p>在宏展开时，用实参 5 去代替形参 y，经预处理程序展开后的语句为 </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">k=<span class="number">5</span>*<span class="number">5</span>+<span class="number">3</span>*<span class="number">5</span>。 </span><br></pre></td></tr></table></figure>
+
+<h6 id="对带参宏定义的说明"><a href="#对带参宏定义的说明" class="headerlink" title="对带参宏定义的说明"></a>对带参宏定义的说明</h6><p>(1) 带参宏定义中，形参之间可以出现空格，但是宏名和形参列表之间不能有空格出现。例如把：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX(a,b) (a&gt;b)?a:b</span></span><br></pre></td></tr></table></figure>
+
+<p>写为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX (a,b) (a&gt;b)?a:b</span></span><br></pre></td></tr></table></figure>
+
+<p>将被认为是无参宏定义，宏名 MAX 代表字符串(a,b) (a&gt;b)?a:b。宏展开时，宏调用语句：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">max = MAX(x,y);  </span><br></pre></td></tr></table></figure>
+
+<p>将变为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">max = (a,b)(a&gt;b)?a:b(x,y);</span><br></pre></td></tr></table></figure>
+
+<p>这显然是错误的。  </p>
+<p>(2) 在带参宏定义中，不会为形式参数分配内存，因此不必指明数据类型。而在宏调用中，实参包含了具体的数据，要用它们去替换形参，因此实参必须要指明数据类型。</p>
+<p>这一点和函数是不同的：在函数中，形参和实参是两个不同的变量，都有自己的作用域，调用时要把实参的值传递给形参；而在带参数的宏中，只是符号的替换，不存在值传递的问题。  </p>
+<p>带参宏定义和函数的区别 ：</p>
+<p>带参数的宏和函数很相似，但有本质上的区别：宏展开仅仅是字符串的替换，不会对表达式进行计算；宏在编译之前就被处理掉了，它没有机会参与编译，也不会占用内存。而函数是一段可以重复使用的代码，会被编译，会给它分配内存，每次调用函数，就是执行这块内存中的代码。  </p>
+<h6 id="宏参数的字符串化和宏参数的连接"><a href="#宏参数的字符串化和宏参数的连接" class="headerlink" title="宏参数的字符串化和宏参数的连接"></a>宏参数的字符串化和宏参数的连接</h6><p>在宏定义中，有时还会用到#和##两个符号，它们能够对宏参数进行操作。<br><strong># 的用法</strong><br>#用来将宏参数转换为字符串，也就是在宏参数的开头和末尾添加引号。例如有如下宏定义：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> STR(s) #s</span></span><br></pre></td></tr></table></figure>
+
+<p>那么：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, STR(c.biancheng.net));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, STR(<span class="string">&quot;c.biancheng.net&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>分别被展开为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, <span class="string">&quot;c.biancheng.net&quot;</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, <span class="string">&quot;\&quot;c.biancheng.net\&quot;&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>可以发现，即使给宏参数“传递”的数据中包含引号，使用#仍然会在两头添加新的引号，而原来的引号会被转义。  </p>
+<p><strong>##的用法</strong><br>##称为连接符，用来将宏参数或其他的串连接起来。例如有如下的宏定义：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> CON1(a, b) a##e##b</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CON2(a, b) a##b##00</span></span><br></pre></td></tr></table></figure>
+
+<p>那么：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>, CON1(<span class="number">8.5</span>, <span class="number">2</span>));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, CON2(<span class="number">12</span>, <span class="number">34</span>));</span><br></pre></td></tr></table></figure>
+
+<p>将被展开为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>, <span class="number">8.5e2</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="number">123400</span>);  </span><br></pre></td></tr></table></figure>
+
+<h6 id="C-语言中几个预定义宏"><a href="#C-语言中几个预定义宏" class="headerlink" title="C 语言中几个预定义宏"></a>C 语言中几个预定义宏</h6><p>顾名思义，预定义宏就是已经预先定义好的宏，我们可以直接使用，无需再重新定义。<br>ANSI C 规定了以下几个预定义宏，它们在各个编译器下都可以使用：<br>     __LINE__：表示当前源代码的行号；<br>    __FILE__：表示当前源文件的名称；<br>    __DATE__：表示当前的编译日期；<br>    __TIME__：表示当前的编译时间；<br>    __STDC__：当要求程序严格遵循 ANSI C 标准时该标识被赋值为 1；<br>    __cplusplus：当编写 C++程序时该标识符被定义  </p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Date : %s\n&quot;</span>, __DATE__);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Time : %s\n&quot;</span>, __TIME__);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;File : %s\n&quot;</span>, __FILE__);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Line : %d\n&quot;</span>, __LINE__);</span><br><span class="line">    system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span> ;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<p>Date : Jul 12 2023<br>Time : 18:57:36<br>File : C:\Users\90872\Desktop\未命名1.cpp<br>Line : 7</p>
+<h5 id="条件编译"><a href="#条件编译" class="headerlink" title="条件编译"></a>条件编译</h5><p>简单来说，根据不同情况编译不同代码、产生不同目标文件的机制，称为条件编译。 条件编译是预处理程序的功能，不是编译器的功能。  </p>
+<h6 id="if-的用法"><a href="#if-的用法" class="headerlink" title="#if 的用法"></a>#if 的用法</h6><p>#if 用法的一般格式为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">if</span> 整型常量表达式 1</span></span><br><span class="line">程序段 <span class="number">1</span></span><br><span class="line"><span class="meta">#<span class="keyword">elif</span> 整型常量表达式 2</span></span><br><span class="line">程序段 <span class="number">2</span></span><br><span class="line"><span class="meta">#<span class="keyword">elif</span> 整型常量表达式 3</span></span><br><span class="line">程序段 <span class="number">3</span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">程序段 <span class="number">4</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>它的意思是：如常“表达式 1”的值为真（非 0），就对“程序段 1”进行编译，否则就计算“表达式 2”，结果为真的话就对“程序段 2”进行编译，为假的话就继续往下匹配，直到遇到值为真的表达式，或者遇到 #else。这一点和 if else 非常类似。</p>
+<p>需要注意的是， #if 命令要求判断条件为“整型常量表达式”，也就是说，表达式中不能包含变量，而且结果必须是整数；而 if 后面的表达式没有限制，只要符合语法就行。这是 #if 和 if 的一个重要区别。  </p>
+<p>和 #else 也可以省略，如下所示 ：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> _WIN32</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;This is Windows!\n&quot;</span>);</span><br><span class="line">    <span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Unknown platform!\n&quot;</span>);</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> __linux__</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;This is Linux!\n&quot;</span>);</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<h6 id="ifdef-的用法"><a href="#ifdef-的用法" class="headerlink" title="#ifdef 的用法"></a>#ifdef 的用法</h6><p>#ifdef 用法的一般格式为：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> 宏名</span></span><br><span class="line">    程序段 <span class="number">1</span>  </span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    程序段 <span class="number">2</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>它的意思是，如果当前的宏已被定义过，则对“程序段 1”进行编译，否则对“程序段 2”进行编译。<br>也可以省略 #else：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> 宏名</span></span><br><span class="line">    程序段</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span>  </span></span><br></pre></td></tr></table></figure>
+
+<h6 id="ifndef-的用法"><a href="#ifndef-的用法" class="headerlink" title="#ifndef 的用法"></a>#ifndef 的用法</h6><p>#ifndef 用法的一般格式为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> 宏名</span></span><br><span class="line">	程序段 <span class="number">1</span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">	程序段 <span class="number">2</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span>  </span></span><br></pre></td></tr></table></figure>
+
+<p>与 #ifdef 相比，仅仅是将 #ifdef 改为了 #ifndef。它的意思是，如果当前的宏未被定义，则对“程序段 1”进行编译，否则对“程序段 2”进行编译，这与 #ifdef 的功能正好相反  </p>
+<h6 id="三者之间的区别"><a href="#三者之间的区别" class="headerlink" title="三者之间的区别"></a>三者之间的区别</h6><p>最后需要注意的是， #if 后面跟的是“整型常量表达式”，而 #ifdef 和 #ifndef 后面跟的只能是一个宏名，不能是其他的。  </p>
+<p>#ifdef 可以认为是 #if defined 的缩写  </p>
+<h5 id="error-命令，阻止程序编译"><a href="#error-命令，阻止程序编译" class="headerlink" title="#error 命令，阻止程序编译"></a>#error 命令，阻止程序编译</h5><p>#error 指令用于在编译期间产生错误信息，并阻止程序的编译，其形式如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">error</span> error_message</span></span><br></pre></td></tr></table></figure>
+
+<p>例如，我们的程序针对 Linux 编写，不保证兼容 Windows，那么可以这样做：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> WIN32</span></span><br><span class="line"><span class="meta">#<span class="keyword">error</span> This programme cannot compile at Windows Platform</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>WIN32 是 Windows 下的预定义宏。当用户在 Windows 下编译该程序时，由于定义了 WIN32 这个宏，所以<br>会执行 #error 命令，提示用户发生了编译错误，错误信息是：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">This programme cannot compile at Windows Platform</span><br></pre></td></tr></table></figure>
+
+<p>这和发生语法错误的效果是一样的，程序编译失败。</p>
+<h5 id="C-语言预处理命令总结"><a href="#C-语言预处理命令总结" class="headerlink" title="C 语言预处理命令总结"></a>C 语言预处理命令总结</h5><p>预处理指令是以#号开头的代码行， # 号必须是该行除了任何空白字符外的第一个字符。 # 后是指令关键字，在关键字和 # 号之间允许存在任意个数的空白字符，整行语句构成了一条预处理指令，该指令将在编译器进行编译之前对源代码做某些转换。  </p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>#</td>
+<td>空指令，无任何效果</td>
+</tr>
+<tr>
+<td>#include</td>
+<td>包含一个源代码文件</td>
+</tr>
+<tr>
+<td>#define</td>
+<td>定义宏</td>
+</tr>
+<tr>
+<td>#undef</td>
+<td>取消已定义的宏</td>
+</tr>
+<tr>
+<td>#if</td>
+<td>如果给定条件为真，则编译下面代码</td>
+</tr>
+<tr>
+<td>#ifdef</td>
+<td>如果宏已经定义，则编译下面代码</td>
+</tr>
+<tr>
+<td>#ifndef</td>
+<td>如果宏没有定义，则编译下面代码</td>
+</tr>
+<tr>
+<td>#elif</td>
+<td>如果前面的#if 给定条件不为真，当前条件为真，则编译下面代码</td>
+</tr>
+<tr>
+<td>#endif</td>
+<td>结束一个#if……#else 条件编译块</td>
+</tr>
+</tbody></table>
 ]]></content>
       <categories>
         <category>C语言学习之路</category>
@@ -1080,223 +1300,1548 @@
       </tags>
   </entry>
   <entry>
-    <title>c语言预处理命令</title>
-    <url>/2023/07/11/C%E8%AF%AD%E8%A8%80%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<h6 id="预处理命令简谈"><a href="#预处理命令简谈" class="headerlink" title="预处理命令简谈"></a>预处理命令简谈</h6><p>使用库函数之前，应该用#include 引入对应的头文件。 这种以#号开<br>头的命令称为预处理命令。  <span id="more"></span></p>
-<p>预处理是 C 语言的一个重要功能，由预处理程序完成。当对一个源文件进行编译时，系统将自动调用预处理程序对源程序中的预处理部分作处理，处理完毕自动进入对源程序的编译。</p>
-<p>编译器会将预处理的结果保存到和源文件同名的.i 文件中，例如 main.c 的预处理结果在 main.i 中。和.c 一样， .i也是文本文件，可以用编辑器打开直接查看内容。</p>
-<p>C 语言提供了多种预处理功能，如宏定义、文件包含、条件编译等，合理地使用它们会使编写的程序便于阅读、修改、移植和调试，也有利于模块化程序设计。  </p>
-<h6 id="include-的用法（文件包含命令）"><a href="#include-的用法（文件包含命令）" class="headerlink" title="#include 的用法（文件包含命令）"></a>#include 的用法（文件包含命令）</h6><p>#include 叫做文件包含命令，用来引入对应的头文件（.h 文件）  </p>
-<p>用法如下：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdHeader.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;myHeader.h&quot;</span>  </span></span><br></pre></td></tr></table></figure>
+    <title>STM32归档（下）</title>
+    <url>/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/</url>
+    <content><![CDATA[<p>个人学习笔记，因为STM32归档越来越长（怕目录太长出问题），所以有了下。<span id="more"></span></p>
+<h1 id="I2C通信"><a href="#I2C通信" class="headerlink" title="I2C通信"></a>I2C通信</h1><h2 id="I2C软件模拟通信"><a href="#I2C软件模拟通信" class="headerlink" title="I2C软件模拟通信"></a>I2C软件模拟通信</h2><h3 id="I2C简介"><a href="#I2C简介" class="headerlink" title="I2C简介"></a>I2C简介</h3><p>•　I2C（Inter IC Bus）是由Philips公司开发的一种通用数据总线</p>
+<p>•　两根通信线：SCL（Serial Clock）、SDA（Serial Data）</p>
+<p>•　同步，半双工</p>
+<p>•　带数据应答</p>
+<p>•　支持总线挂载多设备（一主多从、多主多从）</p>
+<h3 id="硬件电路"><a href="#硬件电路" class="headerlink" title="硬件电路"></a>硬件电路</h3><p>•　所有I2C设备的SCL连在一起，SDA连在一起</p>
+<p>•　设备的SCL和SDA均要配置成开漏输出模式</p>
+<p>•　SCL和SDA各添加一个上拉电阻，阻值一般为4.7KΩ左右</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017100133237.png" class="" title="image-20231017100133237">
 
-<p>使用尖括号&lt; &gt;和双引号” “的区别在于头文件的搜索路径不同：</p>
-<p>​	使用尖括号&lt; &gt;，编译器会到系统路径下查找头文件；</p>
-<p>​	而使用双引号” “，编译器首先在当前目录下查找头文件，如果没有找到，再到系统路径下查找。</p>
-<p>stdio.h 和 stdlib.h 都是标准头文件，它们存放于系统路径下，所以使用尖括号和双引号都能够成功引入；而我们自己编写的头文件，一般存放于当前项目的路径下，所以不能使用尖括号，只能使用双引号。  </p>
-<p>例如：</p>
-<img src="/2023/07/11/C%E8%AF%AD%E8%A8%80%E9%A2%84%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4/image-20230711171446610.png" class="" title="image-20230711171446610">
+<p>开漏输出模式有个线与的现象，只要有一个设备输出低电平，总线就处于低电平。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017100448237.png" class="" title="image-20231017100448237">
 
-<p>my.c 所包含的代码：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//计算从m加到n的和</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="type">int</span> i, sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = m; i &lt;= n; i++) &#123;</span><br><span class="line">        sum += i;</span><br><span class="line">&#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+<p>SCLKN1OUT输出低电平时，mos管导通。输出高电平时，MOS管断开，处于浮空输入。</p>
+<h3 id="I2C时序基本单元"><a href="#I2C时序基本单元" class="headerlink" title="I2C时序基本单元"></a>I2C时序基本单元</h3><p><strong>起始条件：</strong></p>
+<p>SCL高电平期间，SDA从高电平切换到低电平</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101034445.png" class="" title="image-20231017101034445">
 
-<p>my.h 所包含的代码：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//声明函数</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n)</span>;  </span><br></pre></td></tr></table></figure>
+<p><strong>终止条件：</strong></p>
+<p>SCL高电平期间，SDA从低电平切换到高电平</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101135745.png" class="" title="image-20231017101135745">
 
-<p>main.c 所包含的代码：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;my.h&quot;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, sum(<span class="number">1</span>, <span class="number">100</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
 
-<p>另外，不管是标准头文件，还是自定义头文件，都只能包含变量和函数的声明，不能包含定义，否则在多次引入时会引起重复定义错误。  </p>
-<h5 id="宏定义（-define-的用法）"><a href="#宏定义（-define-的用法）" class="headerlink" title="宏定义（#define 的用法）"></a>宏定义（#define 的用法）</h5><p>#define 叫做宏定义命令，它也是 C 语言预处理命令的一种。所谓宏定义，就是用一个标识符来表示一个字符串，如果在后面的代码中出现了该标识符，那么就全部替换成指定的字符串。  </p>
-<p>例如：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> N 100</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> sum = <span class="number">20</span> + N;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, sum);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
 
-<p>运行结果：<br>120  </p>
-<p>注意第 6 行代码 int sum &#x3D; 20 + N， N 被 100 代替了。</p>
-<p>#define N 100 就是宏定义， N 为宏名， 100 是宏的内容（宏所表示的字符串）。在预处理阶段，对程序中所有出现  的“宏名”，预处理器都会用宏定义中的字符串去代换，这称为“宏替换”或“宏展开”。</p>
-<p>宏定义是由源程序中的宏定义命令#define 完成的，宏替换是由预处理程序完成的。</p>
-<p>宏定义的一般形式为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> 宏名 字符串</span></span><br></pre></td></tr></table></figure>
 
-<p>#表示这是一条预处理命令，所有的预处理命令都以 # 开头。 宏名是标识符的一种，命名规则和变量相同。 字符串可以是数字、表达式、 if 语句、函数等。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">这里所说的字符串是一般意义上的字符序列，不要和 C 语言中的字符串等同，它不需要双引号。</span><br></pre></td></tr></table></figure>
 
-<p>程序中反复使用的表达式就可以使用宏定义，例如：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> M (n*n+3*n)</span></span><br></pre></td></tr></table></figure>
+<p>只能由主机产生起始或终止条件，从机不允许，且SCL和SDA置高电平都由上拉电阻实现。</p>
+<p><strong>发送一个字节：</strong></p>
+<p>SCL低电平期间，主机将数据位依次放到SDA线上（<strong>高位先行</strong>），然后释放SCL，<strong>从机将在SCL高电平期间读取数据位</strong>，所以SCL高电平期间SDA不允许有数据变化，依次循环上述过程8次，即可发送一个字节</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101630300.png" class="" title="image-20231017101630300">
 
-<p>它的作用是指定标识符 M 来表示(y<em>y+3</em>y)这个表达式。在编写代码时，所有出现 (y<em>y+3</em>y) 的地方都可以用 M 来表示，而对源程序编译时，将先由预处理程序进行宏代替，即用 (y<em>y+3</em>y) 去替换所有的宏名 M，然后再进行编译。  </p>
-<h6 id="对-define-用法的几点说明"><a href="#对-define-用法的几点说明" class="headerlink" title="对 #define 用法的几点说明"></a>对 #define 用法的几点说明</h6><p>(1) 宏定义是用宏名来表示一个字符串，在宏展开时又以该字符串取代宏名，这只是一种简单粗暴的替换。字符串中<br>可以含任何字符，它可以是常数、表达式、 if 语句、函数等，预处理程序对它不作任何检查，如有错误，只能在编<br>译已被宏展开后的源程序时发现。<br>(2) 宏定义不是说明或语句，在行末不必加分号，如加上分号则连分号也一起替换。<br>(3) 宏定义必须写在函数之外，其作用域为宏定义命令起到源程序结束。如要终止其作用域可使用#undef 命令。例如：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PI 3.14159</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">// Code</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">undef</span> PI</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">// Code</span></span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
 
-<p>表示 PI 只在 main() 函数中有效，在 func() 中无效。  </p>
-<p>(4) 代码中的宏名如果被引号包围，那么预处理程序不对其作宏代替，例如 :</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> OK 100</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;OK\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
 
-<p>运行结果：<br>OK<br>该例中定义宏名 OK 表示 100，但在 printf 语句中 OK 被引号括起来，因此不作宏替换，而作为字符串处理。  </p>
-<p>(5) 宏定义允许嵌套，在宏定义的字符串中可以使用已经定义的宏名，在宏展开时由预处理程序层层代换。例如：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PI 3.1415926</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> S PI*y*y <span class="comment">/* PI 是已定义的宏名*/</span>  </span></span><br></pre></td></tr></table></figure>
+<p>一般情况下，当SCL产生上升沿时，从机就从SDA读取数据完毕，所以主机需要提前放置数据置SDA。</p>
+<p><strong>接收一个字节：</strong></p>
+<p>SCL低电平期间，从机将数据位依次放到SDA线上（<strong>高位先行</strong>），然后释放SCL，<strong>主机将在SCL高电平期间读取数据位</strong>，所以SCL高电平期间SDA不允许有数据变化，依次循环上述过程8次，即可接收一个字节（主机在接收之前，需要释放SDA）</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101927913.png" class="" title="image-20231017101927913">
 
-<p>对语句：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%f&quot;</span>, S);  </span><br></pre></td></tr></table></figure>
 
-<p>在宏代换后变为：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%f&quot;</span>, <span class="number">3.1415926</span>*y*y);  </span><br></pre></td></tr></table></figure>
 
-<p>(6) 习惯上宏名用大写字母表示，以便于与变量区别。但也允许用小写字母。<br>(7) 可用宏定义表示数据类型，使书写方便。例如：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> UINT unsigned int</span></span><br></pre></td></tr></table></figure>
+<p><strong>发送应答：</strong></p>
+<p>主机在接收完一个字节之后，在下一个时钟发送一位数据，数据0表示应答，数据1表示非应答</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017103533941.png" class="" title="image-20231017103533941">
 
-<p>在程序中可用 UINT 作变量说明：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">UINT a, b;</span><br></pre></td></tr></table></figure>
 
-<p>应注意用宏定义表示数据类型和用 typedef 定义数据说明符的区别。 宏定义只是简单的字符串替换，由预处理器来处理；而 typedef 是在编译阶段由编译器处理的，它并不是简单的字符串替换，而给原有的数据类型起一个新的名字，将它作为一种新的数据类型。<br>请看下面的例子：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PIN1 int *</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> *PIN2; <span class="comment">//也可以写作 typedef int (*PIN2);</span></span><br></pre></td></tr></table></figure>
 
-<p>从形式上看这两者相似， 但在实际使用中却不相同。<br>下面用 PIN1， PIN2 说明变量时就可以看出它们的区别：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">PIN1 a, b;</span><br></pre></td></tr></table></figure>
+<p><strong>接收应答：</strong></p>
+<p>主机在发送完一个字节之后，在下一个时钟接收一位数据，判断从机是否应答，数据0表示应答，数据1表示非应答（主机在接收之前，需要释放SDA）</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017103543583.png" class="" title="image-20231017103543583">
 
-<p>在宏代换后变成：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> * a, b;</span><br></pre></td></tr></table></figure>
 
-<p>表示 a 是指向整型的指针变量，而 b 是整型变量。然而：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">PIN2 a,b;</span><br></pre></td></tr></table></figure>
 
-<p>表示 a、 b 都是指向整型的指针变量。因为 PIN2 是一个新的、完整的数据类型。 由这个例子可见，宏定义虽然也可表示数据类型， 但毕竟只是简单的字符串替换。在使用时要格外小心，以避出错。  </p>
-<h5 id="带参数的宏定义"><a href="#带参数的宏定义" class="headerlink" title="带参数的宏定义"></a>带参数的宏定义</h5><p>C 语言允许宏带有参数。在宏定义中的参数称为“形式参数”，在宏调用中的参数称为“实际参数”，这点和函数有些类似。<br>对带参数的宏，在展开过程中不仅要进行字符串替换，还要用实参去替换形参。<br>带参宏定义的一般形式为：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> 宏名(形参列表) 字符串  </span></span><br></pre></td></tr></table></figure>
+<p>应答功能可用于判断数据是否传输成功，也可以用于判断是否需要继续传输。</p>
+<h3 id="数据帧示例"><a href="#数据帧示例" class="headerlink" title="数据帧示例"></a>数据帧示例</h3><p><strong>指定地址写</strong>：</p>
+<p>对于指定设备（Slave Address），在指定地址（Reg Address）下，写入指定数据（Data）。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017103904501.png" class="" title="image-20231017103904501">
 
-<p>在字符串中可以含有各个形参。<br>带参宏调用的一般形式为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">宏名(实参列表);  </span><br></pre></td></tr></table></figure>
+<p><strong>当前地址读：</strong></p>
+<p>对于指定设备（Slave Address），在当前地址指针指示的地址下，读取从机数据（Data）</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017104007377.png" class="" title="image-20231017104007377">
 
-<p>例如：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> M(y) y*y+3*y <span class="comment">//宏定义</span></span></span><br><span class="line"><span class="comment">// <span class="doctag">TODO:</span></span></span><br><span class="line">k=M(<span class="number">5</span>); <span class="comment">//宏调用</span></span><br></pre></td></tr></table></figure>
+<p><strong>指定地址读：</strong></p>
+<p>对于指定设备（Slave Address），在指定地址（Reg Address）下，读取从机数据（Data）。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017104053149.png" class="" title="image-20231017104053149">
 
-<p>在宏展开时，用实参 5 去代替形参 y，经预处理程序展开后的语句为 </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">k=<span class="number">5</span>*<span class="number">5</span>+<span class="number">3</span>*<span class="number">5</span>。 </span><br></pre></td></tr></table></figure>
 
-<h6 id="对带参宏定义的说明"><a href="#对带参宏定义的说明" class="headerlink" title="对带参宏定义的说明"></a>对带参宏定义的说明</h6><p>(1) 带参宏定义中，形参之间可以出现空格，但是宏名和形参列表之间不能有空格出现。例如把：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX(a,b) (a&gt;b)?a:b</span></span><br></pre></td></tr></table></figure>
 
-<p>写为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX (a,b) (a&gt;b)?a:b</span></span><br></pre></td></tr></table></figure>
+<h2 id="MPU6050"><a href="#MPU6050" class="headerlink" title="MPU6050"></a>MPU6050</h2><p><strong>MPU6050简介：</strong></p>
+<p>•　MPU6050是一个6轴姿态传感器，可以测量芯片自身X、Y、Z轴的加速度、角速度参数，通过数据融合，可进一步得到姿态角（欧拉角），常应用于平衡车、飞行器等需要检测自身姿态的场景</p>
+<p>•　3轴加速度计（Accelerometer）：测量X、Y、Z轴的加速度</p>
+<p>•　3轴陀螺仪传感器（Gyroscope）：测量X、Y、Z轴的角速度</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018084608575.png" class="" title="image-20231018084608575">
 
-<p>将被认为是无参宏定义，宏名 MAX 代表字符串(a,b) (a&gt;b)?a:b。宏展开时，宏调用语句：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">max = MAX(x,y);  </span><br></pre></td></tr></table></figure>
+<p>芯片上会有个小图标标示x与y轴。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018084638732.png" class="" title="image-20231018084638732">
 
-<p>将变为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">max = (a,b)(a&gt;b)?a:b(x,y);</span><br></pre></td></tr></table></figure>
+<p>加速度计可以理解为一个弹簧测力计，当物体有加速度时，将使弹簧受力，改变电位器。</p>
+<p>另外，该加速度计只具有静态稳定性，不具备动态稳定性。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018084759528.png" class="" title="image-20231018084759528">
 
-<p>这显然是错误的。  </p>
-<p>(2) 在带参宏定义中，不会为形式参数分配内存，因此不必指明数据类型。而在宏调用中，实参包含了具体的数据，要用它们去替换形参，因此实参必须要指明数据类型。</p>
-<p>这一点和函数是不同的：在函数中，形参和实参是两个不同的变量，都有自己的作用域，调用时要把实参的值传递给形参；而在带参数的宏中，只是符号的替换，不存在值传递的问题。  </p>
-<p>带参宏定义和函数的区别 ：</p>
-<p>带参数的宏和函数很相似，但有本质上的区别：宏展开仅仅是字符串的替换，不会对表达式进行计算；宏在编译之前就被处理掉了，它没有机会参与编译，也不会占用内存。而函数是一段可以重复使用的代码，会被编译，会给它分配内存，每次调用函数，就是执行这块内存中的代码。  </p>
-<h6 id="宏参数的字符串化和宏参数的连接"><a href="#宏参数的字符串化和宏参数的连接" class="headerlink" title="宏参数的字符串化和宏参数的连接"></a>宏参数的字符串化和宏参数的连接</h6><p>在宏定义中，有时还会用到#和##两个符号，它们能够对宏参数进行操作。<br><strong># 的用法</strong><br>#用来将宏参数转换为字符串，也就是在宏参数的开头和末尾添加引号。例如有如下宏定义：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> STR(s) #s</span></span><br></pre></td></tr></table></figure>
+<p>而陀螺仪传感器只具有动态稳定性，不具备静态稳定性。</p>
+<p><strong>MPU6050参数：</strong></p>
+<p>•　16位ADC采集传感器的模拟信号，量化范围：-32768~32767</p>
+<p>•　加速度计满量程选择：±2、±4、±8、±16（g）</p>
+<p>•　陀螺仪满量程选择： ±250、±500、±1000、±2000（°&#x2F;sec）</p>
+<p>•　可配置的数字低通滤波器</p>
+<p>•　可配置的时钟源</p>
+<p>•　可配置的采样分频</p>
+<p>•　I2C从机地址：1101000（AD0&#x3D;0） 1101001（AD0&#x3D;1）</p>
+<p>值得注意的是，I2C的数据格式为8位一个包，地址位为7位，此后有一位为读写位。所以写入MPU6050的地址为0x68再或上读写位，也可以直接写入0xD0，读写位和地址位合为一个8位数据。</p>
+<p><strong>硬件电路：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090147960.png" class="" title="image-20231018090147960">
 
-<p>那么：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, STR(c.biancheng.net));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, STR(<span class="string">&quot;c.biancheng.net&quot;</span>));</span><br></pre></td></tr></table></figure>
+<p>整体硬件电路由左上角的稳压器，左下引出排针和右侧芯片组成，有排针引脚可知该硬件支持拓展。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090159079.png" class="" title="image-20231018090159079">
 
-<p>分别被展开为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, <span class="string">&quot;c.biancheng.net&quot;</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, <span class="string">&quot;\&quot;c.biancheng.net\&quot;&quot;</span>);</span><br></pre></td></tr></table></figure>
 
-<p>可以发现，即使给宏参数“传递”的数据中包含引号，使用#仍然会在两头添加新的引号，而原来的引号会被转义。  </p>
-<p><strong>##的用法</strong><br>##称为连接符，用来将宏参数或其他的串连接起来。例如有如下的宏定义：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> CON1(a, b) a##e##b</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CON2(a, b) a##b##00</span></span><br></pre></td></tr></table></figure>
 
-<p>那么：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>, CON1(<span class="number">8.5</span>, <span class="number">2</span>));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, CON2(<span class="number">12</span>, <span class="number">34</span>));</span><br></pre></td></tr></table></figure>
+<p>另外，在配置硬件的自由落体检测，运动检测等，可触发INT输出中段信号。</p>
+<p><strong>MPU6050框图：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090613475.png" class="" title="image-20231018090613475">
 
-<p>将被展开为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>, <span class="number">8.5e2</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="number">123400</span>);  </span><br></pre></td></tr></table></figure>
 
-<h6 id="C-语言中几个预定义宏"><a href="#C-语言中几个预定义宏" class="headerlink" title="C 语言中几个预定义宏"></a>C 语言中几个预定义宏</h6><p>顾名思义，预定义宏就是已经预先定义好的宏，我们可以直接使用，无需再重新定义。<br>ANSI C 规定了以下几个预定义宏，它们在各个编译器下都可以使用：<br>     __LINE__：表示当前源代码的行号；<br>    __FILE__：表示当前源文件的名称；<br>    __DATE__：表示当前的编译日期；<br>    __TIME__：表示当前的编译时间；<br>    __STDC__：当要求程序严格遵循 ANSI C 标准时该标识被赋值为 1；<br>    __cplusplus：当编写 C++程序时该标识符被定义  </p>
-<p>例如：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Date : %s\n&quot;</span>, __DATE__);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Time : %s\n&quot;</span>, __TIME__);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;File : %s\n&quot;</span>, __FILE__);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Line : %d\n&quot;</span>, __LINE__);</span><br><span class="line">    system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span> ;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
 
-<p>输出结果：</p>
-<p>Date : Jul 12 2023<br>Time : 18:57:36<br>File : C:\Users\90872\Desktop\未命名1.cpp<br>Line : 7</p>
-<h5 id="条件编译"><a href="#条件编译" class="headerlink" title="条件编译"></a>条件编译</h5><p>简单来说，根据不同情况编译不同代码、产生不同目标文件的机制，称为条件编译。 条件编译是预处理程序的功能，不是编译器的功能。  </p>
-<h6 id="if-的用法"><a href="#if-的用法" class="headerlink" title="#if 的用法"></a>#if 的用法</h6><p>#if 用法的一般格式为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">if</span> 整型常量表达式 1</span></span><br><span class="line">程序段 <span class="number">1</span></span><br><span class="line"><span class="meta">#<span class="keyword">elif</span> 整型常量表达式 2</span></span><br><span class="line">程序段 <span class="number">2</span></span><br><span class="line"><span class="meta">#<span class="keyword">elif</span> 整型常量表达式 3</span></span><br><span class="line">程序段 <span class="number">3</span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">程序段 <span class="number">4</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090849895.png" class="" title="image-20231018090849895">
 
-<p>它的意思是：如常“表达式 1”的值为真（非 0），就对“程序段 1”进行编译，否则就计算“表达式 2”，结果为真的话就对“程序段 2”进行编译，为假的话就继续往下匹配，直到遇到值为真的表达式，或者遇到 #else。这一点和 if else 非常类似。</p>
-<p>需要注意的是， #if 命令要求判断条件为“整型常量表达式”，也就是说，表达式中不能包含变量，而且结果必须是整数；而 if 后面的表达式没有限制，只要符合语法就行。这是 #if 和 if 的一个重要区别。  </p>
-<p>和 #else 也可以省略，如下所示 ：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> _WIN32</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;This is Windows!\n&quot;</span>);</span><br><span class="line">    <span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Unknown platform!\n&quot;</span>);</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> __linux__</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;This is Linux!\n&quot;</span>);</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
 
-<h6 id="ifdef-的用法"><a href="#ifdef-的用法" class="headerlink" title="#ifdef 的用法"></a>#ifdef 的用法</h6><p>#ifdef 用法的一般格式为：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> 宏名</span></span><br><span class="line">    程序段 <span class="number">1</span>  </span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    程序段 <span class="number">2</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
-<p>它的意思是，如果当前的宏已被定义过，则对“程序段 1”进行编译，否则对“程序段 2”进行编译。<br>也可以省略 #else：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> 宏名</span></span><br><span class="line">    程序段</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span>  </span></span><br></pre></td></tr></table></figure>
+<p><strong>MPU6050的I2C通信格式：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018091413370.png" class="" title="image-20231018091413370">
 
-<h6 id="ifndef-的用法"><a href="#ifndef-的用法" class="headerlink" title="#ifndef 的用法"></a>#ifndef 的用法</h6><p>#ifndef 用法的一般格式为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> 宏名</span></span><br><span class="line">	程序段 <span class="number">1</span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">	程序段 <span class="number">2</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span>  </span></span><br></pre></td></tr></table></figure>
 
-<p>与 #ifdef 相比，仅仅是将 #ifdef 改为了 #ifndef。它的意思是，如果当前的宏未被定义，则对“程序段 1”进行编译，否则对“程序段 2”进行编译，这与 #ifdef 的功能正好相反  </p>
-<h6 id="三者之间的区别"><a href="#三者之间的区别" class="headerlink" title="三者之间的区别"></a>三者之间的区别</h6><p>最后需要注意的是， #if 后面跟的是“整型常量表达式”，而 #ifdef 和 #ifndef 后面跟的只能是一个宏名，不能是其他的。  </p>
-<p>#ifdef 可以认为是 #if defined 的缩写  </p>
-<h5 id="error-命令，阻止程序编译"><a href="#error-命令，阻止程序编译" class="headerlink" title="#error 命令，阻止程序编译"></a>#error 命令，阻止程序编译</h5><p>#error 指令用于在编译期间产生错误信息，并阻止程序的编译，其形式如下：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">error</span> error_message</span></span><br></pre></td></tr></table></figure>
 
-<p>例如，我们的程序针对 Linux 编写，不保证兼容 Windows，那么可以这样做：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> WIN32</span></span><br><span class="line"><span class="meta">#<span class="keyword">error</span> This programme cannot compile at Windows Platform</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p><strong>寄存器地址：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018091543354.png" class="" title="image-20231018091543354">
 
-<p>WIN32 是 Windows 下的预定义宏。当用户在 Windows 下编译该程序时，由于定义了 WIN32 这个宏，所以<br>会执行 #error 命令，提示用户发生了编译错误，错误信息是：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">This programme cannot compile at Windows Platform</span><br></pre></td></tr></table></figure>
+<p>Addr(Hex)：16进制地址</p>
+<p>Addr(Dec)：10进制地址</p>
+<p>Register Name：寄存器名称</p>
+<p>SerialI&#x2F;F：读写权限</p>
+<p>在文档“RM-MPU-6000A”中有该硬件的寄存器表，通过此表，可得知相应的寄存器地址。如果需要读取特定的寄存器数据（比如加速度计的数据）可由此表查询地址。当然，也可以写入命名到寄存器，用于设置硬件模式等等。</p>
+<p>所有寄存器上电默认为0x00，除了107号寄存器上电默认为0x40(睡眠)，117号寄存器为0x68。</p>
+<h3 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h3>
 
-<p>这和发生语法错误的效果是一样的，程序编译失败。</p>
-<h5 id="C-语言预处理命令总结"><a href="#C-语言预处理命令总结" class="headerlink" title="C 语言预处理命令总结"></a>C 语言预处理命令总结</h5><p>预处理指令是以#号开头的代码行， # 号必须是该行除了任何空白字符外的第一个字符。 # 后是指令关键字，在关键字和 # 号之间允许存在任意个数的空白字符，整行语句构成了一条预处理指令，该指令将在编译器进行编译之前对源代码做某些转换。  </p>
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"                  // Device header
+#include "Delay.h"
+#include "OLED.h"
+#include "MPU6050.h"
+uint8_t ID;                 //设备ID号
+int16_t AX,AY,AZ,GX,GY,GZ;  //xyz加速度和角速度
+int main(void)
+&#123;
+    //初始化
+    OLED_Init();
+    MPU6050_Init();
+    ID = MPU6050_GetID();        //获取设备ID号
+    OLED_ShowString(1,1,"ID:");
+    OLED_ShowHexNum(1,4,ID,2);
+    while (1)
+    &#123;
+MPU6050_GetData(&AX,&AY,&AZ,&GX,&GY,&GZ);   //获取加速度和角速度的参数
+        OLED_ShowSignedNum(2,1,AX,5);
+        OLED_ShowSignedNum(3,1,AY,5);
+        OLED_ShowSignedNum(4,1,AZ,5);
+        OLED_ShowSignedNum(2,8,GX,5);
+        OLED_ShowSignedNum(3,8,GY,5);
+        OLED_ShowSignedNum(4,8,GZ,5);
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MyI2c.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"
+#include "Delay.h"
+void MyI2C_W_SCL(uint8_t BitValue)  //封装写SCL（时钟线）函数，并加上小延时确保相应。
+&#123;
+    GPIO_WriteBit(GPIOB,GPIO_Pin_10,(BitAction)BitValue);
+    Delay_us(10);
+&#125;
+void MyI2C_W_SDA(uint8_t BitValue)  //封装写SDA（数据线）函数，
+&#123;
+    GPIO_WriteBit(GPIOB,GPIO_Pin_11,(BitAction)BitValue);
+    Delay_us(10);
+&#125;
+uint8_t MyI2C_R_SDA(void)    //读SDA
+&#123;
+    uint8_t BitValue;
+    BitValue = GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_11);
+    Delay_us(10);
+    return BitValue;
+&#125;
+void MyI2C_Init(void)   //初始化
+&#123;
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB,&GPIO_InitStructure);
+    GPIO_SetBits(GPIOB,GPIO_Pin_10 | GPIO_Pin_11);  //初始化I2C双线为高电平
+&#125;
+void MyI2C_Start(void)  //启动
+&#123;
+    MyI2C_W_SDA(1);
+    MyI2C_W_SCL(1);
+    MyI2C_W_SDA(0);
+    MyI2C_W_SCL(0);
+&#125;
+void MyI2C_STOP(void)  //停止
+&#123;
+    MyI2C_W_SDA(0);
+    MyI2C_W_SCL(1);
+    MyI2C_W_SDA(1);
+&#125;
+void MyI2C_SendByte(uint8_t Byte)  //发送一位字节
+&#123;
+    uint8_t i;
+    for(i=0;i<8;i++)
+    &#123;
+        MyI2C_W_SDA(Byte & (0x80 >> i));
+        MyI2C_W_SCL(1);
+        MyI2C_W_SCL(0);
+    &#125;
+&#125;
+uint8_t MyI2C_ReceiveByte(void)  //接收一位字节
+&#123;
+    uint8_t i,Byte = 0x00;
+    for(i=0;i<8;i++)
+    &#123;
+        MyI2C_W_SDA(1);
+        MyI2C_W_SCL(1);
+        if(MyI2C_R_SDA() == 1) Byte |= (0x80>>i);
+        MyI2C_W_SCL(0);	
+    &#125;
+    return Byte;
+&#125;
+void MyI2C_SendAck(uint8_t AckBit)  //发送应答
+&#123;
+    MyI2C_W_SDA(AckBit);
+    MyI2C_W_SCL(1);
+    MyI2C_W_SCL(0);
+&#125;
+uint8_t MyI2C_ReceiveAck(void)      //接收应答
+&#123;
+    uint8_t AckBit;
+    MyI2C_W_SDA(1);
+    MyI2C_W_SCL(1);
+    AckBit = MyI2C_R_SDA();
+    MyI2C_W_SCL(0);	
+    return AckBit;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MPU6050.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h" 
+#include "MyI2C.h"
+#include "MPU6050_Reg.h"
+#define MPU6050_ADDRESS 0xD0      //宏定义MPU6050地址，应该为0x68,0xD0为7位地址或上读写位的整合。
+void MPU6050_WriteReg(uint8_t RegAddress,uint8_t Data)   //指定地址写数据
+&#123;
+    MyI2C_Start();
+    MyI2C_SendByte(MPU6050_ADDRESS);
+    MyI2C_ReceiveAck();
+    MyI2C_SendByte(RegAddress);
+    MyI2C_ReceiveAck();
+    MyI2C_SendByte(Data);      //如果需要连续写多个字节，可用for循环执行注释的这两句。
+    MyI2C_ReceiveAck();        //当写入多字节时，每写入一个字节，地址自动+1。
+    MyI2C_STOP();
+&#125;
+uint8_t MPU6050_ReadReg(uint8_t RegAddress)       //指定地址读数据
+&#123;
+    uint8_t Data;
+    //第一个起始条件发送地址
+    MyI2C_Start();
+    MyI2C_SendByte(MPU6050_ADDRESS);
+    MyI2C_ReceiveAck();
+    MyI2C_SendByte(RegAddress);
+    MyI2C_ReceiveAck();
+    //第二个起始条件读地址，读写地址位重新指定，通信协议读写位只能在起始条件后的一个字节设定。
+    MyI2C_Start();
+    MyI2C_SendByte(MPU6050_ADDRESS | 0x01);        //指定地址或上“读数据”位
+    MyI2C_ReceiveAck();
+    Data = MyI2C_ReceiveByte();
+    MyI2C_SendAck(1);
+    MyI2C_STOP();
+    return Data;
+&#125;
+void MPU6050_Init(void)
+&#123;
+    MyI2C_Init();
+    MPU6050_WriteReg(MPU6050_PWR_MGMT_1, 0x01);        //解除睡眠，时钟源为陀螺仪时钟
+    MPU6050_WriteReg(MPU6050_PWR_MGMT_2, 0x00);        //6轴一直启用，均不待机
+    MPU6050_WriteReg(MPU6050_SMPLRT_DIV, 0x09);        //采样分频为10
+    MPU6050_WriteReg(MPU6050_CONFIG, 0x06);            //滤波参数为最大
+    MPU6050_WriteReg(MPU6050_GYRO_CONFIG, 0x18);       //陀螺仪为最大量程
+    MPU6050_WriteReg(MPU6050_ACCEL_CONFIG, 0x18);      //加速度为最大量程
+&#125;
+uint8_t MPU6050_GetID(void)		//获取设备ID号
+&#123;
+    return MPU6050_ReadReg(MPU6050_WHO_AM_I);
+&#125;
+void MPU6050_GetData(int16_t *AccX, int16_t *AccY, int16_t *AccZ,
+                     int16_t *GyroX, int16_t *GyroY, int16_t *GyroZ)  //获取搜集的参数
+&#123;
+    uint8_t DataH, DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_L);
+    *AccX = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_L);
+    *AccY = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_L);
+    *AccZ = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_XOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_XOUT_L);
+    *GyroX = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_YOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_YOUT_L);
+    *GyroY = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_L);
+    *GyroZ = (DataH << 8)| DataL;        
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MPU6050_Reg.h</font></summary>  <pre><code class="language-c">
+#ifndef    __MPU6050_Reg__H
+#define    __MPU6050_Reg__H
+//控制寄存器
+#define	MPU6050_SMPLRT_DIV		0x19
+#define	MPU6050_CONFIG			0x1A
+#define	MPU6050_GYRO_CONFIG		0x1B
+#define	MPU6050_ACCEL_CONFIG	0x1C
+//收集的数据存放的寄存器
+#define	MPU6050_ACCEL_XOUT_H	0x3B
+#define	MPU6050_ACCEL_XOUT_L	0x3C
+#define	MPU6050_ACCEL_YOUT_H	0x3D
+#define	MPU6050_ACCEL_YOUT_L	0x3E
+#define	MPU6050_ACCEL_ZOUT_H	0x3F
+#define	MPU6050_ACCEL_ZOUT_L	0x40
+#define	MPU6050_TEMP_OUT_H		0x41
+#define	MPU6050_TEMP_OUT_L		0x42
+#define	MPU6050_GYRO_XOUT_H		0x43
+#define	MPU6050_GYRO_XOUT_L		0x44
+#define	MPU6050_GYRO_YOUT_H		0x45
+#define	MPU6050_GYRO_YOUT_L		0x46
+#define	MPU6050_GYRO_ZOUT_H		0x47
+#define	MPU6050_GYRO_ZOUT_L		0x48
+//电源管理寄存器和设备ID寄存器
+#define	MPU6050_PWR_MGMT_1		0x6B
+#define	MPU6050_PWR_MGMT_2		0x6C
+#define	MPU6050_WHO_AM_I		0x75   
+ #endif
+</code> </pre> </details>
+
+<p>先写好I2C通讯时序，再通过时序组成数据帧。然后在MPU6050中对数据帧进行封装，此后可在主函数直接调用对硬件的读写函数。因为直接写0x3c一类写入寄存器不易于理解和后续维护，所以引入“MPU6050—Reg”，将寄存器地址进行宏定义。</p>
+<h2 id="STM32硬件I2C通信"><a href="#STM32硬件I2C通信" class="headerlink" title="STM32硬件I2C通信"></a>STM32硬件I2C通信</h2><h3 id="I2C外设简介"><a href="#I2C外设简介" class="headerlink" title="I2C外设简介"></a>I2C外设简介</h3><p>•　STM32内部集成了硬件I2C收发电路，可以由硬件自动执行时钟生成、起始终止条件生成、应答位收发、数据收发等功能，减轻CPU的负担</p>
+<p>•　支持多主机模型</p>
+<p>•　支持7位&#x2F;10位地址模式</p>
+<p>•　支持不同的通讯速度，标准速度(高达100 kHz)，快速(高达400 kHz)</p>
+<p>•　支持DMA</p>
+<p>•　兼容SMBus协议（系统管理总线）</p>
+<p>•　STM32F103C8T6 硬件I2C资源：I2C1、I2C2</p>
+<h3 id="I2C框图"><a href="#I2C框图" class="headerlink" title="I2C框图"></a>I2C框图</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100349831.png" class="" title="image-20231018100349831">
+
+<h3 id="I2C基本结构"><a href="#I2C基本结构" class="headerlink" title="I2C基本结构"></a>I2C基本结构</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100439583.png" class="" title="image-20231018100439583">
+
+<p>移位寄存器左移，高位先行。</p>
+<h3 id="主机发送"><a href="#主机发送" class="headerlink" title="主机发送"></a>主机发送</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100533249.png" class="" title="image-20231018100533249">
+
+<p>7位和10位主要差别为寻址位是7位或是10位。当一个时序完成后，STM32会置EVx位(可理解为大标志位)。通过对此位的查询，可得知事件状态。</p>
+<h3 id="主机接收"><a href="#主机接收" class="headerlink" title="主机接收"></a>主机接收</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100801037.png" class="" title="image-20231018100801037">
+
+<p>EV5事件表示起始条件已发送</p>
+<p>EV6事件表示寻址已完成</p>
+<h3 id="软件-x2F-硬件波形对比"><a href="#软件-x2F-硬件波形对比" class="headerlink" title="软件&#x2F;硬件波形对比"></a>软件&#x2F;硬件波形对比</h3><p><strong>软件波形：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100928963.png" class="" title="image-20231018100928963">
+
+<p><strong>硬件波形：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100939975.png" class="" title="image-20231018100939975">
+
+<p>通过对比可知：<br>硬件I2C的波形会更加规整，每个时钟的周期和占空比都非常一致，而软件I2C由于操作引脚后加入了延时，导致每个时钟的周期和占空比不规整。由于I2C是同步时序，所以影响不大。</p>
+<p>SCL低电平写，高电平读。保证尽早的原则，直接在SCL下降沿写，上升沿读。</p>
+<h3 id="程序示例-1"><a href="#程序示例-1" class="headerlink" title="程序示例"></a>程序示例</h3>
+
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"                  // Device header
+#include "Delay.h"
+#include "OLED.h"
+#include "MPU6050.h"
+uint8_t ID;
+int16_t AX,AY,AZ,GX,GY,GZ;
+int main(void)
+&#123;
+    OLED_Init();
+    MPU6050_Init();
+    ID = MPU6050_GetID();
+    OLED_ShowString(1,1,"ID:");
+    OLED_ShowHexNum(1,4,ID,2);
+    while (1)
+    &#123;
+        MPU6050_GetData(&AX,&AY,&AZ,&GX,&GY,&GZ);
+        OLED_ShowSignedNum(2,1,AX,5);
+        OLED_ShowSignedNum(3,1,AY,5);
+        OLED_ShowSignedNum(4,1,AZ,5);
+        OLED_ShowSignedNum(2,8,GX,5);
+        OLED_ShowSignedNum(3,8,GY,5);
+        OLED_ShowSignedNum(4,8,GZ,5);
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MPU6050.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h" 
+#include "MPU6050_Reg.h"
+#define MPU6050_ADDRESS 0xD0      //宏定义MPU6050地址
+void MPU6050_WaitEvent(I2C_TypeDef* I2Cx, uint32_t I2C_EVENT)  //等待EV事件，防止用while卡死，改用定时退出
+&#123;
+    uint32_t TimeOut;
+    TimeOut = 10000;
+    while(I2C_CheckEvent(I2Cx,I2C_EVENT) != SUCCESS)
+    &#123;
+        TimeOut--;
+        if(TimeOut == 0) break;
+    &#125;
+&#125;
+void MPU6050_WriteReg(uint8_t RegAddress,uint8_t Data)   //写字节
+&#123;
+    I2C_GenerateSTART(I2C2,ENABLE);
+    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT) != SUCCESS);
+    I2C_Send7bitAddress(I2C2,MPU6050_ADDRESS,I2C_Direction_Transmitter);
+    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED) != SUCCESS);
+    I2C_SendData(I2C2,RegAddress);
+    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTING) != SUCCESS);
+    I2C_SendData(I2C2,Data);
+    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED) != SUCCESS);
+    I2C_GenerateSTOP(I2C2,ENABLE);
+&#125;
+uint8_t MPU6050_ReadReg(uint8_t RegAddress)    //读字节
+&#123;
+    uint8_t Data;
+    I2C_GenerateSTART(I2C2,ENABLE);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT);
+    I2C_Send7bitAddress(I2C2,MPU6050_ADDRESS,I2C_Direction_Transmitter);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED);
+    I2C_SendData(I2C2,RegAddress);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED);
+    I2C_GenerateSTART(I2C2,ENABLE);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT);
+    I2C_Send7bitAddress(I2C2,MPU6050_ADDRESS,I2C_Direction_Receiver);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED);
+    I2C_AcknowledgeConfig(I2C2,DISABLE);
+    I2C_GenerateSTOP(I2C2,ENABLE);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_BYTE_RECEIVED);
+    Data = I2C_ReceiveData(I2C2);
+    I2C_AcknowledgeConfig(I2C2,ENABLE);
+    return Data;
+&#125;
+void MPU6050_Init(void)
+&#123;
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2,ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB,&GPIO_InitStructure);
+    I2C_InitTypeDef I2C_InitStructure;
+    I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+    I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+    I2C_InitStructure.I2C_ClockSpeed = 50000;
+    I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+    I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+    I2C_InitStructure.I2C_OwnAddress1 = 0x00;
+    I2C_Init(I2C2,&I2C_InitStructure);
+    I2C_Cmd(I2C2,ENABLE);
+    MPU6050_WriteReg(MPU6050_PWR_MGMT_1, 0x01);        //解除睡眠，时钟源为陀螺仪时钟
+    MPU6050_WriteReg(MPU6050_PWR_MGMT_2, 0x00);        //6轴一直启用，均不待机
+    MPU6050_WriteReg(MPU6050_SMPLRT_DIV, 0x09);        //采样分频为10
+    MPU6050_WriteReg(MPU6050_CONFIG, 0x06);            //滤波参数为最大
+    MPU6050_WriteReg(MPU6050_GYRO_CONFIG, 0x18);       //陀螺仪为最大量程
+    MPU6050_WriteReg(MPU6050_ACCEL_CONFIG, 0x18);      //加速度为最大量程
+&#125;
+uint8_t MPU6050_GetID(void)      //获取设备ID号
+&#123;
+    return MPU6050_ReadReg(MPU6050_WHO_AM_I);
+&#125;
+void MPU6050_GetData(int16_t *AccX, int16_t *AccY, int16_t *AccZ,
+                     int16_t *GyroX, int16_t *GyroY, int16_t *GyroZ)  //获取数据
+&#123;
+    uint8_t DataH, DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_L);
+    *AccX = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_L);
+    *AccY = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_L);
+    *AccZ = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_XOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_XOUT_L);
+    *GyroX = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_YOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_YOUT_L);
+    *GyroY = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_L);
+    *GyroZ = (DataH << 8)| DataL;        
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MPU6050_Reg.h</font></summary>  <pre><code class="language-c">
+#ifndef    __MPU6050_Reg__H
+#define    __MPU6050_Reg__H
+#define	MPU6050_SMPLRT_DIV		0x19
+#define	MPU6050_CONFIG			0x1A
+#define	MPU6050_GYRO_CONFIG		0x1B
+#define	MPU6050_ACCEL_CONFIG	0x1C
+#define	MPU6050_ACCEL_XOUT_H	0x3B
+#define	MPU6050_ACCEL_XOUT_L	0x3C
+#define	MPU6050_ACCEL_YOUT_H	0x3D
+#define	MPU6050_ACCEL_YOUT_L	0x3E
+#define	MPU6050_ACCEL_ZOUT_H	0x3F
+#define	MPU6050_ACCEL_ZOUT_L	0x40
+#define	MPU6050_TEMP_OUT_H		0x41
+#define	MPU6050_TEMP_OUT_L		0x42
+#define	MPU6050_GYRO_XOUT_H		0x43
+#define	MPU6050_GYRO_XOUT_L		0x44
+#define	MPU6050_GYRO_YOUT_H		0x45
+#define	MPU6050_GYRO_YOUT_L		0x46
+#define	MPU6050_GYRO_ZOUT_H		0x47
+#define	MPU6050_GYRO_ZOUT_L		0x48
+#define	MPU6050_PWR_MGMT_1		0x6B
+#define	MPU6050_PWR_MGMT_2		0x6C
+#define	MPU6050_WHO_AM_I		0x75   
+ #endif
+</code> </pre> </details>
+程序执行逻辑和软件I2C示例差不多，仅是将软件时序替换为STM32标准库函数，并且STM32对通信的状态有事件标志位和定义，通过读取标志位就明白时序是否完成。
+
+
+
+<h2 id="I2C缺点"><a href="#I2C缺点" class="headerlink" title="I2C缺点"></a>I2C缺点</h2><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021144801473.png" class="" title="image-20231021144801473">
+
+<p>I2C的电路结构是开漏外加上拉电阻，使通信线高电平的驱动能力比较弱，导致通信线由低电平到高电平时上升沿耗时长，这限制了I2C的最大通信速度。而SPI设计简单粗暴，传输速度也比I2C快很多。</p>
+<h1 id="SPI通信"><a href="#SPI通信" class="headerlink" title="SPI通信"></a>SPI通信</h1><h2 id="SPI软件模拟通信"><a href="#SPI软件模拟通信" class="headerlink" title="SPI软件模拟通信"></a>SPI软件模拟通信</h2><h3 id="SPI简介"><a href="#SPI简介" class="headerlink" title="SPI简介"></a>SPI简介</h3><p>•　SPI（Serial Peripheral Interface）是由Motorola公司开发的一种通用数据总线</p>
+<p>•　四根通信线：SCK（Serial Clock）、MOSI（Master Output Slave Input）、MISO（Master Input Slave Output）、SS（Slave Select）</p>
+<p>•　同步，全双工</p>
+<p>•　支持总线挂载多设备（一主多从，不支持多主多从）</p>
+<p>SCK提供时钟信号，数据位的输出输入都是在SCK的上升沿或下降沿进行的，此时数据位的收发时刻就可以明确确定。</p>
+<h3 id="硬件电路-1"><a href="#硬件电路-1" class="headerlink" title="硬件电路"></a>硬件电路</h3><p>•　所有SPI设备的SCK、MOSI、MISO分别连在一起</p>
+<p>•　主机另外引出多条SS控制线，分别接到各从机的SS引脚</p>
+<p>•　输出引脚配置为推挽输出，输入引脚配置为浮空或上拉输入（SS为低电平片选时，从机才允许变为推挽输出）</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021145137608.png" class="" title="image-20231021145137608">
+
+<h3 id="移位示意图"><a href="#移位示意图" class="headerlink" title="移位示意图"></a>移位示意图</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160333584.png" class="" title="image-20231021160333584">
+
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160419734.png" class="" title="image-20231021160419734">
+
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160504117.png" class="" title="image-20231021160504117">
+
+<p>该示例为高位先行。</p>
+<p>由波特率发生器产生的时钟驱动主机的移位寄存器进行移位。时钟的上升沿，所有移位寄存器向左移一位，移位的数据放在MOSI和MISO上，发生器的下降沿，将采样MOSI和MISO到移位寄存器最低位存储。</p>
+<h3 id="SPI时序基本单元"><a href="#SPI时序基本单元" class="headerlink" title="SPI时序基本单元"></a>SPI时序基本单元</h3><p><strong>起始条件：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160533341.png" class="" title="image-20231021160533341">
+
+<p>SS从高电平切换到低电平</p>
+<p><strong>终止条件：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160616896.png" class="" title="image-20231021160616896">
+
+<p>SS从低电平切换到高电平</p>
+<p><strong>交换一个字节（模式0）</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160653541.png" class="" title="image-20231021160653541">
+
+<p>CPOL（时钟极性） &#x3D; 0：空闲状态时，SCK为低电平</p>
+<p>CPHA（时钟相位） &#x3D; 0：SCK第一个边沿<strong>移入数据</strong>，第二个边沿<strong>移出数据</strong></p>
+<p>因为SCK第一个边沿要移入数据至寄存器，所以需提前写入数据到数据线上，相较于模式1提前了数据线的相位。 </p>
+<p><strong>交换一个字节（模式1）</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021161150625.png" class="" title="image-20231021161150625">
+
+<p>CPOL &#x3D; 0：空闲状态时，SCK为低电平</p>
+<p>CPHA &#x3D; 1：SCK第一个边沿<strong>移出数据</strong>，第二个边沿<strong>移入数据</strong></p>
+<p>即：SCK第一个上升沿（第一个边沿），双方移位寄存器同时移出寄存器数据置MOSI和MISO上，SCK下降沿（第二个边沿）的时候，双方移位寄存器同时移入MOSI和MISO的数据置寄存器，达成数据交换。</p>
+<p><strong>交换一个字节（模式2）</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162610968.png" class="" title="image-20231021162610968">
+
+<p>CPOL&#x3D;1：空闲状态时，SCK为高电平</p>
+<p>CPHA&#x3D;0：SCK第一个边沿移入数据，第二个边沿移出数据</p>
+<p><strong>交换一个字节（模式3）</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162638853.png" class="" title="image-20231021162638853">
+
+<p>CPOL&#x3D;1：空闲状态时，SCK为高电平</p>
+<p>CPHA&#x3D;1：SCK第一个边沿移出数据，第二个边沿移入数据</p>
+<p>模式2和模式3，相较与模式0和模式1，仅是SCK时钟极性变化而已。</p>
+<h3 id="SPI时序"><a href="#SPI时序" class="headerlink" title="SPI时序"></a>SPI时序</h3><p>示例时序均为模式0</p>
+<p><strong>发送指令</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162831064.png" class="" title="image-20231021162831064">
+
+<p>向SS指定的设备，发送指令（0x06）写使能。</p>
+<p><strong>指定地址写</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162932666.png" class="" title="image-20231021162932666">
+
+<p>向SS指定的设备，发送写指令（0x02），</p>
+<p>   随后在指定地址（Address[23:0]）下，写入指定数据（Data）。</p>
+<p><strong>指定地址读</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163047497.png" class="" title="image-20231021163047497">
+
+<p>向SS指定的设备，发送读指令（0x03），</p>
+<p>   随后在指定地址（Address[23:0]）下，读取从机数据（Data）</p>
+<h2 id="W25Q64"><a href="#W25Q64" class="headerlink" title="W25Q64"></a>W25Q64</h2><p><strong>W25Q64简介：</strong></p>
+<p>•　W25Qxx系列是一种低成本、小型化、使用简单的非易失性存储器，常应用于数据存储、字库存储、固件程序存储等场景</p>
+<p>•　存储介质：Nor Flash（闪存）</p>
+<p>•　时钟频率：80MHz &#x2F; 160MHz (Dual SPI) &#x2F; 320MHz (Quad SPI)</p>
+<p>•　存储容量（24位地址）： （最大寻址能达到16M）</p>
+<p> W25Q40：  4Mbit &#x2F; 512KByte</p>
+<p> W25Q80：  8Mbit &#x2F; 1MByte</p>
+<p> W25Q16：  16Mbit &#x2F; 2MByte</p>
+<p> W25Q32：  32Mbit &#x2F; 4MByte</p>
+<p> W25Q64：  64Mbit &#x2F; 8MByte</p>
+<p> W25Q128： 128Mbit &#x2F; 16MByte</p>
+<p> W25Q256： 256Mbit &#x2F; 32MByte</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163200365-16978771242631.png" class="" title="image-20231021163200365">
+
+
+
+<p><strong>硬件电路：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163235865.png" class="" title="image-20231021163235865">
+
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163239383.png" class="" title="image-20231021163239383">
+
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163249323.png" class="" title="image-20231021163249323">
+
+
+
+<p>CS在图中引脚标识为“&#x2F;CS”，表示低电平有效其余同理。有需要时，可启用IO2和IO3，相当于多线并行传输，提高传输效率。</p>
+<p><strong>W25Q64框图</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021172150480.png" class="" title="image-20231021172150480">
+
+<p>W25Q64有相应的写保护和地址锁存。需要注意的是地址分配方式。以8M芯片为例（最后一位地址到7F），64KB划为一页，每页又可以以4KB为单位分成扇区。</p>
+<p><strong>Flash操作注意事项：</strong></p>
+<p>写入操作时：</p>
+<p>•　写入操作前，必须先进行写使能</p>
+<p>•　每个数据位只能由1改写为0，不能由0改写为1</p>
+<p>•　<strong>写入数据前必须先擦除，擦除后，所有数据位变为1</strong></p>
+<p>•　擦除必须按最小擦除单元进行（例如示例芯片的最小单位为4KB扇区）</p>
+<p>•　连续写入多字节时，最多写入一页的数据，超过页尾位置的数据，会回到页首覆盖写入</p>
+<p>•　写入操作结束后，芯片进入忙状态，不响应新的读写操作</p>
+<p>读取操作时：</p>
+<p>•　直接调用读取时序，无需使能，无需额外操作，没有页的限制，读取操作结束后不会进入忙状态，但不能在忙状态时读取</p>
+<h3 id="程序示例-2"><a href="#程序示例-2" class="headerlink" title="程序示例"></a>程序示例</h3>
+
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"                  // Device header
+#include "Delay.h"
+#include "OLED.h"
+#include "W25Q64.h"
+//
+uint8_t MID;
+uint16_t DID;
+uint8_t ArrayWrite[] = &#123;0x55, 0x66, 0x77, 0x88&#125;;
+uint8_t ArrayRead[4];
+int main(void)
+&#123;
+//初始化
+    OLED_Init();
+    W25Q64_Init();
+    OLED_ShowString(1, 1, "MID:   DID:");
+    OLED_ShowString(2, 1, "W:");
+    OLED_ShowString(3, 1, "R:");
+    W25Q64_ReadID(&MID,&DID);       //读取设备ID号
+    OLED_ShowHexNum(1,5,MID,2);     //显示设备ID号
+    OLED_ShowHexNum(1,12,DID,4);
+//
+    W25Q64_SectorErase(0X000000);   //擦除扇区，为写入数据做准备
+    W25Q64_PageProgram(0X000000,ArrayWrite,4); //向指定地址写入数据，写入四个数据
+    W25Q64_ReadData(0X000000,ArrayRead,4);     //向指定地址读数据
+//显示写入数据	
+    OLED_ShowHexNum(2,3,ArrayWrite[0],2);
+    OLED_ShowHexNum(2,6,ArrayWrite[1],2);
+    OLED_ShowHexNum(2,9,ArrayWrite[2],2);
+    OLED_ShowHexNum(2,12,ArrayWrite[3],2);
+//显示读取数据	
+    OLED_ShowHexNum(3,3, ArrayRead[0],2);
+    OLED_ShowHexNum(3,6, ArrayRead[1],2);
+    OLED_ShowHexNum(3,9, ArrayRead[2],2);
+    OLED_ShowHexNum(3,12,ArrayRead[3],2);
+    while (1)
+    &#123;
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MySPI.C</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"
+// 对引脚操控进行基础的封装
+void MySPI_W_SS(uint8_t BitValue)
+&#123;
+    GPIO_WriteBit(GPIOA, GPIO_Pin_4, (BitAction)BitValue);    // 设置片选信号 (SS/CS) 的状态
+&#125;
+void MySPI_W_SCK(uint8_t BitValue)
+&#123;
+    GPIO_WriteBit(GPIOA, GPIO_Pin_5, (BitAction)BitValue);    // 设置时钟信号 (SCK) 的状态
+&#125;
+void MySPI_W_MOSI(uint8_t BitValue)
+&#123;
+    GPIO_WriteBit(GPIOA, GPIO_Pin_7, (BitAction)BitValue);    // 设置主机输出从机输入 (MOSI) 的状态
+&#125;
+uint8_t MySPI_R_MISO(void)
+&#123;
+    return GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6);         // 读取从机输出主机输入 (MISO) 的状态
+&#125;
+// 初始化SPI相关的GPIO引脚
+void MySPI_Init(void)
+&#123;
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+    // 配置引脚为推挽输出
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    // 配置引脚为上拉输入
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    // 初始化SPI外设，设置初始状态
+    MySPI_W_SS(1);    // 片选信号高电平
+    MySPI_W_SCK(0);  // 时钟信号低电平
+&#125;
+//起始时序
+void MySPI_Start(void)  
+&#123;
+    MySPI_W_SS(0); 
+&#125;
+//终止时序
+void MySPI_STOP(void)
+&#123;
+    MySPI_W_SS(1); 
+&#125;
+//交换数据
+uint8_t MySPI_SwapByte(uint8_t ByteSend)
+&#123;
+    uint8_t i, ByteReceive = 0x00;
+    for(i = 0; i < 8; i++)
+    &#123;
+        MySPI_W_MOSI(ByteSend & (0x80 >> i)); // 设置主机输出数据
+        MySPI_W_SCK(1);                      // 拉高时钟信号
+        if(MySPI_R_MISO() == 1) 
+            ByteReceive |= (0x80 >> i);     // 读取从机输出的数据
+        MySPI_W_SCK(0);                    // 拉低时钟信号
+    &#125;
+    return ByteReceive;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">W25Q64.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"
+#include "MySPI.h"
+#include "W25Q64_Ins.h"
+// 初始化SPI接口
+void W25Q64_Init(void)
+&#123;
+    MySPI_Init(); 
+&#125;
+//读设备ID
+void W25Q64_ReadID(uint8_t *MID, uint16_t *DID)
+&#123;
+    MySPI_Start();                              // 起始条件时序
+    MySPI_SwapByte(W25Q64_JEDEC_ID);            // 发送指令
+    *MID = MySPI_SwapByte(W25Q64_DUMMY_BYTE);   // 读取制造商ID
+    *DID = MySPI_SwapByte(W25Q64_DUMMY_BYTE);   // 读取设备ID的低8位
+    *DID <<= 8;
+    *DID |= MySPI_SwapByte(W25Q64_DUMMY_BYTE);  // 读取设备ID的高8位
+    MySPI_STOP();                               // 终止条件时序
+&#125;
+//写使能
+void W25Q64_WriteEnable(void)
+&#123;
+    MySPI_Start();
+    MySPI_SwapByte(W25Q64_WRITE_ENABLE); // 发送写使能指令
+    MySPI_STOP(); 
+&#125;
+//等待设备忙，并规定时间限制
+void W25Q64_WaitBusy(void)
+&#123;
+    uint32_t Timeout = 100000;
+    MySPI_Start();                     
+    MySPI_SwapByte(W25Q64_READ_STATUS_REGISTER_1); // 发送读状态寄存器指令
+    while ((MySPI_SwapByte(W25Q64_READ_STATUS_REGISTER_1) & 0x01) == 0x01)
+    &#123;
+        Timeout--;
+        if (Timeout == 0)
+        &#123;
+            break;
+        &#125;
+    &#125;
+    MySPI_STOP(); 
+&#125;
+//指定地址写入数据，
+void W25Q64_PageProgram(uint32_t Address, uint8_t *DataArray, uint16_t Count)
+&#123;
+    W25Q64_WriteEnable();                  // 写使能
+    uint16_t i;
+    MySPI_Start();                          
+    MySPI_SwapByte(W25Q64_PAGE_PROGRAM);    // 发送页编程指令
+    MySPI_SwapByte(Address >> 16);          // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);           // 发送地址的中间8位
+    MySPI_SwapByte(Address);                // 发送地址的低8位
+    for (i = 0; i < Count; i++)
+    &#123;
+        MySPI_SwapByte(DataArray[i]);    // 发送要写入的数据
+    &#125;
+    MySPI_STOP(); 
+    W25Q64_WaitBusy();                  // 等待操作完成
+&#125;
+//擦除指定地址的扇区
+void W25Q64_SectorErase(uint32_t Address)
+&#123;
+    W25Q64_WriteEnable();    // 启用写操作
+    MySPI_Start();            
+    MySPI_SwapByte(W25Q64_SECTOR_ERASE_4KB); // 发送扇区擦除指令
+    MySPI_SwapByte(Address >> 16);          // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);          // 发送地址的中间8位
+    MySPI_SwapByte(Address);              // 发送地址的低8位
+    MySPI_STOP(); 
+    W25Q64_WaitBusy(); // 等待操作完成
+&#125;
+//指定地址读
+void W25Q64_ReadData(uint32_t Address, uint8_t *DataArray, uint32_t Count)
+&#123;
+    uint32_t i;
+    MySPI_Start(); 
+    MySPI_SwapByte(W25Q64_READ_DATA);      // 发送读数据指令
+    MySPI_SwapByte(Address >> 16);        // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);        // 发送地址的中间8位
+    MySPI_SwapByte(Address);            // 发送地址的低8位
+    for (i = 0; i < Count; i++)
+    &#123;
+        DataArray[i] = MySPI_SwapByte(W25Q64_DUMMY_BYTE);  // 读取数据
+    &#125;
+    MySPI_STOP(); 
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">W25Q64_Ins.h</font></summary>  <pre><code class="language-c">
+#ifndef    __W25Q64_Ins__H
+#define    __W25Q64_Ins__H
+// W25Q64指令
+#define W25Q64_WRITE_ENABLE							0x06
+#define W25Q64_WRITE_DISABLE						0x04
+#define W25Q64_READ_STATUS_REGISTER_1				0x05
+#define W25Q64_READ_STATUS_REGISTER_2				0x35
+#define W25Q64_WRITE_STATUS_REGISTER				0x01
+#define W25Q64_PAGE_PROGRAM							0x02
+#define W25Q64_QUAD_PAGE_PROGRAM					0x32
+#define W25Q64_BLOCK_ERASE_64KB						0xD8
+#define W25Q64_BLOCK_ERASE_32KB						0x52
+#define W25Q64_SECTOR_ERASE_4KB						0x20
+#define W25Q64_CHIP_ERASE							0xC7
+#define W25Q64_ERASE_SUSPEND						0x75
+#define W25Q64_ERASE_RESUME							0x7A
+#define W25Q64_POWER_DOWN							0xB9
+#define W25Q64_HIGH_PERFORMANCE_MODE				0xA3
+#define W25Q64_CONTINUOUS_READ_MODE_RESET			0xFF
+#define W25Q64_RELEASE_POWER_DOWN_HPM_DEVICE_ID		0xAB
+#define W25Q64_MANUFACTURER_DEVICE_ID				0x90
+#define W25Q64_READ_UNIQUE_ID						0x4B
+#define W25Q64_JEDEC_ID								0x9F
+#define W25Q64_READ_DATA							0x03
+#define W25Q64_FAST_READ							0x0B
+#define W25Q64_FAST_READ_DUAL_OUTPUT				0x3B
+#define W25Q64_FAST_READ_DUAL_IO					0xBB
+#define W25Q64_FAST_READ_QUAD_OUTPUT				0x6B
+#define W25Q64_FAST_READ_QUAD_IO					0xEB
+#define W25Q64_OCTAL_WORD_READ_QUAD_IO				0xE3
+#define W25Q64_DUMMY_BYTE							0xFF
+ #endif
+</code> </pre> </details>
+
+<p>程序设计思路和I2C差不多，都是先用软件模拟SPI时序基本单元，再将基本单元组成传输时序。然后再根据硬件对其再封装。写指令的常量将用宏定义代替，便于理解。</p>
+<h2 id="STM32硬件SPI通信"><a href="#STM32硬件SPI通信" class="headerlink" title="STM32硬件SPI通信"></a>STM32硬件SPI通信</h2><h3 id="SPI外设简介"><a href="#SPI外设简介" class="headerlink" title="SPI外设简介"></a>SPI外设简介</h3><p>•　STM32内部集成了硬件SPI收发电路，可以由硬件自动执行时钟生成、数据收发等功能，减轻CPU的负担</p>
+<p>•　可配置8位&#x2F;16位数据帧、高位先行&#x2F;低位先行</p>
+<p>•　时钟频率： fPCLK &#x2F; (2, 4, 8, 16, 32, 64, 128, 256)</p>
+<p>•　支持多主机模型、主或从操作</p>
+<p>•　可精简为半双工&#x2F;单工通信</p>
+<p>•　支持DMA</p>
+<p>•　兼容I2S协议</p>
+<p>•　STM32F103C8T6 硬件SPI资源：SPI1、SPI2</p>
+<p>SPI1挂载在APB2最大允许频率为72MHz，SPI2挂载在APB1最大允许频率为36MHz。使用不同的SPI时，应注意挂载的总线时钟。</p>
+<h3 id="主模式全双工连续传输"><a href="#主模式全双工连续传输" class="headerlink" title="主模式全双工连续传输"></a>主模式全双工连续传输</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021230447228.png" class="" title="image-20231021230447228">
+
+<p>连续传输将传输效率最大化。先写入数据0xF1到发送缓冲器，再开始传输。每次数据传输，都是如图，第二个数据0xF2发送时，0xF1才被接收。并不是0xF1发送 → 0xF1接收，再0xF2发送 → 0xF2接收。而是0xF1先写入发送缓冲器，时序开始时发送 0xF1，并将 0xF2写入发送缓冲器，再0xF1接收 → （同时）0xF2发送。0xF2接收 → （同时）0xF3发送以此类推。。。发送总比接收早，数据传输是紧跟的。</p>
+<h3 id="非连续传输"><a href="#非连续传输" class="headerlink" title="非连续传输"></a>非连续传输</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231022000603924.png" class="" title="image-20231022000603924">
+
+<p>非连续传输相较于连续传输简单，效率不如连续传输。因为连续传输的数据是紧挨着传输，而非连续传输，0xF1发送 → 0xF1接收。将等待接收完毕后再发送，而不是先将0xF1写入缓冲器，时序开始时0xF1挂载到数据线，在交换数据，接收0xF1的同时发送0xF2.</p>
+<p><strong>当然，SPI通信的核心是主从两机寄存器数据交换，描述只是便于表达，切记数据是双向同时传输</strong></p>
+<h3 id="软件-x2F-硬件波形对比-1"><a href="#软件-x2F-硬件波形对比-1" class="headerlink" title="软件&#x2F;硬件波形对比"></a>软件&#x2F;硬件波形对比</h3><p><strong>软件模拟SPI</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231022001711028.png" class="" title="image-20231022001711028">
+
+<p><strong>硬件SPI</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231022001734433.png" class="" title="image-20231022001734433">
+
+<p>区别无非是软件有延迟，并且波形没有硬件平滑等等，和I2C波形软硬件对比差不多。</p>
+<h3 id="程序示例-3"><a href="#程序示例-3" class="headerlink" title="程序示例"></a>程序示例</h3><details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"                  // Device header
+#include "Delay.h"
+#include "OLED.h"
+#include "W25Q64.h"
+//
+uint8_t MID;
+uint16_t DID;
+uint8_t ArrayWrite[] = &#123;0x55, 0x66, 0x77, 0x88&#125;;
+uint8_t ArrayRead[4];
+int main(void)
+&#123;
+//初始化
+    OLED_Init();
+    W25Q64_Init();
+    OLED_ShowString(1, 1, "MID:   DID:");
+    OLED_ShowString(2, 1, "W:");
+    OLED_ShowString(3, 1, "R:");
+    W25Q64_ReadID(&MID,&DID);       //读取设备ID号
+    OLED_ShowHexNum(1,5,MID,2);     //显示设备ID号
+    OLED_ShowHexNum(1,12,DID,4);
+//
+    W25Q64_SectorErase(0X000000);   //擦除扇区，为写入数据做准备
+    W25Q64_PageProgram(0X000000,ArrayWrite,4); //向指定地址写入数据，写入四个数据
+    W25Q64_ReadData(0X000000,ArrayRead,4);     //向指定地址读数据
+//显示写入数据	
+    OLED_ShowHexNum(2,3,ArrayWrite[0],2);
+    OLED_ShowHexNum(2,6,ArrayWrite[1],2);
+    OLED_ShowHexNum(2,9,ArrayWrite[2],2);
+    OLED_ShowHexNum(2,12,ArrayWrite[3],2);
+//显示读取数据	
+    OLED_ShowHexNum(3,3, ArrayRead[0],2);
+    OLED_ShowHexNum(3,6, ArrayRead[1],2);
+    OLED_ShowHexNum(3,9, ArrayRead[2],2);
+    OLED_ShowHexNum(3,12,ArrayRead[3],2);
+    while (1)
+    &#123;
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MySPI.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"
+//对引脚操控进行基础的封装
+void MySPI_W_SS(uint8_t BitValue)    //片选信号，SS也称CS引脚
+&#123;
+    GPIO_WriteBit(GPIOA,GPIO_Pin_4,(BitAction)BitValue);
+&#125;
+void MySPI_Init(void)
+&#123;
+//GPIO引脚根据API硬件外设配置
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1,ENABLE);
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA,&GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA,&GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA,&GPIO_InitStructure);
+//配置硬件SPI
+    SPI_InitTypeDef SPI_InitStructure;
+    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_128;  //分频系数为128.
+    SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;    //第一个边沿采样
+    SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;     //空闲状态时，SCK为低电平
+    SPI_InitStructure.SPI_CRCPolynomial = 7;      //CRC校验的多项式
+    SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;   //8位数据帧   
+    SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;  //选择为双线全双工
+    SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;  //高位先行
+    SPI_InitStructure.SPI_Mode = SPI_Mode_Master;       //指定设备为主机或从机
+    SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;           //配置为软件NSS
+    SPI_Init(SPI1,&SPI_InitStructure);
+//SPI使能
+    SPI_Cmd(SPI1,ENABLE);
+//初始化
+    MySPI_W_SS(1);  //默认不选中从机
+&#125;
+//起始时序
+void MySPI_Start(void)
+&#123;
+    MySPI_W_SS(0);
+&#125;
+//终止时序
+void MySPI_STOP(void)
+&#123;
+    MySPI_W_SS(1);
+&#125;
+//交换数据
+uint8_t MySPI_SwapByte(uint8_t ByteSend)
+&#123;
+    while (SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
+    SPI_I2S_SendData(SPI1,ByteSend);
+    while (SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_RXNE) == RESET);
+    return SPI_I2S_ReceiveData(SPI1);
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">W25Q64.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"
+#include "MySPI.h"
+#include "W25Q64_Ins.h"
+// 初始化SPI接口
+void W25Q64_Init(void)
+&#123;
+    MySPI_Init(); 
+&#125;
+//读设备ID
+void W25Q64_ReadID(uint8_t *MID, uint16_t *DID)
+&#123;
+    MySPI_Start();                              // 起始条件时序
+    MySPI_SwapByte(W25Q64_JEDEC_ID);            // 发送指令
+    *MID = MySPI_SwapByte(W25Q64_DUMMY_BYTE);   // 读取制造商ID
+    *DID = MySPI_SwapByte(W25Q64_DUMMY_BYTE);   // 读取设备ID的低8位
+    *DID <<= 8;
+    *DID |= MySPI_SwapByte(W25Q64_DUMMY_BYTE);  // 读取设备ID的高8位
+    MySPI_STOP();                               // 终止条件时序
+&#125;
+//写使能
+void W25Q64_WriteEnable(void)
+&#123;
+    MySPI_Start();
+    MySPI_SwapByte(W25Q64_WRITE_ENABLE); // 发送写使能指令
+    MySPI_STOP(); 
+&#125;
+//等待设备忙，并规定时间限制
+void W25Q64_WaitBusy(void)
+&#123;
+    uint32_t Timeout = 100000;
+    MySPI_Start();                     
+    MySPI_SwapByte(W25Q64_READ_STATUS_REGISTER_1); // 发送读状态寄存器指令
+    while ((MySPI_SwapByte(W25Q64_READ_STATUS_REGISTER_1) & 0x01) == 0x01)
+    &#123;
+        Timeout--;
+        if (Timeout == 0)
+        &#123;
+            break;
+        &#125;
+    &#125;
+    MySPI_STOP(); 
+&#125;
+//指定地址写入数据，
+void W25Q64_PageProgram(uint32_t Address, uint8_t *DataArray, uint16_t Count)
+&#123;
+    W25Q64_WriteEnable();                  // 写使能
+    uint16_t i;
+    MySPI_Start();                          
+    MySPI_SwapByte(W25Q64_PAGE_PROGRAM);    // 发送页编程指令
+    MySPI_SwapByte(Address >> 16);          // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);           // 发送地址的中间8位
+    MySPI_SwapByte(Address);                // 发送地址的低8位
+    for (i = 0; i < Count; i++)
+    &#123;
+        MySPI_SwapByte(DataArray[i]);    // 发送要写入的数据
+    &#125;
+    MySPI_STOP(); 
+    W25Q64_WaitBusy();                  // 等待操作完成
+&#125;
+//擦除指定地址的扇区
+void W25Q64_SectorErase(uint32_t Address)
+&#123;
+    W25Q64_WriteEnable();    // 启用写操作
+    MySPI_Start();            
+    MySPI_SwapByte(W25Q64_SECTOR_ERASE_4KB); // 发送扇区擦除指令
+    MySPI_SwapByte(Address >> 16);          // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);          // 发送地址的中间8位
+    MySPI_SwapByte(Address);              // 发送地址的低8位
+    MySPI_STOP(); 
+    W25Q64_WaitBusy(); // 等待操作完成
+&#125;
+//指定地址读
+void W25Q64_ReadData(uint32_t Address, uint8_t *DataArray, uint32_t Count)
+&#123;
+    uint32_t i;
+    MySPI_Start(); 
+    MySPI_SwapByte(W25Q64_READ_DATA);      // 发送读数据指令
+    MySPI_SwapByte(Address >> 16);        // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);        // 发送地址的中间8位
+    MySPI_SwapByte(Address);            // 发送地址的低8位
+    for (i = 0; i < Count; i++)
+    &#123;
+        DataArray[i] = MySPI_SwapByte(W25Q64_DUMMY_BYTE);  // 读取数据
+    &#125;
+    MySPI_STOP(); 
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">W25Q64_Ins.h</font></summary>  <pre><code class="language-c">
+#ifndef    __W25Q64_Ins__H
+#define    __W25Q64_Ins__H
+// W25Q64指令
+#define W25Q64_WRITE_ENABLE							0x06
+#define W25Q64_WRITE_DISABLE						0x04
+#define W25Q64_READ_STATUS_REGISTER_1				0x05
+#define W25Q64_READ_STATUS_REGISTER_2				0x35
+#define W25Q64_WRITE_STATUS_REGISTER				0x01
+#define W25Q64_PAGE_PROGRAM							0x02
+#define W25Q64_QUAD_PAGE_PROGRAM					0x32
+#define W25Q64_BLOCK_ERASE_64KB						0xD8
+#define W25Q64_BLOCK_ERASE_32KB						0x52
+#define W25Q64_SECTOR_ERASE_4KB						0x20
+#define W25Q64_CHIP_ERASE							0xC7
+#define W25Q64_ERASE_SUSPEND						0x75
+#define W25Q64_ERASE_RESUME							0x7A
+#define W25Q64_POWER_DOWN							0xB9
+#define W25Q64_HIGH_PERFORMANCE_MODE				0xA3
+#define W25Q64_CONTINUOUS_READ_MODE_RESET			0xFF
+#define W25Q64_RELEASE_POWER_DOWN_HPM_DEVICE_ID		0xAB
+#define W25Q64_MANUFACTURER_DEVICE_ID				0x90
+#define W25Q64_READ_UNIQUE_ID						0x4B
+#define W25Q64_JEDEC_ID								0x9F
+#define W25Q64_READ_DATA							0x03
+#define W25Q64_FAST_READ							0x0B
+#define W25Q64_FAST_READ_DUAL_OUTPUT				0x3B
+#define W25Q64_FAST_READ_DUAL_IO					0xBB
+#define W25Q64_FAST_READ_QUAD_OUTPUT				0x6B
+#define W25Q64_FAST_READ_QUAD_IO					0xEB
+#define W25Q64_OCTAL_WORD_READ_QUAD_IO				0xE3
+#define W25Q64_DUMMY_BYTE							0xFF
+ #endif
+</code> </pre> </details>
+
+<p>软硬件SPI的主函数没什么差别，只是将MySPI.c中的软件模拟部分替换成STM32标准库中的SPI函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//NRF24L01寄存器操作命令</span><br><span class="line">#define NRF_READ_REG    0x00  //读配置寄存器,低5位为寄存器地址</span><br><span class="line">#define NRF_WRITE_REG   0x20  //写配置寄存器,低5位为寄存器地址</span><br><span class="line">#define RD_RX_PLOAD     0x61  //读RX有效数据,1~32字节</span><br><span class="line">#define WR_TX_PLOAD     0xA0  //写TX有效数据,1~32字节</span><br><span class="line">#define FLUSH_TX        0xE1  //清除TX FIFO寄存器.发射模式下用</span><br><span class="line">#define FLUSH_RX        0xE2  //清除RX FIFO寄存器.接收模式下用</span><br><span class="line">#define REUSE_TX_PL     0xE3  //重新使用上一包数据,CE为高,数据包被不断发送.</span><br><span class="line">#define NOP             0xFF  //空操作,可以用来读状态寄存器</span><br><span class="line">	 </span><br><span class="line">//SPI(NRF24L01)寄存器地址</span><br><span class="line">#define CONFIG          0x00  //配置寄存器地址;bit0:1接收模式,0发射模式;bit1:电选 </span><br><span class="line">                              //择;bit2:CRC模式;bit3:CRC使能;</span><br><span class="line">                              //bit4:中断MAX_RT(达到最大重发次数中断)使能;bit5:中断TX_DS使 </span><br><span class="line">                              //能;bit6:中断RX_DR使能</span><br><span class="line">#define EN_AA           0x01  //使能自动应答功能  bit0~5,对应通道0~5</span><br><span class="line">#define EN_RXADDR       0x02  //接收地址允许,bit0~5,对应通道0~5</span><br><span class="line">#define SETUP_AW        0x03  //设置地址宽度(所有数据通道):bit1,0:00,3字节;01,4字节;02,5字 </span><br><span class="line">                              //节;</span><br><span class="line">#define SETUP_RETR      0x04  //建立自动重发;bit3:0,自动重发计数器;bit7:4,自动重发延时 </span><br><span class="line">                              //250*x+86us</span><br><span class="line">#define RF_CH           0x05  //RF通道,bit6:0,工作通道频率;</span><br><span class="line">#define RF_SETUP        0x06  //RF寄存器;bit3:传输速率(0:1Mbps,1:2Mbps);bit2:1,发射功 </span><br><span class="line">                              //率;bit0:低噪声放大器增益</span><br><span class="line">#define STATUS          0x07  //状态寄存器;bit0:TX FIFO满标志;bit3:1,接收数据通道号(最 </span><br><span class="line">                              //大:6);bit4,达到最多次重发</span><br><span class="line">                              //bit5:数据发送完成中断;bit6:接收数据中断;</span><br><span class="line">#define MAX_TX  		0x10  //达到最大发送次数中断</span><br><span class="line">#define TX_OK   		0x20  //TX发送完成中断</span><br><span class="line">#define RX_OK   		0x40  //接收到数据中断</span><br><span class="line"> </span><br><span class="line">#define OBSERVE_TX      0x08  //发送检测寄存器,bit7:4,数据包丢失计数器;bit3:0,重发计数器</span><br><span class="line">#define CD              0x09  //载波检测寄存器,bit0,载波检测;</span><br><span class="line">#define RX_ADDR_P0      0x0A  //数据通道0接收地址,最大长度5个字节,低字节在前</span><br><span class="line">#define RX_ADDR_P1      0x0B  //数据通道1接收地址,最大长度5个字节,低字节在前</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P2      0x0C  //数据通道2接收地址,最低字节可设置</span><br><span class="line">                              //高字节,必须同 RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P3      0x0D  //数据通道3接收地址,最低字节可设置</span><br><span class="line">                              //高字节,必须同 RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P4      0x0E  //数据通道4接收地址,最低字节可设置</span><br><span class="line">                              //高字节,必须同RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P5      0x0F  //数据通道5接收地址,最低字节可设置,</span><br><span class="line">                              //高字节,必须同RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define TX_ADDR         0x10  //发送地址(低字节在前),ShockBurstTM模式下,RX_ADDR_P0与此地址 </span><br><span class="line">                                相等</span><br><span class="line">#define RX_PW_P0        0x11  //接收数据通道0有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P1        0x12  //接收数据通道1有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P2        0x13  //接收数据通道2有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P3        0x14  //接收数据通道3有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P4        0x15  //接收数据通道4有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P5        0x16  //接收数据通道5有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define NRF_FIFO_STATUS 0x17  //FIFO状态寄存器;bit0,RX FIFO寄存器空标志;</span><br><span class="line">                              //bit1,RX FIFO满标志;bit2,3,保留</span><br><span class="line">                              //bit4,TX FIFO空标志;bit5,TX FIFO满标志;bit6,1,循环发送上一 </span><br><span class="line">                              //数据包.0,不循环;</span><br><span class="line">/</span><br><span class="line">//24L01操作线</span><br><span class="line">#define NRF24L01_CE   PAout(4) //24L01片选信号</span><br><span class="line">#define NRF24L01_CSN  PCout(4) //SPI片选信号	   </span><br><span class="line">#define NRF24L01_IRQ  PAin(1)  //IRQ主机数据输入</span><br><span class="line">//24L01发送接收数据宽度定义</span><br><span class="line">#define TX_ADR_WIDTH    5   	//5字节的地址宽度</span><br><span class="line">#define RX_ADR_WIDTH    5   	//5字节的地址宽度</span><br><span class="line">#define TX_PLOAD_WIDTH  32  	//32字节的用户数据宽度</span><br><span class="line">#define RX_PLOAD_WIDTH  32  	//32字节的用户数据宽度</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>stm32归档</category>
+      </categories>
+      <tags>
+        <tag>单片机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>STM32标准库</title>
+    <url>/2023/08/02/STM32%E6%A0%87%E5%87%86%E5%BA%93/</url>
+    <content><![CDATA[<p>整理笔记时发现自己如果列举代码，会更加有效。但插入代码块到其中会比较繁琐，而且各个知识的代码的耦合性较强，反复列举较为麻烦，所以开一个新的文章，专门记录整理标准库代码。仅记录个人常用，建议参考手册，或直接跳转函数定义，浏览官方说明。<span id="more"></span></p>
+<h3 id="时钟控制"><a href="#时钟控制" class="headerlink" title="时钟控制"></a>时钟控制</h3><p>时钟就像人的心跳，人的运动先需要跳动心脏。STM32的片上外设也是一样，如果要使用外设，例如：GPIO，NVIC，ADC等等，需要先开启外设挂载的总线时钟。</p>
+<p>以下是标准库中对时钟控制函数的定义：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//AHB总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_AHBPeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_AHBPeriph, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//APB2总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_APB2PeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_APB2Periph, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//APB1总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_APB1PeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_APB1Periph, FunctionalState NewState)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>第一个参数为外设，例如APB2的外设：RCC_APB2Periph_GPIOA，RCC_APB2Periph_GPIOB，RCC_APB2Periph_TIM1等，</p>
+<p>第二个参数为使能或者失能。（ENABLE&#x2F;DISABLE）</p>
+<p>比如开启APB2的GPIOA为例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);</span><br></pre></td></tr></table></figure>
+
+<p>外设的使用必须先开启时钟。</p>
+<h3 id="GPIO"><a href="#GPIO" class="headerlink" title="GPIO"></a>GPIO</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//指定GPIO初始化为默认值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_DeInit</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//功能复用，重新映射事件控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_AFIODeInit</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="comment">//用结构体参数初始化GPIO</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Init</span><span class="params">(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct)</span>;</span><br><span class="line"><span class="comment">//将结构体的变量，赋为初始值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_StructInit</span><span class="params">(GPIO_InitTypeDef* GPIO_InitStruct)</span>;</span><br><span class="line"><span class="comment">//读取指定输入GPIO口的值，返回0/1</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">GPIO_ReadInputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//读取指定输入GPIO组的数据端口</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">GPIO_ReadInputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//读取指定输出GPIO口的值，返回0/1</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">GPIO_ReadOutputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//读取指定输出GPIO组的数据端口</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">GPIO_ReadOutputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//指定端口输出为高电平</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_SetBits</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//指定端口输出为低电平</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_ResetBits</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//指定GPIO组的某个GPIO并赋值（高低电平）。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_WriteBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin, BitAction BitVal)</span>;</span><br><span class="line"><span class="comment">//指定GPIO组，并写入端口输出数据寄存器（ODR寄存器）的值。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Write</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> PortVal)</span>;</span><br><span class="line"><span class="comment">//锁定GPIO管脚配置寄存器</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_PinLockConfig</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//选择用作事件输出的GPIO引脚</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EventOutputConfig</span><span class="params">(<span class="type">uint8_t</span> GPIO_PortSource, <span class="type">uint8_t</span> GPIO_PinSource)</span>;</span><br><span class="line"><span class="comment">//使能输出事件</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EventOutputCmd</span><span class="params">(FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//改变指定管脚的映射，为了更大利用IO口，部分IO口可以进行复用或者映射。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_PinRemapConfig</span><span class="params">(<span class="type">uint32_t</span> GPIO_Remap, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//选择 GPIO 管脚用作外部中断源</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EXTILineConfig</span><span class="params">(<span class="type">uint8_t</span> GPIO_PortSource, <span class="type">uint8_t</span> GPIO_PinSource)</span>;</span><br><span class="line"><span class="comment">//选择以太网媒体接口</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_ETH_MediaInterfaceConfig</span><span class="params">(<span class="type">uint32_t</span> GPIO_ETH_MediaInterface)</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>结构体</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">uint16_t</span> GPIO_Pin;             <span class="comment">//选择GPIO口</span></span><br><span class="line">  GPIOSpeed_TypeDef GPIO_Speed;  <span class="comment">//选择运行速度</span></span><br><span class="line">  GPIOMode_TypeDef GPIO_Mode;    <span class="comment">//配置G</span></span><br><span class="line">&#125;GPIO_InitTypeDef;</span><br></pre></td></tr></table></figure>
+
+<p><strong>GPIO模式</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span></span></span><br><span class="line"><span class="class">&#123;</span> GPIO_Mode_AIN = <span class="number">0x0</span>,               <span class="comment">//模拟输入</span></span><br><span class="line">  GPIO_Mode_IN_FLOATING = <span class="number">0x04</span>,      <span class="comment">//浮空输入</span></span><br><span class="line">  GPIO_Mode_IPD = <span class="number">0x28</span>,              <span class="comment">//下拉输入</span></span><br><span class="line">  GPIO_Mode_IPU = <span class="number">0x48</span>,              <span class="comment">//上拉输入</span></span><br><span class="line">  GPIO_Mode_Out_OD = <span class="number">0x14</span>,           <span class="comment">//开漏输出</span></span><br><span class="line">  GPIO_Mode_Out_PP = <span class="number">0x10</span>,           <span class="comment">//推挽输出</span></span><br><span class="line">  GPIO_Mode_AF_OD = <span class="number">0x1C</span>,            <span class="comment">//复用开漏</span></span><br><span class="line">  GPIO_Mode_AF_PP = <span class="number">0x18</span>             <span class="comment">//复用推挽</span></span><br><span class="line">&#125;GPIOMode_TypeDef;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="NVIC"><a href="#NVIC" class="headerlink" title="NVIC"></a>NVIC</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">NVIC_PriorityGroupConfig</span><span class="params">(<span class="type">uint32_t</span> NVIC_PriorityGroup)</span>;                  <span class="comment">//设置中断优先级分组</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_Init</span><span class="params">(NVIC_InitTypeDef* NVIC_InitStruct)</span>;                           <span class="comment">//用结构体参数配置NVIC</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_SetVectorTable</span><span class="params">(<span class="type">uint32_t</span> NVIC_VectTab, <span class="type">uint32_t</span> Offset)</span>;            <span class="comment">//设置中断向量表</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_SystemLPConfig</span><span class="params">(<span class="type">uint8_t</span> LowPowerMode, FunctionalState NewState)</span>;    <span class="comment">//系统低功耗配置</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="EXIT"><a href="#EXIT" class="headerlink" title="EXIT"></a>EXIT</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">EXTI_DeInit</span><span class="params">(<span class="type">void</span>)</span>;              	                   <span class="comment">//清除EXTI配置</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_Init</span><span class="params">(EXTI_InitTypeDef* EXTI_InitStruct)</span>;         <span class="comment">//用结构体参数配置EXTI</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_StructInit</span><span class="params">(EXTI_InitTypeDef* EXTI_InitStruct)</span>;   <span class="comment">//给结构体赋予默认值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_GenerateSWInterrupt</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;         <span class="comment">//软件触发外部中断</span></span><br><span class="line">FlagStatus <span class="title function_">EXTI_GetFlagStatus</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;         <span class="comment">//获取指定的的中断标志位</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_ClearFlag</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;                   <span class="comment">//清除中断标志位</span></span><br><span class="line">ITStatus <span class="title function_">EXTI_GetITStatus</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;             <span class="comment">//在中断函数里获取标志位</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_ClearITPendingBit</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;           <span class="comment">//在中断函数里清除标志位</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>结构体</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">uint32_t</span> EXTI_Line;               <span class="comment">//指定配置的中断线</span></span><br><span class="line">  EXTIMode_TypeDef EXTI_Mode;       <span class="comment">//指定中断模式</span></span><br><span class="line">  EXTITrigger_TypeDef EXTI_Trigger; <span class="comment">//指定配置的中断线</span></span><br><span class="line">  FunctionalState EXTI_LineCmd;     <span class="comment">//指定触发中断的模式</span></span><br><span class="line">&#125;EXTI_InitTypeDef;</span><br></pre></td></tr></table></figure>
+
+<h3 id="TIM"><a href="#TIM" class="headerlink" title="TIM"></a>TIM</h3><p>过长，具体参考STM32固件函数库手册。</p>
 <table>
 <thead>
 <tr>
-<th>指令</th>
-<th>说明</th>
+<th>函数名</th>
+<th>描述</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>#</td>
-<td>空指令，无任何效果</td>
+<td>TIM_DeInit</td>
+<td>将外设 TIMx 寄存器重设为缺省值</td>
 </tr>
 <tr>
-<td>#include</td>
-<td>包含一个源代码文件</td>
+<td>TIM_TimeBaseInit</td>
+<td>根据 TIM_TimeBaseInitStruct 中指定的参数初始化   间基数单位</td>
 </tr>
 <tr>
-<td>#define</td>
-<td>定义宏</td>
+<td>TIM_OCInit</td>
+<td>根据 TIM_OCInitStruct 中指定的参数初始化外设</td>
 </tr>
 <tr>
-<td>#undef</td>
-<td>取消已定义的宏</td>
+<td>TIM_ICInit</td>
+<td>根据 TIM_ICInitStruct 中指定的参数初始化外设 T</td>
 </tr>
 <tr>
-<td>#if</td>
-<td>如果给定条件为真，则编译下面代码</td>
+<td>TIM_TimeBaseStructInit</td>
+<td>把 TIM_TimeBaseInitStruct 中的每一个参数按缺省</td>
 </tr>
 <tr>
-<td>#ifdef</td>
-<td>如果宏已经定义，则编译下面代码</td>
+<td>TIM_OCStructInit</td>
+<td>把 TIM_OCInitStruct 中的每一个参数按缺省值填</td>
 </tr>
 <tr>
-<td>#ifndef</td>
-<td>如果宏没有定义，则编译下面代码</td>
+<td>TIM_ICStructInit</td>
+<td>把 TIM_ICInitStruct 中的每一个参数按缺省值填入</td>
 </tr>
 <tr>
-<td>#elif</td>
-<td>如果前面的#if 给定条件不为真，当前条件为真，则编译下面代码</td>
+<td>TIM_Cmd</td>
+<td>使能或者失能 TIMx 外设</td>
 </tr>
 <tr>
-<td>#endif</td>
-<td>结束一个#if……#else 条件编译块</td>
+<td>TIM _ITConfig</td>
+<td>使能或者失能指定的 TIM 中断</td>
+</tr>
+<tr>
+<td>TIM_DMAConfig</td>
+<td>设置 TIMx 的 DMA 接口</td>
+</tr>
+<tr>
+<td>TIM_DMACmd</td>
+<td>使能或者失能指定的 TIMx 的 DMA 请求</td>
+</tr>
+<tr>
+<td>TIM_InternalClockConfig</td>
+<td>设置 TIMx 内部时钟</td>
+</tr>
+<tr>
+<td>TIM_ITRxExternalClockConfig</td>
+<td>设置 TIMx 内部触发为外部时钟模式</td>
+</tr>
+<tr>
+<td>TIM_TIxExternalClockConfig</td>
+<td>设置 TIMx 触发为外部时钟</td>
+</tr>
+<tr>
+<td>TIM_ETRClockMode1Config</td>
+<td>配置 TIMx 外部时钟模式  1</td>
+</tr>
+<tr>
+<td>TIM_ETRClockMode2Config</td>
+<td>配置 TIMx 外部时钟模式  2</td>
+</tr>
+<tr>
+<td>TIM_ETRConfig</td>
+<td>配置 TIMx 外部触发</td>
+</tr>
+<tr>
+<td>TIM_SelectInputTrigger</td>
+<td>选择 TIMx 输入触发源</td>
+</tr>
+<tr>
+<td>TIM_PrescalerConfig</td>
+<td>设置 TIMx 预分频</td>
+</tr>
+<tr>
+<td>TIM_CounterModeConfig</td>
+<td>设置 TIMx 计数器模式</td>
+</tr>
+<tr>
+<td>TIM_ForcedOC1Config</td>
+<td>置 TIMx 输出 1 为活动或者非活动电平</td>
+</tr>
+<tr>
+<td>TIM_ForcedOC2Config</td>
+<td>置 TIMx 输出 2 为活动或者非活动电平</td>
+</tr>
+<tr>
+<td>TIM_ForcedOC3Config</td>
+<td>置 TIMx 输出 3 为活动或者非活动电平</td>
+</tr>
+<tr>
+<td>TIM_ForcedOC4Config</td>
+<td>置 TIMx 输出 4 为活动或者非活动电平</td>
+</tr>
+<tr>
+<td>TIM_ARRPreloadConfig</td>
+<td>使能或者失能 TIMx 在 ARR 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_SelectCCDMA</td>
+<td>选择 TIMx 外设的捕获比较  DMA 源</td>
+</tr>
+<tr>
+<td>TIM_OC1PreloadConfig</td>
+<td>使能或者失能 TIMx 在 CCR1 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_OC2PreloadConfig</td>
+<td>使能或者失能 TIMx 在 CCR2 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_OC3PreloadConfig</td>
+<td>使能或者失能 TIMx 在 CCR3 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_OC4PreloadConfig</td>
+<td>使能或者失能 TIMx 在 CCR4 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_OC1FastConfig</td>
+<td>设置 TIMx 捕获比较  1 快速特征</td>
+</tr>
+<tr>
+<td>TIM_OC2FastConfig</td>
+<td>设置 TIMx 捕获比较 2  快速特征</td>
+</tr>
+<tr>
+<td>TIM_OC3FastConfig</td>
+<td>设置 TIMx 捕获比较 3  快速特征</td>
+</tr>
+<tr>
+<td>TIM_OC4FastConfig</td>
+<td>设置 TIMx 捕获比较 4  快速特征</td>
+</tr>
+<tr>
+<td>TIM_ClearOC1Ref</td>
+<td>在一个外部事件时清除或者保持 OCREF1 信号</td>
+</tr>
+<tr>
+<td>TIM_ClearOC2Ref</td>
+<td>在一个外部事件时清除或者保持 OCREF2 信号</td>
+</tr>
+<tr>
+<td>TIM_ClearOC3Ref</td>
+<td>在一个外部事件时清除或者保持 OCREF3 信号</td>
+</tr>
+<tr>
+<td>TIM_ClearOC4Ref</td>
+<td>在一个外部事件时清除或者保持 OCREF4 信号</td>
+</tr>
+<tr>
+<td>TIM_UpdateDisableConfig</td>
+<td>使能或者失能 TIMx 更新事件</td>
+</tr>
+<tr>
+<td>TIM_EncoderInterfaceConfig</td>
+<td>设置 TIMx 编码界面</td>
+</tr>
+<tr>
+<td>TIM_GenerateEvent</td>
+<td>设置 TIMx 事件由软件产生</td>
+</tr>
+<tr>
+<td>TIM_OC1PolarityConfig</td>
+<td>设置 TIMx 通道 1 极性</td>
+</tr>
+<tr>
+<td>TIM_OC2PolarityConfig</td>
+<td>设置 TIMx 通道 2 极性</td>
+</tr>
+<tr>
+<td>TIM_OC3PolarityConfig</td>
+<td>设置 TIMx 通道 3 极性</td>
+</tr>
+<tr>
+<td>TIM_OC4PolarityConfig</td>
+<td>设置 TIMx 通道 4 极性</td>
+</tr>
+<tr>
+<td>TIM_UpdateRequestConfig</td>
+<td>设置 TIMx 更新请求源</td>
+</tr>
+<tr>
+<td>TIM_SelectHallSensor</td>
+<td>使能或者失能 TIMx 霍尔传感器接口</td>
+</tr>
+<tr>
+<td>TIM_SelectOnePulseMode</td>
+<td>设置 TIMx 单脉冲模式</td>
+</tr>
+<tr>
+<td>TIM_SelectOutputTrigger</td>
+<td>选择 TIMx 触发输出模式</td>
+</tr>
+<tr>
+<td>TIM_SelectSlaveMode</td>
+<td>选择 TIMx 从模式</td>
+</tr>
+<tr>
+<td>TIM_SelectMasterSlaveMode</td>
+<td>设置或者重置 TIMx 主&#x2F;从模式</td>
+</tr>
+<tr>
+<td>TIM_SetCounter</td>
+<td>设置 TIMx 计数器寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetAutoreload</td>
+<td>设置 TIMx 自动重装载寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetCompare1</td>
+<td>设置 TIMx 捕获比较 1  寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetCompare2</td>
+<td>设置 TIMx 捕获比较 2  寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetCompare3</td>
+<td>设置 TIMx 捕获比较 3  寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetCompare4</td>
+<td>设置 TIMx 捕获比较 4  寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetIC1Prescaler</td>
+<td>设置 TIMx 输入捕获 1  预分频</td>
+</tr>
+<tr>
+<td>TIM_SetIC2Prescaler</td>
+<td>设置 TIMx 输入捕获 2  预分频</td>
+</tr>
+<tr>
+<td>TIM_SetIC3Prescaler</td>
+<td>设置 TIMx 输入捕获 3  预分频</td>
+</tr>
+<tr>
+<td>TIM_SetIC4Prescaler</td>
+<td>设置 TIMx 输入捕获 4  预分频</td>
+</tr>
+<tr>
+<td>TIM_SetClockDivision</td>
+<td>设置 TIMx 的时钟分割值</td>
+</tr>
+<tr>
+<td>TIM_GetCapture1</td>
+<td>获得 TIMx 输入捕获 1  的值</td>
+</tr>
+<tr>
+<td>TIM_GetCapture2</td>
+<td>获得 TIMx 输入捕获 2  的值</td>
+</tr>
+<tr>
+<td>TIM_GetCapture3</td>
+<td>获得 TIMx 输入捕获 3  的值</td>
+</tr>
+<tr>
+<td>TIM_GetCapture4</td>
+<td>获得 TIMx 输入捕获 4  的值</td>
+</tr>
+<tr>
+<td>TIM_GetCounter</td>
+<td>获得 TIMx 计数器的值</td>
+</tr>
+<tr>
+<td>TIM_GetPrescaler</td>
+<td>获得 TIMx 预分频值</td>
+</tr>
+<tr>
+<td>TIM_GetFlagStatus</td>
+<td>检查指定的 TIM 标志位设置与否</td>
+</tr>
+<tr>
+<td>TIM_ClearFlag</td>
+<td>清除 TIMx 的待处理标志位</td>
+</tr>
+<tr>
+<td>TIM_GetITStatus</td>
+<td>检查指定的 TIM 中断发生与否</td>
+</tr>
+<tr>
+<td>TIM_ClearITPendingBit</td>
+<td>清除 TIMx 的中断待处理位</td>
 </tr>
 </tbody></table>
 ]]></content>
       <categories>
-        <category>C语言学习之路</category>
+        <category>stm32归档</category>
       </categories>
       <tags>
-        <tag>C语言</tag>
+        <tag>单片机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>stm32综述</title>
+    <url>/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/</url>
+    <content><![CDATA[<p>　　大概有一段时间没看stm32，通过之前学51的经历，大概是明白自己一段时间不看就会忘，虽然随便翻翻又能快速上手，但是东找西翻比较麻烦。所以打算复习的时候，顺便做个笔记记录一下。自己所用的型号为<strong>STM32F103C8T6</strong>。<span id="more"></span></p>
+<h6 id="STM简述"><a href="#STM简述" class="headerlink" title="STM简述"></a>STM简述</h6><p>　　STM32是ST公司基于ARM- Cortex-M内核开发的32位微控制器（MCU）。自己所用的是STM32F1系列，属于Mainstream，内核Cortex-M3。ARM公司设计ARM内核，半导体厂商完善内核周边电路并产生芯片。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104303863.png" class="" title="image-20230724104303863">
+
+<p>图中的ARM由ARM公司设计，芯片内的存储和外设（比如GPIO,定时器）由ST公司设计。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104427576.png" class="" title="image-20230724104427576">
+
+<p>这是一枚STM32F103C8T6的芯片，由芯片可以看出型号和封装。封装为LQFP48，芯片表面左下角有个圆点，圆点下的引脚为1顺着原点逆时针开始数。如果芯片有两个圆点，则从最小的圆点开始数。</p>
+<h6 id="片上资源-x2F-外设"><a href="#片上资源-x2F-外设" class="headerlink" title="片上资源&#x2F;外设"></a><strong>片上资源&#x2F;外设</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104939703.png" class="" title="image-20230724104939703">
+
+<p>绿色背景加黑的是位于内核的外设。另外C8T6并没有表中的DAC,SDIO,FSMC和USB OTG外设。</p>
+<p>NVIC:内核里面用于管理中断的设备，例如配置中断优先级。</p>
+<p>SysTick:用来给操作系统提供定时服务。应为STM32可以加入Freektos，ucos等操作系统，利用SysTick提供定时进行任务切换的功能。</p>
+<p>RCC：复位和时钟控制，可以对系统的时钟进行配置，还能使能各模块的时钟。在STM32中，外设上电后是默认没有时钟。没有时钟，外设无法工作。</p>
+<p>GPIO：通用的IO口，可以用于操控模块，比如灯，马达等。</p>
+<p>AFIO：完成复用功能端口的重定义，还有中断端口的置配。</p>
+<p>EXTI：配置好外部中断后，当引脚有电平变化时，就可以触发中断，让CPU来处理任务。</p>
+<p>TIM定时器：分为基本定时器，通用定时器，高级定时器。不仅可以完成定时中断的任务，还可以用于测频率，生成PWM波形，配置为专用的编码器接口。</p>
+<p>ADC：模数转换器，STM32内置了12位的AD转换器，可以直接读取IO口的模拟电压，无需外置。</p>
+<p>DMA：直接内存访问，可以帮助CPU搬运大量数据等这种繁杂任务。</p>
+<p>I2C&#x2F;SPI：两种常见的通信协议。</p>
+<p>RTC：实时时钟，在STM32内部完成时，分，秒的计时功能，还可以外接电源，即使掉电也能</p>
+<p>正常运行（此时会启用芯片备用电池）。</p>
+<p>CRC：一种数据校验方式，用于判断接受的数据是否正确。</p>
+<p>IWDG&#x2F;WWDG:当单片机因为电磁干扰死机或者程序设计不合理导致的死循环时，看门狗可以及时复位，保证系统稳定。</p>
+<p>DAC：数模转换器，可以在IO口直接输出模拟电压。</p>
+<p>OTG：使STM32作为USB主机去读取其它USB设备。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111613998.png" class="" title="image-20230724111613998">
+
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111625157.png" class="" title="image-20230724111625157">
+
+
+
+<h6 id="系统结构"><a href="#系统结构" class="headerlink" title="系统结构"></a><strong>系统结构</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111735194.png" class="" title="image-20230724111735194">
+
+<p>ICode（指令总线）和Dcode（数据总线）用来连接Flash闪存，Flash存放的是我们编写的程序，ICode用于加载程序指令，Dcode用于加载数据，如常数和调试数据。</p>
+<p>系统总线就连接到如SRAM（用于存储程序运行时的变量数据）</p>
+<p>AHB系统总线：用于挂载主要的外设，AHB指先进高性能总线，挂载最基本的或者性能比较高的外设，如复位和时钟控制  SDIO。</p>
+<p>APB：先进外设总线，用于连接一般的外设。</p>
+<p>DMA：大量的数据搬运，防止覆盖。</p>
+<h6 id="引脚定义"><a href="#引脚定义" class="headerlink" title="引脚定义"></a>引脚定义</h6><p>红色是电源相关的引脚</p>
+<p>蓝色是最小系统相关的引脚</p>
+<p>绿色是IO口&#x2F;功能口相关的引脚</p>
+<p>S代表电源，I&#x2F;O代表输入输出，I&#x2F;O电平代表所能容忍的电压。FT代表能容忍5V，默认复用是IO口上同时连接的外设功能引脚。重定义：如果有2个功能同时复用在了1个IO口上，可以把其中一个复用功能重映射到其他端口上。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230726084013246.png" class="" title="image-20230726084013246">
+
+
+
+<p>1.　　　VBAT：备用电池供电引脚，当系统电源断电时，备用电池可以给内部的RTC时钟和备份寄存器提供电源。</p>
+<p>2.　　　IO口&#x2F;侵入检测&#x2F;RTC：IO口可以根据程序输出读取高低电平</p>
+<p>3.4　IO口&#x2F;接32.768kHZ的RTC晶振</p>
+<p>5,6　接系统的主晶振，芯片内有锁相环电路，对8MHZ进行倍频形成72MHZ。</p>
+<p>7　　系统复位引脚，N代表低电平复位</p>
+<p>8,9　内部模拟部分的电源，如ADC,RC振荡器  VSS(-) VDD(+)</p>
+<p>10-19　都是IO口，10号引脚还兼具了WKUP用于唤醒对于待机模式的STM32</p>
+<p>20　IO口&#x2F;BOOT1引脚，BOOT用来配置启动模式    44.　BOOT0</p>
+<p>21.22.25-33.41-43.45.46 都是IO口</p>
+<p>23,24是系统的主电源口， 35.36.47.48    STM32采用分区供电模式</p>
+<p>34,37-40　IO口&#x2F;调试端口      STM32支持SWD和JTAG两种调试方法</p>
+<p>启动配置（BOOT0和BOOT1）</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140258741.png" class="" title="image-20230801140258741">
+
+<p>作用：指定程序开始运行的位置，一般情况下，程序是在Flash程序存储器开始执行</p>
+<p>接1指3.3V电源正的意思</p>
+<p>系统存储器就是STM32中的一段BootLoader(接受串口数据，然后刷新到主闪存中)</p>
+<p>核心板原理图</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140602387.png" class="" title="image-20230801140602387">
+
+]]></content>
+      <categories>
+        <category>stm32归档</category>
+      </categories>
+      <tags>
+        <tag>单片机</tag>
       </tags>
   </entry>
   <entry>
@@ -2761,7 +4306,7 @@ void AD_Init(void)
 <p>•　可选校验位（无校验&#x2F;奇校验&#x2F;偶校验）</p>
 <p>•　支持同步模式（CLK时钟输出）、硬件流控制、DMA、智能卡、IrDA、LIN</p>
 <p>•　STM32F103C8T6 USART资源： USART1、 USART2、 USART3</p>
-<h2 id="USART框图"><a href="#USART框图" class="headerlink" title="USART框图"></a>USART框图</h2><img src="STM32%E5%BD%92%E6%A1%A3/image-20230926210423747.png" alt="image-20230926210423747" style="zoom:200%;" />
+<h2 id="USART框图"><a href="#USART框图" class="headerlink" title="USART框图"></a>USART框图</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20231107103743628.png" class="" title="image-20231107103743628">
 
 <h2 id="USART基本结构"><a href="#USART基本结构" class="headerlink" title="USART基本结构"></a>USART基本结构</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20230926210537974.png" class="" title="image-20230926210537974">
 
@@ -3420,423 +4965,12 @@ void Serial_Printf(char *format, ...);                   // 带格式的字符�
 
 <p>和HEX数据包类似，只是将数据形式换成了字符型。就不做过多说明。</p>
 <p>main函数实现的功能为，在上位机输入‘@’为包头，输入‘LED_ON’为数据，换行为包尾，发送后将点亮LED，并回传“LED_ON_OK”，输入‘LED_OFF’为数据，发送后将熄灭LED，并回传“LED_OFF_OK”。输入其它指令将无法控制LED，并收到回传“ERROE_COMMAND”。</p>
-]]></content>
-      <categories>
-        <category>stm32归档</category>
-      </categories>
-      <tags>
-        <tag>单片机</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>STM32标准库</title>
-    <url>/2023/08/02/STM32%E6%A0%87%E5%87%86%E5%BA%93/</url>
-    <content><![CDATA[<p>整理笔记时发现自己如果列举代码，会更加有效。但插入代码块到其中会比较繁琐，而且各个知识的代码的耦合性较强，反复列举较为麻烦，所以开一个新的文章，专门记录整理标准库代码。仅记录个人常用，建议参考手册，或直接跳转函数定义，浏览官方说明。<span id="more"></span></p>
-<h3 id="时钟控制"><a href="#时钟控制" class="headerlink" title="时钟控制"></a>时钟控制</h3><p>时钟就像人的心跳，人的运动先需要跳动心脏。STM32的片上外设也是一样，如果要使用外设，例如：GPIO，NVIC，ADC等等，需要先开启外设挂载的总线时钟。</p>
-<p>以下是标准库中对时钟控制函数的定义：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//AHB总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_AHBPeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_AHBPeriph, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//APB2总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_APB2PeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_APB2Periph, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//APB1总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_APB1PeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_APB1Periph, FunctionalState NewState)</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="FlyMcu程序烧录"><a href="#FlyMcu程序烧录" class="headerlink" title="FlyMcu程序烧录"></a>FlyMcu程序烧录</h1><h2 id="串口下载原理"><a href="#串口下载原理" class="headerlink" title="串口下载原理"></a>串口下载原理</h2><img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20231017093609745.png" class="" title="image-20231017093609745">
 
-<p>第一个参数为外设，例如APB2的外设：RCC_APB2Periph_GPIOA，RCC_APB2Periph_GPIOB，RCC_APB2Periph_TIM1等，</p>
-<p>第二个参数为使能或者失能。（ENABLE&#x2F;DISABLE）</p>
-<p>比如开启APB2的GPIOA为例：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);</span><br></pre></td></tr></table></figure>
+<img src="/2023/08/02/STM32%E5%BD%92%E6%A1%A3/image-20231017093920557.png" class="" title="image-20231017093920557">
 
-<p>外设的使用必须先开启时钟。</p>
-<h3 id="GPIO"><a href="#GPIO" class="headerlink" title="GPIO"></a>GPIO</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//指定GPIO初始化为默认值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_DeInit</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//功能复用，重新映射事件控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_AFIODeInit</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="comment">//用结构体参数初始化GPIO</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Init</span><span class="params">(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct)</span>;</span><br><span class="line"><span class="comment">//将结构体的变量，赋为初始值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_StructInit</span><span class="params">(GPIO_InitTypeDef* GPIO_InitStruct)</span>;</span><br><span class="line"><span class="comment">//读取指定输入GPIO口的值，返回0/1</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">GPIO_ReadInputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//读取指定输入GPIO组的数据端口</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">GPIO_ReadInputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//读取指定输出GPIO口的值，返回0/1</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">GPIO_ReadOutputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//读取指定输出GPIO组的数据端口</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">GPIO_ReadOutputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//指定端口输出为高电平</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_SetBits</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//指定端口输出为低电平</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_ResetBits</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//指定GPIO组的某个GPIO并赋值（高低电平）。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_WriteBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin, BitAction BitVal)</span>;</span><br><span class="line"><span class="comment">//指定GPIO组，并写入端口输出数据寄存器（ODR寄存器）的值。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Write</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> PortVal)</span>;</span><br><span class="line"><span class="comment">//锁定GPIO管脚配置寄存器</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_PinLockConfig</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//选择用作事件输出的GPIO引脚</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EventOutputConfig</span><span class="params">(<span class="type">uint8_t</span> GPIO_PortSource, <span class="type">uint8_t</span> GPIO_PinSource)</span>;</span><br><span class="line"><span class="comment">//使能输出事件</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EventOutputCmd</span><span class="params">(FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//改变指定管脚的映射，为了更大利用IO口，部分IO口可以进行复用或者映射。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_PinRemapConfig</span><span class="params">(<span class="type">uint32_t</span> GPIO_Remap, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//选择 GPIO 管脚用作外部中断源</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EXTILineConfig</span><span class="params">(<span class="type">uint8_t</span> GPIO_PortSource, <span class="type">uint8_t</span> GPIO_PinSource)</span>;</span><br><span class="line"><span class="comment">//选择以太网媒体接口</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_ETH_MediaInterfaceConfig</span><span class="params">(<span class="type">uint32_t</span> GPIO_ETH_MediaInterface)</span>;</span><br></pre></td></tr></table></figure>
-
-<p><strong>结构体</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">uint16_t</span> GPIO_Pin;             <span class="comment">//选择GPIO口</span></span><br><span class="line">  GPIOSpeed_TypeDef GPIO_Speed;  <span class="comment">//选择运行速度</span></span><br><span class="line">  GPIOMode_TypeDef GPIO_Mode;    <span class="comment">//配置G</span></span><br><span class="line">&#125;GPIO_InitTypeDef;</span><br></pre></td></tr></table></figure>
-
-<p><strong>GPIO模式</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span></span></span><br><span class="line"><span class="class">&#123;</span> GPIO_Mode_AIN = <span class="number">0x0</span>,               <span class="comment">//模拟输入</span></span><br><span class="line">  GPIO_Mode_IN_FLOATING = <span class="number">0x04</span>,      <span class="comment">//浮空输入</span></span><br><span class="line">  GPIO_Mode_IPD = <span class="number">0x28</span>,              <span class="comment">//下拉输入</span></span><br><span class="line">  GPIO_Mode_IPU = <span class="number">0x48</span>,              <span class="comment">//上拉输入</span></span><br><span class="line">  GPIO_Mode_Out_OD = <span class="number">0x14</span>,           <span class="comment">//开漏输出</span></span><br><span class="line">  GPIO_Mode_Out_PP = <span class="number">0x10</span>,           <span class="comment">//推挽输出</span></span><br><span class="line">  GPIO_Mode_AF_OD = <span class="number">0x1C</span>,            <span class="comment">//复用开漏</span></span><br><span class="line">  GPIO_Mode_AF_PP = <span class="number">0x18</span>             <span class="comment">//复用推挽</span></span><br><span class="line">&#125;GPIOMode_TypeDef;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="NVIC"><a href="#NVIC" class="headerlink" title="NVIC"></a>NVIC</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">NVIC_PriorityGroupConfig</span><span class="params">(<span class="type">uint32_t</span> NVIC_PriorityGroup)</span>;                  <span class="comment">//设置中断优先级分组</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_Init</span><span class="params">(NVIC_InitTypeDef* NVIC_InitStruct)</span>;                           <span class="comment">//用结构体参数配置NVIC</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_SetVectorTable</span><span class="params">(<span class="type">uint32_t</span> NVIC_VectTab, <span class="type">uint32_t</span> Offset)</span>;            <span class="comment">//设置中断向量表</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_SystemLPConfig</span><span class="params">(<span class="type">uint8_t</span> LowPowerMode, FunctionalState NewState)</span>;    <span class="comment">//系统低功耗配置</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="EXIT"><a href="#EXIT" class="headerlink" title="EXIT"></a>EXIT</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">EXTI_DeInit</span><span class="params">(<span class="type">void</span>)</span>;              	                   <span class="comment">//清除EXTI配置</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_Init</span><span class="params">(EXTI_InitTypeDef* EXTI_InitStruct)</span>;         <span class="comment">//用结构体参数配置EXTI</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_StructInit</span><span class="params">(EXTI_InitTypeDef* EXTI_InitStruct)</span>;   <span class="comment">//给结构体赋予默认值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_GenerateSWInterrupt</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;         <span class="comment">//软件触发外部中断</span></span><br><span class="line">FlagStatus <span class="title function_">EXTI_GetFlagStatus</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;         <span class="comment">//获取指定的的中断标志位</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_ClearFlag</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;                   <span class="comment">//清除中断标志位</span></span><br><span class="line">ITStatus <span class="title function_">EXTI_GetITStatus</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;             <span class="comment">//在中断函数里获取标志位</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_ClearITPendingBit</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;           <span class="comment">//在中断函数里清除标志位</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>结构体</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">uint32_t</span> EXTI_Line;               <span class="comment">//指定配置的中断线</span></span><br><span class="line">  EXTIMode_TypeDef EXTI_Mode;       <span class="comment">//指定中断模式</span></span><br><span class="line">  EXTITrigger_TypeDef EXTI_Trigger; <span class="comment">//指定配置的中断线</span></span><br><span class="line">  FunctionalState EXTI_LineCmd;     <span class="comment">//指定触发中断的模式</span></span><br><span class="line">&#125;EXTI_InitTypeDef;</span><br></pre></td></tr></table></figure>
-
-<h3 id="TIM"><a href="#TIM" class="headerlink" title="TIM"></a>TIM</h3><p>过长，具体参考STM32固件函数库手册。</p>
-<table>
-<thead>
-<tr>
-<th>函数名</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>TIM_DeInit</td>
-<td>将外设 TIMx 寄存器重设为缺省值</td>
-</tr>
-<tr>
-<td>TIM_TimeBaseInit</td>
-<td>根据 TIM_TimeBaseInitStruct 中指定的参数初始化   间基数单位</td>
-</tr>
-<tr>
-<td>TIM_OCInit</td>
-<td>根据 TIM_OCInitStruct 中指定的参数初始化外设</td>
-</tr>
-<tr>
-<td>TIM_ICInit</td>
-<td>根据 TIM_ICInitStruct 中指定的参数初始化外设 T</td>
-</tr>
-<tr>
-<td>TIM_TimeBaseStructInit</td>
-<td>把 TIM_TimeBaseInitStruct 中的每一个参数按缺省</td>
-</tr>
-<tr>
-<td>TIM_OCStructInit</td>
-<td>把 TIM_OCInitStruct 中的每一个参数按缺省值填</td>
-</tr>
-<tr>
-<td>TIM_ICStructInit</td>
-<td>把 TIM_ICInitStruct 中的每一个参数按缺省值填入</td>
-</tr>
-<tr>
-<td>TIM_Cmd</td>
-<td>使能或者失能 TIMx 外设</td>
-</tr>
-<tr>
-<td>TIM _ITConfig</td>
-<td>使能或者失能指定的 TIM 中断</td>
-</tr>
-<tr>
-<td>TIM_DMAConfig</td>
-<td>设置 TIMx 的 DMA 接口</td>
-</tr>
-<tr>
-<td>TIM_DMACmd</td>
-<td>使能或者失能指定的 TIMx 的 DMA 请求</td>
-</tr>
-<tr>
-<td>TIM_InternalClockConfig</td>
-<td>设置 TIMx 内部时钟</td>
-</tr>
-<tr>
-<td>TIM_ITRxExternalClockConfig</td>
-<td>设置 TIMx 内部触发为外部时钟模式</td>
-</tr>
-<tr>
-<td>TIM_TIxExternalClockConfig</td>
-<td>设置 TIMx 触发为外部时钟</td>
-</tr>
-<tr>
-<td>TIM_ETRClockMode1Config</td>
-<td>配置 TIMx 外部时钟模式  1</td>
-</tr>
-<tr>
-<td>TIM_ETRClockMode2Config</td>
-<td>配置 TIMx 外部时钟模式  2</td>
-</tr>
-<tr>
-<td>TIM_ETRConfig</td>
-<td>配置 TIMx 外部触发</td>
-</tr>
-<tr>
-<td>TIM_SelectInputTrigger</td>
-<td>选择 TIMx 输入触发源</td>
-</tr>
-<tr>
-<td>TIM_PrescalerConfig</td>
-<td>设置 TIMx 预分频</td>
-</tr>
-<tr>
-<td>TIM_CounterModeConfig</td>
-<td>设置 TIMx 计数器模式</td>
-</tr>
-<tr>
-<td>TIM_ForcedOC1Config</td>
-<td>置 TIMx 输出 1 为活动或者非活动电平</td>
-</tr>
-<tr>
-<td>TIM_ForcedOC2Config</td>
-<td>置 TIMx 输出 2 为活动或者非活动电平</td>
-</tr>
-<tr>
-<td>TIM_ForcedOC3Config</td>
-<td>置 TIMx 输出 3 为活动或者非活动电平</td>
-</tr>
-<tr>
-<td>TIM_ForcedOC4Config</td>
-<td>置 TIMx 输出 4 为活动或者非活动电平</td>
-</tr>
-<tr>
-<td>TIM_ARRPreloadConfig</td>
-<td>使能或者失能 TIMx 在 ARR 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_SelectCCDMA</td>
-<td>选择 TIMx 外设的捕获比较  DMA 源</td>
-</tr>
-<tr>
-<td>TIM_OC1PreloadConfig</td>
-<td>使能或者失能 TIMx 在 CCR1 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_OC2PreloadConfig</td>
-<td>使能或者失能 TIMx 在 CCR2 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_OC3PreloadConfig</td>
-<td>使能或者失能 TIMx 在 CCR3 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_OC4PreloadConfig</td>
-<td>使能或者失能 TIMx 在 CCR4 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_OC1FastConfig</td>
-<td>设置 TIMx 捕获比较  1 快速特征</td>
-</tr>
-<tr>
-<td>TIM_OC2FastConfig</td>
-<td>设置 TIMx 捕获比较 2  快速特征</td>
-</tr>
-<tr>
-<td>TIM_OC3FastConfig</td>
-<td>设置 TIMx 捕获比较 3  快速特征</td>
-</tr>
-<tr>
-<td>TIM_OC4FastConfig</td>
-<td>设置 TIMx 捕获比较 4  快速特征</td>
-</tr>
-<tr>
-<td>TIM_ClearOC1Ref</td>
-<td>在一个外部事件时清除或者保持 OCREF1 信号</td>
-</tr>
-<tr>
-<td>TIM_ClearOC2Ref</td>
-<td>在一个外部事件时清除或者保持 OCREF2 信号</td>
-</tr>
-<tr>
-<td>TIM_ClearOC3Ref</td>
-<td>在一个外部事件时清除或者保持 OCREF3 信号</td>
-</tr>
-<tr>
-<td>TIM_ClearOC4Ref</td>
-<td>在一个外部事件时清除或者保持 OCREF4 信号</td>
-</tr>
-<tr>
-<td>TIM_UpdateDisableConfig</td>
-<td>使能或者失能 TIMx 更新事件</td>
-</tr>
-<tr>
-<td>TIM_EncoderInterfaceConfig</td>
-<td>设置 TIMx 编码界面</td>
-</tr>
-<tr>
-<td>TIM_GenerateEvent</td>
-<td>设置 TIMx 事件由软件产生</td>
-</tr>
-<tr>
-<td>TIM_OC1PolarityConfig</td>
-<td>设置 TIMx 通道 1 极性</td>
-</tr>
-<tr>
-<td>TIM_OC2PolarityConfig</td>
-<td>设置 TIMx 通道 2 极性</td>
-</tr>
-<tr>
-<td>TIM_OC3PolarityConfig</td>
-<td>设置 TIMx 通道 3 极性</td>
-</tr>
-<tr>
-<td>TIM_OC4PolarityConfig</td>
-<td>设置 TIMx 通道 4 极性</td>
-</tr>
-<tr>
-<td>TIM_UpdateRequestConfig</td>
-<td>设置 TIMx 更新请求源</td>
-</tr>
-<tr>
-<td>TIM_SelectHallSensor</td>
-<td>使能或者失能 TIMx 霍尔传感器接口</td>
-</tr>
-<tr>
-<td>TIM_SelectOnePulseMode</td>
-<td>设置 TIMx 单脉冲模式</td>
-</tr>
-<tr>
-<td>TIM_SelectOutputTrigger</td>
-<td>选择 TIMx 触发输出模式</td>
-</tr>
-<tr>
-<td>TIM_SelectSlaveMode</td>
-<td>选择 TIMx 从模式</td>
-</tr>
-<tr>
-<td>TIM_SelectMasterSlaveMode</td>
-<td>设置或者重置 TIMx 主&#x2F;从模式</td>
-</tr>
-<tr>
-<td>TIM_SetCounter</td>
-<td>设置 TIMx 计数器寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetAutoreload</td>
-<td>设置 TIMx 自动重装载寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetCompare1</td>
-<td>设置 TIMx 捕获比较 1  寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetCompare2</td>
-<td>设置 TIMx 捕获比较 2  寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetCompare3</td>
-<td>设置 TIMx 捕获比较 3  寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetCompare4</td>
-<td>设置 TIMx 捕获比较 4  寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetIC1Prescaler</td>
-<td>设置 TIMx 输入捕获 1  预分频</td>
-</tr>
-<tr>
-<td>TIM_SetIC2Prescaler</td>
-<td>设置 TIMx 输入捕获 2  预分频</td>
-</tr>
-<tr>
-<td>TIM_SetIC3Prescaler</td>
-<td>设置 TIMx 输入捕获 3  预分频</td>
-</tr>
-<tr>
-<td>TIM_SetIC4Prescaler</td>
-<td>设置 TIMx 输入捕获 4  预分频</td>
-</tr>
-<tr>
-<td>TIM_SetClockDivision</td>
-<td>设置 TIMx 的时钟分割值</td>
-</tr>
-<tr>
-<td>TIM_GetCapture1</td>
-<td>获得 TIMx 输入捕获 1  的值</td>
-</tr>
-<tr>
-<td>TIM_GetCapture2</td>
-<td>获得 TIMx 输入捕获 2  的值</td>
-</tr>
-<tr>
-<td>TIM_GetCapture3</td>
-<td>获得 TIMx 输入捕获 3  的值</td>
-</tr>
-<tr>
-<td>TIM_GetCapture4</td>
-<td>获得 TIMx 输入捕获 4  的值</td>
-</tr>
-<tr>
-<td>TIM_GetCounter</td>
-<td>获得 TIMx 计数器的值</td>
-</tr>
-<tr>
-<td>TIM_GetPrescaler</td>
-<td>获得 TIMx 预分频值</td>
-</tr>
-<tr>
-<td>TIM_GetFlagStatus</td>
-<td>检查指定的 TIM 标志位设置与否</td>
-</tr>
-<tr>
-<td>TIM_ClearFlag</td>
-<td>清除 TIMx 的待处理标志位</td>
-</tr>
-<tr>
-<td>TIM_GetITStatus</td>
-<td>检查指定的 TIM 中断发生与否</td>
-</tr>
-<tr>
-<td>TIM_ClearITPendingBit</td>
-<td>清除 TIMx 的中断待处理位</td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>stm32归档</category>
-      </categories>
-      <tags>
-        <tag>单片机</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>stm32综述</title>
-    <url>/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/</url>
-    <content><![CDATA[<p>　　大概有一段时间没看stm32，通过之前学51的经历，大概是明白自己一段时间不看就会忘，虽然随便翻翻又能快速上手，但是东找西翻比较麻烦。所以打算复习的时候，顺便做个笔记记录一下。自己所用的型号为<strong>STM32F103C8T6</strong>。<span id="more"></span></p>
-<h6 id="STM简述"><a href="#STM简述" class="headerlink" title="STM简述"></a>STM简述</h6><p>　　STM32是ST公司基于ARM- Cortex-M内核开发的32位微控制器（MCU）。自己所用的是STM32F1系列，属于Mainstream，内核Cortex-M3。ARM公司设计ARM内核，半导体厂商完善内核周边电路并产生芯片。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104303863.png" class="" title="image-20230724104303863">
-
-<p>图中的ARM由ARM公司设计，芯片内的存储和外设（比如GPIO,定时器）由ST公司设计。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104427576.png" class="" title="image-20230724104427576">
-
-<p>这是一枚STM32F103C8T6的芯片，由芯片可以看出型号和封装。封装为LQFP48，芯片表面左下角有个圆点，圆点下的引脚为1顺着原点逆时针开始数。如果芯片有两个圆点，则从最小的圆点开始数。</p>
-<h6 id="片上资源-x2F-外设"><a href="#片上资源-x2F-外设" class="headerlink" title="片上资源&#x2F;外设"></a><strong>片上资源&#x2F;外设</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104939703.png" class="" title="image-20230724104939703">
-
-<p>绿色背景加黑的是位于内核的外设。另外C8T6并没有表中的DAC,SDIO,FSMC和USB OTG外设。</p>
-<p>NVIC:内核里面用于管理中断的设备，例如配置中断优先级。</p>
-<p>SysTick:用来给操作系统提供定时服务。应为STM32可以加入Freektos，ucos等操作系统，利用SysTick提供定时进行任务切换的功能。</p>
-<p>RCC：复位和时钟控制，可以对系统的时钟进行配置，还能使能各模块的时钟。在STM32中，外设上电后是默认没有时钟。没有时钟，外设无法工作。</p>
-<p>GPIO：通用的IO口，可以用于操控模块，比如灯，马达等。</p>
-<p>AFIO：完成复用功能端口的重定义，还有中断端口的置配。</p>
-<p>EXTI：配置好外部中断后，当引脚有电平变化时，就可以触发中断，让CPU来处理任务。</p>
-<p>TIM定时器：分为基本定时器，通用定时器，高级定时器。不仅可以完成定时中断的任务，还可以用于测频率，生成PWM波形，配置为专用的编码器接口。</p>
-<p>ADC：模数转换器，STM32内置了12位的AD转换器，可以直接读取IO口的模拟电压，无需外置。</p>
-<p>DMA：直接内存访问，可以帮助CPU搬运大量数据等这种繁杂任务。</p>
-<p>I2C&#x2F;SPI：两种常见的通信协议。</p>
-<p>RTC：实时时钟，在STM32内部完成时，分，秒的计时功能，还可以外接电源，即使掉电也能</p>
-<p>正常运行（此时会启用芯片备用电池）。</p>
-<p>CRC：一种数据校验方式，用于判断接受的数据是否正确。</p>
-<p>IWDG&#x2F;WWDG:当单片机因为电磁干扰死机或者程序设计不合理导致的死循环时，看门狗可以及时复位，保证系统稳定。</p>
-<p>DAC：数模转换器，可以在IO口直接输出模拟电压。</p>
-<p>OTG：使STM32作为USB主机去读取其它USB设备。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111613998.png" class="" title="image-20230724111613998">
-
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111625157.png" class="" title="image-20230724111625157">
-
-
-
-<h6 id="系统结构"><a href="#系统结构" class="headerlink" title="系统结构"></a><strong>系统结构</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111735194.png" class="" title="image-20230724111735194">
-
-<p>ICode（指令总线）和Dcode（数据总线）用来连接Flash闪存，Flash存放的是我们编写的程序，ICode用于加载程序指令，Dcode用于加载数据，如常数和调试数据。</p>
-<p>系统总线就连接到如SRAM（用于存储程序运行时的变量数据）</p>
-<p>AHB系统总线：用于挂载主要的外设，AHB指先进高性能总线，挂载最基本的或者性能比较高的外设，如复位和时钟控制  SDIO。</p>
-<p>APB：先进外设总线，用于连接一般的外设。</p>
-<p>DMA：大量的数据搬运，防止覆盖。</p>
-<h6 id="引脚定义"><a href="#引脚定义" class="headerlink" title="引脚定义"></a>引脚定义</h6><p>红色是电源相关的引脚</p>
-<p>蓝色是最小系统相关的引脚</p>
-<p>绿色是IO口&#x2F;功能口相关的引脚</p>
-<p>S代表电源，I&#x2F;O代表输入输出，I&#x2F;O电平代表所能容忍的电压。FT代表能容忍5V，默认复用是IO口上同时连接的外设功能引脚。重定义：如果有2个功能同时复用在了1个IO口上，可以把其中一个复用功能重映射到其他端口上。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230726084013246.png" class="" title="image-20230726084013246">
-
-
-
-<p>1.　　　VBAT：备用电池供电引脚，当系统电源断电时，备用电池可以给内部的RTC时钟和备份寄存器提供电源。</p>
-<p>2.　　　IO口&#x2F;侵入检测&#x2F;RTC：IO口可以根据程序输出读取高低电平</p>
-<p>3.4　IO口&#x2F;接32.768kHZ的RTC晶振</p>
-<p>5,6　接系统的主晶振，芯片内有锁相环电路，对8MHZ进行倍频形成72MHZ。</p>
-<p>7　　系统复位引脚，N代表低电平复位</p>
-<p>8,9　内部模拟部分的电源，如ADC,RC振荡器  VSS(-) VDD(+)</p>
-<p>10-19　都是IO口，10号引脚还兼具了WKUP用于唤醒对于待机模式的STM32</p>
-<p>20　IO口&#x2F;BOOT1引脚，BOOT用来配置启动模式    44.　BOOT0</p>
-<p>21.22.25-33.41-43.45.46 都是IO口</p>
-<p>23,24是系统的主电源口， 35.36.47.48    STM32采用分区供电模式</p>
-<p>34,37-40　IO口&#x2F;调试端口      STM32支持SWD和JTAG两种调试方法</p>
-<p>启动配置（BOOT0和BOOT1）</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140258741.png" class="" title="image-20230801140258741">
-
-<p>作用：指定程序开始运行的位置，一般情况下，程序是在Flash程序存储器开始执行</p>
-<p>接1指3.3V电源正的意思</p>
-<p>系统存储器就是STM32中的一段BootLoader(接受串口数据，然后刷新到主闪存中)</p>
-<p>核心板原理图</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140602387.png" class="" title="image-20230801140602387">
-
+<p>写入的代码通过软件生成.hex文件后，配置BOOT引脚，使STM32执行BootLoader程序，设置BOOT0 &#x3D; 1并按下复位键，等程序下载完，此时仍在执行下载程序，所以需置BOOT0 &#x3D; 0，再次按下复位键。</p>
+<p>如果stm32没有设置读保护，则写入的程序可被软件读出来，当然，一般只能是hex一类，反编译源码还是不现实。</p>
 ]]></content>
       <categories>
         <category>stm32归档</category>
@@ -3865,6 +4999,55 @@ void Serial_Printf(char *format, ...);                   // 带格式的字符�
       </categories>
       <tags>
         <tag>秘密</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实用软件</title>
+    <url>/2023/08/10/%E5%AE%9E%E7%94%A8%E8%BD%AF%E4%BB%B6/</url>
+    <content><![CDATA[<p>有段时间，对于某些需求挺强烈的，但是也花了不少时间，不过可能也就那段时间用用罢了。或许可以整理一下，已经容易忘事了。<span id="more"></span></p>
+<h3 id="远程屏幕分享"><a href="#远程屏幕分享" class="headerlink" title="远程屏幕分享"></a>远程屏幕分享</h3><p>单纯的一对一进行屏幕分享，按照分享的画面质量，延迟，帧率，大致可以做一个排名。当然，都是白嫖的。</p>
+<p>发送方是电脑，接收方可以是电脑，或者是手机。</p>
+<p>B站直播&gt;网页&gt;Skype&gt;钉钉&gt;qq</p>
+<p>B站直播简单易行，除非是注意隐私，或者分享禁播游戏。</p>
+<p>网页：<a href="https://easychuan.cn/">轻松传 - 传文件，传文本，传屏幕，传实时视频 (easychuan.cn)</a></p>
+<p>网页分享屏幕帧率上限30帧，画面比较清晰，偶有卡顿。</p>
+<p>Skype：免费注册，使用无需翻墙（或许注册的时候要），本质是一个网络电话，可以视频通话并分享屏幕，非常稳定。</p>
+<p>钉钉和qq懂的都懂，不做评价。</p>
+<h3 id="远程同乐"><a href="#远程同乐" class="headerlink" title="远程同乐"></a>远程同乐</h3><p>steam自带的远程同乐，Parsec(网络要求较高，需要公网，参考比特彗星黄绿灯），搭建局域网可用樱花映射（账号需要实名认证，并在支付宝扫脸，支付宝必须是实名认证时所填的身份信息并且18+，需要扫脸。软件较为良心）。</p>
+<p>好吧好吧，实际上当Parsec双方都有ipv6时就可以了。什么搭建局域网一类的，都只是下载没有深究。</p>
+<p>或者Radmin VPN也行，只是对方是多屏幕，对方连我电脑可以控制，我连对方则是黑屏。按理说能上网翻翻解决的，不过最后还是懒。这款软件除了操控，也可以分享屏幕等等，小巧而且网络需求没有Parsec那么高。只是Radmin只能PC对PC，而Parsec可以手机平板控制PC等等。</p>
+<p>moonlight也试过，不过并没有成功，而且Parsec可以控制电脑，而moonlight也只能串流游戏。（话说moonlight给熊孩子玩倒也不用担心什么）</p>
+<h3 id="桌面管理"><a href="#桌面管理" class="headerlink" title="桌面管理"></a>桌面管理</h3><img src="/2023/08/10/%E5%AE%9E%E7%94%A8%E8%BD%AF%E4%BB%B6/image-20231011091253017.png" class="" title="image-20231011091253017">
+
+<p>对于我这种已经规划好的桌面，一不小心拖动图标都是一场灾难。所以可以使用Customize Fences进行桌面管理。</p>
+<img src="/2023/08/10/%E5%AE%9E%E7%94%A8%E8%BD%AF%E4%BB%B6/image-20231011092703313.png" class="" title="image-20231011092703313">
+
+<p>我个人主要是使用屏幕快照，可以将桌面图标的布局生成快照，需要复原的时候则直接根据快照复原，非常方便。</p>
+<p>当然，Fences的功能远不止于此，比如双击桌面就隐藏所有图标等等。</p>
+<h3 id="磁盘空间分析器-SpaceSniffer"><a href="#磁盘空间分析器-SpaceSniffer" class="headerlink" title="磁盘空间分析器(SpaceSniffer)"></a>磁盘空间分析器(SpaceSniffer)</h3><p>用于分析磁盘各文件的占用大小。</p>
+<img src="/2023/08/10/%E5%AE%9E%E7%94%A8%E8%BD%AF%E4%BB%B6/image-20231011093959381.png" class="" title="image-20231011093959381">
+
+<p>扫描后的显示非常人性化，我经常用于清理不知名的大文件。<img src="/2023/08/10/%E5%AE%9E%E7%94%A8%E8%BD%AF%E4%BB%B6/image-20231011094036795.png" class="" title="image-20231011094036795"></p>
+<p>点开后进入下一级。（好了，现在知道steam哪个游戏那么大了）</p>
+<h3 id="Everything"><a href="#Everything" class="headerlink" title="Everything"></a>Everything</h3><p>window在文件管理的右上角有个搜索框，用于搜索文件。不过奇慢无比，所以才有了Everything.</p>
+<img src="/2023/08/10/%E5%AE%9E%E7%94%A8%E8%BD%AF%E4%BB%B6/image-20231011094325127.png" class="" title="image-20231011094325127">
+
+<p>小巧简约。</p>
+<img src="/2023/08/10/%E5%AE%9E%E7%94%A8%E8%BD%AF%E4%BB%B6/image-20231011094338001.png" class="" title="image-20231011094338001">
+
+<p>搜索速度非常快，而且能一次将各盘文件都搜索出来。</p>
+<h3 id="快牙PC"><a href="#快牙PC" class="headerlink" title="快牙PC"></a>快牙PC</h3><img src="/2023/08/10/%E5%AE%9E%E7%94%A8%E8%BD%AF%E4%BB%B6/image-20231011094436651.png" class="" title="image-20231011094436651">
+
+<p>老软件了，尽管win10可以在设备之间用蓝牙传输，或者使用就近共享。但是当双方面对面的时候，还是建议快牙，它的传输速度非常快，而且可以一对多或者多对一的传输。只需要一台设备建立热点，其余设备加入即可。手机电脑，手机手机之间都可以互传。</p>
+<h3 id="批量改名"><a href="#批量改名" class="headerlink" title="批量改名"></a>批量改名</h3><img src="/2023/08/10/%E5%AE%9E%E7%94%A8%E8%BD%AF%E4%BB%B6/image-20231011094858790.png" class="" title="image-20231011094858790">
+
+<p>当初在vol(现在叫kox)的群里拿的，上传图源制作kindle漫画的时候，图源需要按照命名规则顺序排列，所以用到了它。</p>
+]]></content>
+      <categories>
+        <category>储物间</category>
+      </categories>
+      <tags>
+        <tag>杂七杂八</tag>
       </tags>
   </entry>
   <entry>
@@ -4119,89 +5302,6 @@ void Serial_Printf(char *format, ...);                   // 带格式的字符�
       </tags>
   </entry>
   <entry>
-    <title>实用软件</title>
-    <url>/2023/08/10/%E5%AE%9E%E7%94%A8%E8%BD%AF%E4%BB%B6/</url>
-    <content><![CDATA[<p>有段时间，对于某些需求挺强烈的，但是也花了不少时间，不过可能也就那段时间用用罢了。或许可以整理一下，已经容易忘事了。<span id="more"></span></p>
-<h3 id="远程屏幕分享"><a href="#远程屏幕分享" class="headerlink" title="远程屏幕分享"></a>远程屏幕分享</h3><p>单纯的一对一进行屏幕分享，按照分享的画面质量，延迟，帧率，大致可以做一个排名。当然，都是白嫖的。</p>
-<p>发送方是电脑，接收方可以是电脑，或者是手机。</p>
-<p>B站直播&gt;网页&gt;Skype&gt;钉钉&gt;qq</p>
-<p>B站直播简单易行，除非是注意隐私，或者分享禁播游戏。</p>
-<p>网页：<a href="https://easychuan.cn/">轻松传 - 传文件，传文本，传屏幕，传实时视频 (easychuan.cn)</a></p>
-<p>网页分享屏幕帧率上限30帧，画面比较清晰，偶有卡顿。</p>
-<p>Skype：免费注册，使用无需翻墙（或许注册的时候要），本质是一个网络电话，可以视频通话并分享屏幕，非常稳定。</p>
-<p>钉钉和qq懂的都懂，不做评价。</p>
-<h3 id="远程同乐"><a href="#远程同乐" class="headerlink" title="远程同乐"></a>远程同乐</h3><p>steam自带的远程同乐，Parsec(网络要求较高，需要公网，参考比特彗星黄绿灯），搭建局域网可用樱花映射（账号需要实名认证，并在支付宝扫脸，支付宝必须是实名认证时所填的身份信息并且18+，需要扫脸。软件较为良心）。</p>
-]]></content>
-      <categories>
-        <category>储物间</category>
-      </categories>
-      <tags>
-        <tag>杂七杂八</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>求生之路2双人分屏归档</title>
-    <url>/2023/10/06/%E6%B1%82%E7%94%9F%E4%B9%8B%E8%B7%AF2%E5%8F%8C%E4%BA%BA%E5%88%86%E5%B1%8F%E5%BD%92%E6%A1%A3/</url>
-    <content><![CDATA[<p>本方式无需MOD，无需虚拟键盘等杂七杂八的玩意。可用于求生之路2本地分屏双人游玩。</p>
-<span id="more"></span>
-
-<p>按~键打开控制台。</p>
-<p>ss_map c1m1 　　　　　　　　　　　　　（选地图，默认为旅馆）</p>
-<details>  <summary><font size="4" color="orange">其余地图指令</font></summary>  <pre><code class="language-c">
-一，死亡中心
-c1m1_hotel            1旅馆
-c1m2_streets          2街道
-c1m3_mall             3购物中心
-c1m4_atrium           4中厅
-二，黑色狂欢节          
-c2m1_highway          1高速公路
-c2m2_fairgrounds      2游乐场
-c2m3_coaster          3过山车
-c2m4_barns            4谷仓
-c2m5_concert          5音乐会
-三，沼泽激战
-c3m1_plankcountry     1乡村
-c3m2_swamp            2沼泽
-c3m3_shantytown       3贫民窟
-c3m4_plantation       4种植园
-四，暴风骤雨
-c4m1_milltown_a       1密尔城
-c4m2_sugarmill_a      2糖厂
-c4m3_sugarmill_b      3逃离工厂
-c4m4_milltown_b       4重返小镇
-c4m5_milltown_escape  5逃离小镇
-五，郊区
-c5m1_waterfront       1码头
-c5m2_park             2公园
-c5m3_cemetery         3墓地
-c5m4_quarter          4特区
-c5m5_bridge           5桥
-</code> </pre> </details>
-
-<p>connect_splitscreen localhost 2　　　　　　（屏幕一分为二）</p>
-<p>sv_cheats 1　　　　　　　　　　　　　　（添加一位玩家，算是这么理解吧）</p>
-<p>ss_splitmode 1　　　　　　　　　　　　（上下分屏）</p>
-<p>ss_splitmode 2　　　　　　　　　　　　（左右分屏）</p>
-<p>BindToggle z in_forceuser 　　　　　　　（按z切换操控角色）</p>
-<p>此后则需要手动打开按键配置，设置键鼠端的操控按键（麻烦）。</p>
-<p>手柄的操控按键。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">十字键：</span><br><span class="line">↑开灯 ↓物品栏  ←医药包 →物品栏</span><br><span class="line">左摇杆：控制移动</span><br><span class="line">右摇杆：控制视角</span><br><span class="line">A跳跃 B换子弹 Y切换主/副武器 X互动</span><br><span class="line">LB蹲 LT推 RB转身 RT射击</span><br><span class="line">RS开镜 LS不知道</span><br></pre></td></tr></table></figure>
-
-
-
-<p>附两张键鼠默认按键配置图</p>
-
-
-<img src="/2023/10/06/%E6%B1%82%E7%94%9F%E4%B9%8B%E8%B7%AF2%E5%8F%8C%E4%BA%BA%E5%88%86%E5%B1%8F%E5%BD%92%E6%A1%A3/@4@U2OQ2HTHW_Q26F76C5D.png" class="" title="@4@U2OQ2HTHW_Q26F76C~5D">
-]]></content>
-      <categories>
-        <category>储物间</category>
-      </categories>
-      <tags>
-        <tag>杂七杂八</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>循环结构（未完）</title>
     <url>/2023/07/15/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/</url>
     <content><![CDATA[<h3 id="找最小值"><a href="#找最小值" class="headerlink" title="找最小值"></a>找最小值</h3><p>给出 .<em>n</em> 和 .<em>n</em> 个整数a<del>i</del> ，求这 <em>n</em> 个整数中最小值是什么。<span id="more"></span></p>
@@ -4311,6 +5411,31 @@ c5m5_bridge           5桥
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> k,i,j,t=<span class="number">0</span>,s=<span class="number">0</span>;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;k);</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=k;i++)          <span class="comment">//其实就是简单模拟，这里的i表示的是多少轮</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(t+i&lt;=k)              <span class="comment">//如果下一轮没有超过k天，直接加平方</span></span><br><span class="line">        &#123;</span><br><span class="line">            t+=i;                <span class="comment">//记天数</span></span><br><span class="line">            s+=i*i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(t+i&gt;k)            <span class="comment">//如果下一轮超过k天，加这一轮与k的差乘当前轮数</span></span><br><span class="line">        &#123;</span><br><span class="line">            s+=i*(k-t);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,s);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>我的方法是逐层相加，并在每一步进行天数比较。其它的求解则是干脆完整的执行一轮又一轮，比如5天，先求出“1+2+2+3+3+3”，再减一个3.而我是“1+2+2+3+3”，每一步都进行的比较。看来还是太暴力了，懒~</p>
+<h3 id="数列求和"><a href="#数列求和" class="headerlink" title="数列求和"></a>数列求和</h3><p><strong>题目描述</strong></p>
+<p>计算1＋2＋3＋·…＋(n - 1)＋n的值，其中正整数n不大于100。由于你没有高斯聪明，所以你不被允许使用等差数列求和公式直接求出答案。</p>
+<p><strong>输入格式</strong></p>
+<p>输入一个正整数n。</p>
+<p><strong>输出格式</strong></p>
+<p>输出一个正整数，表示最后求和的答案。</p>
+<img src="/2023/07/15/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/image-20231010095422150.png" class="" title="image-20231010095422150">
+
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> i,n,num=<span class="number">0</span>;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="keyword">for</span>(i=n;i&gt;<span class="number">0</span>;i--)</span><br><span class="line">	&#123;</span><br><span class="line">		num+=i;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,num);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="质数口袋"><a href="#质数口袋" class="headerlink" title="质数口袋"></a>质数口袋</h3><p><strong>题目描述</strong></p>
+<p>小A有一个质数口袋，里面可以装各个质数。他从2开始，依次判断各个自然数是不是质数，如果是质数就会把这个数字装入口袋。口袋的负载量就是口袋里的所有数字之和。但是口袋的承重量有限，装的质数的和不能超过L。给出L，请问口袋里能装下几个质数？将这些质数从小往大输出，然后输出最多能装下的质数的个数，数字之间用换行隔开。</p>
+<p><strong>输入格式</strong></p>
+<p>—行一个正整数L。</p>
+<p><strong>输出格式</strong></p>
+<p>将这些质数从小往大输出，然后输出最多能装下的质数个数，所有数字之间有一空行。</p>
+<img src="/2023/07/15/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/image-20231010100127386.png" class="" title="image-20231010100127386">
+
+<p>我只知道质数只能除1和它本身，并利用这点进行质数计算，存储到数组。当发现新的质数时，将对质数数组的和进行计算，并与输入进行比较。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i,n,num,a[<span class="number">50</span>],x=<span class="number">2</span>,y,flag;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(i=x<span class="number">-1</span>;i&gt;<span class="number">1</span>;i--)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>((x%i)==<span class="number">0</span>) flag=<span class="number">1</span>; <span class="comment">//判断是否为质数的标志位，不是质数标志位置1； </span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(flag==<span class="number">0</span>)            <span class="comment">//如果发现新的质数，将存放至数组并计算已有质数和。 </span></span><br><span class="line">		&#123;</span><br><span class="line">			a[y]=x;</span><br><span class="line">			<span class="keyword">for</span>(i=y;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">			&#123;</span><br><span class="line">				num = num+a[i];</span><br><span class="line">			&#125;</span><br><span class="line">			y++;</span><br><span class="line">		&#125;</span><br><span class="line">		flag = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">if</span>(num&gt;n)  <span class="keyword">break</span>;   <span class="comment">//质数和与输入比较，达到要求就结束循环。 </span></span><br><span class="line">		num = <span class="number">0</span> ;</span><br><span class="line">		x++;</span><br><span class="line">	&#125;  </span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">2</span>)  y++;         <span class="comment">//处理特例</span></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;y<span class="number">-1</span>;i++)    <span class="comment">//按需输出</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,a[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,y<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>好吧，尽管有效，但是无法通过洛谷的编译（真的，等我做完这几个题库，以后就去力扣了，想着由浅入深。）看了答案区，才发现有个<a href="https://baike.baidu.com/item/%E5%9F%83%E6%8B%89%E6%89%98%E6%96%AF%E7%89%B9%E5%B0%BC?fromModule=lemma_inlink">埃拉托斯特尼</a>筛法。好吧，这种方法的确高效，不必像我这样每个数进行判断。对于小范围的质数，达到题目的要求，我还是觉得我这个更好些。</p>
+<p>而且题解区和贴吧没啥两样，不同的是贴吧真有大神。找不到简洁清晰的C语言埃氏筛，就先这样吧。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main() </span><br><span class="line">&#123;</span><br><span class="line">    float a,b,s;</span><br><span class="line">    int x;</span><br><span class="line">    a=2;</span><br><span class="line">    scanf(&quot;%f.1&quot;,&amp;s);</span><br><span class="line">    while(1)</span><br><span class="line">    &#123;</span><br><span class="line">    	if(a&gt;=s) break;</span><br><span class="line">    	b=2*0.98;</span><br><span class="line">    	a+=b;</span><br><span class="line">    	x++;</span><br><span class="line">	&#125;</span><br><span class="line">	printf(&quot;%d&quot;,x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>洛谷C语言练习题目</category>
@@ -4405,6 +5530,70 @@ c5m5_bridge           5桥
       </categories>
   </entry>
   <entry>
+    <title>求生之路2双人分屏归档</title>
+    <url>/2023/10/06/%E6%B1%82%E7%94%9F%E4%B9%8B%E8%B7%AF2%E5%8F%8C%E4%BA%BA%E5%88%86%E5%B1%8F%E5%BD%92%E6%A1%A3/</url>
+    <content><![CDATA[<p>本方式无需MOD，无需虚拟键盘等杂七杂八的玩意。可用于求生之路2本地分屏双人游玩。</p>
+<span id="more"></span>
+
+<p>按~键打开控制台。</p>
+<p>ss_map c1m1 　　　　　　　　　　　　　（选地图，默认为旅馆）</p>
+<details>  <summary><font size="4" color="orange">其余地图指令</font></summary>  <pre><code class="language-c">
+一，死亡中心
+c1m1_hotel            1旅馆
+c1m2_streets          2街道
+c1m3_mall             3购物中心
+c1m4_atrium           4中厅
+二，黑色狂欢节          
+c2m1_highway          1高速公路
+c2m2_fairgrounds      2游乐场
+c2m3_coaster          3过山车
+c2m4_barns            4谷仓
+c2m5_concert          5音乐会
+三，沼泽激战
+c3m1_plankcountry     1乡村
+c3m2_swamp            2沼泽
+c3m3_shantytown       3贫民窟
+c3m4_plantation       4种植园
+四，暴风骤雨
+c4m1_milltown_a       1密尔城
+c4m2_sugarmill_a      2糖厂
+c4m3_sugarmill_b      3逃离工厂
+c4m4_milltown_b       4重返小镇
+c4m5_milltown_escape  5逃离小镇
+五，郊区
+c5m1_waterfront       1码头
+c5m2_park             2公园
+c5m3_cemetery         3墓地
+c5m4_quarter          4特区
+c5m5_bridge           5桥
+</code> </pre> </details>
+
+<p>connect_splitscreen localhost 2　　　　　　（屏幕一分为二）</p>
+<p>sv_cheats 1　　　　　　　　　　　　　　（添加一位玩家，算是这么理解吧）</p>
+<p>ss_splitmode 1　　　　　　　　　　　　（上下分屏）</p>
+<p>ss_splitmode 2　　　　　　　　　　　　（左右分屏）</p>
+<p>BindToggle z in_forceuser 　　　　　　　（按z切换操控角色）</p>
+<p>此后则需要手动打开按键配置，设置键鼠端的操控按键（麻烦）。</p>
+<p>手柄的操控按键。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">十字键：</span><br><span class="line">↑开灯 ↓物品栏  ←医药包 →物品栏</span><br><span class="line">左摇杆：控制移动</span><br><span class="line">右摇杆：控制视角</span><br><span class="line">A跳跃 B换子弹 Y切换主/副武器 X互动</span><br><span class="line">LB蹲 LT推 RB转身 RT射击</span><br><span class="line">RS开镜 LS不知道</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果用parsec串流，需要控制主机和客机的音量。默认是主机端开扬声器后，客机才有声音。当主机使用蓝牙耳机一类，那么客机就无法听到声音。所以可以使用混音软件。</p>
+<p>MEE耳机（A1）和WDM（A2）扬声器  电脑音乐选Aux</p>
+<p>附两张键鼠默认按键配置图</p>
+
+
+<img src="/2023/10/06/%E6%B1%82%E7%94%9F%E4%B9%8B%E8%B7%AF2%E5%8F%8C%E4%BA%BA%E5%88%86%E5%B1%8F%E5%BD%92%E6%A1%A3/@4@U2OQ2HTHW_Q26F76C5D.png" class="" title="@4@U2OQ2HTHW_Q26F76C~5D">
+]]></content>
+      <categories>
+        <category>储物间</category>
+      </categories>
+      <tags>
+        <tag>杂七杂八</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>第一篇博客</title>
     <url>/2023/07/02/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<p>　　其实做一个私人博客，是很早前就有的想法。最早是追溯到小学吧，觉得这是一件很酷的事情。就像是精心的养QQ空间的花给来访者看或者是配置背景音乐（后来需要绿钻）。<span id="more"></span>大抵在初中和高中，觉得自己会有一些比较有趣的想法，或者一些想做的事情，先记着，以后会做。当然，现在慢慢淡忘了，仅有一些，记载在高中的笔记本，亦或是回忆。那时候懒，不想写东西，也不愿留下什么。拍照也仅仅是消遣。  </p>
@@ -4419,25 +5608,25 @@ c5m5_bridge           5桥
   </entry>
   <entry>
     <title>说说(2023)</title>
-    <url>/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/</url>
+    <url>/2023/12/31/%E8%AF%B4%E8%AF%B4(2023)/</url>
     <content><![CDATA[<p>　　<span id="more"></span>曾在初中高中的时候，想过说说的意义。当初是觉得别人发一条说说，很多人点赞，好厉害的样子。当时自己是不爱发说说的，那时候有相机记录生活，有kindle阅读世界，也有游戏机。不过到现在，自己倒是很平常的分享自己的日常了，说是分享，其实更多是记录，记录自己的生活，所以也开始发说说了，原本是仅自己可见，不过有些事，还是希望能让更多人知道。像是传教般，也渴望有人能在自己感兴趣的东西上交流。原来我的好友里，也有对这方面有兴趣的人啊。。。。。。不过直到现在，还是觉得自己记录就好了，或许现在还不习惯博客的载体，觉得比动动手指，发个QQ空间或者朋友圈要麻烦的多，希望自己能在这记载。相较于云上的存储，自己更安心能在本地，或者硬盘上存储自己的回忆。</p>
 <h3 id="2023-7-26"><a href="#2023-7-26" class="headerlink" title="2023-7-26"></a>2023-7-26</h3><p>　　虽然她中考考差了，不过也是走出来了。倒是和之前想的一样，不过调整的时间还是蛮久的。这有点超乎意料，决定再复读一年也蛮好。希望她能加油，湖南的教育真的是太卷了。如果我以后有孩子，不希望看到ta和她一样。真的太累了。她决定暑假好好玩玩。倒也行。反正8月13号开学，也快。当是劳逸结合吧。</p>
 <h3 id="2023-7-XX"><a href="#2023-7-XX" class="headerlink" title="2023-7-XX"></a>2023-7-XX</h3><p>　　因为实际上自己是8月14才决定试着写博客。这些事情或许是回忆，不过都有些繁琐。博客美化的挺满意的，因此也很乐意用它记述。不过本来是以说说为目的，到后面可能会变成日志了。还是决定记载后面的事吧，这个暑假，亦失亦得，事不少。</p>
 <h3 id="2023-8-14"><a href="#2023-8-14" class="headerlink" title="2023-8-14"></a>2023-8-14</h3><p>时间过的好快，还有半个月就开学了。计划还是赶不上变化，自己应该在这个暑假，把车车搞好，小四轴焊好，至少调试没问题，四轴的深入研究可以等到以后。</p>
-<img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/image-20230814235033738.png" class="" title="image-20230814235033738">
+<img src="/2023/12/31/%E8%AF%B4%E8%AF%B4(2023)/image-20230814235033738.png" class="" title="image-20230814235033738">
 
 <p>2023年9月8日，《YOSHIKI：UNDER THE SKY》记录片开播了，我觉得叫《天空之下》还不错，或许可以期待一手，不过没有到中国上映，也是偏冷门，希望能在10月初能看到资源，并且有翻译。这可以期待一手的，当初也是因为纪录片，才对X  JAPAN感兴趣。或许天空之下能带给我更多的惊喜。（但是林老板鸽了6年的新专辑呢？不会真打算10年磨一剑吧。。）</p>
 <h3 id="2023-9-3"><a href="#2023-9-3" class="headerlink" title="2023-9-3"></a>2023-9-3</h3><p>新学期了，今天发教材，发现stm32那本书我买过？还稍微看了一下。不过一般还是去B站看的。（突然感觉我又可以翘课了）</p>
 <p>贴一下，我原本是看到画才关注画师（優子鈴），觉得色彩很棒。</p>
-<img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/20230903_152234.jpg" class="" title="20230903_152234">
+<img src="/2023/12/31/%E8%AF%B4%E8%AF%B4(2023)/20230903_152234.jpg" class="" title="20230903_152234">
 
 <p>后面喜欢这幅画的神情，不过上色感觉有点杂</p>
-<img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/20230901_150639.jpg" class="" title="20230901_150639">
+<img src="/2023/12/31/%E8%AF%B4%E8%AF%B4(2023)/20230901_150639.jpg" class="" title="20230901_150639">
 
 <p>将我妹的小玩意布置了一下，似乎还不错？</p>
-<img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/IMG20230901233238.jpg" class="" title="IMG20230901233238">
+<img src="/2023/12/31/%E8%AF%B4%E8%AF%B4(2023)/IMG20230901233238.jpg" class="" title="IMG20230901233238">
 
-<img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/IMG20230902001659-16937269066041.jpg" class="" title="IMG20230902001659">
+<img src="/2023/12/31/%E8%AF%B4%E8%AF%B4(2023)/IMG20230902001659-16937269066041.jpg" class="" title="IMG20230902001659">
 
 <p>（或许整理好电脑桌面再拍会更好些)。</p>
 <h3 id="2023-9-5"><a href="#2023-9-5" class="headerlink" title="2023-9-5"></a>2023-9-5</h3><p>看到鸽子，理解鸽子，成为鸽子。</p>
@@ -4445,22 +5634,22 @@ c5m5_bridge           5桥
 <p>　　</p>
 <p>　　</p>
 <p>　　</p>
-<img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/image-20230907193520666.png" class="" title="image-20230907193520666">
+<img src="/2023/12/31/%E8%AF%B4%E8%AF%B4(2023)/image-20230907193520666.png" class="" title="image-20230907193520666">
 
 <p>难得今天大更一下，灾难性的目录栏，自己甚至考虑到要更换音乐插件，为底部模式了，然后是各种头疼，自己当初可是东一铲西一铲，自己都不知道该翻哪里的屎堆，所幸只是hexo解析md目录只能支持逐级目录，而我经常越级，改好后上传，还算可以。</p>
-<img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/image-20230907194355312.png" class="" title="image-20230907194355312">
+<img src="/2023/12/31/%E8%AF%B4%E8%AF%B4(2023)/image-20230907194355312.png" class="" title="image-20230907194355312">
 
-<h3 id="2023-9-13"><a href="#2023-9-13" class="headerlink" title="2023-9-13"></a>2023-9-13</h3><img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/Screenshot_2023-09-13-20-25-16-34_0b2fce7a16bf2b7.jpg" class="" title="Screenshot_2023-09-13-20-25-16-34_0b2fce7a16bf2b7">
+<h3 id="2023-9-13"><a href="#2023-9-13" class="headerlink" title="2023-9-13"></a>2023-9-13</h3><img src="/2023/12/31/%E8%AF%B4%E8%AF%B4(2023)/Screenshot_2023-09-13-20-25-16-34_0b2fce7a16bf2b7.jpg" class="" title="Screenshot_2023-09-13-20-25-16-34_0b2fce7a16bf2b7">
 
 <p>　　想不到这么快就48周年了啊，时间过得真快，这是我入坑pinkfloyd的歌。虽然当初乐队的其它歌一首也听不进，但有一天，我听不惯的歌，它的旋律在我心中响起，从此就一发不可收拾了一段时间。看到类似的构图，有人在底下评论“wish you were here?”仍会觉得感动。似乎真有可以共鸣的人。不过顺提一嘴，现在看哆啦A梦比小时候感动多了，似乎更能理解藤子老师构筑的世界。不过我要是有一件道具能让我喜欢的人也喜欢我，那就好了。或许自己以后也不需要这个道具。</p>
 <h3 id="2023-9-22"><a href="#2023-9-22" class="headerlink" title="2023-9-22"></a>2023-9-22</h3><p>　　今天把我妹的小玩意重新摆了一下，感觉还不错！</p>
-<img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/IMG20230922001205.jpg" class="" title="IMG20230922001205">
+<img src="/2023/12/31/%E8%AF%B4%E8%AF%B4(2023)/IMG20230922001205.jpg" class="" title="IMG20230922001205">
 
-<img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/IMG20230922001359.jpg" class="" title="IMG20230922001359">
+<img src="/2023/12/31/%E8%AF%B4%E8%AF%B4(2023)/IMG20230922001359.jpg" class="" title="IMG20230922001359">
 
-<img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/IMG20230922000826.jpg" class="" title="IMG20230922000826">
+<img src="/2023/12/31/%E8%AF%B4%E8%AF%B4(2023)/IMG20230922000826.jpg" class="" title="IMG20230922000826">
 
-<img src="/2023/08/14/%E8%AF%B4%E8%AF%B4(2023)/IMG20230922001554.jpg" class="" title="IMG20230922001554">
+<img src="/2023/12/31/%E8%AF%B4%E8%AF%B4(2023)/IMG20230922001554.jpg" class="" title="IMG20230922001554">
 
 <p>　　可能这是小废灯唯一的用处了。（不得不说磨砂的光线真的比全透的好）。看着就感觉我是个生活讲究，富有高雅情操的人。</p>
 <h3 id="2023-9-27"><a href="#2023-9-27" class="headerlink" title="2023-9-27"></a>2023-9-27</h3><p>　　期待国庆ing…..</p>
@@ -4468,6 +5657,12 @@ c5m5_bridge           5桥
 <p>　　还是决定不换系统吧，国内无法访问或许有其他办法，现在已经在<strong>EU.org</strong>上申请注册了一个域名了，（当然是白嫖的），坐等申请结果。或许能解决这个问题。</p>
 <p>　　尝试引入加密博客，当然，都是自己的小秘密一类，现在比较担心的，只是挂载在github容易被破解？（一般没人这么闲的吧）。加密博客应该不难，希望自己不要滥用。如果能实现自动定期开放，那么Tomb的功能也能实现了。 不过自己希望能在进入加密博客时，背景和挂件与首页不同。比如炫酷乱飞的七彩代码，阴暗幽冥的BGM，仿佛你发现了美丽的shelter暗藏在阴影处的秘密！或许会很好玩吧，或许。。。</p>
 <h3 id="2023-10-8"><a href="#2023-10-8" class="headerlink" title="2023-10-8"></a>2023-10-8</h3><p>　　国庆带电脑回去，结果忘带充电器了，包括nds和3ds都没带。最后还是捡起了我吃灰的kindle，看着里面一大堆杂乱的漫画。当然想整理，却发现只能在kindle设备上一本一本的勾选，繁琐。我无法在电脑上像建文件夹一样对漫画归类。然后开始越狱，然后发现自己的版本过高，即使是短接或者TTL，都没有公开的办法。（当然，淘宝店可以）。随后还是作罢，这笔账我先记着。亚马逊都退出中国了，给你关上门的时候，顺手帮你把窗给关了。临走前升级系统，堵了各种漏洞。（当然，老任的3ds也是，所幸我还是手快）。</p>
+<h3 id="2023-10-17"><a href="#2023-10-17" class="headerlink" title="2023-10-17"></a>2023-10-17</h3><p>　　原本用的评论系统，只能翻墙才能评论，听闻申请了一个二级域名替换一下就行了，不过向EU,ORG申请的域名迟迟没有结果，用阿里云申请的域名捣鼓的又不行，涉及了太多了知识盲区，索性更换了一个系统——畅言。但个人其实非常不喜欢它，评论需要登录（最主要原因），不喜欢样式和冗余的管理系统。不过安装还是挺简单的。等申请的域名下发了，再换回Waline。</p>
+<h3 id="2023-10-28"><a href="#2023-10-28" class="headerlink" title="2023-10-28"></a>2023-10-28</h3><p>　　申请的域名还是没有消息，另外，如果我真有个妹妹，我感觉我都要疯了。感觉现实没有想象中的那么美好。</p>
+<h3 id="2023-11-6"><a href="#2023-11-6" class="headerlink" title="2023-11-6"></a>2023-11-6</h3><p>　　大师居然拍毕业照了，突然发现时间过的好快。忽然就有些迷茫，问了大师毕业去向，她也不知道。不论如何，自己似乎有些迷茫，或许真的时不我待了吧。算了算时间，我也刚好和姐一起毕业了。想起前些天找老师交流，或许我并不是特别热爱这行，但是又觉得这行比较轻松摸鱼，动动手也能整些小玩意玩，毕业后自己比较满意的，就是随便找一家公司，当个摸鱼的上班族。</p>
+<p>　　似乎也不过如此，总感觉会和姐和大师渐行渐远。我妹的话，至少也有3年吧。3年后看缘分。我现在不知道自己的情感需求是什么了。有时候觉得自己身边拥有一切，但似乎都可以别离。现在是我妹，以后呢？</p>
+<p>　　或许以后上班摸摸鱼，下班打打游戏，然后再想办法沉浸一个个世界。在对世界的感知中消磨时间，应该再好不过了。</p>
+<p>　　但现在的确没什么时间了，多少得加把劲。我现在的野心就是混入好公司，然后摸鱼。轻松上班拿薪，下班享乐。尽可能长时间的享乐才是我的目标。</p>
 ]]></content>
       <categories>
         <category>说说</category>

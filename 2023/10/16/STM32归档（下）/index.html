@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="个人学习笔记，因为STM32归档越来越长（怕目录太长出问题），所以有了下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STM32归档（下）">
+<meta property="og:url" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/index.html">
+<meta property="og:site_name" content="来自星星的弦乐">
+<meta property="og:description" content="个人学习笔记，因为STM32归档越来越长（怕目录太长出问题），所以有了下。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017100133237.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017100448237.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101034445.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101135745.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101630300.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101927913.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017103533941.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017103543583.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017103904501.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017104007377.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017104053149.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018084608575.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018084638732.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018084759528.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090147960.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090159079.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090613475.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090849895.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018091413370.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018091543354.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100349831.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100439583.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100533249.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100801037.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100928963.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100939975.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021144801473.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021145137608.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160333584.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160419734.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160504117.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160533341.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160616896.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160653541.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021161150625.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162610968.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162638853.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162831064.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162932666.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163047497.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163200365-16978771242631.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163235865.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163239383.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163249323.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021172150480.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021230447228.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231022000603924.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231022001711028.png">
+<meta property="og:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231022001734433.png">
+<meta property="article:published_time" content="2023-10-16T13:07:30.000Z">
+<meta property="article:modified_time" content="2023-10-23T12:56:07.373Z">
+<meta property="article:author" content="星戏溪行">
+<meta property="article:tag" content="单片机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017100133237.png">
+
+
+<link rel="canonical" href="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/","path":"2023/10/16/STM32归档（下）/","title":"STM32归档（下）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>STM32归档（下） | 来自星星的弦乐</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?2adf217e938bc0432386afe319c0e750"></script>
+
+
+
+
+
+
+<link rel="dns-prefetch" href="waline-ecru-theta.vercel.app">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">来自星星的弦乐</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">| ❀ ❀ ❀ 踏梦携猫荡蓝海 ❀ ❀ ❀| | ☆ ☆ ☆ 引虹径行启银光 ☆ ☆ ☆|</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-茶馆"><a href="/comments/" rel="section"><i class="fas fa-comments fa-fw"></i>茶馆</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#I2C%E9%80%9A%E4%BF%A1"><span class="nav-number">1.</span> <span class="nav-text">I2C通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#I2C%E8%BD%AF%E4%BB%B6%E6%A8%A1%E6%8B%9F%E9%80%9A%E4%BF%A1"><span class="nav-number">1.1.</span> <span class="nav-text">I2C软件模拟通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#I2C%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.1.</span> <span class="nav-text">I2C简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E7%94%B5%E8%B7%AF"><span class="nav-number">1.1.2.</span> <span class="nav-text">硬件电路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I2C%E6%97%B6%E5%BA%8F%E5%9F%BA%E6%9C%AC%E5%8D%95%E5%85%83"><span class="nav-number">1.1.3.</span> <span class="nav-text">I2C时序基本单元</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%B8%A7%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.1.4.</span> <span class="nav-text">数据帧示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MPU6050"><span class="nav-number">1.2.</span> <span class="nav-text">MPU6050</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.2.1.</span> <span class="nav-text">程序示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STM32%E7%A1%AC%E4%BB%B6I2C%E9%80%9A%E4%BF%A1"><span class="nav-number">1.3.</span> <span class="nav-text">STM32硬件I2C通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#I2C%E5%A4%96%E8%AE%BE%E7%AE%80%E4%BB%8B"><span class="nav-number">1.3.1.</span> <span class="nav-text">I2C外设简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I2C%E6%A1%86%E5%9B%BE"><span class="nav-number">1.3.2.</span> <span class="nav-text">I2C框图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I2C%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.3.</span> <span class="nav-text">I2C基本结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E6%9C%BA%E5%8F%91%E9%80%81"><span class="nav-number">1.3.4.</span> <span class="nav-text">主机发送</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E6%9C%BA%E6%8E%A5%E6%94%B6"><span class="nav-number">1.3.5.</span> <span class="nav-text">主机接收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6-x2F-%E7%A1%AC%E4%BB%B6%E6%B3%A2%E5%BD%A2%E5%AF%B9%E6%AF%94"><span class="nav-number">1.3.6.</span> <span class="nav-text">软件&#x2F;硬件波形对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E7%A4%BA%E4%BE%8B-1"><span class="nav-number">1.3.7.</span> <span class="nav-text">程序示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#I2C%E7%BC%BA%E7%82%B9"><span class="nav-number">1.4.</span> <span class="nav-text">I2C缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SPI%E9%80%9A%E4%BF%A1"><span class="nav-number">2.</span> <span class="nav-text">SPI通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SPI%E8%BD%AF%E4%BB%B6%E6%A8%A1%E6%8B%9F%E9%80%9A%E4%BF%A1"><span class="nav-number">2.1.</span> <span class="nav-text">SPI软件模拟通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SPI%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.1.</span> <span class="nav-text">SPI简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E7%94%B5%E8%B7%AF-1"><span class="nav-number">2.1.2.</span> <span class="nav-text">硬件电路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E4%BD%8D%E7%A4%BA%E6%84%8F%E5%9B%BE"><span class="nav-number">2.1.3.</span> <span class="nav-text">移位示意图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SPI%E6%97%B6%E5%BA%8F%E5%9F%BA%E6%9C%AC%E5%8D%95%E5%85%83"><span class="nav-number">2.1.4.</span> <span class="nav-text">SPI时序基本单元</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SPI%E6%97%B6%E5%BA%8F"><span class="nav-number">2.1.5.</span> <span class="nav-text">SPI时序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#W25Q64"><span class="nav-number">2.2.</span> <span class="nav-text">W25Q64</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E7%A4%BA%E4%BE%8B-2"><span class="nav-number">2.2.1.</span> <span class="nav-text">程序示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STM32%E7%A1%AC%E4%BB%B6SPI%E9%80%9A%E4%BF%A1"><span class="nav-number">2.3.</span> <span class="nav-text">STM32硬件SPI通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SPI%E5%A4%96%E8%AE%BE%E7%AE%80%E4%BB%8B"><span class="nav-number">2.3.1.</span> <span class="nav-text">SPI外设简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E6%A8%A1%E5%BC%8F%E5%85%A8%E5%8F%8C%E5%B7%A5%E8%BF%9E%E7%BB%AD%E4%BC%A0%E8%BE%93"><span class="nav-number">2.3.2.</span> <span class="nav-text">主模式全双工连续传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E8%BF%9E%E7%BB%AD%E4%BC%A0%E8%BE%93"><span class="nav-number">2.3.3.</span> <span class="nav-text">非连续传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6-x2F-%E7%A1%AC%E4%BB%B6%E6%B3%A2%E5%BD%A2%E5%AF%B9%E6%AF%94-1"><span class="nav-number">2.3.4.</span> <span class="nav-text">软件&#x2F;硬件波形对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E7%A4%BA%E4%BE%8B-3"><span class="nav-number">2.3.5.</span> <span class="nav-text">程序示例</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+			<link rel="stylesheet" href="/dist/APlayer.min.css">  
+			<div id="aplayer"></div>
+			<script type="text/javascript" src="/dist/APlayer.min.js"></script>
+			<script type="text/javascript" src="/dist/music.js"></script>
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="星戏溪行"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">星戏溪行</p>
+  <div class="site-description" itemprop="description">我和挚友的Shelter</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="星戏溪行">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="来自星星的弦乐">
+      <meta itemprop="description" content="我和挚友的Shelter">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="STM32归档（下） | 来自星星的弦乐">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          STM32归档（下）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-10-16 21:07:30" itemprop="dateCreated datePublished" datetime="2023-10-16T21:07:30+08:00">2023-10-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-10-23 20:56:07" itemprop="dateModified" datetime="2023-10-23T20:56:07+08:00">2023-10-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/stm32%E5%BD%92%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">stm32归档</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>43 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>个人学习笔记，因为STM32归档越来越长（怕目录太长出问题），所以有了下。<span id="more"></span></p>
+<h1 id="I2C通信"><a href="#I2C通信" class="headerlink" title="I2C通信"></a>I2C通信</h1><h2 id="I2C软件模拟通信"><a href="#I2C软件模拟通信" class="headerlink" title="I2C软件模拟通信"></a>I2C软件模拟通信</h2><h3 id="I2C简介"><a href="#I2C简介" class="headerlink" title="I2C简介"></a>I2C简介</h3><p>•　I2C（Inter IC Bus）是由Philips公司开发的一种通用数据总线</p>
+<p>•　两根通信线：SCL（Serial Clock）、SDA（Serial Data）</p>
+<p>•　同步，半双工</p>
+<p>•　带数据应答</p>
+<p>•　支持总线挂载多设备（一主多从、多主多从）</p>
+<h3 id="硬件电路"><a href="#硬件电路" class="headerlink" title="硬件电路"></a>硬件电路</h3><p>•　所有I2C设备的SCL连在一起，SDA连在一起</p>
+<p>•　设备的SCL和SDA均要配置成开漏输出模式</p>
+<p>•　SCL和SDA各添加一个上拉电阻，阻值一般为4.7KΩ左右</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017100133237.png" class="" title="image-20231017100133237">
+
+<p>开漏输出模式有个线与的现象，只要有一个设备输出低电平，总线就处于低电平。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017100448237.png" class="" title="image-20231017100448237">
+
+<p>SCLKN1OUT输出低电平时，mos管导通。输出高电平时，MOS管断开，处于浮空输入。</p>
+<h3 id="I2C时序基本单元"><a href="#I2C时序基本单元" class="headerlink" title="I2C时序基本单元"></a>I2C时序基本单元</h3><p><strong>起始条件：</strong></p>
+<p>SCL高电平期间，SDA从高电平切换到低电平</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101034445.png" class="" title="image-20231017101034445">
+
+<p><strong>终止条件：</strong></p>
+<p>SCL高电平期间，SDA从低电平切换到高电平</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101135745.png" class="" title="image-20231017101135745">
+
+
+
+
+
+<p>只能由主机产生起始或终止条件，从机不允许，且SCL和SDA置高电平都由上拉电阻实现。</p>
+<p><strong>发送一个字节：</strong></p>
+<p>SCL低电平期间，主机将数据位依次放到SDA线上（<strong>高位先行</strong>），然后释放SCL，<strong>从机将在SCL高电平期间读取数据位</strong>，所以SCL高电平期间SDA不允许有数据变化，依次循环上述过程8次，即可发送一个字节</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101630300.png" class="" title="image-20231017101630300">
+
+
+
+<p>一般情况下，当SCL产生上升沿时，从机就从SDA读取数据完毕，所以主机需要提前放置数据置SDA。</p>
+<p><strong>接收一个字节：</strong></p>
+<p>SCL低电平期间，从机将数据位依次放到SDA线上（<strong>高位先行</strong>），然后释放SCL，<strong>主机将在SCL高电平期间读取数据位</strong>，所以SCL高电平期间SDA不允许有数据变化，依次循环上述过程8次，即可接收一个字节（主机在接收之前，需要释放SDA）</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101927913.png" class="" title="image-20231017101927913">
+
+
+
+<p><strong>发送应答：</strong></p>
+<p>主机在接收完一个字节之后，在下一个时钟发送一位数据，数据0表示应答，数据1表示非应答</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017103533941.png" class="" title="image-20231017103533941">
+
+
+
+<p><strong>接收应答：</strong></p>
+<p>主机在发送完一个字节之后，在下一个时钟接收一位数据，判断从机是否应答，数据0表示应答，数据1表示非应答（主机在接收之前，需要释放SDA）</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017103543583.png" class="" title="image-20231017103543583">
+
+
+
+<p>应答功能可用于判断数据是否传输成功，也可以用于判断是否需要继续传输。</p>
+<h3 id="数据帧示例"><a href="#数据帧示例" class="headerlink" title="数据帧示例"></a>数据帧示例</h3><p><strong>指定地址写</strong>：</p>
+<p>对于指定设备（Slave Address），在指定地址（Reg Address）下，写入指定数据（Data）。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017103904501.png" class="" title="image-20231017103904501">
+
+<p><strong>当前地址读：</strong></p>
+<p>对于指定设备（Slave Address），在当前地址指针指示的地址下，读取从机数据（Data）</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017104007377.png" class="" title="image-20231017104007377">
+
+<p><strong>指定地址读：</strong></p>
+<p>对于指定设备（Slave Address），在指定地址（Reg Address）下，读取从机数据（Data）。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017104053149.png" class="" title="image-20231017104053149">
+
+
+
+<h2 id="MPU6050"><a href="#MPU6050" class="headerlink" title="MPU6050"></a>MPU6050</h2><p><strong>MPU6050简介：</strong></p>
+<p>•　MPU6050是一个6轴姿态传感器，可以测量芯片自身X、Y、Z轴的加速度、角速度参数，通过数据融合，可进一步得到姿态角（欧拉角），常应用于平衡车、飞行器等需要检测自身姿态的场景</p>
+<p>•　3轴加速度计（Accelerometer）：测量X、Y、Z轴的加速度</p>
+<p>•　3轴陀螺仪传感器（Gyroscope）：测量X、Y、Z轴的角速度</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018084608575.png" class="" title="image-20231018084608575">
+
+<p>芯片上会有个小图标标示x与y轴。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018084638732.png" class="" title="image-20231018084638732">
+
+<p>加速度计可以理解为一个弹簧测力计，当物体有加速度时，将使弹簧受力，改变电位器。</p>
+<p>另外，该加速度计只具有静态稳定性，不具备动态稳定性。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018084759528.png" class="" title="image-20231018084759528">
+
+<p>而陀螺仪传感器只具有动态稳定性，不具备静态稳定性。</p>
+<p><strong>MPU6050参数：</strong></p>
+<p>•　16位ADC采集传感器的模拟信号，量化范围：-32768~32767</p>
+<p>•　加速度计满量程选择：±2、±4、±8、±16（g）</p>
+<p>•　陀螺仪满量程选择： ±250、±500、±1000、±2000（°&#x2F;sec）</p>
+<p>•　可配置的数字低通滤波器</p>
+<p>•　可配置的时钟源</p>
+<p>•　可配置的采样分频</p>
+<p>•　I2C从机地址：1101000（AD0&#x3D;0） 1101001（AD0&#x3D;1）</p>
+<p>值得注意的是，I2C的数据格式为8位一个包，地址位为7位，此后有一位为读写位。所以写入MPU6050的地址为0x68再或上读写位，也可以直接写入0xD0，读写位和地址位合为一个8位数据。</p>
+<p><strong>硬件电路：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090147960.png" class="" title="image-20231018090147960">
+
+<p>整体硬件电路由左上角的稳压器，左下引出排针和右侧芯片组成，有排针引脚可知该硬件支持拓展。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090159079.png" class="" title="image-20231018090159079">
+
+
+
+<p>另外，在配置硬件的自由落体检测，运动检测等，可触发INT输出中段信号。</p>
+<p><strong>MPU6050框图：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090613475.png" class="" title="image-20231018090613475">
+
+
+
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090849895.png" class="" title="image-20231018090849895">
+
+
+
+<p><strong>MPU6050的I2C通信格式：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018091413370.png" class="" title="image-20231018091413370">
+
+
+
+<p><strong>寄存器地址：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018091543354.png" class="" title="image-20231018091543354">
+
+<p>Addr(Hex)：16进制地址</p>
+<p>Addr(Dec)：10进制地址</p>
+<p>Register Name：寄存器名称</p>
+<p>SerialI&#x2F;F：读写权限</p>
+<p>在文档“RM-MPU-6000A”中有该硬件的寄存器表，通过此表，可得知相应的寄存器地址。如果需要读取特定的寄存器数据（比如加速度计的数据）可由此表查询地址。当然，也可以写入命名到寄存器，用于设置硬件模式等等。</p>
+<p>所有寄存器上电默认为0x00，除了107号寄存器上电默认为0x40(睡眠)，117号寄存器为0x68。</p>
+<h3 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h3>
+
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"                  // Device header
+#include "Delay.h"
+#include "OLED.h"
+#include "MPU6050.h"
+uint8_t ID;                 //设备ID号
+int16_t AX,AY,AZ,GX,GY,GZ;  //xyz加速度和角速度
+int main(void)
+&#123;
+    //初始化
+    OLED_Init();
+    MPU6050_Init();
+    ID = MPU6050_GetID();        //获取设备ID号
+    OLED_ShowString(1,1,"ID:");
+    OLED_ShowHexNum(1,4,ID,2);
+    while (1)
+    &#123;
+MPU6050_GetData(&AX,&AY,&AZ,&GX,&GY,&GZ);   //获取加速度和角速度的参数
+        OLED_ShowSignedNum(2,1,AX,5);
+        OLED_ShowSignedNum(3,1,AY,5);
+        OLED_ShowSignedNum(4,1,AZ,5);
+        OLED_ShowSignedNum(2,8,GX,5);
+        OLED_ShowSignedNum(3,8,GY,5);
+        OLED_ShowSignedNum(4,8,GZ,5);
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MyI2c.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"
+#include "Delay.h"
+void MyI2C_W_SCL(uint8_t BitValue)  //封装写SCL（时钟线）函数，并加上小延时确保相应。
+&#123;
+    GPIO_WriteBit(GPIOB,GPIO_Pin_10,(BitAction)BitValue);
+    Delay_us(10);
+&#125;
+void MyI2C_W_SDA(uint8_t BitValue)  //封装写SDA（数据线）函数，
+&#123;
+    GPIO_WriteBit(GPIOB,GPIO_Pin_11,(BitAction)BitValue);
+    Delay_us(10);
+&#125;
+uint8_t MyI2C_R_SDA(void)    //读SDA
+&#123;
+    uint8_t BitValue;
+    BitValue = GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_11);
+    Delay_us(10);
+    return BitValue;
+&#125;
+void MyI2C_Init(void)   //初始化
+&#123;
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB,&GPIO_InitStructure);
+    GPIO_SetBits(GPIOB,GPIO_Pin_10 | GPIO_Pin_11);  //初始化I2C双线为高电平
+&#125;
+void MyI2C_Start(void)  //启动
+&#123;
+    MyI2C_W_SDA(1);
+    MyI2C_W_SCL(1);
+    MyI2C_W_SDA(0);
+    MyI2C_W_SCL(0);
+&#125;
+void MyI2C_STOP(void)  //停止
+&#123;
+    MyI2C_W_SDA(0);
+    MyI2C_W_SCL(1);
+    MyI2C_W_SDA(1);
+&#125;
+void MyI2C_SendByte(uint8_t Byte)  //发送一位字节
+&#123;
+    uint8_t i;
+    for(i=0;i<8;i++)
+    &#123;
+        MyI2C_W_SDA(Byte & (0x80 >> i));
+        MyI2C_W_SCL(1);
+        MyI2C_W_SCL(0);
+    &#125;
+&#125;
+uint8_t MyI2C_ReceiveByte(void)  //接收一位字节
+&#123;
+    uint8_t i,Byte = 0x00;
+    for(i=0;i<8;i++)
+    &#123;
+        MyI2C_W_SDA(1);
+        MyI2C_W_SCL(1);
+        if(MyI2C_R_SDA() == 1) Byte |= (0x80>>i);
+        MyI2C_W_SCL(0);	
+    &#125;
+    return Byte;
+&#125;
+void MyI2C_SendAck(uint8_t AckBit)  //发送应答
+&#123;
+    MyI2C_W_SDA(AckBit);
+    MyI2C_W_SCL(1);
+    MyI2C_W_SCL(0);
+&#125;
+uint8_t MyI2C_ReceiveAck(void)      //接收应答
+&#123;
+    uint8_t AckBit;
+    MyI2C_W_SDA(1);
+    MyI2C_W_SCL(1);
+    AckBit = MyI2C_R_SDA();
+    MyI2C_W_SCL(0);	
+    return AckBit;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MPU6050.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h" 
+#include "MyI2C.h"
+#include "MPU6050_Reg.h"
+#define MPU6050_ADDRESS 0xD0      //宏定义MPU6050地址，应该为0x68,0xD0为7位地址或上读写位的整合。
+void MPU6050_WriteReg(uint8_t RegAddress,uint8_t Data)   //指定地址写数据
+&#123;
+    MyI2C_Start();
+    MyI2C_SendByte(MPU6050_ADDRESS);
+    MyI2C_ReceiveAck();
+    MyI2C_SendByte(RegAddress);
+    MyI2C_ReceiveAck();
+    MyI2C_SendByte(Data);      //如果需要连续写多个字节，可用for循环执行注释的这两句。
+    MyI2C_ReceiveAck();        //当写入多字节时，每写入一个字节，地址自动+1。
+    MyI2C_STOP();
+&#125;
+uint8_t MPU6050_ReadReg(uint8_t RegAddress)       //指定地址读数据
+&#123;
+    uint8_t Data;
+    //第一个起始条件发送地址
+    MyI2C_Start();
+    MyI2C_SendByte(MPU6050_ADDRESS);
+    MyI2C_ReceiveAck();
+    MyI2C_SendByte(RegAddress);
+    MyI2C_ReceiveAck();
+    //第二个起始条件读地址，读写地址位重新指定，通信协议读写位只能在起始条件后的一个字节设定。
+    MyI2C_Start();
+    MyI2C_SendByte(MPU6050_ADDRESS | 0x01);        //指定地址或上“读数据”位
+    MyI2C_ReceiveAck();
+    Data = MyI2C_ReceiveByte();
+    MyI2C_SendAck(1);
+    MyI2C_STOP();
+    return Data;
+&#125;
+void MPU6050_Init(void)
+&#123;
+    MyI2C_Init();
+    MPU6050_WriteReg(MPU6050_PWR_MGMT_1, 0x01);        //解除睡眠，时钟源为陀螺仪时钟
+    MPU6050_WriteReg(MPU6050_PWR_MGMT_2, 0x00);        //6轴一直启用，均不待机
+    MPU6050_WriteReg(MPU6050_SMPLRT_DIV, 0x09);        //采样分频为10
+    MPU6050_WriteReg(MPU6050_CONFIG, 0x06);            //滤波参数为最大
+    MPU6050_WriteReg(MPU6050_GYRO_CONFIG, 0x18);       //陀螺仪为最大量程
+    MPU6050_WriteReg(MPU6050_ACCEL_CONFIG, 0x18);      //加速度为最大量程
+&#125;
+uint8_t MPU6050_GetID(void)		//获取设备ID号
+&#123;
+    return MPU6050_ReadReg(MPU6050_WHO_AM_I);
+&#125;
+void MPU6050_GetData(int16_t *AccX, int16_t *AccY, int16_t *AccZ,
+                     int16_t *GyroX, int16_t *GyroY, int16_t *GyroZ)  //获取搜集的参数
+&#123;
+    uint8_t DataH, DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_L);
+    *AccX = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_L);
+    *AccY = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_L);
+    *AccZ = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_XOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_XOUT_L);
+    *GyroX = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_YOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_YOUT_L);
+    *GyroY = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_L);
+    *GyroZ = (DataH << 8)| DataL;        
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MPU6050_Reg.h</font></summary>  <pre><code class="language-c">
+#ifndef    __MPU6050_Reg__H
+#define    __MPU6050_Reg__H
+//控制寄存器
+#define	MPU6050_SMPLRT_DIV		0x19
+#define	MPU6050_CONFIG			0x1A
+#define	MPU6050_GYRO_CONFIG		0x1B
+#define	MPU6050_ACCEL_CONFIG	0x1C
+//收集的数据存放的寄存器
+#define	MPU6050_ACCEL_XOUT_H	0x3B
+#define	MPU6050_ACCEL_XOUT_L	0x3C
+#define	MPU6050_ACCEL_YOUT_H	0x3D
+#define	MPU6050_ACCEL_YOUT_L	0x3E
+#define	MPU6050_ACCEL_ZOUT_H	0x3F
+#define	MPU6050_ACCEL_ZOUT_L	0x40
+#define	MPU6050_TEMP_OUT_H		0x41
+#define	MPU6050_TEMP_OUT_L		0x42
+#define	MPU6050_GYRO_XOUT_H		0x43
+#define	MPU6050_GYRO_XOUT_L		0x44
+#define	MPU6050_GYRO_YOUT_H		0x45
+#define	MPU6050_GYRO_YOUT_L		0x46
+#define	MPU6050_GYRO_ZOUT_H		0x47
+#define	MPU6050_GYRO_ZOUT_L		0x48
+//电源管理寄存器和设备ID寄存器
+#define	MPU6050_PWR_MGMT_1		0x6B
+#define	MPU6050_PWR_MGMT_2		0x6C
+#define	MPU6050_WHO_AM_I		0x75   
+ #endif
+</code> </pre> </details>
+
+<p>先写好I2C通讯时序，再通过时序组成数据帧。然后在MPU6050中对数据帧进行封装，此后可在主函数直接调用对硬件的读写函数。因为直接写0x3c一类写入寄存器不易于理解和后续维护，所以引入“MPU6050—Reg”，将寄存器地址进行宏定义。</p>
+<h2 id="STM32硬件I2C通信"><a href="#STM32硬件I2C通信" class="headerlink" title="STM32硬件I2C通信"></a>STM32硬件I2C通信</h2><h3 id="I2C外设简介"><a href="#I2C外设简介" class="headerlink" title="I2C外设简介"></a>I2C外设简介</h3><p>•　STM32内部集成了硬件I2C收发电路，可以由硬件自动执行时钟生成、起始终止条件生成、应答位收发、数据收发等功能，减轻CPU的负担</p>
+<p>•　支持多主机模型</p>
+<p>•　支持7位&#x2F;10位地址模式</p>
+<p>•　支持不同的通讯速度，标准速度(高达100 kHz)，快速(高达400 kHz)</p>
+<p>•　支持DMA</p>
+<p>•　兼容SMBus协议（系统管理总线）</p>
+<p>•　STM32F103C8T6 硬件I2C资源：I2C1、I2C2</p>
+<h3 id="I2C框图"><a href="#I2C框图" class="headerlink" title="I2C框图"></a>I2C框图</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100349831.png" class="" title="image-20231018100349831">
+
+<h3 id="I2C基本结构"><a href="#I2C基本结构" class="headerlink" title="I2C基本结构"></a>I2C基本结构</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100439583.png" class="" title="image-20231018100439583">
+
+<p>移位寄存器左移，高位先行。</p>
+<h3 id="主机发送"><a href="#主机发送" class="headerlink" title="主机发送"></a>主机发送</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100533249.png" class="" title="image-20231018100533249">
+
+<p>7位和10位主要差别为寻址位是7位或是10位。当一个时序完成后，STM32会置EVx位(可理解为大标志位)。通过对此位的查询，可得知事件状态。</p>
+<h3 id="主机接收"><a href="#主机接收" class="headerlink" title="主机接收"></a>主机接收</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100801037.png" class="" title="image-20231018100801037">
+
+<p>EV5事件表示起始条件已发送</p>
+<p>EV6事件表示寻址已完成</p>
+<h3 id="软件-x2F-硬件波形对比"><a href="#软件-x2F-硬件波形对比" class="headerlink" title="软件&#x2F;硬件波形对比"></a>软件&#x2F;硬件波形对比</h3><p><strong>软件波形：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100928963.png" class="" title="image-20231018100928963">
+
+<p><strong>硬件波形：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100939975.png" class="" title="image-20231018100939975">
+
+<p>通过对比可知：<br>硬件I2C的波形会更加规整，每个时钟的周期和占空比都非常一致，而软件I2C由于操作引脚后加入了延时，导致每个时钟的周期和占空比不规整。由于I2C是同步时序，所以影响不大。</p>
+<p>SCL低电平写，高电平读。保证尽早的原则，直接在SCL下降沿写，上升沿读。</p>
+<h3 id="程序示例-1"><a href="#程序示例-1" class="headerlink" title="程序示例"></a>程序示例</h3>
+
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"                  // Device header
+#include "Delay.h"
+#include "OLED.h"
+#include "MPU6050.h"
+uint8_t ID;
+int16_t AX,AY,AZ,GX,GY,GZ;
+int main(void)
+&#123;
+    OLED_Init();
+    MPU6050_Init();
+    ID = MPU6050_GetID();
+    OLED_ShowString(1,1,"ID:");
+    OLED_ShowHexNum(1,4,ID,2);
+    while (1)
+    &#123;
+        MPU6050_GetData(&AX,&AY,&AZ,&GX,&GY,&GZ);
+        OLED_ShowSignedNum(2,1,AX,5);
+        OLED_ShowSignedNum(3,1,AY,5);
+        OLED_ShowSignedNum(4,1,AZ,5);
+        OLED_ShowSignedNum(2,8,GX,5);
+        OLED_ShowSignedNum(3,8,GY,5);
+        OLED_ShowSignedNum(4,8,GZ,5);
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MPU6050.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h" 
+#include "MPU6050_Reg.h"
+#define MPU6050_ADDRESS 0xD0      //宏定义MPU6050地址
+void MPU6050_WaitEvent(I2C_TypeDef* I2Cx, uint32_t I2C_EVENT)  //等待EV事件，防止用while卡死，改用定时退出
+&#123;
+    uint32_t TimeOut;
+    TimeOut = 10000;
+    while(I2C_CheckEvent(I2Cx,I2C_EVENT) != SUCCESS)
+    &#123;
+        TimeOut--;
+        if(TimeOut == 0) break;
+    &#125;
+&#125;
+void MPU6050_WriteReg(uint8_t RegAddress,uint8_t Data)   //写字节
+&#123;
+    I2C_GenerateSTART(I2C2,ENABLE);
+    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT) != SUCCESS);
+    I2C_Send7bitAddress(I2C2,MPU6050_ADDRESS,I2C_Direction_Transmitter);
+    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED) != SUCCESS);
+    I2C_SendData(I2C2,RegAddress);
+    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTING) != SUCCESS);
+    I2C_SendData(I2C2,Data);
+    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED) != SUCCESS);
+    I2C_GenerateSTOP(I2C2,ENABLE);
+&#125;
+uint8_t MPU6050_ReadReg(uint8_t RegAddress)    //读字节
+&#123;
+    uint8_t Data;
+    I2C_GenerateSTART(I2C2,ENABLE);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT);
+    I2C_Send7bitAddress(I2C2,MPU6050_ADDRESS,I2C_Direction_Transmitter);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED);
+    I2C_SendData(I2C2,RegAddress);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED);
+    I2C_GenerateSTART(I2C2,ENABLE);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT);
+    I2C_Send7bitAddress(I2C2,MPU6050_ADDRESS,I2C_Direction_Receiver);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED);
+    I2C_AcknowledgeConfig(I2C2,DISABLE);
+    I2C_GenerateSTOP(I2C2,ENABLE);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_BYTE_RECEIVED);
+    Data = I2C_ReceiveData(I2C2);
+    I2C_AcknowledgeConfig(I2C2,ENABLE);
+    return Data;
+&#125;
+void MPU6050_Init(void)
+&#123;
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2,ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB,&GPIO_InitStructure);
+    I2C_InitTypeDef I2C_InitStructure;
+    I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+    I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+    I2C_InitStructure.I2C_ClockSpeed = 50000;
+    I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+    I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+    I2C_InitStructure.I2C_OwnAddress1 = 0x00;
+    I2C_Init(I2C2,&I2C_InitStructure);
+    I2C_Cmd(I2C2,ENABLE);
+    MPU6050_WriteReg(MPU6050_PWR_MGMT_1, 0x01);        //解除睡眠，时钟源为陀螺仪时钟
+    MPU6050_WriteReg(MPU6050_PWR_MGMT_2, 0x00);        //6轴一直启用，均不待机
+    MPU6050_WriteReg(MPU6050_SMPLRT_DIV, 0x09);        //采样分频为10
+    MPU6050_WriteReg(MPU6050_CONFIG, 0x06);            //滤波参数为最大
+    MPU6050_WriteReg(MPU6050_GYRO_CONFIG, 0x18);       //陀螺仪为最大量程
+    MPU6050_WriteReg(MPU6050_ACCEL_CONFIG, 0x18);      //加速度为最大量程
+&#125;
+uint8_t MPU6050_GetID(void)      //获取设备ID号
+&#123;
+    return MPU6050_ReadReg(MPU6050_WHO_AM_I);
+&#125;
+void MPU6050_GetData(int16_t *AccX, int16_t *AccY, int16_t *AccZ,
+                     int16_t *GyroX, int16_t *GyroY, int16_t *GyroZ)  //获取数据
+&#123;
+    uint8_t DataH, DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_L);
+    *AccX = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_L);
+    *AccY = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_L);
+    *AccZ = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_XOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_XOUT_L);
+    *GyroX = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_YOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_YOUT_L);
+    *GyroY = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_L);
+    *GyroZ = (DataH << 8)| DataL;        
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MPU6050_Reg.h</font></summary>  <pre><code class="language-c">
+#ifndef    __MPU6050_Reg__H
+#define    __MPU6050_Reg__H
+#define	MPU6050_SMPLRT_DIV		0x19
+#define	MPU6050_CONFIG			0x1A
+#define	MPU6050_GYRO_CONFIG		0x1B
+#define	MPU6050_ACCEL_CONFIG	0x1C
+#define	MPU6050_ACCEL_XOUT_H	0x3B
+#define	MPU6050_ACCEL_XOUT_L	0x3C
+#define	MPU6050_ACCEL_YOUT_H	0x3D
+#define	MPU6050_ACCEL_YOUT_L	0x3E
+#define	MPU6050_ACCEL_ZOUT_H	0x3F
+#define	MPU6050_ACCEL_ZOUT_L	0x40
+#define	MPU6050_TEMP_OUT_H		0x41
+#define	MPU6050_TEMP_OUT_L		0x42
+#define	MPU6050_GYRO_XOUT_H		0x43
+#define	MPU6050_GYRO_XOUT_L		0x44
+#define	MPU6050_GYRO_YOUT_H		0x45
+#define	MPU6050_GYRO_YOUT_L		0x46
+#define	MPU6050_GYRO_ZOUT_H		0x47
+#define	MPU6050_GYRO_ZOUT_L		0x48
+#define	MPU6050_PWR_MGMT_1		0x6B
+#define	MPU6050_PWR_MGMT_2		0x6C
+#define	MPU6050_WHO_AM_I		0x75   
+ #endif
+</code> </pre> </details>
+程序执行逻辑和软件I2C示例差不多，仅是将软件时序替换为STM32标准库函数，并且STM32对通信的状态有事件标志位和定义，通过读取标志位就明白时序是否完成。
+
+
+
+<h2 id="I2C缺点"><a href="#I2C缺点" class="headerlink" title="I2C缺点"></a>I2C缺点</h2><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021144801473.png" class="" title="image-20231021144801473">
+
+<p>I2C的电路结构是开漏外加上拉电阻，使通信线高电平的驱动能力比较弱，导致通信线由低电平到高电平时上升沿耗时长，这限制了I2C的最大通信速度。而SPI设计简单粗暴，传输速度也比I2C快很多。</p>
+<h1 id="SPI通信"><a href="#SPI通信" class="headerlink" title="SPI通信"></a>SPI通信</h1><h2 id="SPI软件模拟通信"><a href="#SPI软件模拟通信" class="headerlink" title="SPI软件模拟通信"></a>SPI软件模拟通信</h2><h3 id="SPI简介"><a href="#SPI简介" class="headerlink" title="SPI简介"></a>SPI简介</h3><p>•　SPI（Serial Peripheral Interface）是由Motorola公司开发的一种通用数据总线</p>
+<p>•　四根通信线：SCK（Serial Clock）、MOSI（Master Output Slave Input）、MISO（Master Input Slave Output）、SS（Slave Select）</p>
+<p>•　同步，全双工</p>
+<p>•　支持总线挂载多设备（一主多从，不支持多主多从）</p>
+<p>SCK提供时钟信号，数据位的输出输入都是在SCK的上升沿或下降沿进行的，此时数据位的收发时刻就可以明确确定。</p>
+<h3 id="硬件电路-1"><a href="#硬件电路-1" class="headerlink" title="硬件电路"></a>硬件电路</h3><p>•　所有SPI设备的SCK、MOSI、MISO分别连在一起</p>
+<p>•　主机另外引出多条SS控制线，分别接到各从机的SS引脚</p>
+<p>•　输出引脚配置为推挽输出，输入引脚配置为浮空或上拉输入（SS为低电平片选时，从机才允许变为推挽输出）</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021145137608.png" class="" title="image-20231021145137608">
+
+<h3 id="移位示意图"><a href="#移位示意图" class="headerlink" title="移位示意图"></a>移位示意图</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160333584.png" class="" title="image-20231021160333584">
+
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160419734.png" class="" title="image-20231021160419734">
+
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160504117.png" class="" title="image-20231021160504117">
+
+<p>该示例为高位先行。</p>
+<p>由波特率发生器产生的时钟驱动主机的移位寄存器进行移位。时钟的上升沿，所有移位寄存器向左移一位，移位的数据放在MOSI和MISO上，发生器的下降沿，将采样MOSI和MISO到移位寄存器最低位存储。</p>
+<h3 id="SPI时序基本单元"><a href="#SPI时序基本单元" class="headerlink" title="SPI时序基本单元"></a>SPI时序基本单元</h3><p><strong>起始条件：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160533341.png" class="" title="image-20231021160533341">
+
+<p>SS从高电平切换到低电平</p>
+<p><strong>终止条件：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160616896.png" class="" title="image-20231021160616896">
+
+<p>SS从低电平切换到高电平</p>
+<p><strong>交换一个字节（模式0）</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160653541.png" class="" title="image-20231021160653541">
+
+<p>CPOL（时钟极性） &#x3D; 0：空闲状态时，SCK为低电平</p>
+<p>CPHA（时钟相位） &#x3D; 0：SCK第一个边沿<strong>移入数据</strong>，第二个边沿<strong>移出数据</strong></p>
+<p>因为SCK第一个边沿要移入数据至寄存器，所以需提前写入数据到数据线上，相较于模式1提前了数据线的相位。 </p>
+<p><strong>交换一个字节（模式1）</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021161150625.png" class="" title="image-20231021161150625">
+
+<p>CPOL &#x3D; 0：空闲状态时，SCK为低电平</p>
+<p>CPHA &#x3D; 1：SCK第一个边沿<strong>移出数据</strong>，第二个边沿<strong>移入数据</strong></p>
+<p>即：SCK第一个上升沿（第一个边沿），双方移位寄存器同时移出寄存器数据置MOSI和MISO上，SCK下降沿（第二个边沿）的时候，双方移位寄存器同时移入MOSI和MISO的数据置寄存器，达成数据交换。</p>
+<p><strong>交换一个字节（模式2）</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162610968.png" class="" title="image-20231021162610968">
+
+<p>CPOL&#x3D;1：空闲状态时，SCK为高电平</p>
+<p>CPHA&#x3D;0：SCK第一个边沿移入数据，第二个边沿移出数据</p>
+<p><strong>交换一个字节（模式3）</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162638853.png" class="" title="image-20231021162638853">
+
+<p>CPOL&#x3D;1：空闲状态时，SCK为高电平</p>
+<p>CPHA&#x3D;1：SCK第一个边沿移出数据，第二个边沿移入数据</p>
+<p>模式2和模式3，相较与模式0和模式1，仅是SCK时钟极性变化而已。</p>
+<h3 id="SPI时序"><a href="#SPI时序" class="headerlink" title="SPI时序"></a>SPI时序</h3><p>示例时序均为模式0</p>
+<p><strong>发送指令</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162831064.png" class="" title="image-20231021162831064">
+
+<p>向SS指定的设备，发送指令（0x06）写使能。</p>
+<p><strong>指定地址写</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162932666.png" class="" title="image-20231021162932666">
+
+<p>向SS指定的设备，发送写指令（0x02），</p>
+<p>   随后在指定地址（Address[23:0]）下，写入指定数据（Data）。</p>
+<p><strong>指定地址读</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163047497.png" class="" title="image-20231021163047497">
+
+<p>向SS指定的设备，发送读指令（0x03），</p>
+<p>   随后在指定地址（Address[23:0]）下，读取从机数据（Data）</p>
+<h2 id="W25Q64"><a href="#W25Q64" class="headerlink" title="W25Q64"></a>W25Q64</h2><p><strong>W25Q64简介：</strong></p>
+<p>•　W25Qxx系列是一种低成本、小型化、使用简单的非易失性存储器，常应用于数据存储、字库存储、固件程序存储等场景</p>
+<p>•　存储介质：Nor Flash（闪存）</p>
+<p>•　时钟频率：80MHz &#x2F; 160MHz (Dual SPI) &#x2F; 320MHz (Quad SPI)</p>
+<p>•　存储容量（24位地址）： （最大寻址能达到16M）</p>
+<p> W25Q40：  4Mbit &#x2F; 512KByte</p>
+<p> W25Q80：  8Mbit &#x2F; 1MByte</p>
+<p> W25Q16：  16Mbit &#x2F; 2MByte</p>
+<p> W25Q32：  32Mbit &#x2F; 4MByte</p>
+<p> W25Q64：  64Mbit &#x2F; 8MByte</p>
+<p> W25Q128： 128Mbit &#x2F; 16MByte</p>
+<p> W25Q256： 256Mbit &#x2F; 32MByte</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163200365-16978771242631.png" class="" title="image-20231021163200365">
+
+
+
+<p><strong>硬件电路：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163235865.png" class="" title="image-20231021163235865">
+
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163239383.png" class="" title="image-20231021163239383">
+
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163249323.png" class="" title="image-20231021163249323">
+
+
+
+<p>CS在图中引脚标识为“&#x2F;CS”，表示低电平有效其余同理。有需要时，可启用IO2和IO3，相当于多线并行传输，提高传输效率。</p>
+<p><strong>W25Q64框图</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021172150480.png" class="" title="image-20231021172150480">
+
+<p>W25Q64有相应的写保护和地址锁存。需要注意的是地址分配方式。以8M芯片为例（最后一位地址到7F），64KB划为一页，每页又可以以4KB为单位分成扇区。</p>
+<p><strong>Flash操作注意事项：</strong></p>
+<p>写入操作时：</p>
+<p>•　写入操作前，必须先进行写使能</p>
+<p>•　每个数据位只能由1改写为0，不能由0改写为1</p>
+<p>•　<strong>写入数据前必须先擦除，擦除后，所有数据位变为1</strong></p>
+<p>•　擦除必须按最小擦除单元进行（例如示例芯片的最小单位为4KB扇区）</p>
+<p>•　连续写入多字节时，最多写入一页的数据，超过页尾位置的数据，会回到页首覆盖写入</p>
+<p>•　写入操作结束后，芯片进入忙状态，不响应新的读写操作</p>
+<p>读取操作时：</p>
+<p>•　直接调用读取时序，无需使能，无需额外操作，没有页的限制，读取操作结束后不会进入忙状态，但不能在忙状态时读取</p>
+<h3 id="程序示例-2"><a href="#程序示例-2" class="headerlink" title="程序示例"></a>程序示例</h3>
+
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"                  // Device header
+#include "Delay.h"
+#include "OLED.h"
+#include "W25Q64.h"
+//
+uint8_t MID;
+uint16_t DID;
+uint8_t ArrayWrite[] = &#123;0x55, 0x66, 0x77, 0x88&#125;;
+uint8_t ArrayRead[4];
+int main(void)
+&#123;
+//初始化
+    OLED_Init();
+    W25Q64_Init();
+    OLED_ShowString(1, 1, "MID:   DID:");
+    OLED_ShowString(2, 1, "W:");
+    OLED_ShowString(3, 1, "R:");
+    W25Q64_ReadID(&MID,&DID);       //读取设备ID号
+    OLED_ShowHexNum(1,5,MID,2);     //显示设备ID号
+    OLED_ShowHexNum(1,12,DID,4);
+//
+    W25Q64_SectorErase(0X000000);   //擦除扇区，为写入数据做准备
+    W25Q64_PageProgram(0X000000,ArrayWrite,4); //向指定地址写入数据，写入四个数据
+    W25Q64_ReadData(0X000000,ArrayRead,4);     //向指定地址读数据
+//显示写入数据	
+    OLED_ShowHexNum(2,3,ArrayWrite[0],2);
+    OLED_ShowHexNum(2,6,ArrayWrite[1],2);
+    OLED_ShowHexNum(2,9,ArrayWrite[2],2);
+    OLED_ShowHexNum(2,12,ArrayWrite[3],2);
+//显示读取数据	
+    OLED_ShowHexNum(3,3, ArrayRead[0],2);
+    OLED_ShowHexNum(3,6, ArrayRead[1],2);
+    OLED_ShowHexNum(3,9, ArrayRead[2],2);
+    OLED_ShowHexNum(3,12,ArrayRead[3],2);
+    while (1)
+    &#123;
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MySPI.C</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"
+// 对引脚操控进行基础的封装
+void MySPI_W_SS(uint8_t BitValue)
+&#123;
+    GPIO_WriteBit(GPIOA, GPIO_Pin_4, (BitAction)BitValue);    // 设置片选信号 (SS/CS) 的状态
+&#125;
+void MySPI_W_SCK(uint8_t BitValue)
+&#123;
+    GPIO_WriteBit(GPIOA, GPIO_Pin_5, (BitAction)BitValue);    // 设置时钟信号 (SCK) 的状态
+&#125;
+void MySPI_W_MOSI(uint8_t BitValue)
+&#123;
+    GPIO_WriteBit(GPIOA, GPIO_Pin_7, (BitAction)BitValue);    // 设置主机输出从机输入 (MOSI) 的状态
+&#125;
+uint8_t MySPI_R_MISO(void)
+&#123;
+    return GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6);         // 读取从机输出主机输入 (MISO) 的状态
+&#125;
+// 初始化SPI相关的GPIO引脚
+void MySPI_Init(void)
+&#123;
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+    // 配置引脚为推挽输出
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    // 配置引脚为上拉输入
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    // 初始化SPI外设，设置初始状态
+    MySPI_W_SS(1);    // 片选信号高电平
+    MySPI_W_SCK(0);  // 时钟信号低电平
+&#125;
+//起始时序
+void MySPI_Start(void)  
+&#123;
+    MySPI_W_SS(0); 
+&#125;
+//终止时序
+void MySPI_STOP(void)
+&#123;
+    MySPI_W_SS(1); 
+&#125;
+//交换数据
+uint8_t MySPI_SwapByte(uint8_t ByteSend)
+&#123;
+    uint8_t i, ByteReceive = 0x00;
+    for(i = 0; i < 8; i++)
+    &#123;
+        MySPI_W_MOSI(ByteSend & (0x80 >> i)); // 设置主机输出数据
+        MySPI_W_SCK(1);                      // 拉高时钟信号
+        if(MySPI_R_MISO() == 1) 
+            ByteReceive |= (0x80 >> i);     // 读取从机输出的数据
+        MySPI_W_SCK(0);                    // 拉低时钟信号
+    &#125;
+    return ByteReceive;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">W25Q64.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"
+#include "MySPI.h"
+#include "W25Q64_Ins.h"
+// 初始化SPI接口
+void W25Q64_Init(void)
+&#123;
+    MySPI_Init(); 
+&#125;
+//读设备ID
+void W25Q64_ReadID(uint8_t *MID, uint16_t *DID)
+&#123;
+    MySPI_Start();                              // 起始条件时序
+    MySPI_SwapByte(W25Q64_JEDEC_ID);            // 发送指令
+    *MID = MySPI_SwapByte(W25Q64_DUMMY_BYTE);   // 读取制造商ID
+    *DID = MySPI_SwapByte(W25Q64_DUMMY_BYTE);   // 读取设备ID的低8位
+    *DID <<= 8;
+    *DID |= MySPI_SwapByte(W25Q64_DUMMY_BYTE);  // 读取设备ID的高8位
+    MySPI_STOP();                               // 终止条件时序
+&#125;
+//写使能
+void W25Q64_WriteEnable(void)
+&#123;
+    MySPI_Start();
+    MySPI_SwapByte(W25Q64_WRITE_ENABLE); // 发送写使能指令
+    MySPI_STOP(); 
+&#125;
+//等待设备忙，并规定时间限制
+void W25Q64_WaitBusy(void)
+&#123;
+    uint32_t Timeout = 100000;
+    MySPI_Start();                     
+    MySPI_SwapByte(W25Q64_READ_STATUS_REGISTER_1); // 发送读状态寄存器指令
+    while ((MySPI_SwapByte(W25Q64_READ_STATUS_REGISTER_1) & 0x01) == 0x01)
+    &#123;
+        Timeout--;
+        if (Timeout == 0)
+        &#123;
+            break;
+        &#125;
+    &#125;
+    MySPI_STOP(); 
+&#125;
+//指定地址写入数据，
+void W25Q64_PageProgram(uint32_t Address, uint8_t *DataArray, uint16_t Count)
+&#123;
+    W25Q64_WriteEnable();                  // 写使能
+    uint16_t i;
+    MySPI_Start();                          
+    MySPI_SwapByte(W25Q64_PAGE_PROGRAM);    // 发送页编程指令
+    MySPI_SwapByte(Address >> 16);          // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);           // 发送地址的中间8位
+    MySPI_SwapByte(Address);                // 发送地址的低8位
+    for (i = 0; i < Count; i++)
+    &#123;
+        MySPI_SwapByte(DataArray[i]);    // 发送要写入的数据
+    &#125;
+    MySPI_STOP(); 
+    W25Q64_WaitBusy();                  // 等待操作完成
+&#125;
+//擦除指定地址的扇区
+void W25Q64_SectorErase(uint32_t Address)
+&#123;
+    W25Q64_WriteEnable();    // 启用写操作
+    MySPI_Start();            
+    MySPI_SwapByte(W25Q64_SECTOR_ERASE_4KB); // 发送扇区擦除指令
+    MySPI_SwapByte(Address >> 16);          // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);          // 发送地址的中间8位
+    MySPI_SwapByte(Address);              // 发送地址的低8位
+    MySPI_STOP(); 
+    W25Q64_WaitBusy(); // 等待操作完成
+&#125;
+//指定地址读
+void W25Q64_ReadData(uint32_t Address, uint8_t *DataArray, uint32_t Count)
+&#123;
+    uint32_t i;
+    MySPI_Start(); 
+    MySPI_SwapByte(W25Q64_READ_DATA);      // 发送读数据指令
+    MySPI_SwapByte(Address >> 16);        // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);        // 发送地址的中间8位
+    MySPI_SwapByte(Address);            // 发送地址的低8位
+    for (i = 0; i < Count; i++)
+    &#123;
+        DataArray[i] = MySPI_SwapByte(W25Q64_DUMMY_BYTE);  // 读取数据
+    &#125;
+    MySPI_STOP(); 
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">W25Q64_Ins.h</font></summary>  <pre><code class="language-c">
+#ifndef    __W25Q64_Ins__H
+#define    __W25Q64_Ins__H
+// W25Q64指令
+#define W25Q64_WRITE_ENABLE							0x06
+#define W25Q64_WRITE_DISABLE						0x04
+#define W25Q64_READ_STATUS_REGISTER_1				0x05
+#define W25Q64_READ_STATUS_REGISTER_2				0x35
+#define W25Q64_WRITE_STATUS_REGISTER				0x01
+#define W25Q64_PAGE_PROGRAM							0x02
+#define W25Q64_QUAD_PAGE_PROGRAM					0x32
+#define W25Q64_BLOCK_ERASE_64KB						0xD8
+#define W25Q64_BLOCK_ERASE_32KB						0x52
+#define W25Q64_SECTOR_ERASE_4KB						0x20
+#define W25Q64_CHIP_ERASE							0xC7
+#define W25Q64_ERASE_SUSPEND						0x75
+#define W25Q64_ERASE_RESUME							0x7A
+#define W25Q64_POWER_DOWN							0xB9
+#define W25Q64_HIGH_PERFORMANCE_MODE				0xA3
+#define W25Q64_CONTINUOUS_READ_MODE_RESET			0xFF
+#define W25Q64_RELEASE_POWER_DOWN_HPM_DEVICE_ID		0xAB
+#define W25Q64_MANUFACTURER_DEVICE_ID				0x90
+#define W25Q64_READ_UNIQUE_ID						0x4B
+#define W25Q64_JEDEC_ID								0x9F
+#define W25Q64_READ_DATA							0x03
+#define W25Q64_FAST_READ							0x0B
+#define W25Q64_FAST_READ_DUAL_OUTPUT				0x3B
+#define W25Q64_FAST_READ_DUAL_IO					0xBB
+#define W25Q64_FAST_READ_QUAD_OUTPUT				0x6B
+#define W25Q64_FAST_READ_QUAD_IO					0xEB
+#define W25Q64_OCTAL_WORD_READ_QUAD_IO				0xE3
+#define W25Q64_DUMMY_BYTE							0xFF
+ #endif
+</code> </pre> </details>
+
+<p>程序设计思路和I2C差不多，都是先用软件模拟SPI时序基本单元，再将基本单元组成传输时序。然后再根据硬件对其再封装。写指令的常量将用宏定义代替，便于理解。</p>
+<h2 id="STM32硬件SPI通信"><a href="#STM32硬件SPI通信" class="headerlink" title="STM32硬件SPI通信"></a>STM32硬件SPI通信</h2><h3 id="SPI外设简介"><a href="#SPI外设简介" class="headerlink" title="SPI外设简介"></a>SPI外设简介</h3><p>•　STM32内部集成了硬件SPI收发电路，可以由硬件自动执行时钟生成、数据收发等功能，减轻CPU的负担</p>
+<p>•　可配置8位&#x2F;16位数据帧、高位先行&#x2F;低位先行</p>
+<p>•　时钟频率： fPCLK &#x2F; (2, 4, 8, 16, 32, 64, 128, 256)</p>
+<p>•　支持多主机模型、主或从操作</p>
+<p>•　可精简为半双工&#x2F;单工通信</p>
+<p>•　支持DMA</p>
+<p>•　兼容I2S协议</p>
+<p>•　STM32F103C8T6 硬件SPI资源：SPI1、SPI2</p>
+<p>SPI1挂载在APB2最大允许频率为72MHz，SPI2挂载在APB1最大允许频率为36MHz。使用不同的SPI时，应注意挂载的总线时钟。</p>
+<h3 id="主模式全双工连续传输"><a href="#主模式全双工连续传输" class="headerlink" title="主模式全双工连续传输"></a>主模式全双工连续传输</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021230447228.png" class="" title="image-20231021230447228">
+
+<p>连续传输将传输效率最大化。先写入数据0xF1到发送缓冲器，再开始传输。每次数据传输，都是如图，第二个数据0xF2发送时，0xF1才被接收。并不是0xF1发送 → 0xF1接收，再0xF2发送 → 0xF2接收。而是0xF1先写入发送缓冲器，时序开始时发送 0xF1，并将 0xF2写入发送缓冲器，再0xF1接收 → （同时）0xF2发送。0xF2接收 → （同时）0xF3发送以此类推。。。发送总比接收早，数据传输是紧跟的。</p>
+<h3 id="非连续传输"><a href="#非连续传输" class="headerlink" title="非连续传输"></a>非连续传输</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231022000603924.png" class="" title="image-20231022000603924">
+
+<p>非连续传输相较于连续传输简单，效率不如连续传输。因为连续传输的数据是紧挨着传输，而非连续传输，0xF1发送 → 0xF1接收。将等待接收完毕后再发送，而不是先将0xF1写入缓冲器，时序开始时0xF1挂载到数据线，在交换数据，接收0xF1的同时发送0xF2.</p>
+<p><strong>当然，SPI通信的核心是主从两机寄存器数据交换，描述只是便于表达，切记数据是双向同时传输</strong></p>
+<h3 id="软件-x2F-硬件波形对比-1"><a href="#软件-x2F-硬件波形对比-1" class="headerlink" title="软件&#x2F;硬件波形对比"></a>软件&#x2F;硬件波形对比</h3><p><strong>软件模拟SPI</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231022001711028.png" class="" title="image-20231022001711028">
+
+<p><strong>硬件SPI</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231022001734433.png" class="" title="image-20231022001734433">
+
+<p>区别无非是软件有延迟，并且波形没有硬件平滑等等，和I2C波形软硬件对比差不多。</p>
+<h3 id="程序示例-3"><a href="#程序示例-3" class="headerlink" title="程序示例"></a>程序示例</h3><details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"                  // Device header
+#include "Delay.h"
+#include "OLED.h"
+#include "W25Q64.h"
+//
+uint8_t MID;
+uint16_t DID;
+uint8_t ArrayWrite[] = &#123;0x55, 0x66, 0x77, 0x88&#125;;
+uint8_t ArrayRead[4];
+int main(void)
+&#123;
+//初始化
+    OLED_Init();
+    W25Q64_Init();
+    OLED_ShowString(1, 1, "MID:   DID:");
+    OLED_ShowString(2, 1, "W:");
+    OLED_ShowString(3, 1, "R:");
+    W25Q64_ReadID(&MID,&DID);       //读取设备ID号
+    OLED_ShowHexNum(1,5,MID,2);     //显示设备ID号
+    OLED_ShowHexNum(1,12,DID,4);
+//
+    W25Q64_SectorErase(0X000000);   //擦除扇区，为写入数据做准备
+    W25Q64_PageProgram(0X000000,ArrayWrite,4); //向指定地址写入数据，写入四个数据
+    W25Q64_ReadData(0X000000,ArrayRead,4);     //向指定地址读数据
+//显示写入数据	
+    OLED_ShowHexNum(2,3,ArrayWrite[0],2);
+    OLED_ShowHexNum(2,6,ArrayWrite[1],2);
+    OLED_ShowHexNum(2,9,ArrayWrite[2],2);
+    OLED_ShowHexNum(2,12,ArrayWrite[3],2);
+//显示读取数据	
+    OLED_ShowHexNum(3,3, ArrayRead[0],2);
+    OLED_ShowHexNum(3,6, ArrayRead[1],2);
+    OLED_ShowHexNum(3,9, ArrayRead[2],2);
+    OLED_ShowHexNum(3,12,ArrayRead[3],2);
+    while (1)
+    &#123;
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MySPI.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"
+//对引脚操控进行基础的封装
+void MySPI_W_SS(uint8_t BitValue)    //片选信号，SS也称CS引脚
+&#123;
+    GPIO_WriteBit(GPIOA,GPIO_Pin_4,(BitAction)BitValue);
+&#125;
+void MySPI_Init(void)
+&#123;
+//GPIO引脚根据API硬件外设配置
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1,ENABLE);
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA,&GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA,&GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA,&GPIO_InitStructure);
+//配置硬件SPI
+    SPI_InitTypeDef SPI_InitStructure;
+    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_128;  //分频系数为128.
+    SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;    //第一个边沿采样
+    SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;     //空闲状态时，SCK为低电平
+    SPI_InitStructure.SPI_CRCPolynomial = 7;      //CRC校验的多项式
+    SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;   //8位数据帧   
+    SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;  //选择为双线全双工
+    SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;  //高位先行
+    SPI_InitStructure.SPI_Mode = SPI_Mode_Master;       //指定设备为主机或从机
+    SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;           //配置为软件NSS
+    SPI_Init(SPI1,&SPI_InitStructure);
+//SPI使能
+    SPI_Cmd(SPI1,ENABLE);
+//初始化
+    MySPI_W_SS(1);  //默认不选中从机
+&#125;
+//起始时序
+void MySPI_Start(void)
+&#123;
+    MySPI_W_SS(0);
+&#125;
+//终止时序
+void MySPI_STOP(void)
+&#123;
+    MySPI_W_SS(1);
+&#125;
+//交换数据
+uint8_t MySPI_SwapByte(uint8_t ByteSend)
+&#123;
+    while (SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
+    SPI_I2S_SendData(SPI1,ByteSend);
+    while (SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_RXNE) == RESET);
+    return SPI_I2S_ReceiveData(SPI1);
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">W25Q64.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"
+#include "MySPI.h"
+#include "W25Q64_Ins.h"
+// 初始化SPI接口
+void W25Q64_Init(void)
+&#123;
+    MySPI_Init(); 
+&#125;
+//读设备ID
+void W25Q64_ReadID(uint8_t *MID, uint16_t *DID)
+&#123;
+    MySPI_Start();                              // 起始条件时序
+    MySPI_SwapByte(W25Q64_JEDEC_ID);            // 发送指令
+    *MID = MySPI_SwapByte(W25Q64_DUMMY_BYTE);   // 读取制造商ID
+    *DID = MySPI_SwapByte(W25Q64_DUMMY_BYTE);   // 读取设备ID的低8位
+    *DID <<= 8;
+    *DID |= MySPI_SwapByte(W25Q64_DUMMY_BYTE);  // 读取设备ID的高8位
+    MySPI_STOP();                               // 终止条件时序
+&#125;
+//写使能
+void W25Q64_WriteEnable(void)
+&#123;
+    MySPI_Start();
+    MySPI_SwapByte(W25Q64_WRITE_ENABLE); // 发送写使能指令
+    MySPI_STOP(); 
+&#125;
+//等待设备忙，并规定时间限制
+void W25Q64_WaitBusy(void)
+&#123;
+    uint32_t Timeout = 100000;
+    MySPI_Start();                     
+    MySPI_SwapByte(W25Q64_READ_STATUS_REGISTER_1); // 发送读状态寄存器指令
+    while ((MySPI_SwapByte(W25Q64_READ_STATUS_REGISTER_1) & 0x01) == 0x01)
+    &#123;
+        Timeout--;
+        if (Timeout == 0)
+        &#123;
+            break;
+        &#125;
+    &#125;
+    MySPI_STOP(); 
+&#125;
+//指定地址写入数据，
+void W25Q64_PageProgram(uint32_t Address, uint8_t *DataArray, uint16_t Count)
+&#123;
+    W25Q64_WriteEnable();                  // 写使能
+    uint16_t i;
+    MySPI_Start();                          
+    MySPI_SwapByte(W25Q64_PAGE_PROGRAM);    // 发送页编程指令
+    MySPI_SwapByte(Address >> 16);          // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);           // 发送地址的中间8位
+    MySPI_SwapByte(Address);                // 发送地址的低8位
+    for (i = 0; i < Count; i++)
+    &#123;
+        MySPI_SwapByte(DataArray[i]);    // 发送要写入的数据
+    &#125;
+    MySPI_STOP(); 
+    W25Q64_WaitBusy();                  // 等待操作完成
+&#125;
+//擦除指定地址的扇区
+void W25Q64_SectorErase(uint32_t Address)
+&#123;
+    W25Q64_WriteEnable();    // 启用写操作
+    MySPI_Start();            
+    MySPI_SwapByte(W25Q64_SECTOR_ERASE_4KB); // 发送扇区擦除指令
+    MySPI_SwapByte(Address >> 16);          // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);          // 发送地址的中间8位
+    MySPI_SwapByte(Address);              // 发送地址的低8位
+    MySPI_STOP(); 
+    W25Q64_WaitBusy(); // 等待操作完成
+&#125;
+//指定地址读
+void W25Q64_ReadData(uint32_t Address, uint8_t *DataArray, uint32_t Count)
+&#123;
+    uint32_t i;
+    MySPI_Start(); 
+    MySPI_SwapByte(W25Q64_READ_DATA);      // 发送读数据指令
+    MySPI_SwapByte(Address >> 16);        // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);        // 发送地址的中间8位
+    MySPI_SwapByte(Address);            // 发送地址的低8位
+    for (i = 0; i < Count; i++)
+    &#123;
+        DataArray[i] = MySPI_SwapByte(W25Q64_DUMMY_BYTE);  // 读取数据
+    &#125;
+    MySPI_STOP(); 
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">W25Q64_Ins.h</font></summary>  <pre><code class="language-c">
+#ifndef    __W25Q64_Ins__H
+#define    __W25Q64_Ins__H
+// W25Q64指令
+#define W25Q64_WRITE_ENABLE							0x06
+#define W25Q64_WRITE_DISABLE						0x04
+#define W25Q64_READ_STATUS_REGISTER_1				0x05
+#define W25Q64_READ_STATUS_REGISTER_2				0x35
+#define W25Q64_WRITE_STATUS_REGISTER				0x01
+#define W25Q64_PAGE_PROGRAM							0x02
+#define W25Q64_QUAD_PAGE_PROGRAM					0x32
+#define W25Q64_BLOCK_ERASE_64KB						0xD8
+#define W25Q64_BLOCK_ERASE_32KB						0x52
+#define W25Q64_SECTOR_ERASE_4KB						0x20
+#define W25Q64_CHIP_ERASE							0xC7
+#define W25Q64_ERASE_SUSPEND						0x75
+#define W25Q64_ERASE_RESUME							0x7A
+#define W25Q64_POWER_DOWN							0xB9
+#define W25Q64_HIGH_PERFORMANCE_MODE				0xA3
+#define W25Q64_CONTINUOUS_READ_MODE_RESET			0xFF
+#define W25Q64_RELEASE_POWER_DOWN_HPM_DEVICE_ID		0xAB
+#define W25Q64_MANUFACTURER_DEVICE_ID				0x90
+#define W25Q64_READ_UNIQUE_ID						0x4B
+#define W25Q64_JEDEC_ID								0x9F
+#define W25Q64_READ_DATA							0x03
+#define W25Q64_FAST_READ							0x0B
+#define W25Q64_FAST_READ_DUAL_OUTPUT				0x3B
+#define W25Q64_FAST_READ_DUAL_IO					0xBB
+#define W25Q64_FAST_READ_QUAD_OUTPUT				0x6B
+#define W25Q64_FAST_READ_QUAD_IO					0xEB
+#define W25Q64_OCTAL_WORD_READ_QUAD_IO				0xE3
+#define W25Q64_DUMMY_BYTE							0xFF
+ #endif
+</code> </pre> </details>
+
+<p>软硬件SPI的主函数没什么差别，只是将MySPI.c中的软件模拟部分替换成STM32标准库中的SPI函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">//NRF24L01寄存器操作命令</span><br><span class="line">#define NRF_READ_REG    0x00  //读配置寄存器,低5位为寄存器地址</span><br><span class="line">#define NRF_WRITE_REG   0x20  //写配置寄存器,低5位为寄存器地址</span><br><span class="line">#define RD_RX_PLOAD     0x61  //读RX有效数据,1~32字节</span><br><span class="line">#define WR_TX_PLOAD     0xA0  //写TX有效数据,1~32字节</span><br><span class="line">#define FLUSH_TX        0xE1  //清除TX FIFO寄存器.发射模式下用</span><br><span class="line">#define FLUSH_RX        0xE2  //清除RX FIFO寄存器.接收模式下用</span><br><span class="line">#define REUSE_TX_PL     0xE3  //重新使用上一包数据,CE为高,数据包被不断发送.</span><br><span class="line">#define NOP             0xFF  //空操作,可以用来读状态寄存器</span><br><span class="line">	 </span><br><span class="line">//SPI(NRF24L01)寄存器地址</span><br><span class="line">#define CONFIG          0x00  //配置寄存器地址;bit0:1接收模式,0发射模式;bit1:电选 </span><br><span class="line">                              //择;bit2:CRC模式;bit3:CRC使能;</span><br><span class="line">                              //bit4:中断MAX_RT(达到最大重发次数中断)使能;bit5:中断TX_DS使 </span><br><span class="line">                              //能;bit6:中断RX_DR使能</span><br><span class="line">#define EN_AA           0x01  //使能自动应答功能  bit0~5,对应通道0~5</span><br><span class="line">#define EN_RXADDR       0x02  //接收地址允许,bit0~5,对应通道0~5</span><br><span class="line">#define SETUP_AW        0x03  //设置地址宽度(所有数据通道):bit1,0:00,3字节;01,4字节;02,5字 </span><br><span class="line">                              //节;</span><br><span class="line">#define SETUP_RETR      0x04  //建立自动重发;bit3:0,自动重发计数器;bit7:4,自动重发延时 </span><br><span class="line">                              //250*x+86us</span><br><span class="line">#define RF_CH           0x05  //RF通道,bit6:0,工作通道频率;</span><br><span class="line">#define RF_SETUP        0x06  //RF寄存器;bit3:传输速率(0:1Mbps,1:2Mbps);bit2:1,发射功 </span><br><span class="line">                              //率;bit0:低噪声放大器增益</span><br><span class="line">#define STATUS          0x07  //状态寄存器;bit0:TX FIFO满标志;bit3:1,接收数据通道号(最 </span><br><span class="line">                              //大:6);bit4,达到最多次重发</span><br><span class="line">                              //bit5:数据发送完成中断;bit6:接收数据中断;</span><br><span class="line">#define MAX_TX  		0x10  //达到最大发送次数中断</span><br><span class="line">#define TX_OK   		0x20  //TX发送完成中断</span><br><span class="line">#define RX_OK   		0x40  //接收到数据中断</span><br><span class="line"> </span><br><span class="line">#define OBSERVE_TX      0x08  //发送检测寄存器,bit7:4,数据包丢失计数器;bit3:0,重发计数器</span><br><span class="line">#define CD              0x09  //载波检测寄存器,bit0,载波检测;</span><br><span class="line">#define RX_ADDR_P0      0x0A  //数据通道0接收地址,最大长度5个字节,低字节在前</span><br><span class="line">#define RX_ADDR_P1      0x0B  //数据通道1接收地址,最大长度5个字节,低字节在前</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P2      0x0C  //数据通道2接收地址,最低字节可设置</span><br><span class="line">                              //高字节,必须同 RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P3      0x0D  //数据通道3接收地址,最低字节可设置</span><br><span class="line">                              //高字节,必须同 RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P4      0x0E  //数据通道4接收地址,最低字节可设置</span><br><span class="line">                              //高字节,必须同RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P5      0x0F  //数据通道5接收地址,最低字节可设置,</span><br><span class="line">                              //高字节,必须同RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define TX_ADDR         0x10  //发送地址(低字节在前),ShockBurstTM模式下,RX_ADDR_P0与此地址 </span><br><span class="line">                                相等</span><br><span class="line">#define RX_PW_P0        0x11  //接收数据通道0有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P1        0x12  //接收数据通道1有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P2        0x13  //接收数据通道2有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P3        0x14  //接收数据通道3有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P4        0x15  //接收数据通道4有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P5        0x16  //接收数据通道5有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define NRF_FIFO_STATUS 0x17  //FIFO状态寄存器;bit0,RX FIFO寄存器空标志;</span><br><span class="line">                              //bit1,RX FIFO满标志;bit2,3,保留</span><br><span class="line">                              //bit4,TX FIFO空标志;bit5,TX FIFO满标志;bit6,1,循环发送上一 </span><br><span class="line">                              //数据包.0,不循环;</span><br><span class="line">/</span><br><span class="line">//24L01操作线</span><br><span class="line">#define NRF24L01_CE   PAout(4) //24L01片选信号</span><br><span class="line">#define NRF24L01_CSN  PCout(4) //SPI片选信号	   </span><br><span class="line">#define NRF24L01_IRQ  PAin(1)  //IRQ主机数据输入</span><br><span class="line">//24L01发送接收数据宽度定义</span><br><span class="line">#define TX_ADR_WIDTH    5   	//5字节的地址宽度</span><br><span class="line">#define RX_ADR_WIDTH    5   	//5字节的地址宽度</span><br><span class="line">#define TX_PLOAD_WIDTH  32  	//32字节的用户数据宽度</span><br><span class="line">#define RX_PLOAD_WIDTH  32  	//32字节的用户数据宽度</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag"># 单片机</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/10/06/%E6%B1%82%E7%94%9F%E4%B9%8B%E8%B7%AF2%E5%8F%8C%E4%BA%BA%E5%88%86%E5%B1%8F%E5%BD%92%E6%A1%A3/" rel="prev" title="求生之路2双人分屏归档">
+                  <i class="fa fa-chevron-left"></i> 求生之路2双人分屏归档
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/12/31/%E8%AF%B4%E8%AF%B4(2023)/" rel="next" title="说说(2023)">
+                  说说(2023) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">星戏溪行</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">177k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">10:43</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("2023/07/01 11:45:43");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "Shelter已建立 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-cn","enable":true,"serverURL":"waline-ecru-theta.vercel.app","cssUrl":"https://unpkg.com/@waline/client@v2/dist/waline.css","commentCount":true,"pageview":false,"locale":{"placeholder":"初相遇，若重逢。右边的猫猫正盯着你，它对君的赠言充满希冀。（或许你需要一个梯子登高阁，拂笔于此）"},"avatar":"mp","meta":["nick","mail","link"],"pageSize":10,"visitor":false,"comment_count":true,"requiredFields":[],"libUrl":"//unpkg.com/@waline/client@v2/dist/waline.js","el":"#waline","comment":true,"path":"/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/"}</script>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css">
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => 
+    Waline.init(Object.assign({}, CONFIG.waline,{ el: document.querySelector(CONFIG.waline.el) }))
+  );
+});
+</script>
+
+  
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas>
+    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script src="/js/cursor/explosion.min.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
