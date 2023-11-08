@@ -502,6 +502,141 @@
       </tags>
   </entry>
   <entry>
+    <title>C语言知识点补充</title>
+    <url>/2023/07/18/C%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A1%A5%E5%85%85/</url>
+    <content><![CDATA[<h5 id="typedef-的用法"><a href="#typedef-的用法" class="headerlink" title="typedef 的用法"></a>typedef 的用法</h5><p>C 语言允许为一个数据类型起一个新的别名，就像给人起“绰号”一样。起别名的目的不是为了提高程序运行效率，而是为了编码方便。<span id="more"></span>例如有一个结构体的名字是 stu，要想定义一个结构体变量就得这样写：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span> <span class="title">stu1</span>;</span></span><br></pre></td></tr></table></figure>
+
+<p>struct 看起来就是多余的，但不写又会报错。如果为 struct stu 起了一个别名 STU，书写起来就简单了：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">STU stu1;</span><br></pre></td></tr></table></figure>
+
+<p>这种写法更加简练，意义也非常明确，不管是在标准头文件中还是以后的编程实践中，都会大量使用这种别名。<br>使用关键字 typedef 可以为类型起一个新的别名。 typedef 的用法一般为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> oldName newName;  </span><br></pre></td></tr></table></figure>
+
+<p>ldName 是类型原来的名字， newName 是类型新的名字。例如  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> INTEGER;</span><br><span class="line">INTEGER a, b;</span><br><span class="line">a = <span class="number">1</span>;</span><br><span class="line">b = <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<p>INTEGER a, b;等效于 int a, b;。</p>
+<p>typedef 还可以给数组、 指针、结构体等类型定义别名。先来看一个给数组类型定义别名的例子：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">char</span> ARRAY20[<span class="number">20</span>]  </span><br></pre></td></tr></table></figure>
+
+<p>表示 ARRAY20 是类型 char [20]的别名。它是一个长度为 20 的数组类型。接着可以用 ARRAY20 定义数组：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">ARRAY20 a1, a2, s1, s2;</span><br></pre></td></tr></table></figure>
+
+<p>它等价于：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> a1[<span class="number">20</span>], a2[<span class="number">20</span>], s1[<span class="number">20</span>], s2[<span class="number">20</span>]  </span><br></pre></td></tr></table></figure>
+
+<p>为结构体类型定义别名：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">stu</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> name[<span class="number">20</span>];</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    <span class="type">char</span> sex;</span><br><span class="line">&#125; STU;  </span><br></pre></td></tr></table></figure>
+
+<p>STU 是 struct stu 的别名，可以用 STU 定义结构体变量：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">STU body1,body2;</span><br></pre></td></tr></table></figure>
+
+<p>它等价于：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span> <span class="title">body1</span>, <span class="title">body2</span>;</span>  </span><br></pre></td></tr></table></figure>
+
+<p>为指针类型定义别名：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">int</span> <span class="params">(*PTR_TO_ARR)</span>[4];  </span><br></pre></td></tr></table></figure>
+
+<p>表示 PTR_TO_ARR 是类型 int * [4]的别名，它是一个二维数组指针类型。接着可以使用 PTR_TO_ARR 定义二维数组指针：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">PTR_TO_ARR p1, p2;</span><br></pre></td></tr></table></figure>
+
+<p>按照类似的写法，还可以为函数指针类型定义别名：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">int</span> <span class="params">(*PTR_TO_FUNC)</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">PTR_TO_FUNC pfunc;  </span><br></pre></td></tr></table></figure>
+
+<h6 id="typedef-和-define-的区别"><a href="#typedef-和-define-的区别" class="headerlink" title="typedef 和 #define 的区别"></a>typedef 和 #define 的区别</h6><p>typedef 在表现上有时候类似于 #define，但它和宏替换之间存在一个关键性的区别。正确思考这个问题的方法就是把 typedef 看成一种彻底的“封装”类型，声明之后不能再往里面增加别的东西。  </p>
+<p>(1) 可以使用其他类型说明符对宏类型名进行扩展，但对 typedef 所定义的类型名却不能这样做。例如：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> INTERGE int</span></span><br><span class="line"><span class="type">unsigned</span> INTERGE n; <span class="comment">//没问题</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> INTERGE;</span><br><span class="line"><span class="type">unsigned</span> INTERGE n; <span class="comment">//错误，不能在 INTERGE 前面添加 unsigned  </span></span><br></pre></td></tr></table></figure>
+
+<p>(2) 在连续定义几个变量的时候， typedef 能够保证定义的所有变量均为同一类型，而 #define 则无法保证。例如：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PTR_INT int *</span></span><br><span class="line">PTR_INT p1, p2;  </span><br></pre></td></tr></table></figure>
+
+<p>经过宏替换以后，第二行变为：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> *p1, p2;  </span><br></pre></td></tr></table></figure>
+
+<p>这使得 p1、 p2 成为不同的类型： p1 是指向 int 类型的指针， p2 是 int 类型。<br>相反，在下面的代码中 ：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> * PTR_INT</span><br><span class="line">PTR_INT p1, p2;</span><br></pre></td></tr></table></figure>
+
+<p>p1、 p2 类型相同，它们都是指向 int 类型的指针。  </p>
+<h5 id="const-的用法"><a href="#const-的用法" class="headerlink" title="const 的用法"></a>const 的用法</h5><p>有时候我们希望定义这样一种变量，它的值不能被改变，在整个作用域中都保持固定。例如，用一个变量来表示班级的最大人数，或者表示缓冲区的大小。为了满足这一要求，可以使用 const 关键字对变量加以限定：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> MaxNum = <span class="number">100</span>; <span class="comment">//班级的最大人数</span></span><br></pre></td></tr></table></figure>
+
+<p>这样 MaxNum 的值就不能被修改了，任何对 MaxNum 赋值的行为都将引发错误：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">MaxNum = <span class="number">90</span>; <span class="comment">//错误，试图向 const 变量写入数据</span></span><br></pre></td></tr></table></figure>
+
+<p>我们经常将 const 变量称为常量（Constant） 。创建常量的格式通常为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">const</span> type name = value;</span><br></pre></td></tr></table></figure>
+
+<p>const 和 type 都是用来修饰变量的，它们的位置可以互换，也就是将 type 放在 const 前面：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">type <span class="type">const</span> name = value;</span><br></pre></td></tr></table></figure>
+
+<p>但我们通常采用第一种方式，不采用第二种方式。另外建议将常量名的首字母大写，以提醒程序员这是个常量。</p>
+<p>由于常量一旦被创建后其值就不能再改变，所以常量必须在定义的同时赋值（初始化），后面的任何赋值行为都将引发错误。一如既往，初始化常量可以使用任意形式的表达式，如下所示：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">getNum</span><span class="params">()</span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="number">100</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> n = <span class="number">90</span>;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> MaxNum1 = getNum(); <span class="comment">//运行时初始化</span></span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> MaxNum2 = n; <span class="comment">//运行时初始化</span></span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> MaxNum3 = <span class="number">80</span>; <span class="comment">//编译时初始化</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d, %d, %d\n&quot;</span>, MaxNum1, MaxNum2, MaxNum3); </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：<br>100, 90, 80  </p>
+<h6 id="const-和指针"><a href="#const-和指针" class="headerlink" title="const 和指针"></a>const 和指针</h6><p>const 也可以和指针变量一起使用，这样可以限制指针变量本身，也可以限制指针指向的数据。 const 和指针一起使用会有几种不同的顺序，如下所示：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> *p1;</span><br><span class="line"><span class="type">int</span> <span class="type">const</span> *p2;</span><br><span class="line"><span class="type">int</span> * <span class="type">const</span> p3;  </span><br></pre></td></tr></table></figure>
+
+<p>在最后一种情况下，指针是只读的，也就是 p3 本身的值不能被修改；在前面两种情况下，指针所指向的数据是只读的，也就是 p1、 p2 本身的值可以修改（指向不同的数据），但它们指向的数据不能被修改。<br>当然，指针本身和它指向的数据都有可能是只读的，下面的两种写法能够做到这一点：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> * <span class="type">const</span> p4;</span><br><span class="line"><span class="type">int</span> <span class="type">const</span> * <span class="type">const</span> p5;</span><br></pre></td></tr></table></figure>
+
+<p>const 离变量名近就是用来修饰指针变量的，离变量名远就是用来修饰指针指向的数据，如果近的和远的都有，那么就同时修饰指针变量以及它指向的数据。  </p>
+<h6 id="const-和函数形参"><a href="#const-和函数形参" class="headerlink" title="const 和函数形参"></a>const 和函数形参</h6><p>在 C 语言中，单独定义 const 变量没有明显的优势，完全可以使用#define 命令代替。 const 通常用在函数形参中，如果形参是一个指针，为了防止在函数内部修改指针指向的数据，就可以用 const 来限制。  </p>
+<p>在 C 语言标准库中，有很多函数的形参都被 const 限制了，下面是部分函数的原型：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">size_t</span> <span class="title function_">strlen</span> <span class="params">( <span class="type">const</span> <span class="type">char</span> * str )</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">strcmp</span> <span class="params">( <span class="type">const</span> <span class="type">char</span> * str1, <span class="type">const</span> <span class="type">char</span> * str2 )</span>;</span><br><span class="line"><span class="type">char</span> * <span class="title function_">strcat</span> <span class="params">( <span class="type">char</span> * destination, <span class="type">const</span> <span class="type">char</span> * source )</span>;</span><br><span class="line"><span class="type">char</span> * <span class="title function_">strcpy</span> <span class="params">( <span class="type">char</span> * destination, <span class="type">const</span> <span class="type">char</span> * source )</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">system</span> <span class="params">(<span class="type">const</span> <span class="type">char</span>* command)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">puts</span> <span class="params">( <span class="type">const</span> <span class="type">char</span> * str )</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">printf</span> <span class="params">( <span class="type">const</span> <span class="type">char</span> * format, ... )</span>;  </span><br></pre></td></tr></table></figure>
+
+<p>我们自己在定义函数时也可以使用 const 对形参加以限制，例如查找字符串中某个字符出现的次数：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">size_t</span> <span class="title function_">strnchr</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *str, <span class="type">char</span> ch)</span>&#123;</span><br><span class="line">    <span class="type">int</span> i, n = <span class="number">0</span>, len = <span class="built_in">strlen</span>(str);</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;len; i++)&#123;  </span><br><span class="line">        <span class="keyword">if</span>(str[i] == ch)&#123;</span><br><span class="line">        n++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">char</span> *str = <span class="string">&quot;http://c.biancheng.net&quot;</span>;</span><br><span class="line">    <span class="type">char</span> ch = <span class="string">&#x27;t&#x27;</span>;</span><br><span class="line">    <span class="type">int</span> n = strnchr(str, ch);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, n);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：<br>3<br>根据 strnchr() 的功能可以推断，函数内部要对字符串 str 进行遍历，不应该有修改的动作，用 const 加以限制，不但可以防止由于程序员误操作引起的字符串修改，还可以给用户一个提示，函数不会修改你提供的字符串，请你放心。  </p>
+<h6 id="const-和非-const-类型转换"><a href="#const-和非-const-类型转换" class="headerlink" title="const 和非 const 类型转换"></a>const 和非 const 类型转换</h6><p>当一个指针变量 str1 被 const 限制时，并且类似 const char *str1 这种形式，说明指针指向的数据不能被修改；如果将 str1 赋值给另外一个未被 const 修饰的指针变量 str2，就有可能发生危险。因为通过 str1 不能修改数据，</p>
+<p>而赋值后通过 str2 能够修改数据了，意义发生了转变，所以编译器不提倡这种行为，会给出错误或警告。<br>也就是说， const char *和 char *是不同的类型，不能将 const char *类型的数据赋值给 char *类型的变量。但反过来是可以的，编译器允许将 char *类型的数据赋值给 const char *类型的变量。</p>
+<p>这种限制很容易理解， char *指向的数据有读取和写入权限，而 const char *指向的数据只有读取权限，降低数据的权限不会带来任何问题，但提升数据的权限就有可能发生危险。</p>
+<p>下面是一个将 const 类型赋值给非 const 类型的例子：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">(<span class="type">char</span> *str)</span>&#123; &#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;  </span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *str1 = <span class="string">&quot;c.biancheng.net&quot;</span>;</span><br><span class="line">    <span class="type">char</span> *str2 = str1;</span><br><span class="line">    func(str1);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第 7、 8 行代码分别通过赋值、传参（传参的本质也是赋值）将 const 类型的数据交给了非 const 类型的变量，编译器不会容忍这种行为，会给出警告，甚至直接报错。  </p>
+<h5 id="随机数：-rand-和-srand-函数"><a href="#随机数：-rand-和-srand-函数" class="headerlink" title="随机数： rand()和 srand()函数"></a>随机数： rand()和 srand()函数</h5><p>我们一般使用 &lt;stdlib.h&gt; 头文件中的 rand() 函数来生成随机数，它的用法为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">rand</span> <span class="params">(<span class="type">void</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>void 表示不需要传递参数。<br>C 语言中还有一个 random() 函数可以获取随机数，但是 random() 不是标准函数，不能在 VC&#x2F;VS 等编译器通过，<br>所以比较少用。</p>
+<p>rand() 会随机生成一个位于 0 ~ RAND_MAX 之间的整数。</p>
+<p>RAND_MAX 是 &lt;stdlib.h&gt; 头文件中的一个宏，它用来指明 rand() 所能返回的随机数的最大值。 C 语言标准并没有规定 RAND_MAX 的具体数值，只是规定它的值至少为 32767。在实际编程中，我们也不需要知道 RAND_MAX的具体值，把它当做一个很大的数来对待即可。  </p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> a = rand();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,a);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>运行结果：<br>41</p>
+<h6 id="随机数的本质"><a href="#随机数的本质" class="headerlink" title="随机数的本质"></a>随机数的本质</h6><p>多次运行，我们发现上面的代码产生的随机数都一样。因为， rand() 函数产生的随机数是伪随机数，是根据一个数值按照某个公式推算出来的，这个数值我们称之为“种子”。种子和随机数之间的关系是一种正态分布，如下图所示：  </p>
+<img src="/2023/07/18/C%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A1%A5%E5%85%85/image-20230719211647507.png" class="" title="image-20230719211647507">
+
+<p>种子在每次启动计算机时是随机的，但是一旦计算机启动以后它就不再变化了；也就是说，每次启动计算机以后，种子就是定值了，所以根据公式推算出来的结果（也就是生成的随机数）就是固定的。  </p>
+<h6 id="重新播种"><a href="#重新播种" class="headerlink" title="重新播种"></a>重新播种</h6><p>我们可以通过 srand() 函数来重新“播种”，这样种子就会发生改变。 srand() 的用法为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">srand</span> <span class="params">(<span class="type">unsigned</span> <span class="type">int</span> seed)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>它需要一个 unsigned int 类型的参数。在实际开发中，我们可以用时间作为参数，只要每次播种的时间不同，那么生成的种子就不同，最终的随机数也就不同。<br>使用 &lt;time.h&gt; 头文件中的 time() 函数即可得到当前的时间（精确到秒），就像下面这样：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">srand((<span class="type">unsigned</span>)time(<span class="literal">NULL</span>));  </span><br></pre></td></tr></table></figure>
+
+<p>对上面的代码进行修改，生成随机数之前先进行播种：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a;</span><br><span class="line">    srand((<span class="type">unsigned</span>)time(<span class="literal">NULL</span>));</span><br><span class="line">    a = rand();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, a);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>多次运行程序，会发现每次生成的随机数都不一样了。但是，这些随机数会有逐渐增大或者逐渐减小的趋势，这是因为我们以时间为种子，时间是逐渐增大的，结合上面的正态分布图，很容易推断出随机数也会逐渐增大或者减小。  </p>
+<h6 id="生成一定范围内的随机数"><a href="#生成一定范围内的随机数" class="headerlink" title="生成一定范围内的随机数"></a>生成一定范围内的随机数</h6><p>我们可以利用取模的方法，产生一定范围的随机数，例如：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = rand() % <span class="number">10</span>; <span class="comment">//产生 0~9 的随机数，注意 10 会被整除  </span></span><br></pre></td></tr></table></figure>
+
+<p>如果要规定上下限：  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = rand() % <span class="number">51</span> + <span class="number">13</span>; <span class="comment">//产生 13~63 的随机数  </span></span><br></pre></td></tr></table></figure>
+
+<p>分析：取模即取余， rand()%51+13 我们可以看成两部分： rand()%51 是产生 0~50 的随机数，后面+13 保证 a 最小只能是 13，最大就是 50+13&#x3D;63。  </p>
+]]></content>
+      <categories>
+        <category>C语言学习之路</category>
+      </categories>
+      <tags>
+        <tag>C语言</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>C语言数组</title>
     <url>/2023/07/09/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84/</url>
     <content><![CDATA[<h5 id="什么是数组？"><a href="#什么是数组？" class="headerlink" title="什么是数组？"></a>什么是数组？</h5><h6 id="数组的概念和定义"><a href="#数组的概念和定义" class="headerlink" title="数组的概念和定义"></a>数组的概念和定义</h6><p>例：</p>
@@ -642,141 +777,6 @@
 <p>优化后的代码：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line"><span class="type">int</span> nums[<span class="number">10</span>] = &#123; <span class="number">4</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span> &#125;;</span><br><span class="line"><span class="type">int</span> i, j, temp, isSorted;</span><br><span class="line"><span class="comment">//优化算法：最多进行 n-1 轮比较</span></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i&lt;<span class="number">10</span> - <span class="number">1</span>; i++) &#123;</span><br><span class="line">    isSorted = <span class="number">1</span>; <span class="comment">//假设剩下的元素已经排序好了</span></span><br><span class="line">    <span class="keyword">for</span> (j = <span class="number">0</span>; j&lt;<span class="number">10</span> - <span class="number">1</span> - i; j++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[j] &gt; nums[j + <span class="number">1</span>]) &#123;</span><br><span class="line">            temp = nums[j];</span><br><span class="line">            nums[j] = nums[j + <span class="number">1</span>];</span><br><span class="line">            nums[j + <span class="number">1</span>] = temp;</span><br><span class="line">            isSorted = <span class="number">0</span>; <span class="comment">//一旦需要交换数组元素，就说明剩下的元素没有排序好</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">    <span class="keyword">if</span> (isSorted) <span class="keyword">break</span>; <span class="comment">//如果没有发生交换，说明剩下的元素已经排序好了</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, nums[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-]]></content>
-      <categories>
-        <category>C语言学习之路</category>
-      </categories>
-      <tags>
-        <tag>C语言</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>C语言知识点补充</title>
-    <url>/2023/07/18/C%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A1%A5%E5%85%85/</url>
-    <content><![CDATA[<h5 id="typedef-的用法"><a href="#typedef-的用法" class="headerlink" title="typedef 的用法"></a>typedef 的用法</h5><p>C 语言允许为一个数据类型起一个新的别名，就像给人起“绰号”一样。起别名的目的不是为了提高程序运行效率，而是为了编码方便。<span id="more"></span>例如有一个结构体的名字是 stu，要想定义一个结构体变量就得这样写：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span> <span class="title">stu1</span>;</span></span><br></pre></td></tr></table></figure>
-
-<p>struct 看起来就是多余的，但不写又会报错。如果为 struct stu 起了一个别名 STU，书写起来就简单了：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">STU stu1;</span><br></pre></td></tr></table></figure>
-
-<p>这种写法更加简练，意义也非常明确，不管是在标准头文件中还是以后的编程实践中，都会大量使用这种别名。<br>使用关键字 typedef 可以为类型起一个新的别名。 typedef 的用法一般为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> oldName newName;  </span><br></pre></td></tr></table></figure>
-
-<p>ldName 是类型原来的名字， newName 是类型新的名字。例如  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> INTEGER;</span><br><span class="line">INTEGER a, b;</span><br><span class="line">a = <span class="number">1</span>;</span><br><span class="line">b = <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
-
-<p>INTEGER a, b;等效于 int a, b;。</p>
-<p>typedef 还可以给数组、 指针、结构体等类型定义别名。先来看一个给数组类型定义别名的例子：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">char</span> ARRAY20[<span class="number">20</span>]  </span><br></pre></td></tr></table></figure>
-
-<p>表示 ARRAY20 是类型 char [20]的别名。它是一个长度为 20 的数组类型。接着可以用 ARRAY20 定义数组：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">ARRAY20 a1, a2, s1, s2;</span><br></pre></td></tr></table></figure>
-
-<p>它等价于：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> a1[<span class="number">20</span>], a2[<span class="number">20</span>], s1[<span class="number">20</span>], s2[<span class="number">20</span>]  </span><br></pre></td></tr></table></figure>
-
-<p>为结构体类型定义别名：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">stu</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> name[<span class="number">20</span>];</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    <span class="type">char</span> sex;</span><br><span class="line">&#125; STU;  </span><br></pre></td></tr></table></figure>
-
-<p>STU 是 struct stu 的别名，可以用 STU 定义结构体变量：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">STU body1,body2;</span><br></pre></td></tr></table></figure>
-
-<p>它等价于：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stu</span> <span class="title">body1</span>, <span class="title">body2</span>;</span>  </span><br></pre></td></tr></table></figure>
-
-<p>为指针类型定义别名：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">int</span> <span class="params">(*PTR_TO_ARR)</span>[4];  </span><br></pre></td></tr></table></figure>
-
-<p>表示 PTR_TO_ARR 是类型 int * [4]的别名，它是一个二维数组指针类型。接着可以使用 PTR_TO_ARR 定义二维数组指针：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">PTR_TO_ARR p1, p2;</span><br></pre></td></tr></table></figure>
-
-<p>按照类似的写法，还可以为函数指针类型定义别名：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">int</span> <span class="params">(*PTR_TO_FUNC)</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">PTR_TO_FUNC pfunc;  </span><br></pre></td></tr></table></figure>
-
-<h6 id="typedef-和-define-的区别"><a href="#typedef-和-define-的区别" class="headerlink" title="typedef 和 #define 的区别"></a>typedef 和 #define 的区别</h6><p>typedef 在表现上有时候类似于 #define，但它和宏替换之间存在一个关键性的区别。正确思考这个问题的方法就是把 typedef 看成一种彻底的“封装”类型，声明之后不能再往里面增加别的东西。  </p>
-<p>(1) 可以使用其他类型说明符对宏类型名进行扩展，但对 typedef 所定义的类型名却不能这样做。例如：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> INTERGE int</span></span><br><span class="line"><span class="type">unsigned</span> INTERGE n; <span class="comment">//没问题</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> INTERGE;</span><br><span class="line"><span class="type">unsigned</span> INTERGE n; <span class="comment">//错误，不能在 INTERGE 前面添加 unsigned  </span></span><br></pre></td></tr></table></figure>
-
-<p>(2) 在连续定义几个变量的时候， typedef 能够保证定义的所有变量均为同一类型，而 #define 则无法保证。例如：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PTR_INT int *</span></span><br><span class="line">PTR_INT p1, p2;  </span><br></pre></td></tr></table></figure>
-
-<p>经过宏替换以后，第二行变为：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> *p1, p2;  </span><br></pre></td></tr></table></figure>
-
-<p>这使得 p1、 p2 成为不同的类型： p1 是指向 int 类型的指针， p2 是 int 类型。<br>相反，在下面的代码中 ：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> * PTR_INT</span><br><span class="line">PTR_INT p1, p2;</span><br></pre></td></tr></table></figure>
-
-<p>p1、 p2 类型相同，它们都是指向 int 类型的指针。  </p>
-<h5 id="const-的用法"><a href="#const-的用法" class="headerlink" title="const 的用法"></a>const 的用法</h5><p>有时候我们希望定义这样一种变量，它的值不能被改变，在整个作用域中都保持固定。例如，用一个变量来表示班级的最大人数，或者表示缓冲区的大小。为了满足这一要求，可以使用 const 关键字对变量加以限定：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> MaxNum = <span class="number">100</span>; <span class="comment">//班级的最大人数</span></span><br></pre></td></tr></table></figure>
-
-<p>这样 MaxNum 的值就不能被修改了，任何对 MaxNum 赋值的行为都将引发错误：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">MaxNum = <span class="number">90</span>; <span class="comment">//错误，试图向 const 变量写入数据</span></span><br></pre></td></tr></table></figure>
-
-<p>我们经常将 const 变量称为常量（Constant） 。创建常量的格式通常为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">const</span> type name = value;</span><br></pre></td></tr></table></figure>
-
-<p>const 和 type 都是用来修饰变量的，它们的位置可以互换，也就是将 type 放在 const 前面：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">type <span class="type">const</span> name = value;</span><br></pre></td></tr></table></figure>
-
-<p>但我们通常采用第一种方式，不采用第二种方式。另外建议将常量名的首字母大写，以提醒程序员这是个常量。</p>
-<p>由于常量一旦被创建后其值就不能再改变，所以常量必须在定义的同时赋值（初始化），后面的任何赋值行为都将引发错误。一如既往，初始化常量可以使用任意形式的表达式，如下所示：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">getNum</span><span class="params">()</span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="number">100</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> n = <span class="number">90</span>;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> MaxNum1 = getNum(); <span class="comment">//运行时初始化</span></span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> MaxNum2 = n; <span class="comment">//运行时初始化</span></span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> MaxNum3 = <span class="number">80</span>; <span class="comment">//编译时初始化</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d, %d, %d\n&quot;</span>, MaxNum1, MaxNum2, MaxNum3); </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>运行结果：<br>100, 90, 80  </p>
-<h6 id="const-和指针"><a href="#const-和指针" class="headerlink" title="const 和指针"></a>const 和指针</h6><p>const 也可以和指针变量一起使用，这样可以限制指针变量本身，也可以限制指针指向的数据。 const 和指针一起使用会有几种不同的顺序，如下所示：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> *p1;</span><br><span class="line"><span class="type">int</span> <span class="type">const</span> *p2;</span><br><span class="line"><span class="type">int</span> * <span class="type">const</span> p3;  </span><br></pre></td></tr></table></figure>
-
-<p>在最后一种情况下，指针是只读的，也就是 p3 本身的值不能被修改；在前面两种情况下，指针所指向的数据是只读的，也就是 p1、 p2 本身的值可以修改（指向不同的数据），但它们指向的数据不能被修改。<br>当然，指针本身和它指向的数据都有可能是只读的，下面的两种写法能够做到这一点：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> * <span class="type">const</span> p4;</span><br><span class="line"><span class="type">int</span> <span class="type">const</span> * <span class="type">const</span> p5;</span><br></pre></td></tr></table></figure>
-
-<p>const 离变量名近就是用来修饰指针变量的，离变量名远就是用来修饰指针指向的数据，如果近的和远的都有，那么就同时修饰指针变量以及它指向的数据。  </p>
-<h6 id="const-和函数形参"><a href="#const-和函数形参" class="headerlink" title="const 和函数形参"></a>const 和函数形参</h6><p>在 C 语言中，单独定义 const 变量没有明显的优势，完全可以使用#define 命令代替。 const 通常用在函数形参中，如果形参是一个指针，为了防止在函数内部修改指针指向的数据，就可以用 const 来限制。  </p>
-<p>在 C 语言标准库中，有很多函数的形参都被 const 限制了，下面是部分函数的原型：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">size_t</span> <span class="title function_">strlen</span> <span class="params">( <span class="type">const</span> <span class="type">char</span> * str )</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">strcmp</span> <span class="params">( <span class="type">const</span> <span class="type">char</span> * str1, <span class="type">const</span> <span class="type">char</span> * str2 )</span>;</span><br><span class="line"><span class="type">char</span> * <span class="title function_">strcat</span> <span class="params">( <span class="type">char</span> * destination, <span class="type">const</span> <span class="type">char</span> * source )</span>;</span><br><span class="line"><span class="type">char</span> * <span class="title function_">strcpy</span> <span class="params">( <span class="type">char</span> * destination, <span class="type">const</span> <span class="type">char</span> * source )</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">system</span> <span class="params">(<span class="type">const</span> <span class="type">char</span>* command)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">puts</span> <span class="params">( <span class="type">const</span> <span class="type">char</span> * str )</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">printf</span> <span class="params">( <span class="type">const</span> <span class="type">char</span> * format, ... )</span>;  </span><br></pre></td></tr></table></figure>
-
-<p>我们自己在定义函数时也可以使用 const 对形参加以限制，例如查找字符串中某个字符出现的次数：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">size_t</span> <span class="title function_">strnchr</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *str, <span class="type">char</span> ch)</span>&#123;</span><br><span class="line">    <span class="type">int</span> i, n = <span class="number">0</span>, len = <span class="built_in">strlen</span>(str);</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;len; i++)&#123;  </span><br><span class="line">        <span class="keyword">if</span>(str[i] == ch)&#123;</span><br><span class="line">        n++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">char</span> *str = <span class="string">&quot;http://c.biancheng.net&quot;</span>;</span><br><span class="line">    <span class="type">char</span> ch = <span class="string">&#x27;t&#x27;</span>;</span><br><span class="line">    <span class="type">int</span> n = strnchr(str, ch);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, n);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>运行结果：<br>3<br>根据 strnchr() 的功能可以推断，函数内部要对字符串 str 进行遍历，不应该有修改的动作，用 const 加以限制，不但可以防止由于程序员误操作引起的字符串修改，还可以给用户一个提示，函数不会修改你提供的字符串，请你放心。  </p>
-<h6 id="const-和非-const-类型转换"><a href="#const-和非-const-类型转换" class="headerlink" title="const 和非 const 类型转换"></a>const 和非 const 类型转换</h6><p>当一个指针变量 str1 被 const 限制时，并且类似 const char *str1 这种形式，说明指针指向的数据不能被修改；如果将 str1 赋值给另外一个未被 const 修饰的指针变量 str2，就有可能发生危险。因为通过 str1 不能修改数据，</p>
-<p>而赋值后通过 str2 能够修改数据了，意义发生了转变，所以编译器不提倡这种行为，会给出错误或警告。<br>也就是说， const char *和 char *是不同的类型，不能将 const char *类型的数据赋值给 char *类型的变量。但反过来是可以的，编译器允许将 char *类型的数据赋值给 const char *类型的变量。</p>
-<p>这种限制很容易理解， char *指向的数据有读取和写入权限，而 const char *指向的数据只有读取权限，降低数据的权限不会带来任何问题，但提升数据的权限就有可能发生危险。</p>
-<p>下面是一个将 const 类型赋值给非 const 类型的例子：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">(<span class="type">char</span> *str)</span>&#123; &#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;  </span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *str1 = <span class="string">&quot;c.biancheng.net&quot;</span>;</span><br><span class="line">    <span class="type">char</span> *str2 = str1;</span><br><span class="line">    func(str1);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>第 7、 8 行代码分别通过赋值、传参（传参的本质也是赋值）将 const 类型的数据交给了非 const 类型的变量，编译器不会容忍这种行为，会给出警告，甚至直接报错。  </p>
-<h5 id="随机数：-rand-和-srand-函数"><a href="#随机数：-rand-和-srand-函数" class="headerlink" title="随机数： rand()和 srand()函数"></a>随机数： rand()和 srand()函数</h5><p>我们一般使用 &lt;stdlib.h&gt; 头文件中的 rand() 函数来生成随机数，它的用法为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">rand</span> <span class="params">(<span class="type">void</span>)</span>;</span><br></pre></td></tr></table></figure>
-
-<p>void 表示不需要传递参数。<br>C 语言中还有一个 random() 函数可以获取随机数，但是 random() 不是标准函数，不能在 VC&#x2F;VS 等编译器通过，<br>所以比较少用。</p>
-<p>rand() 会随机生成一个位于 0 ~ RAND_MAX 之间的整数。</p>
-<p>RAND_MAX 是 &lt;stdlib.h&gt; 头文件中的一个宏，它用来指明 rand() 所能返回的随机数的最大值。 C 语言标准并没有规定 RAND_MAX 的具体数值，只是规定它的值至少为 32767。在实际编程中，我们也不需要知道 RAND_MAX的具体值，把它当做一个很大的数来对待即可。  </p>
-<p>例如：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> a = rand();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,a);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
-
-<p>运行结果：<br>41</p>
-<h6 id="随机数的本质"><a href="#随机数的本质" class="headerlink" title="随机数的本质"></a>随机数的本质</h6><p>多次运行，我们发现上面的代码产生的随机数都一样。因为， rand() 函数产生的随机数是伪随机数，是根据一个数值按照某个公式推算出来的，这个数值我们称之为“种子”。种子和随机数之间的关系是一种正态分布，如下图所示：  </p>
-<img src="/2023/07/18/C%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A1%A5%E5%85%85/image-20230719211647507.png" class="" title="image-20230719211647507">
-
-<p>种子在每次启动计算机时是随机的，但是一旦计算机启动以后它就不再变化了；也就是说，每次启动计算机以后，种子就是定值了，所以根据公式推算出来的结果（也就是生成的随机数）就是固定的。  </p>
-<h6 id="重新播种"><a href="#重新播种" class="headerlink" title="重新播种"></a>重新播种</h6><p>我们可以通过 srand() 函数来重新“播种”，这样种子就会发生改变。 srand() 的用法为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">srand</span> <span class="params">(<span class="type">unsigned</span> <span class="type">int</span> seed)</span>;</span><br></pre></td></tr></table></figure>
-
-<p>它需要一个 unsigned int 类型的参数。在实际开发中，我们可以用时间作为参数，只要每次播种的时间不同，那么生成的种子就不同，最终的随机数也就不同。<br>使用 &lt;time.h&gt; 头文件中的 time() 函数即可得到当前的时间（精确到秒），就像下面这样：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">srand((<span class="type">unsigned</span>)time(<span class="literal">NULL</span>));  </span><br></pre></td></tr></table></figure>
-
-<p>对上面的代码进行修改，生成随机数之前先进行播种：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a;</span><br><span class="line">    srand((<span class="type">unsigned</span>)time(<span class="literal">NULL</span>));</span><br><span class="line">    a = rand();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, a);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
-
-<p>多次运行程序，会发现每次生成的随机数都不一样了。但是，这些随机数会有逐渐增大或者逐渐减小的趋势，这是因为我们以时间为种子，时间是逐渐增大的，结合上面的正态分布图，很容易推断出随机数也会逐渐增大或者减小。  </p>
-<h6 id="生成一定范围内的随机数"><a href="#生成一定范围内的随机数" class="headerlink" title="生成一定范围内的随机数"></a>生成一定范围内的随机数</h6><p>我们可以利用取模的方法，产生一定范围的随机数，例如：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = rand() % <span class="number">10</span>; <span class="comment">//产生 0~9 的随机数，注意 10 会被整除  </span></span><br></pre></td></tr></table></figure>
-
-<p>如果要规定上下限：  </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = rand() % <span class="number">51</span> + <span class="number">13</span>; <span class="comment">//产生 13~63 的随机数  </span></span><br></pre></td></tr></table></figure>
-
-<p>分析：取模即取余， rand()%51+13 我们可以看成两部分： rand()%51 是产生 0~50 的随机数，后面+13 保证 a 最小只能是 13，最大就是 50+13&#x3D;63。  </p>
 ]]></content>
       <categories>
         <category>C语言学习之路</category>
@@ -2418,6 +2418,85 @@ void W25Q64_ReadData(uint32_t Address, uint8_t *DataArray, uint32_t Count)
 
 <p>软硬件SPI的主函数没什么差别，只是将MySPI.c中的软件模拟部分替换成STM32标准库中的SPI函数。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//NRF24L01寄存器操作命令</span><br><span class="line">#define NRF_READ_REG    0x00  //读配置寄存器,低5位为寄存器地址</span><br><span class="line">#define NRF_WRITE_REG   0x20  //写配置寄存器,低5位为寄存器地址</span><br><span class="line">#define RD_RX_PLOAD     0x61  //读RX有效数据,1~32字节</span><br><span class="line">#define WR_TX_PLOAD     0xA0  //写TX有效数据,1~32字节</span><br><span class="line">#define FLUSH_TX        0xE1  //清除TX FIFO寄存器.发射模式下用</span><br><span class="line">#define FLUSH_RX        0xE2  //清除RX FIFO寄存器.接收模式下用</span><br><span class="line">#define REUSE_TX_PL     0xE3  //重新使用上一包数据,CE为高,数据包被不断发送.</span><br><span class="line">#define NOP             0xFF  //空操作,可以用来读状态寄存器</span><br><span class="line">	 </span><br><span class="line">//SPI(NRF24L01)寄存器地址</span><br><span class="line">#define CONFIG          0x00  //配置寄存器地址;bit0:1接收模式,0发射模式;bit1:电选 </span><br><span class="line">                              //择;bit2:CRC模式;bit3:CRC使能;</span><br><span class="line">                              //bit4:中断MAX_RT(达到最大重发次数中断)使能;bit5:中断TX_DS使 </span><br><span class="line">                              //能;bit6:中断RX_DR使能</span><br><span class="line">#define EN_AA           0x01  //使能自动应答功能  bit0~5,对应通道0~5</span><br><span class="line">#define EN_RXADDR       0x02  //接收地址允许,bit0~5,对应通道0~5</span><br><span class="line">#define SETUP_AW        0x03  //设置地址宽度(所有数据通道):bit1,0:00,3字节;01,4字节;02,5字 </span><br><span class="line">                              //节;</span><br><span class="line">#define SETUP_RETR      0x04  //建立自动重发;bit3:0,自动重发计数器;bit7:4,自动重发延时 </span><br><span class="line">                              //250*x+86us</span><br><span class="line">#define RF_CH           0x05  //RF通道,bit6:0,工作通道频率;</span><br><span class="line">#define RF_SETUP        0x06  //RF寄存器;bit3:传输速率(0:1Mbps,1:2Mbps);bit2:1,发射功 </span><br><span class="line">                              //率;bit0:低噪声放大器增益</span><br><span class="line">#define STATUS          0x07  //状态寄存器;bit0:TX FIFO满标志;bit3:1,接收数据通道号(最 </span><br><span class="line">                              //大:6);bit4,达到最多次重发</span><br><span class="line">                              //bit5:数据发送完成中断;bit6:接收数据中断;</span><br><span class="line">#define MAX_TX  		0x10  //达到最大发送次数中断</span><br><span class="line">#define TX_OK   		0x20  //TX发送完成中断</span><br><span class="line">#define RX_OK   		0x40  //接收到数据中断</span><br><span class="line"> </span><br><span class="line">#define OBSERVE_TX      0x08  //发送检测寄存器,bit7:4,数据包丢失计数器;bit3:0,重发计数器</span><br><span class="line">#define CD              0x09  //载波检测寄存器,bit0,载波检测;</span><br><span class="line">#define RX_ADDR_P0      0x0A  //数据通道0接收地址,最大长度5个字节,低字节在前</span><br><span class="line">#define RX_ADDR_P1      0x0B  //数据通道1接收地址,最大长度5个字节,低字节在前</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P2      0x0C  //数据通道2接收地址,最低字节可设置</span><br><span class="line">                              //高字节,必须同 RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P3      0x0D  //数据通道3接收地址,最低字节可设置</span><br><span class="line">                              //高字节,必须同 RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P4      0x0E  //数据通道4接收地址,最低字节可设置</span><br><span class="line">                              //高字节,必须同RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P5      0x0F  //数据通道5接收地址,最低字节可设置,</span><br><span class="line">                              //高字节,必须同RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define TX_ADDR         0x10  //发送地址(低字节在前),ShockBurstTM模式下,RX_ADDR_P0与此地址 </span><br><span class="line">                                相等</span><br><span class="line">#define RX_PW_P0        0x11  //接收数据通道0有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P1        0x12  //接收数据通道1有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P2        0x13  //接收数据通道2有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P3        0x14  //接收数据通道3有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P4        0x15  //接收数据通道4有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P5        0x16  //接收数据通道5有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define NRF_FIFO_STATUS 0x17  //FIFO状态寄存器;bit0,RX FIFO寄存器空标志;</span><br><span class="line">                              //bit1,RX FIFO满标志;bit2,3,保留</span><br><span class="line">                              //bit4,TX FIFO空标志;bit5,TX FIFO满标志;bit6,1,循环发送上一 </span><br><span class="line">                              //数据包.0,不循环;</span><br><span class="line">/</span><br><span class="line">//24L01操作线</span><br><span class="line">#define NRF24L01_CE   PAout(4) //24L01片选信号</span><br><span class="line">#define NRF24L01_CSN  PCout(4) //SPI片选信号	   </span><br><span class="line">#define NRF24L01_IRQ  PAin(1)  //IRQ主机数据输入</span><br><span class="line">//24L01发送接收数据宽度定义</span><br><span class="line">#define TX_ADR_WIDTH    5   	//5字节的地址宽度</span><br><span class="line">#define RX_ADR_WIDTH    5   	//5字节的地址宽度</span><br><span class="line">#define TX_PLOAD_WIDTH  32  	//32字节的用户数据宽度</span><br><span class="line">#define RX_PLOAD_WIDTH  32  	//32字节的用户数据宽度</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>stm32归档</category>
+      </categories>
+      <tags>
+        <tag>单片机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>stm32综述</title>
+    <url>/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/</url>
+    <content><![CDATA[<p>　　大概有一段时间没看stm32，通过之前学51的经历，大概是明白自己一段时间不看就会忘，虽然随便翻翻又能快速上手，但是东找西翻比较麻烦。所以打算复习的时候，顺便做个笔记记录一下。自己所用的型号为<strong>STM32F103C8T6</strong>。<span id="more"></span></p>
+<h6 id="STM简述"><a href="#STM简述" class="headerlink" title="STM简述"></a>STM简述</h6><p>　　STM32是ST公司基于ARM- Cortex-M内核开发的32位微控制器（MCU）。自己所用的是STM32F1系列，属于Mainstream，内核Cortex-M3。ARM公司设计ARM内核，半导体厂商完善内核周边电路并产生芯片。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104303863.png" class="" title="image-20230724104303863">
+
+<p>图中的ARM由ARM公司设计，芯片内的存储和外设（比如GPIO,定时器）由ST公司设计。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104427576.png" class="" title="image-20230724104427576">
+
+<p>这是一枚STM32F103C8T6的芯片，由芯片可以看出型号和封装。封装为LQFP48，芯片表面左下角有个圆点，圆点下的引脚为1顺着原点逆时针开始数。如果芯片有两个圆点，则从最小的圆点开始数。</p>
+<h6 id="片上资源-x2F-外设"><a href="#片上资源-x2F-外设" class="headerlink" title="片上资源&#x2F;外设"></a><strong>片上资源&#x2F;外设</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104939703.png" class="" title="image-20230724104939703">
+
+<p>绿色背景加黑的是位于内核的外设。另外C8T6并没有表中的DAC,SDIO,FSMC和USB OTG外设。</p>
+<p>NVIC:内核里面用于管理中断的设备，例如配置中断优先级。</p>
+<p>SysTick:用来给操作系统提供定时服务。应为STM32可以加入Freektos，ucos等操作系统，利用SysTick提供定时进行任务切换的功能。</p>
+<p>RCC：复位和时钟控制，可以对系统的时钟进行配置，还能使能各模块的时钟。在STM32中，外设上电后是默认没有时钟。没有时钟，外设无法工作。</p>
+<p>GPIO：通用的IO口，可以用于操控模块，比如灯，马达等。</p>
+<p>AFIO：完成复用功能端口的重定义，还有中断端口的置配。</p>
+<p>EXTI：配置好外部中断后，当引脚有电平变化时，就可以触发中断，让CPU来处理任务。</p>
+<p>TIM定时器：分为基本定时器，通用定时器，高级定时器。不仅可以完成定时中断的任务，还可以用于测频率，生成PWM波形，配置为专用的编码器接口。</p>
+<p>ADC：模数转换器，STM32内置了12位的AD转换器，可以直接读取IO口的模拟电压，无需外置。</p>
+<p>DMA：直接内存访问，可以帮助CPU搬运大量数据等这种繁杂任务。</p>
+<p>I2C&#x2F;SPI：两种常见的通信协议。</p>
+<p>RTC：实时时钟，在STM32内部完成时，分，秒的计时功能，还可以外接电源，即使掉电也能</p>
+<p>正常运行（此时会启用芯片备用电池）。</p>
+<p>CRC：一种数据校验方式，用于判断接受的数据是否正确。</p>
+<p>IWDG&#x2F;WWDG:当单片机因为电磁干扰死机或者程序设计不合理导致的死循环时，看门狗可以及时复位，保证系统稳定。</p>
+<p>DAC：数模转换器，可以在IO口直接输出模拟电压。</p>
+<p>OTG：使STM32作为USB主机去读取其它USB设备。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111613998.png" class="" title="image-20230724111613998">
+
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111625157.png" class="" title="image-20230724111625157">
+
+
+
+<h6 id="系统结构"><a href="#系统结构" class="headerlink" title="系统结构"></a><strong>系统结构</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111735194.png" class="" title="image-20230724111735194">
+
+<p>ICode（指令总线）和Dcode（数据总线）用来连接Flash闪存，Flash存放的是我们编写的程序，ICode用于加载程序指令，Dcode用于加载数据，如常数和调试数据。</p>
+<p>系统总线就连接到如SRAM（用于存储程序运行时的变量数据）</p>
+<p>AHB系统总线：用于挂载主要的外设，AHB指先进高性能总线，挂载最基本的或者性能比较高的外设，如复位和时钟控制  SDIO。</p>
+<p>APB：先进外设总线，用于连接一般的外设。</p>
+<p>DMA：大量的数据搬运，防止覆盖。</p>
+<h6 id="引脚定义"><a href="#引脚定义" class="headerlink" title="引脚定义"></a>引脚定义</h6><p>红色是电源相关的引脚</p>
+<p>蓝色是最小系统相关的引脚</p>
+<p>绿色是IO口&#x2F;功能口相关的引脚</p>
+<p>S代表电源，I&#x2F;O代表输入输出，I&#x2F;O电平代表所能容忍的电压。FT代表能容忍5V，默认复用是IO口上同时连接的外设功能引脚。重定义：如果有2个功能同时复用在了1个IO口上，可以把其中一个复用功能重映射到其他端口上。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230726084013246.png" class="" title="image-20230726084013246">
+
+
+
+<p>1.　　　VBAT：备用电池供电引脚，当系统电源断电时，备用电池可以给内部的RTC时钟和备份寄存器提供电源。</p>
+<p>2.　　　IO口&#x2F;侵入检测&#x2F;RTC：IO口可以根据程序输出读取高低电平</p>
+<p>3.4　IO口&#x2F;接32.768kHZ的RTC晶振</p>
+<p>5,6　接系统的主晶振，芯片内有锁相环电路，对8MHZ进行倍频形成72MHZ。</p>
+<p>7　　系统复位引脚，N代表低电平复位</p>
+<p>8,9　内部模拟部分的电源，如ADC,RC振荡器  VSS(-) VDD(+)</p>
+<p>10-19　都是IO口，10号引脚还兼具了WKUP用于唤醒对于待机模式的STM32</p>
+<p>20　IO口&#x2F;BOOT1引脚，BOOT用来配置启动模式    44.　BOOT0</p>
+<p>21.22.25-33.41-43.45.46 都是IO口</p>
+<p>23,24是系统的主电源口， 35.36.47.48    STM32采用分区供电模式</p>
+<p>34,37-40　IO口&#x2F;调试端口      STM32支持SWD和JTAG两种调试方法</p>
+<p>启动配置（BOOT0和BOOT1）</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140258741.png" class="" title="image-20230801140258741">
+
+<p>作用：指定程序开始运行的位置，一般情况下，程序是在Flash程序存储器开始执行</p>
+<p>接1指3.3V电源正的意思</p>
+<p>系统存储器就是STM32中的一段BootLoader(接受串口数据，然后刷新到主闪存中)</p>
+<p>核心板原理图</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140602387.png" class="" title="image-20230801140602387">
 
 ]]></content>
       <categories>
@@ -4920,85 +4999,6 @@ void Serial_Printf(char *format, ...);                   // 带格式的字符�
       </categories>
       <tags>
         <tag>秘密</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>stm32综述</title>
-    <url>/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/</url>
-    <content><![CDATA[<p>　　大概有一段时间没看stm32，通过之前学51的经历，大概是明白自己一段时间不看就会忘，虽然随便翻翻又能快速上手，但是东找西翻比较麻烦。所以打算复习的时候，顺便做个笔记记录一下。自己所用的型号为<strong>STM32F103C8T6</strong>。<span id="more"></span></p>
-<h6 id="STM简述"><a href="#STM简述" class="headerlink" title="STM简述"></a>STM简述</h6><p>　　STM32是ST公司基于ARM- Cortex-M内核开发的32位微控制器（MCU）。自己所用的是STM32F1系列，属于Mainstream，内核Cortex-M3。ARM公司设计ARM内核，半导体厂商完善内核周边电路并产生芯片。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104303863.png" class="" title="image-20230724104303863">
-
-<p>图中的ARM由ARM公司设计，芯片内的存储和外设（比如GPIO,定时器）由ST公司设计。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104427576.png" class="" title="image-20230724104427576">
-
-<p>这是一枚STM32F103C8T6的芯片，由芯片可以看出型号和封装。封装为LQFP48，芯片表面左下角有个圆点，圆点下的引脚为1顺着原点逆时针开始数。如果芯片有两个圆点，则从最小的圆点开始数。</p>
-<h6 id="片上资源-x2F-外设"><a href="#片上资源-x2F-外设" class="headerlink" title="片上资源&#x2F;外设"></a><strong>片上资源&#x2F;外设</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104939703.png" class="" title="image-20230724104939703">
-
-<p>绿色背景加黑的是位于内核的外设。另外C8T6并没有表中的DAC,SDIO,FSMC和USB OTG外设。</p>
-<p>NVIC:内核里面用于管理中断的设备，例如配置中断优先级。</p>
-<p>SysTick:用来给操作系统提供定时服务。应为STM32可以加入Freektos，ucos等操作系统，利用SysTick提供定时进行任务切换的功能。</p>
-<p>RCC：复位和时钟控制，可以对系统的时钟进行配置，还能使能各模块的时钟。在STM32中，外设上电后是默认没有时钟。没有时钟，外设无法工作。</p>
-<p>GPIO：通用的IO口，可以用于操控模块，比如灯，马达等。</p>
-<p>AFIO：完成复用功能端口的重定义，还有中断端口的置配。</p>
-<p>EXTI：配置好外部中断后，当引脚有电平变化时，就可以触发中断，让CPU来处理任务。</p>
-<p>TIM定时器：分为基本定时器，通用定时器，高级定时器。不仅可以完成定时中断的任务，还可以用于测频率，生成PWM波形，配置为专用的编码器接口。</p>
-<p>ADC：模数转换器，STM32内置了12位的AD转换器，可以直接读取IO口的模拟电压，无需外置。</p>
-<p>DMA：直接内存访问，可以帮助CPU搬运大量数据等这种繁杂任务。</p>
-<p>I2C&#x2F;SPI：两种常见的通信协议。</p>
-<p>RTC：实时时钟，在STM32内部完成时，分，秒的计时功能，还可以外接电源，即使掉电也能</p>
-<p>正常运行（此时会启用芯片备用电池）。</p>
-<p>CRC：一种数据校验方式，用于判断接受的数据是否正确。</p>
-<p>IWDG&#x2F;WWDG:当单片机因为电磁干扰死机或者程序设计不合理导致的死循环时，看门狗可以及时复位，保证系统稳定。</p>
-<p>DAC：数模转换器，可以在IO口直接输出模拟电压。</p>
-<p>OTG：使STM32作为USB主机去读取其它USB设备。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111613998.png" class="" title="image-20230724111613998">
-
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111625157.png" class="" title="image-20230724111625157">
-
-
-
-<h6 id="系统结构"><a href="#系统结构" class="headerlink" title="系统结构"></a><strong>系统结构</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111735194.png" class="" title="image-20230724111735194">
-
-<p>ICode（指令总线）和Dcode（数据总线）用来连接Flash闪存，Flash存放的是我们编写的程序，ICode用于加载程序指令，Dcode用于加载数据，如常数和调试数据。</p>
-<p>系统总线就连接到如SRAM（用于存储程序运行时的变量数据）</p>
-<p>AHB系统总线：用于挂载主要的外设，AHB指先进高性能总线，挂载最基本的或者性能比较高的外设，如复位和时钟控制  SDIO。</p>
-<p>APB：先进外设总线，用于连接一般的外设。</p>
-<p>DMA：大量的数据搬运，防止覆盖。</p>
-<h6 id="引脚定义"><a href="#引脚定义" class="headerlink" title="引脚定义"></a>引脚定义</h6><p>红色是电源相关的引脚</p>
-<p>蓝色是最小系统相关的引脚</p>
-<p>绿色是IO口&#x2F;功能口相关的引脚</p>
-<p>S代表电源，I&#x2F;O代表输入输出，I&#x2F;O电平代表所能容忍的电压。FT代表能容忍5V，默认复用是IO口上同时连接的外设功能引脚。重定义：如果有2个功能同时复用在了1个IO口上，可以把其中一个复用功能重映射到其他端口上。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230726084013246.png" class="" title="image-20230726084013246">
-
-
-
-<p>1.　　　VBAT：备用电池供电引脚，当系统电源断电时，备用电池可以给内部的RTC时钟和备份寄存器提供电源。</p>
-<p>2.　　　IO口&#x2F;侵入检测&#x2F;RTC：IO口可以根据程序输出读取高低电平</p>
-<p>3.4　IO口&#x2F;接32.768kHZ的RTC晶振</p>
-<p>5,6　接系统的主晶振，芯片内有锁相环电路，对8MHZ进行倍频形成72MHZ。</p>
-<p>7　　系统复位引脚，N代表低电平复位</p>
-<p>8,9　内部模拟部分的电源，如ADC,RC振荡器  VSS(-) VDD(+)</p>
-<p>10-19　都是IO口，10号引脚还兼具了WKUP用于唤醒对于待机模式的STM32</p>
-<p>20　IO口&#x2F;BOOT1引脚，BOOT用来配置启动模式    44.　BOOT0</p>
-<p>21.22.25-33.41-43.45.46 都是IO口</p>
-<p>23,24是系统的主电源口， 35.36.47.48    STM32采用分区供电模式</p>
-<p>34,37-40　IO口&#x2F;调试端口      STM32支持SWD和JTAG两种调试方法</p>
-<p>启动配置（BOOT0和BOOT1）</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140258741.png" class="" title="image-20230801140258741">
-
-<p>作用：指定程序开始运行的位置，一般情况下，程序是在Flash程序存储器开始执行</p>
-<p>接1指3.3V电源正的意思</p>
-<p>系统存储器就是STM32中的一段BootLoader(接受串口数据，然后刷新到主闪存中)</p>
-<p>核心板原理图</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140602387.png" class="" title="image-20230801140602387">
-
-]]></content>
-      <categories>
-        <category>stm32归档</category>
-      </categories>
-      <tags>
-        <tag>单片机</tag>
       </tags>
   </entry>
   <entry>
