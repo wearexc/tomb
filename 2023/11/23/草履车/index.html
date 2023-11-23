@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="草履虫只能进行简单且本能的生命活动，没有智慧。草履车也是如此，它只能进行极其简单的机械运动。作为个人第一个项目，用于练手。 开源地址：startup&#x2F;草履车 at main · wearexc&#x2F;startup (github.com)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="草履车">
+<meta property="og:url" content="http://example.com/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/index.html">
+<meta property="og:site_name" content="来自星星的弦乐">
+<meta property="og:description" content="草履虫只能进行简单且本能的生命活动，没有智慧。草履车也是如此，它只能进行极其简单的机械运动。作为个人第一个项目，用于练手。 开源地址：startup&#x2F;草履车 at main · wearexc&#x2F;startup (github.com)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/78534A575D2C95F3B4A1505BA1A66D61.jpg">
+<meta property="og:image" content="http://example.com/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/6F99BF4FB19E225C0258A828F19C0279.jpg">
+<meta property="og:image" content="http://example.com/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/EAADEB0D5677A93B38E748F6AC7B8F22.jpg">
+<meta property="og:image" content="http://example.com/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/7EBC6FFD1BA578703DA05B227F33472A.jpg">
+<meta property="og:image" content="http://example.com/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/58D0FD51934463A1F6300EF42C4B1AD2.jpg">
+<meta property="og:image" content="http://example.com/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/D7D1D2FB3E7A8820A8CC8543C09C8424.jpg">
+<meta property="og:image" content="http://example.com/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/13.png">
+<meta property="article:published_time" content="2023-11-23T14:21:52.000Z">
+<meta property="article:modified_time" content="2023-11-23T08:38:59.184Z">
+<meta property="article:author" content="星戏溪行">
+<meta property="article:tag" content="单片机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/78534A575D2C95F3B4A1505BA1A66D61.jpg">
+
+
+<link rel="canonical" href="http://example.com/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/","path":"2023/11/23/草履车/","title":"草履车"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>草履车 | 来自星星的弦乐</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?2adf217e938bc0432386afe319c0e750"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">来自星星的弦乐</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">| ❀ ❀ ❀ 踏梦携猫荡蓝海 ❀ ❀ ❀| | ☆ ☆ ☆ 引虹径行启银光 ☆ ☆ ☆|</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-茶馆"><a href="/comments/" rel="section"><i class="fas fa-comments fa-fw"></i>茶馆</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%90%E5%93%81"><span class="nav-number">2.</span> <span class="nav-text">成品</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">3.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">4.1.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">4.2.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E6%97%B6%E9%81%A5%E6%8E%A7"><span class="nav-number">4.3.</span> <span class="nav-text">实时遥控</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%82%E5%AF%9F%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.4.</span> <span class="nav-text">观察模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%9F%E9%9A%8F%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.5.</span> <span class="nav-text">跟随模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%BF%E9%9A%9C%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.6.</span> <span class="nav-text">避障模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9D%A1%E7%9C%A0%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.7.</span> <span class="nav-text">睡眠模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E6%93%8D%E4%BD%9C"><span class="nav-number">4.8.</span> <span class="nav-text">记录操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E8%AE%B0%E5%BD%95"><span class="nav-number">4.9.</span> <span class="nav-text">启动记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E6%BA%AF%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.10.</span> <span class="nav-text">回溯模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+			<link rel="stylesheet" href="/dist/APlayer.min.css">  
+			<div id="aplayer"></div>
+			<script type="text/javascript" src="/dist/APlayer.min.js"></script>
+			<script type="text/javascript" src="/dist/music.js"></script>
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="星戏溪行"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">星戏溪行</p>
+  <div class="site-description" itemprop="description">我和挚友的Shelter</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="星戏溪行">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="来自星星的弦乐">
+      <meta itemprop="description" content="我和挚友的Shelter">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="草履车 | 来自星星的弦乐">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          草履车
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-11-23 22:21:52 / 修改时间：16:38:59" itemprop="dateCreated datePublished" datetime="2023-11-23T22:21:52+08:00">2023-11-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">个人项目</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span id="/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/" class="post-meta-item twikoo_visitors" data-flag-title="草履车" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="twikoo_visitors"></span>
+    </span>
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>12 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>　　草履虫只能进行简单且本能的生命活动，没有智慧。草履车也是如此，它只能进行极其简单的机械运动。作为个人第一个项目，用于练手。</p>
+<p>开源地址：<a href="">startup&#x2F;草履车 at main · wearexc&#x2F;startup (github.com)</a></p>
+<span id="more"></span>
+
+
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这车按规划，应该是上学期完成。当初的目标是个遥控小车，看看能不能装上能装的外设。</p>
+<p><strong>白驹过隙。</strong></p>
+<p>还是在这个学期，差不多期中的时候才正式开始。好在平时闲的时候进行规划，做什么样的车，心中有个大致的规划。有实验室位置的时候，则可以快马加鞭。实验室效率太高了，一天顶我一周。</p>
+<p>虽然车不是啥稀奇的玩意，网上代码的项目多如牛毛，但我还是决定自己重头写一个。自己布置线路，分配资源，写代码。</p>
+<p>开始挺顺利，组装车，调试。遥控车辆，也不费啥劲。</p>
+<p>然后，然后就开始遇到了奇奇怪怪的问题。有次把程序跑飞了，即使是看寄存器，也定位不到错误代码，然后又莫名好了。可能因为我今天左脚迈进电梯吧。</p>
+<p>然后就开始碰壁，前期想当然的规划，实行后才发现有很多bug以及不切实际。很多时候需要推倒重来，这部分主要是数据处理。先前的数据格式用着用着发现有更好的，优化一下吧。然后就大改啊大改。如果只是蓝牙遥控小车或者避障，实在乏味。所以按照自己的设想，有至少6种模式可以进行切换。每种模式尽量设计的全面些，最后整理好代码，记录好项目，归档，最后彻底摆烂。</p>
+<p>这些要在一个月之内完成，必须。</p>
+<p>☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆分割线☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆</p>
+<p><strong>11月23日：</strong></p>
+<p>　　总算完成了个大概，完成后发现和预想差的还是蛮多的。项目越到尾声，反而越糟心。它并没有给我带来什么成就感，很多时候我都自我怀疑，我怎么花了这么久的时间，做了一坨屎一样的玩意。不过作为练手来说，还算彳亍吧。给代码上了注释，传了github，拍照并写博客记录一下，就该让它吃灰了。后续也不会再整了，最多调整一下参数。</p>
+<h2 id="成品"><a href="#成品" class="headerlink" title="成品"></a>成品</h2><p><strong>太乱而且太随意了。</strong></p>
+<img src="/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/78534A575D2C95F3B4A1505BA1A66D61.jpg" class="" title="img">
+
+
+
+<img src="/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/6F99BF4FB19E225C0258A828F19C0279.jpg" class="" title="img">
+
+<img src="/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/EAADEB0D5677A93B38E748F6AC7B8F22.jpg" class="" title="img">
+
+
+
+<img src="/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/7EBC6FFD1BA578703DA05B227F33472A.jpg" class="" title="img">
+
+
+
+<img src="/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/58D0FD51934463A1F6300EF42C4B1AD2.jpg" class="" title="img">
+
+
+
+<img src="/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/D7D1D2FB3E7A8820A8CC8543C09C8424.jpg" class="" title="img">
+
+
+
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>草履车使用STM32，NRF24L01蓝牙模块，电机驱动，舵机。电机驱动电源由两块18650串联，芯片则是用STlink配合PDD9.9包邮小充电宝供电。</p>
+<p>主机端也是使用了STM32，还有摇杆，四个按钮以及一块OLED屏。</p>
+<p>原计划用W25Q64丢到小车，用它来记录操作，后续改用芯片内部闪存。</p>
+<p>运行情况参考状态机：</p>
+<img src="/2023/11/23/%E8%8D%89%E5%B1%A5%E8%BD%A6/13.png" class="" title="img">
+
+
+
+
+
+
+
+<h2 id="模式"><a href="#模式" class="headerlink" title="模式"></a>模式</h2><h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p>　　这个点踩坑最多，数据原来计划是一个8位数。前四位就是摇杆状态等等，后四位是时间。即000（状态）0（标志位) 0000（时间）。读取数据的标志位，如果置1了，则切换到下一个状态。后来发现了丢包问题，想要每次传输的数据对方都成功接收，是不可能的。标志位不可取。</p>
+<p>　　然后为000（摇杆）000（标志位）00（速度），时间存到另外的数组。三个数，三个标志位，表示不同的模式。后来发现不够用，干脆改为真值表吧。</p>
+<p><strong>摇杆真值表</strong></p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>输入</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>000</td>
+<td>无法读取摇杆，error</td>
+</tr>
+<tr>
+<td>001</td>
+<td>y+</td>
+</tr>
+<tr>
+<td>110</td>
+<td>y-</td>
+</tr>
+<tr>
+<td>010</td>
+<td>x+,y+</td>
+</tr>
+<tr>
+<td>101</td>
+<td>x-,y-</td>
+</tr>
+<tr>
+<td>011</td>
+<td>x+,y-</td>
+</tr>
+<tr>
+<td>100</td>
+<td>x-,y+</td>
+</tr>
+<tr>
+<td>111</td>
+<td>摇杆其它状态</td>
+</tr>
+</tbody></table>
+<p><strong>模式真值表</strong></p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>输入</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>000</td>
+<td>实时控制</td>
+</tr>
+<tr>
+<td>001</td>
+<td>观察模式</td>
+</tr>
+<tr>
+<td>010</td>
+<td>跟随模式</td>
+</tr>
+<tr>
+<td>011</td>
+<td>避障模式</td>
+</tr>
+<tr>
+<td>100</td>
+<td>睡眠模式</td>
+</tr>
+<tr>
+<td>101</td>
+<td>启动记录</td>
+</tr>
+<tr>
+<td>110</td>
+<td>启动回溯</td>
+</tr>
+<tr>
+<td>111</td>
+<td>记录操作</td>
+</tr>
+</tbody></table>
+<p><strong>速度真值表</strong></p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>输入</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>00</td>
+<td>无速度</td>
+</tr>
+<tr>
+<td>01</td>
+<td>1档</td>
+</tr>
+<tr>
+<td>10</td>
+<td>2档</td>
+</tr>
+<tr>
+<td>11</td>
+<td>3档</td>
+</tr>
+</tbody></table>
+<p>　　速度的改变是依靠按下的摇杆。但它的中断一言难尽。我原计划是 0 , 40 , 70 , 100。每按一次，切换一次档位，但摇杆的中断会迅速触发两次，在中断的代码上我无法规避。除非在中断里进行计数，根据计数来切换档位。感觉太麻烦了，所以实际情况是舍弃了0。以40为基础状态，每次按+15（因为它会触发两次，则是+30）。</p>
+<p>　　最后让我纠结很久的是记录操作的时候，如何记录操作和时间，记录和存储的格式是怎样的。这个点卡了我很久，也让我多次推倒重来。</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>　　这个原计划是小车对蓝牙模块和W25Q64进行写入读取，确保设备正常。然后发送数据给主机，主机收到后进行判断，数据没问题，则显示初始化成功，并向小车回传数据。</p>
+<p>　　<strong>废弃原因：</strong>太麻烦了（懒得写两蓝牙的收发切换互传），并且的确没啥设备需要检测。</p>
+<h3 id="实时遥控"><a href="#实时遥控" class="headerlink" title="实时遥控"></a>实时遥控</h3><p>　　读取摇杆状态并通过蓝牙发送，小车只需要傻傻接收数据，丢给驱动函数执行就行了。值得一提的是我给它设置了警告位，当它有一段时间没有收到蓝牙信号，则自动停下，并发出警告。只有复位后才能继续运行。算是防跑丢吧。</p>
+<h3 id="观察模式"><a href="#观察模式" class="headerlink" title="观察模式"></a>观察模式</h3><p>　　舵机配合超声波，对各方向进行探测，数据传给主机。每n次探测，小车将切换为接收模式，看看有没有收到数据，如果收到，表示主机退出探测，小车也应该退出。退出后将超声波传感器复位。</p>
+<p>　　其实一开始打算整个雷达图，然后实在实在是懒得画懒得调试。最后主机的界面感觉还不错。</p>
+<h3 id="跟随模式"><a href="#跟随模式" class="headerlink" title="跟随模式"></a>跟随模式</h3><p>　　根据超声波传感器的数据，加个if判断。距离小了就像前，距离大了就退后。值得注意的是需要设置一个阈值，否则会因为误差的原因，即使距离达到要求，小车也会鬼畜前后的运动。（目前我设的阈值好像低了。）</p>
+<h3 id="避障模式"><a href="#避障模式" class="headerlink" title="避障模式"></a>避障模式</h3><p>　　赶鸭子上架，参数还需调试，有点摆烂，不想调了。而且因为超声波传感器的位置比较高，它的避障效果并不好，除非是墙。这没啥办法，传感器位置低了，没法进行观察模式（因为会扫到两侧轮子）。</p>
+<h3 id="睡眠模式"><a href="#睡眠模式" class="headerlink" title="睡眠模式"></a>睡眠模式</h3><p>　　按照我的想法，它应该是关闭所有时钟，内核等等，只有蓝牙模块工作，收到信号后进行唤醒。</p>
+<p>　　后来了解到STM32的低功耗模式，最后发现，只有睡眠合适比较合适。但睡前还是需要手动关闭时钟。其它模式“睡的太死”了。这个模式没有深究。仅是调用了一个睡眠函数。</p>
+<h3 id="记录操作"><a href="#记录操作" class="headerlink" title="记录操作"></a>记录操作</h3><p>　　<strong>这玩意我整了老久了。</strong></p>
+<p><strong>设想情境：</strong></p>
+<p>启动该模式，将记录用户操作，数据存储置W25Q64。记录完毕后，将回溯用户操作，比如前进的小车，回溯后将倒行。</p>
+<p>数据格式为8位，高3位存储摇杆的状态，低5位存储记录时间。</p>
+<p><strong>方案1:</strong></p>
+<p>设想车辆控制端同步时序，在同一个200ms时间片内，控制发送命令数据，车辆存储，车辆状态200ms更新一次。因为无法同步时间片，而且担心传输丢包，卒。</p>
+<p><strong>方案2:</strong></p>
+<p>发送端同时发送命令和时间，车辆只需要处理，记录即可，命令更新时，车辆状态也随之更新。因为无法同时处理车辆状态，接收数据而卒。个人想法是边接收，边处理并放置缓存区。但因为某种原因，无法完成。本来不是啥复杂的玩意，但是遇到了奇怪的Bug,定义的全局变量会因为蓝牙模块的一个操作函数改变。摸不着头脑。</p>
+<p><strong>方案3：</strong></p>
+<p>发送端发送已处理的数据，车辆仅做傻瓜式接收，这总行了吧。原先不这样处理，是担心操作端的中断会打乱时序。并且操作端200ms才发送一次数据，这段时间足够车辆接收并处理数据了。</p>
+<p>好吧好吧，我还是太理想了。</p>
+<p>我现在两难了。</p>
+<p>车辆接收数据，不能使用DMA。因为DMA太快了。会导致很多重复的数据被一直搬运，并且DMA只负责搬运，后续的处理会很麻烦。那咱退一步，每次接收数据后触发一次搬运不就行了？那不好意思，硬件触发DMA搬运，虽然每次可以很迅速的搬运，但是搬运过去的地址需要增加。而DMA似乎只能在初始化的时候配置次数，由此进行连续搬运自增地址。</p>
+<p>这导致了如果想使用这种方法，则需要不断用软件更新DMA地址。这会导致数据无法迅速搬运，进而丢包。</p>
+<p>那么就是有DMA却无法用吗？。。。</p>
+<p>丢包率达到10%~20%,太夸张了。。。。。。</p>
+<p><strong>方案4：</strong></p>
+<p>下调发送端发送时间，改为500ms发送一次，测试丢包率。不行啊，即使调到1s发送一次，丢包仍不可避免。应该思考如何处理数据并进行优化了。似乎又要推倒重来。</p>
+<p><strong>当时：</strong></p>
+<p>大概是遇到了踩内存，全局变量只要涉及到蓝牙，就会被改。所以我的处理方法是定义一个局部变量，并使用while循环来事变量计次。记录完成后将使用DMA转运到另一个数组。作为缓存器数组还算够用，倒也用不到W25Q64，先实现功能，再完善吧。</p>
+<p>目前是小车接收数据存至数组，操作记录完毕后使用DMA转运到另一个数组存起来。数据格式为原生数据，回溯时将数据的摇杆位取反。并使用定时器，每200ms将读取一次数据进行更新。</p>
+<p>回溯勉强算是实现了。遇到踩内存BUG太难受了，所以代码很烂，用代码弥补BUG。除非能解决BUG，不然一优化就无法运行。</p>
+<p><strong>最后：</strong></p>
+<p>主机每200ms发送一次数据，小车接收后存放至临时数据，结束记录后，将用DMA转运至FLASH数组，并记录数据个数，放到FLASH数组首位。FLASH数组将数据记录到内部闪存。每次上电初始化，将读取FLASH至FLASH数组。播放和回溯操作将根据FLASH数组的数据进行。</p>
+<h3 id="启动记录"><a href="#启动记录" class="headerlink" title="启动记录"></a>启动记录</h3><p>通过TIM2，每200ms读取一次FLASH数组数据，丢到驱动函数。然后自增，下一个200ms就能读取数组的下一个数据。至于读取次数，参考FLASH数组第一个数据，它记录了数据个数。</p>
+<h3 id="回溯模式"><a href="#回溯模式" class="headerlink" title="回溯模式"></a>回溯模式</h3><p>也是通过TIM2，操作过程和启动记录差不多。只是执行顺序是从后往前。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>大体上还是完成了，花了大致两周。有空就钻实验室捣鼓，花的时间还是蛮多的。增加了不少调试经验，吸取的教训就是数据格式这类了。项目没规划好，导致后续需要返工，为了更合理的代码。</p>
+
+
+<p>　　草履车就像这鸟，当初出现踩内存的BUG，但还是硬着头皮写了下去。倒也能跑。后续发现是蓝牙接受数据的代码，数组越界了。后续修了BUG，大改了很多地方，一度觉得代码烂就烂吧，BUG能跑起来就行了，非常想摆烂。只是后续进度比我想象的快了很多。在写出了整体框架，规划并确定好了资源。后续也只需要随便往里面填些简单的代码。随便测试一下，然后觉得也就这样吧。感觉自己花了这么长时间，就整了个这么个没啥用的玩意。多少有点失望。</p>
+<p>　　作为第一个练手的项目，选的还是比较经典的小车，尽管网上有很多实例可以参考，但还是自己一点点规划资源，写了出来。整个过程，第一个比较满意的就是数据规划了。一个8位，规划好了摇杆，模式和速度，个人觉得还是蛮合理。摇杆的真值表，相反的状况还特意取反，就是为了回溯做准备。第二个满意的就是观察模式。主机的界面还行。</p>
+<p>　　尽管能记录操作并且执行，但我总觉得会有些BUG。我并没有对时间，数组这类进行严格的规划，当记录的操作过久或许会出现问题。自己也没有给它规划好上限。</p>
+<p>它还有很多可以优化的地方，但就先这样吧。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag"># 单片机</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/11/17/idea/" rel="prev" title="idea">
+                  <i class="fa fa-chevron-left"></i> idea
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/12/31/%E8%AF%B4%E8%AF%B4(2023)/" rel="next" title="说说(2023)">
+                  说说(2023) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments"><div id="twikoo-comments"></div></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">星戏溪行</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">88k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">5:20</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("2023/07/01 11:45:43");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "Shelter已建立 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="twikoo" type="application/json">{"enable":true,"visitor":true,"envId":"https://xxdg.wearexc.xyz","el":"#twikoo-comments"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.twikoo.el)
+    .then(() => NexT.utils.getScript(
+      CONFIG.twikoo.jsUrl || 'https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js',
+      { condition: window.twikoo }
+    ))
+    .then(() => {
+      twikoo.init(CONFIG.twikoo);
+    });
+});
+</script>
+<style>
+.post-block, .comments {
+  overflow: visible;
+}
+.tk-owo-emotion {
+  display: inline-block;
+}
+</style>
+
+  
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas>
+    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script src="/js/cursor/explosion.min.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
