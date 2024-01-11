@@ -1300,6 +1300,1567 @@
       </tags>
   </entry>
   <entry>
+    <title>STM32标准库</title>
+    <url>/2023/08/02/STM32%E6%A0%87%E5%87%86%E5%BA%93/</url>
+    <content><![CDATA[<p>整理笔记时发现自己如果列举代码，会更加有效。但插入代码块到其中会比较繁琐，而且各个知识的代码的耦合性较强，反复列举较为麻烦，所以开一个新的文章，专门记录整理标准库代码。仅记录个人常用，建议参考手册，或直接跳转函数定义，浏览官方说明。<span id="more"></span></p>
+<h3 id="时钟控制"><a href="#时钟控制" class="headerlink" title="时钟控制"></a>时钟控制</h3><p>时钟就像人的心跳，人的运动先需要跳动心脏。STM32的片上外设也是一样，如果要使用外设，例如：GPIO，NVIC，ADC等等，需要先开启外设挂载的总线时钟。</p>
+<p>以下是标准库中对时钟控制函数的定义：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//AHB总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_AHBPeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_AHBPeriph, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//APB2总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_APB2PeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_APB2Periph, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//APB1总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_APB1PeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_APB1Periph, FunctionalState NewState)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>第一个参数为外设，例如APB2的外设：RCC_APB2Periph_GPIOA，RCC_APB2Periph_GPIOB，RCC_APB2Periph_TIM1等，</p>
+<p>第二个参数为使能或者失能。（ENABLE&#x2F;DISABLE）</p>
+<p>比如开启APB2的GPIOA为例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);</span><br></pre></td></tr></table></figure>
+
+<p>外设的使用必须先开启时钟。</p>
+<h3 id="GPIO"><a href="#GPIO" class="headerlink" title="GPIO"></a>GPIO</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//指定GPIO初始化为默认值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_DeInit</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//功能复用，重新映射事件控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_AFIODeInit</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="comment">//用结构体参数初始化GPIO</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Init</span><span class="params">(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct)</span>;</span><br><span class="line"><span class="comment">//将结构体的变量，赋为初始值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_StructInit</span><span class="params">(GPIO_InitTypeDef* GPIO_InitStruct)</span>;</span><br><span class="line"><span class="comment">//读取指定输入GPIO口的值，返回0/1</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">GPIO_ReadInputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//读取指定输入GPIO组的数据端口</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">GPIO_ReadInputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//读取指定输出GPIO口的值，返回0/1</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">GPIO_ReadOutputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//读取指定输出GPIO组的数据端口</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">GPIO_ReadOutputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//指定端口输出为高电平</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_SetBits</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//指定端口输出为低电平</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_ResetBits</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//指定GPIO组的某个GPIO并赋值（高低电平）。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_WriteBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin, BitAction BitVal)</span>;</span><br><span class="line"><span class="comment">//指定GPIO组，并写入端口输出数据寄存器（ODR寄存器）的值。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Write</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> PortVal)</span>;</span><br><span class="line"><span class="comment">//锁定GPIO管脚配置寄存器</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_PinLockConfig</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//选择用作事件输出的GPIO引脚</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EventOutputConfig</span><span class="params">(<span class="type">uint8_t</span> GPIO_PortSource, <span class="type">uint8_t</span> GPIO_PinSource)</span>;</span><br><span class="line"><span class="comment">//使能输出事件</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EventOutputCmd</span><span class="params">(FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//改变指定管脚的映射，为了更大利用IO口，部分IO口可以进行复用或者映射。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_PinRemapConfig</span><span class="params">(<span class="type">uint32_t</span> GPIO_Remap, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//选择 GPIO 管脚用作外部中断源</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EXTILineConfig</span><span class="params">(<span class="type">uint8_t</span> GPIO_PortSource, <span class="type">uint8_t</span> GPIO_PinSource)</span>;</span><br><span class="line"><span class="comment">//选择以太网媒体接口</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_ETH_MediaInterfaceConfig</span><span class="params">(<span class="type">uint32_t</span> GPIO_ETH_MediaInterface)</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>结构体</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">uint16_t</span> GPIO_Pin;             <span class="comment">//选择GPIO口</span></span><br><span class="line">  GPIOSpeed_TypeDef GPIO_Speed;  <span class="comment">//选择运行速度</span></span><br><span class="line">  GPIOMode_TypeDef GPIO_Mode;    <span class="comment">//配置G</span></span><br><span class="line">&#125;GPIO_InitTypeDef;</span><br></pre></td></tr></table></figure>
+
+<p><strong>GPIO模式</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span></span></span><br><span class="line"><span class="class">&#123;</span> GPIO_Mode_AIN = <span class="number">0x0</span>,               <span class="comment">//模拟输入</span></span><br><span class="line">  GPIO_Mode_IN_FLOATING = <span class="number">0x04</span>,      <span class="comment">//浮空输入</span></span><br><span class="line">  GPIO_Mode_IPD = <span class="number">0x28</span>,              <span class="comment">//下拉输入</span></span><br><span class="line">  GPIO_Mode_IPU = <span class="number">0x48</span>,              <span class="comment">//上拉输入</span></span><br><span class="line">  GPIO_Mode_Out_OD = <span class="number">0x14</span>,           <span class="comment">//开漏输出</span></span><br><span class="line">  GPIO_Mode_Out_PP = <span class="number">0x10</span>,           <span class="comment">//推挽输出</span></span><br><span class="line">  GPIO_Mode_AF_OD = <span class="number">0x1C</span>,            <span class="comment">//复用开漏</span></span><br><span class="line">  GPIO_Mode_AF_PP = <span class="number">0x18</span>             <span class="comment">//复用推挽</span></span><br><span class="line">&#125;GPIOMode_TypeDef;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="NVIC"><a href="#NVIC" class="headerlink" title="NVIC"></a>NVIC</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">NVIC_PriorityGroupConfig</span><span class="params">(<span class="type">uint32_t</span> NVIC_PriorityGroup)</span>;                  <span class="comment">//设置中断优先级分组</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_Init</span><span class="params">(NVIC_InitTypeDef* NVIC_InitStruct)</span>;                           <span class="comment">//用结构体参数配置NVIC</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_SetVectorTable</span><span class="params">(<span class="type">uint32_t</span> NVIC_VectTab, <span class="type">uint32_t</span> Offset)</span>;            <span class="comment">//设置中断向量表</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_SystemLPConfig</span><span class="params">(<span class="type">uint8_t</span> LowPowerMode, FunctionalState NewState)</span>;    <span class="comment">//系统低功耗配置</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="EXIT"><a href="#EXIT" class="headerlink" title="EXIT"></a>EXIT</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">EXTI_DeInit</span><span class="params">(<span class="type">void</span>)</span>;              	                   <span class="comment">//清除EXTI配置</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_Init</span><span class="params">(EXTI_InitTypeDef* EXTI_InitStruct)</span>;         <span class="comment">//用结构体参数配置EXTI</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_StructInit</span><span class="params">(EXTI_InitTypeDef* EXTI_InitStruct)</span>;   <span class="comment">//给结构体赋予默认值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_GenerateSWInterrupt</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;         <span class="comment">//软件触发外部中断</span></span><br><span class="line">FlagStatus <span class="title function_">EXTI_GetFlagStatus</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;         <span class="comment">//获取指定的的中断标志位</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_ClearFlag</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;                   <span class="comment">//清除中断标志位</span></span><br><span class="line">ITStatus <span class="title function_">EXTI_GetITStatus</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;             <span class="comment">//在中断函数里获取标志位</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_ClearITPendingBit</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;           <span class="comment">//在中断函数里清除标志位</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>结构体</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">uint32_t</span> EXTI_Line;               <span class="comment">//指定配置的中断线</span></span><br><span class="line">  EXTIMode_TypeDef EXTI_Mode;       <span class="comment">//指定中断模式</span></span><br><span class="line">  EXTITrigger_TypeDef EXTI_Trigger; <span class="comment">//指定配置的中断线</span></span><br><span class="line">  FunctionalState EXTI_LineCmd;     <span class="comment">//指定触发中断的模式</span></span><br><span class="line">&#125;EXTI_InitTypeDef;</span><br></pre></td></tr></table></figure>
+
+<h3 id="TIM"><a href="#TIM" class="headerlink" title="TIM"></a>TIM</h3><p>过长，具体参考STM32固件函数库手册。</p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TIM_DeInit</td>
+<td>将外设 TIMx 寄存器重设为缺省值</td>
+</tr>
+<tr>
+<td>TIM_TimeBaseInit</td>
+<td>根据 TIM_TimeBaseInitStruct 中指定的参数初始化   间基数单位</td>
+</tr>
+<tr>
+<td>TIM_OCInit</td>
+<td>根据 TIM_OCInitStruct 中指定的参数初始化外设</td>
+</tr>
+<tr>
+<td>TIM_ICInit</td>
+<td>根据 TIM_ICInitStruct 中指定的参数初始化外设 T</td>
+</tr>
+<tr>
+<td>TIM_TimeBaseStructInit</td>
+<td>把 TIM_TimeBaseInitStruct 中的每一个参数按缺省</td>
+</tr>
+<tr>
+<td>TIM_OCStructInit</td>
+<td>把 TIM_OCInitStruct 中的每一个参数按缺省值填</td>
+</tr>
+<tr>
+<td>TIM_ICStructInit</td>
+<td>把 TIM_ICInitStruct 中的每一个参数按缺省值填入</td>
+</tr>
+<tr>
+<td>TIM_Cmd</td>
+<td>使能或者失能 TIMx 外设</td>
+</tr>
+<tr>
+<td>TIM _ITConfig</td>
+<td>使能或者失能指定的 TIM 中断</td>
+</tr>
+<tr>
+<td>TIM_DMAConfig</td>
+<td>设置 TIMx 的 DMA 接口</td>
+</tr>
+<tr>
+<td>TIM_DMACmd</td>
+<td>使能或者失能指定的 TIMx 的 DMA 请求</td>
+</tr>
+<tr>
+<td>TIM_InternalClockConfig</td>
+<td>设置 TIMx 内部时钟</td>
+</tr>
+<tr>
+<td>TIM_ITRxExternalClockConfig</td>
+<td>设置 TIMx 内部触发为外部时钟模式</td>
+</tr>
+<tr>
+<td>TIM_TIxExternalClockConfig</td>
+<td>设置 TIMx 触发为外部时钟</td>
+</tr>
+<tr>
+<td>TIM_ETRClockMode1Config</td>
+<td>配置 TIMx 外部时钟模式  1</td>
+</tr>
+<tr>
+<td>TIM_ETRClockMode2Config</td>
+<td>配置 TIMx 外部时钟模式  2</td>
+</tr>
+<tr>
+<td>TIM_ETRConfig</td>
+<td>配置 TIMx 外部触发</td>
+</tr>
+<tr>
+<td>TIM_SelectInputTrigger</td>
+<td>选择 TIMx 输入触发源</td>
+</tr>
+<tr>
+<td>TIM_PrescalerConfig</td>
+<td>设置 TIMx 预分频</td>
+</tr>
+<tr>
+<td>TIM_CounterModeConfig</td>
+<td>设置 TIMx 计数器模式</td>
+</tr>
+<tr>
+<td>TIM_ForcedOC1Config</td>
+<td>置 TIMx 输出 1 为活动或者非活动电平</td>
+</tr>
+<tr>
+<td>TIM_ForcedOC2Config</td>
+<td>置 TIMx 输出 2 为活动或者非活动电平</td>
+</tr>
+<tr>
+<td>TIM_ForcedOC3Config</td>
+<td>置 TIMx 输出 3 为活动或者非活动电平</td>
+</tr>
+<tr>
+<td>TIM_ForcedOC4Config</td>
+<td>置 TIMx 输出 4 为活动或者非活动电平</td>
+</tr>
+<tr>
+<td>TIM_ARRPreloadConfig</td>
+<td>使能或者失能 TIMx 在 ARR 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_SelectCCDMA</td>
+<td>选择 TIMx 外设的捕获比较  DMA 源</td>
+</tr>
+<tr>
+<td>TIM_OC1PreloadConfig</td>
+<td>使能或者失能 TIMx 在 CCR1 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_OC2PreloadConfig</td>
+<td>使能或者失能 TIMx 在 CCR2 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_OC3PreloadConfig</td>
+<td>使能或者失能 TIMx 在 CCR3 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_OC4PreloadConfig</td>
+<td>使能或者失能 TIMx 在 CCR4 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_OC1FastConfig</td>
+<td>设置 TIMx 捕获比较  1 快速特征</td>
+</tr>
+<tr>
+<td>TIM_OC2FastConfig</td>
+<td>设置 TIMx 捕获比较 2  快速特征</td>
+</tr>
+<tr>
+<td>TIM_OC3FastConfig</td>
+<td>设置 TIMx 捕获比较 3  快速特征</td>
+</tr>
+<tr>
+<td>TIM_OC4FastConfig</td>
+<td>设置 TIMx 捕获比较 4  快速特征</td>
+</tr>
+<tr>
+<td>TIM_ClearOC1Ref</td>
+<td>在一个外部事件时清除或者保持 OCREF1 信号</td>
+</tr>
+<tr>
+<td>TIM_ClearOC2Ref</td>
+<td>在一个外部事件时清除或者保持 OCREF2 信号</td>
+</tr>
+<tr>
+<td>TIM_ClearOC3Ref</td>
+<td>在一个外部事件时清除或者保持 OCREF3 信号</td>
+</tr>
+<tr>
+<td>TIM_ClearOC4Ref</td>
+<td>在一个外部事件时清除或者保持 OCREF4 信号</td>
+</tr>
+<tr>
+<td>TIM_UpdateDisableConfig</td>
+<td>使能或者失能 TIMx 更新事件</td>
+</tr>
+<tr>
+<td>TIM_EncoderInterfaceConfig</td>
+<td>设置 TIMx 编码界面</td>
+</tr>
+<tr>
+<td>TIM_GenerateEvent</td>
+<td>设置 TIMx 事件由软件产生</td>
+</tr>
+<tr>
+<td>TIM_OC1PolarityConfig</td>
+<td>设置 TIMx 通道 1 极性</td>
+</tr>
+<tr>
+<td>TIM_OC2PolarityConfig</td>
+<td>设置 TIMx 通道 2 极性</td>
+</tr>
+<tr>
+<td>TIM_OC3PolarityConfig</td>
+<td>设置 TIMx 通道 3 极性</td>
+</tr>
+<tr>
+<td>TIM_OC4PolarityConfig</td>
+<td>设置 TIMx 通道 4 极性</td>
+</tr>
+<tr>
+<td>TIM_UpdateRequestConfig</td>
+<td>设置 TIMx 更新请求源</td>
+</tr>
+<tr>
+<td>TIM_SelectHallSensor</td>
+<td>使能或者失能 TIMx 霍尔传感器接口</td>
+</tr>
+<tr>
+<td>TIM_SelectOnePulseMode</td>
+<td>设置 TIMx 单脉冲模式</td>
+</tr>
+<tr>
+<td>TIM_SelectOutputTrigger</td>
+<td>选择 TIMx 触发输出模式</td>
+</tr>
+<tr>
+<td>TIM_SelectSlaveMode</td>
+<td>选择 TIMx 从模式</td>
+</tr>
+<tr>
+<td>TIM_SelectMasterSlaveMode</td>
+<td>设置或者重置 TIMx 主&#x2F;从模式</td>
+</tr>
+<tr>
+<td>TIM_SetCounter</td>
+<td>设置 TIMx 计数器寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetAutoreload</td>
+<td>设置 TIMx 自动重装载寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetCompare1</td>
+<td>设置 TIMx 捕获比较 1  寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetCompare2</td>
+<td>设置 TIMx 捕获比较 2  寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetCompare3</td>
+<td>设置 TIMx 捕获比较 3  寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetCompare4</td>
+<td>设置 TIMx 捕获比较 4  寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetIC1Prescaler</td>
+<td>设置 TIMx 输入捕获 1  预分频</td>
+</tr>
+<tr>
+<td>TIM_SetIC2Prescaler</td>
+<td>设置 TIMx 输入捕获 2  预分频</td>
+</tr>
+<tr>
+<td>TIM_SetIC3Prescaler</td>
+<td>设置 TIMx 输入捕获 3  预分频</td>
+</tr>
+<tr>
+<td>TIM_SetIC4Prescaler</td>
+<td>设置 TIMx 输入捕获 4  预分频</td>
+</tr>
+<tr>
+<td>TIM_SetClockDivision</td>
+<td>设置 TIMx 的时钟分割值</td>
+</tr>
+<tr>
+<td>TIM_GetCapture1</td>
+<td>获得 TIMx 输入捕获 1  的值</td>
+</tr>
+<tr>
+<td>TIM_GetCapture2</td>
+<td>获得 TIMx 输入捕获 2  的值</td>
+</tr>
+<tr>
+<td>TIM_GetCapture3</td>
+<td>获得 TIMx 输入捕获 3  的值</td>
+</tr>
+<tr>
+<td>TIM_GetCapture4</td>
+<td>获得 TIMx 输入捕获 4  的值</td>
+</tr>
+<tr>
+<td>TIM_GetCounter</td>
+<td>获得 TIMx 计数器的值</td>
+</tr>
+<tr>
+<td>TIM_GetPrescaler</td>
+<td>获得 TIMx 预分频值</td>
+</tr>
+<tr>
+<td>TIM_GetFlagStatus</td>
+<td>检查指定的 TIM 标志位设置与否</td>
+</tr>
+<tr>
+<td>TIM_ClearFlag</td>
+<td>清除 TIMx 的待处理标志位</td>
+</tr>
+<tr>
+<td>TIM_GetITStatus</td>
+<td>检查指定的 TIM 中断发生与否</td>
+</tr>
+<tr>
+<td>TIM_ClearITPendingBit</td>
+<td>清除 TIMx 的中断待处理位</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>stm32归档</category>
+      </categories>
+      <tags>
+        <tag>单片机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>STM32归档（下）</title>
+    <url>/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/</url>
+    <content><![CDATA[<p>个人学习笔记，因为STM32归档越来越长（怕目录太长出问题），所以有了下。<span id="more"></span></p>
+<h1 id="I2C通信"><a href="#I2C通信" class="headerlink" title="I2C通信"></a>I2C通信</h1><h2 id="I2C软件模拟通信"><a href="#I2C软件模拟通信" class="headerlink" title="I2C软件模拟通信"></a>I2C软件模拟通信</h2><h3 id="I2C简介"><a href="#I2C简介" class="headerlink" title="I2C简介"></a>I2C简介</h3><p>•　I2C（Inter IC Bus）是由Philips公司开发的一种通用数据总线</p>
+<p>•　两根通信线：SCL（Serial Clock）、SDA（Serial Data）</p>
+<p>•　同步，半双工</p>
+<p>•　带数据应答</p>
+<p>•　支持总线挂载多设备（一主多从、多主多从）</p>
+<h3 id="硬件电路"><a href="#硬件电路" class="headerlink" title="硬件电路"></a>硬件电路</h3><p>•　所有I2C设备的SCL连在一起，SDA连在一起</p>
+<p>•　设备的SCL和SDA均要配置成开漏输出模式</p>
+<p>•　SCL和SDA各添加一个上拉电阻，阻值一般为4.7KΩ左右</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017100133237.png" class="" title="image-20231017100133237">
+
+<p>开漏输出模式有个线与的现象，只要有一个设备输出低电平，总线就处于低电平。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017100448237.png" class="" title="image-20231017100448237">
+
+<p>SCLKN1OUT输出低电平时，mos管导通。输出高电平时，MOS管断开，处于浮空输入。</p>
+<h3 id="I2C时序基本单元"><a href="#I2C时序基本单元" class="headerlink" title="I2C时序基本单元"></a>I2C时序基本单元</h3><p><strong>起始条件：</strong></p>
+<p>SCL高电平期间，SDA从高电平切换到低电平</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101034445.png" class="" title="image-20231017101034445">
+
+<p><strong>终止条件：</strong></p>
+<p>SCL高电平期间，SDA从低电平切换到高电平</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101135745.png" class="" title="image-20231017101135745">
+
+
+
+
+
+<p>只能由主机产生起始或终止条件，从机不允许，且SCL和SDA置高电平都由上拉电阻实现。</p>
+<p><strong>发送一个字节：</strong></p>
+<p>SCL低电平期间，主机将数据位依次放到SDA线上（<strong>高位先行</strong>），然后释放SCL，<strong>从机将在SCL高电平期间读取数据位</strong>，所以SCL高电平期间SDA不允许有数据变化，依次循环上述过程8次，即可发送一个字节</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101630300.png" class="" title="image-20231017101630300">
+
+
+
+<p>一般情况下，当SCL产生上升沿时，从机就从SDA读取数据完毕，所以主机需要提前放置数据置SDA。</p>
+<p><strong>接收一个字节：</strong></p>
+<p>SCL低电平期间，从机将数据位依次放到SDA线上（<strong>高位先行</strong>），然后释放SCL，<strong>主机将在SCL高电平期间读取数据位</strong>，所以SCL高电平期间SDA不允许有数据变化，依次循环上述过程8次，即可接收一个字节（主机在接收之前，需要释放SDA）</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101927913.png" class="" title="image-20231017101927913">
+
+
+
+<p><strong>发送应答：</strong></p>
+<p>主机在接收完一个字节之后，在下一个时钟发送一位数据，数据0表示应答，数据1表示非应答</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017103533941.png" class="" title="image-20231017103533941">
+
+
+
+<p><strong>接收应答：</strong></p>
+<p>主机在发送完一个字节之后，在下一个时钟接收一位数据，判断从机是否应答，数据0表示应答，数据1表示非应答（主机在接收之前，需要释放SDA）</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017103543583.png" class="" title="image-20231017103543583">
+
+
+
+<p>应答功能可用于判断数据是否传输成功，也可以用于判断是否需要继续传输。</p>
+<h3 id="数据帧示例"><a href="#数据帧示例" class="headerlink" title="数据帧示例"></a>数据帧示例</h3><p><strong>指定地址写</strong>：</p>
+<p>对于指定设备（Slave Address），在指定地址（Reg Address）下，写入指定数据（Data）。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017103904501.png" class="" title="image-20231017103904501">
+
+<p><strong>当前地址读：</strong></p>
+<p>对于指定设备（Slave Address），在当前地址指针指示的地址下，读取从机数据（Data）</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017104007377.png" class="" title="image-20231017104007377">
+
+<p><strong>指定地址读：</strong></p>
+<p>对于指定设备（Slave Address），在指定地址（Reg Address）下，读取从机数据（Data）。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017104053149.png" class="" title="image-20231017104053149">
+
+
+
+<h2 id="MPU6050"><a href="#MPU6050" class="headerlink" title="MPU6050"></a>MPU6050</h2><p><strong>MPU6050简介：</strong></p>
+<p>•　MPU6050是一个6轴姿态传感器，可以测量芯片自身X、Y、Z轴的加速度、角速度参数，通过数据融合，可进一步得到姿态角（欧拉角），常应用于平衡车、飞行器等需要检测自身姿态的场景</p>
+<p>•　3轴加速度计（Accelerometer）：测量X、Y、Z轴的加速度</p>
+<p>•　3轴陀螺仪传感器（Gyroscope）：测量X、Y、Z轴的角速度</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018084608575.png" class="" title="image-20231018084608575">
+
+<p>芯片上会有个小图标标示x与y轴。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018084638732.png" class="" title="image-20231018084638732">
+
+<p>加速度计可以理解为一个弹簧测力计，当物体有加速度时，将使弹簧受力，改变电位器。</p>
+<p>另外，该加速度计只具有静态稳定性，不具备动态稳定性。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018084759528.png" class="" title="image-20231018084759528">
+
+<p>而陀螺仪传感器只具有动态稳定性，不具备静态稳定性。</p>
+<p><strong>MPU6050参数：</strong></p>
+<p>•　16位ADC采集传感器的模拟信号，量化范围：-32768~32767</p>
+<p>•　加速度计满量程选择：±2、±4、±8、±16（g）</p>
+<p>•　陀螺仪满量程选择： ±250、±500、±1000、±2000（°&#x2F;sec）</p>
+<p>•　可配置的数字低通滤波器</p>
+<p>•　可配置的时钟源</p>
+<p>•　可配置的采样分频</p>
+<p>•　I2C从机地址：1101000（AD0&#x3D;0） 1101001（AD0&#x3D;1）</p>
+<p>值得注意的是，I2C的数据格式为8位一个包，地址位为7位，此后有一位为读写位。所以写入MPU6050的地址为0x68再或上读写位，也可以直接写入0xD0，读写位和地址位合为一个8位数据。</p>
+<p><strong>硬件电路：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090147960.png" class="" title="image-20231018090147960">
+
+<p>整体硬件电路由左上角的稳压器，左下引出排针和右侧芯片组成，有排针引脚可知该硬件支持拓展。</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090159079.png" class="" title="image-20231018090159079">
+
+
+
+<p>另外，在配置硬件的自由落体检测，运动检测等，可触发INT输出中段信号。</p>
+<p><strong>MPU6050框图：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090613475.png" class="" title="image-20231018090613475">
+
+
+
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090849895.png" class="" title="image-20231018090849895">
+
+
+
+<p><strong>MPU6050的I2C通信格式：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018091413370.png" class="" title="image-20231018091413370">
+
+
+
+<p><strong>寄存器地址：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018091543354.png" class="" title="image-20231018091543354">
+
+<p>Addr(Hex)：16进制地址</p>
+<p>Addr(Dec)：10进制地址</p>
+<p>Register Name：寄存器名称</p>
+<p>SerialI&#x2F;F：读写权限</p>
+<p>在文档“RM-MPU-6000A”中有该硬件的寄存器表，通过此表，可得知相应的寄存器地址。如果需要读取特定的寄存器数据（比如加速度计的数据）可由此表查询地址。当然，也可以写入命名到寄存器，用于设置硬件模式等等。</p>
+<p>所有寄存器上电默认为0x00，除了107号寄存器上电默认为0x40(睡眠)，117号寄存器为0x68。</p>
+<h3 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h3>
+
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"                  // Device header
+#include "Delay.h"
+#include "OLED.h"
+#include "MPU6050.h"
+uint8_t ID;                 //设备ID号
+int16_t AX,AY,AZ,GX,GY,GZ;  //xyz加速度和角速度
+int main(void)
+&#123;
+    //初始化
+    OLED_Init();
+    MPU6050_Init();
+    ID = MPU6050_GetID();        //获取设备ID号
+    OLED_ShowString(1,1,"ID:");
+    OLED_ShowHexNum(1,4,ID,2);
+    while (1)
+    &#123;
+MPU6050_GetData(&AX,&AY,&AZ,&GX,&GY,&GZ);   //获取加速度和角速度的参数
+        OLED_ShowSignedNum(2,1,AX,5);
+        OLED_ShowSignedNum(3,1,AY,5);
+        OLED_ShowSignedNum(4,1,AZ,5);
+        OLED_ShowSignedNum(2,8,GX,5);
+        OLED_ShowSignedNum(3,8,GY,5);
+        OLED_ShowSignedNum(4,8,GZ,5);
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MyI2c.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"
+#include "Delay.h"
+void MyI2C_W_SCL(uint8_t BitValue)  //封装写SCL（时钟线）函数，并加上小延时确保相应。
+&#123;
+    GPIO_WriteBit(GPIOB,GPIO_Pin_10,(BitAction)BitValue);
+    Delay_us(10);
+&#125;
+void MyI2C_W_SDA(uint8_t BitValue)  //封装写SDA（数据线）函数，
+&#123;
+    GPIO_WriteBit(GPIOB,GPIO_Pin_11,(BitAction)BitValue);
+    Delay_us(10);
+&#125;
+uint8_t MyI2C_R_SDA(void)    //读SDA
+&#123;
+    uint8_t BitValue;
+    BitValue = GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_11);
+    Delay_us(10);
+    return BitValue;
+&#125;
+void MyI2C_Init(void)   //初始化
+&#123;
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB,&GPIO_InitStructure);
+    GPIO_SetBits(GPIOB,GPIO_Pin_10 | GPIO_Pin_11);  //初始化I2C双线为高电平
+&#125;
+void MyI2C_Start(void)  //启动
+&#123;
+    MyI2C_W_SDA(1);
+    MyI2C_W_SCL(1);
+    MyI2C_W_SDA(0);
+    MyI2C_W_SCL(0);
+&#125;
+void MyI2C_STOP(void)  //停止
+&#123;
+    MyI2C_W_SDA(0);
+    MyI2C_W_SCL(1);
+    MyI2C_W_SDA(1);
+&#125;
+void MyI2C_SendByte(uint8_t Byte)  //发送一位字节
+&#123;
+    uint8_t i;
+    for(i=0;i<8;i++)
+    &#123;
+        MyI2C_W_SDA(Byte & (0x80 >> i));
+        MyI2C_W_SCL(1);
+        MyI2C_W_SCL(0);
+    &#125;
+&#125;
+uint8_t MyI2C_ReceiveByte(void)  //接收一位字节
+&#123;
+    uint8_t i,Byte = 0x00;
+    for(i=0;i<8;i++)
+    &#123;
+        MyI2C_W_SDA(1);
+        MyI2C_W_SCL(1);
+        if(MyI2C_R_SDA() == 1) Byte |= (0x80>>i);
+        MyI2C_W_SCL(0);	
+    &#125;
+    return Byte;
+&#125;
+void MyI2C_SendAck(uint8_t AckBit)  //发送应答
+&#123;
+    MyI2C_W_SDA(AckBit);
+    MyI2C_W_SCL(1);
+    MyI2C_W_SCL(0);
+&#125;
+uint8_t MyI2C_ReceiveAck(void)      //接收应答
+&#123;
+    uint8_t AckBit;
+    MyI2C_W_SDA(1);
+    MyI2C_W_SCL(1);
+    AckBit = MyI2C_R_SDA();
+    MyI2C_W_SCL(0);	
+    return AckBit;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MPU6050.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h" 
+#include "MyI2C.h"
+#include "MPU6050_Reg.h"
+#define MPU6050_ADDRESS 0xD0      //宏定义MPU6050地址，应该为0x68,0xD0为7位地址或上读写位的整合。
+void MPU6050_WriteReg(uint8_t RegAddress,uint8_t Data)   //指定地址写数据
+&#123;
+    MyI2C_Start();
+    MyI2C_SendByte(MPU6050_ADDRESS);
+    MyI2C_ReceiveAck();
+    MyI2C_SendByte(RegAddress);
+    MyI2C_ReceiveAck();
+    MyI2C_SendByte(Data);      //如果需要连续写多个字节，可用for循环执行注释的这两句。
+    MyI2C_ReceiveAck();        //当写入多字节时，每写入一个字节，地址自动+1。
+    MyI2C_STOP();
+&#125;
+uint8_t MPU6050_ReadReg(uint8_t RegAddress)       //指定地址读数据
+&#123;
+    uint8_t Data;
+    //第一个起始条件发送地址
+    MyI2C_Start();
+    MyI2C_SendByte(MPU6050_ADDRESS);
+    MyI2C_ReceiveAck();
+    MyI2C_SendByte(RegAddress);
+    MyI2C_ReceiveAck();
+    //第二个起始条件读地址，读写地址位重新指定，通信协议读写位只能在起始条件后的一个字节设定。
+    MyI2C_Start();
+    MyI2C_SendByte(MPU6050_ADDRESS | 0x01);        //指定地址或上“读数据”位
+    MyI2C_ReceiveAck();
+    Data = MyI2C_ReceiveByte();
+    MyI2C_SendAck(1);
+    MyI2C_STOP();
+    return Data;
+&#125;
+void MPU6050_Init(void)
+&#123;
+    MyI2C_Init();
+    MPU6050_WriteReg(MPU6050_PWR_MGMT_1, 0x01);        //解除睡眠，时钟源为陀螺仪时钟
+    MPU6050_WriteReg(MPU6050_PWR_MGMT_2, 0x00);        //6轴一直启用，均不待机
+    MPU6050_WriteReg(MPU6050_SMPLRT_DIV, 0x09);        //采样分频为10
+    MPU6050_WriteReg(MPU6050_CONFIG, 0x06);            //滤波参数为最大
+    MPU6050_WriteReg(MPU6050_GYRO_CONFIG, 0x18);       //陀螺仪为最大量程
+    MPU6050_WriteReg(MPU6050_ACCEL_CONFIG, 0x18);      //加速度为最大量程
+&#125;
+uint8_t MPU6050_GetID(void)		//获取设备ID号
+&#123;
+    return MPU6050_ReadReg(MPU6050_WHO_AM_I);
+&#125;
+void MPU6050_GetData(int16_t *AccX, int16_t *AccY, int16_t *AccZ,
+                     int16_t *GyroX, int16_t *GyroY, int16_t *GyroZ)  //获取搜集的参数
+&#123;
+    uint8_t DataH, DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_L);
+    *AccX = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_L);
+    *AccY = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_L);
+    *AccZ = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_XOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_XOUT_L);
+    *GyroX = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_YOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_YOUT_L);
+    *GyroY = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_L);
+    *GyroZ = (DataH << 8)| DataL;        
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MPU6050_Reg.h</font></summary>  <pre><code class="language-c">
+#ifndef    __MPU6050_Reg__H
+#define    __MPU6050_Reg__H
+//控制寄存器
+#define	MPU6050_SMPLRT_DIV		0x19
+#define	MPU6050_CONFIG			0x1A
+#define	MPU6050_GYRO_CONFIG		0x1B
+#define	MPU6050_ACCEL_CONFIG	0x1C
+//收集的数据存放的寄存器
+#define	MPU6050_ACCEL_XOUT_H	0x3B
+#define	MPU6050_ACCEL_XOUT_L	0x3C
+#define	MPU6050_ACCEL_YOUT_H	0x3D
+#define	MPU6050_ACCEL_YOUT_L	0x3E
+#define	MPU6050_ACCEL_ZOUT_H	0x3F
+#define	MPU6050_ACCEL_ZOUT_L	0x40
+#define	MPU6050_TEMP_OUT_H		0x41
+#define	MPU6050_TEMP_OUT_L		0x42
+#define	MPU6050_GYRO_XOUT_H		0x43
+#define	MPU6050_GYRO_XOUT_L		0x44
+#define	MPU6050_GYRO_YOUT_H		0x45
+#define	MPU6050_GYRO_YOUT_L		0x46
+#define	MPU6050_GYRO_ZOUT_H		0x47
+#define	MPU6050_GYRO_ZOUT_L		0x48
+//电源管理寄存器和设备ID寄存器
+#define	MPU6050_PWR_MGMT_1		0x6B
+#define	MPU6050_PWR_MGMT_2		0x6C
+#define	MPU6050_WHO_AM_I		0x75   
+ #endif
+</code> </pre> </details>
+
+<p>先写好I2C通讯时序，再通过时序组成数据帧。然后在MPU6050中对数据帧进行封装，此后可在主函数直接调用对硬件的读写函数。因为直接写0x3c一类写入寄存器不易于理解和后续维护，所以引入“MPU6050—Reg”，将寄存器地址进行宏定义。</p>
+<h2 id="STM32硬件I2C通信"><a href="#STM32硬件I2C通信" class="headerlink" title="STM32硬件I2C通信"></a>STM32硬件I2C通信</h2><h3 id="I2C外设简介"><a href="#I2C外设简介" class="headerlink" title="I2C外设简介"></a>I2C外设简介</h3><p>•　STM32内部集成了硬件I2C收发电路，可以由硬件自动执行时钟生成、起始终止条件生成、应答位收发、数据收发等功能，减轻CPU的负担</p>
+<p>•　支持多主机模型</p>
+<p>•　支持7位&#x2F;10位地址模式</p>
+<p>•　支持不同的通讯速度，标准速度(高达100 kHz)，快速(高达400 kHz)</p>
+<p>•　支持DMA</p>
+<p>•　兼容SMBus协议（系统管理总线）</p>
+<p>•　STM32F103C8T6 硬件I2C资源：I2C1、I2C2</p>
+<h3 id="I2C框图"><a href="#I2C框图" class="headerlink" title="I2C框图"></a>I2C框图</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100349831.png" class="" title="image-20231018100349831">
+
+<h3 id="I2C基本结构"><a href="#I2C基本结构" class="headerlink" title="I2C基本结构"></a>I2C基本结构</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100439583.png" class="" title="image-20231018100439583">
+
+<p>移位寄存器左移，高位先行。</p>
+<h3 id="主机发送"><a href="#主机发送" class="headerlink" title="主机发送"></a>主机发送</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100533249.png" class="" title="image-20231018100533249">
+
+<p>7位和10位主要差别为寻址位是7位或是10位。当一个时序完成后，STM32会置EVx位(可理解为大标志位)。通过对此位的查询，可得知事件状态。</p>
+<h3 id="主机接收"><a href="#主机接收" class="headerlink" title="主机接收"></a>主机接收</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100801037.png" class="" title="image-20231018100801037">
+
+<p>EV5事件表示起始条件已发送</p>
+<p>EV6事件表示寻址已完成</p>
+<h3 id="软件-x2F-硬件波形对比"><a href="#软件-x2F-硬件波形对比" class="headerlink" title="软件&#x2F;硬件波形对比"></a>软件&#x2F;硬件波形对比</h3><p><strong>软件波形：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100928963.png" class="" title="image-20231018100928963">
+
+<p><strong>硬件波形：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100939975.png" class="" title="image-20231018100939975">
+
+<p>通过对比可知：<br>硬件I2C的波形会更加规整，每个时钟的周期和占空比都非常一致，而软件I2C由于操作引脚后加入了延时，导致每个时钟的周期和占空比不规整。由于I2C是同步时序，所以影响不大。</p>
+<p>SCL低电平写，高电平读。保证尽早的原则，直接在SCL下降沿写，上升沿读。</p>
+<h3 id="程序示例-1"><a href="#程序示例-1" class="headerlink" title="程序示例"></a>程序示例</h3>
+
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"                  // Device header
+#include "Delay.h"
+#include "OLED.h"
+#include "MPU6050.h"
+uint8_t ID;
+int16_t AX,AY,AZ,GX,GY,GZ;
+int main(void)
+&#123;
+    OLED_Init();
+    MPU6050_Init();
+    ID = MPU6050_GetID();
+    OLED_ShowString(1,1,"ID:");
+    OLED_ShowHexNum(1,4,ID,2);
+    while (1)
+    &#123;
+        MPU6050_GetData(&AX,&AY,&AZ,&GX,&GY,&GZ);
+        OLED_ShowSignedNum(2,1,AX,5);
+        OLED_ShowSignedNum(3,1,AY,5);
+        OLED_ShowSignedNum(4,1,AZ,5);
+        OLED_ShowSignedNum(2,8,GX,5);
+        OLED_ShowSignedNum(3,8,GY,5);
+        OLED_ShowSignedNum(4,8,GZ,5);
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MPU6050.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h" 
+#include "MPU6050_Reg.h"
+#define MPU6050_ADDRESS 0xD0      //宏定义MPU6050地址
+void MPU6050_WaitEvent(I2C_TypeDef* I2Cx, uint32_t I2C_EVENT)  //等待EV事件，防止用while卡死，改用定时退出
+&#123;
+    uint32_t TimeOut;
+    TimeOut = 10000;
+    while(I2C_CheckEvent(I2Cx,I2C_EVENT) != SUCCESS)
+    &#123;
+        TimeOut--;
+        if(TimeOut == 0) break;
+    &#125;
+&#125;
+void MPU6050_WriteReg(uint8_t RegAddress,uint8_t Data)   //写字节
+&#123;
+    I2C_GenerateSTART(I2C2,ENABLE);
+    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT) != SUCCESS);
+    I2C_Send7bitAddress(I2C2,MPU6050_ADDRESS,I2C_Direction_Transmitter);
+    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED) != SUCCESS);
+    I2C_SendData(I2C2,RegAddress);
+    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTING) != SUCCESS);
+    I2C_SendData(I2C2,Data);
+    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED) != SUCCESS);
+    I2C_GenerateSTOP(I2C2,ENABLE);
+&#125;
+uint8_t MPU6050_ReadReg(uint8_t RegAddress)    //读字节
+&#123;
+    uint8_t Data;
+    I2C_GenerateSTART(I2C2,ENABLE);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT);
+    I2C_Send7bitAddress(I2C2,MPU6050_ADDRESS,I2C_Direction_Transmitter);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED);
+    I2C_SendData(I2C2,RegAddress);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED);
+    I2C_GenerateSTART(I2C2,ENABLE);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT);
+    I2C_Send7bitAddress(I2C2,MPU6050_ADDRESS,I2C_Direction_Receiver);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED);
+    I2C_AcknowledgeConfig(I2C2,DISABLE);
+    I2C_GenerateSTOP(I2C2,ENABLE);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_BYTE_RECEIVED);
+    Data = I2C_ReceiveData(I2C2);
+    I2C_AcknowledgeConfig(I2C2,ENABLE);
+    return Data;
+&#125;
+void MPU6050_Init(void)
+&#123;
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2,ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB,&GPIO_InitStructure);
+    I2C_InitTypeDef I2C_InitStructure;
+    I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+    I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+    I2C_InitStructure.I2C_ClockSpeed = 50000;
+    I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+    I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+    I2C_InitStructure.I2C_OwnAddress1 = 0x00;
+    I2C_Init(I2C2,&I2C_InitStructure);
+    I2C_Cmd(I2C2,ENABLE);
+    MPU6050_WriteReg(MPU6050_PWR_MGMT_1, 0x01);        //解除睡眠，时钟源为陀螺仪时钟
+    MPU6050_WriteReg(MPU6050_PWR_MGMT_2, 0x00);        //6轴一直启用，均不待机
+    MPU6050_WriteReg(MPU6050_SMPLRT_DIV, 0x09);        //采样分频为10
+    MPU6050_WriteReg(MPU6050_CONFIG, 0x06);            //滤波参数为最大
+    MPU6050_WriteReg(MPU6050_GYRO_CONFIG, 0x18);       //陀螺仪为最大量程
+    MPU6050_WriteReg(MPU6050_ACCEL_CONFIG, 0x18);      //加速度为最大量程
+&#125;
+uint8_t MPU6050_GetID(void)      //获取设备ID号
+&#123;
+    return MPU6050_ReadReg(MPU6050_WHO_AM_I);
+&#125;
+void MPU6050_GetData(int16_t *AccX, int16_t *AccY, int16_t *AccZ,
+                     int16_t *GyroX, int16_t *GyroY, int16_t *GyroZ)  //获取数据
+&#123;
+    uint8_t DataH, DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_L);
+    *AccX = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_L);
+    *AccY = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_L);
+    *AccZ = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_XOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_XOUT_L);
+    *GyroX = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_YOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_YOUT_L);
+    *GyroY = (DataH << 8)| DataL;
+    DataH = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_H);
+    DataL = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_L);
+    *GyroZ = (DataH << 8)| DataL;        
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MPU6050_Reg.h</font></summary>  <pre><code class="language-c">
+#ifndef    __MPU6050_Reg__H
+#define    __MPU6050_Reg__H
+#define	MPU6050_SMPLRT_DIV		0x19
+#define	MPU6050_CONFIG			0x1A
+#define	MPU6050_GYRO_CONFIG		0x1B
+#define	MPU6050_ACCEL_CONFIG	0x1C
+#define	MPU6050_ACCEL_XOUT_H	0x3B
+#define	MPU6050_ACCEL_XOUT_L	0x3C
+#define	MPU6050_ACCEL_YOUT_H	0x3D
+#define	MPU6050_ACCEL_YOUT_L	0x3E
+#define	MPU6050_ACCEL_ZOUT_H	0x3F
+#define	MPU6050_ACCEL_ZOUT_L	0x40
+#define	MPU6050_TEMP_OUT_H		0x41
+#define	MPU6050_TEMP_OUT_L		0x42
+#define	MPU6050_GYRO_XOUT_H		0x43
+#define	MPU6050_GYRO_XOUT_L		0x44
+#define	MPU6050_GYRO_YOUT_H		0x45
+#define	MPU6050_GYRO_YOUT_L		0x46
+#define	MPU6050_GYRO_ZOUT_H		0x47
+#define	MPU6050_GYRO_ZOUT_L		0x48
+#define	MPU6050_PWR_MGMT_1		0x6B
+#define	MPU6050_PWR_MGMT_2		0x6C
+#define	MPU6050_WHO_AM_I		0x75   
+ #endif
+</code> </pre> </details>
+程序执行逻辑和软件I2C示例差不多，仅是将软件时序替换为STM32标准库函数，并且STM32对通信的状态有事件标志位和定义，通过读取标志位就明白时序是否完成。
+
+
+
+<h2 id="I2C缺点"><a href="#I2C缺点" class="headerlink" title="I2C缺点"></a>I2C缺点</h2><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021144801473.png" class="" title="image-20231021144801473">
+
+<p>I2C的电路结构是开漏外加上拉电阻，使通信线高电平的驱动能力比较弱，导致通信线由低电平到高电平时上升沿耗时长，这限制了I2C的最大通信速度。而SPI设计简单粗暴，传输速度也比I2C快很多。</p>
+<h1 id="SPI通信"><a href="#SPI通信" class="headerlink" title="SPI通信"></a>SPI通信</h1><h2 id="SPI软件模拟通信"><a href="#SPI软件模拟通信" class="headerlink" title="SPI软件模拟通信"></a>SPI软件模拟通信</h2><h3 id="SPI简介"><a href="#SPI简介" class="headerlink" title="SPI简介"></a>SPI简介</h3><p>•　SPI（Serial Peripheral Interface）是由Motorola公司开发的一种通用数据总线</p>
+<p>•　四根通信线：SCK（Serial Clock）、MOSI（Master Output Slave Input）、MISO（Master Input Slave Output）、SS（Slave Select）</p>
+<p>•　同步，全双工</p>
+<p>•　支持总线挂载多设备（一主多从，不支持多主多从）</p>
+<p>SCK提供时钟信号，数据位的输出输入都是在SCK的上升沿或下降沿进行的，此时数据位的收发时刻就可以明确确定。</p>
+<h3 id="硬件电路-1"><a href="#硬件电路-1" class="headerlink" title="硬件电路"></a>硬件电路</h3><p>•　所有SPI设备的SCK、MOSI、MISO分别连在一起</p>
+<p>•　主机另外引出多条SS控制线，分别接到各从机的SS引脚</p>
+<p>•　输出引脚配置为推挽输出，输入引脚配置为浮空或上拉输入（SS为低电平片选时，从机才允许变为推挽输出）</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021145137608.png" class="" title="image-20231021145137608">
+
+<h3 id="移位示意图"><a href="#移位示意图" class="headerlink" title="移位示意图"></a>移位示意图</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160333584.png" class="" title="image-20231021160333584">
+
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160419734.png" class="" title="image-20231021160419734">
+
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160504117.png" class="" title="image-20231021160504117">
+
+<p>该示例为高位先行。</p>
+<p>由波特率发生器产生的时钟驱动主机的移位寄存器进行移位。时钟的上升沿，所有移位寄存器向左移一位，移位的数据放在MOSI和MISO上，发生器的下降沿，将采样MOSI和MISO到移位寄存器最低位存储。</p>
+<h3 id="SPI时序基本单元"><a href="#SPI时序基本单元" class="headerlink" title="SPI时序基本单元"></a>SPI时序基本单元</h3><p><strong>起始条件：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160533341.png" class="" title="image-20231021160533341">
+
+<p>SS从高电平切换到低电平</p>
+<p><strong>终止条件：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160616896.png" class="" title="image-20231021160616896">
+
+<p>SS从低电平切换到高电平</p>
+<p><strong>交换一个字节（模式0）</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160653541.png" class="" title="image-20231021160653541">
+
+<p>CPOL（时钟极性） &#x3D; 0：空闲状态时，SCK为低电平</p>
+<p>CPHA（时钟相位） &#x3D; 0：SCK第一个边沿<strong>移入数据</strong>，第二个边沿<strong>移出数据</strong></p>
+<p>因为SCK第一个边沿要移入数据至寄存器，所以需提前写入数据到数据线上，相较于模式1提前了数据线的相位。 </p>
+<p><strong>交换一个字节（模式1）</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021161150625.png" class="" title="image-20231021161150625">
+
+<p>CPOL &#x3D; 0：空闲状态时，SCK为低电平</p>
+<p>CPHA &#x3D; 1：SCK第一个边沿<strong>移出数据</strong>，第二个边沿<strong>移入数据</strong></p>
+<p>即：SCK第一个上升沿（第一个边沿），双方移位寄存器同时移出寄存器数据置MOSI和MISO上，SCK下降沿（第二个边沿）的时候，双方移位寄存器同时移入MOSI和MISO的数据置寄存器，达成数据交换。</p>
+<p><strong>交换一个字节（模式2）</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162610968.png" class="" title="image-20231021162610968">
+
+<p>CPOL&#x3D;1：空闲状态时，SCK为高电平</p>
+<p>CPHA&#x3D;0：SCK第一个边沿移入数据，第二个边沿移出数据</p>
+<p><strong>交换一个字节（模式3）</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162638853.png" class="" title="image-20231021162638853">
+
+<p>CPOL&#x3D;1：空闲状态时，SCK为高电平</p>
+<p>CPHA&#x3D;1：SCK第一个边沿移出数据，第二个边沿移入数据</p>
+<p>模式2和模式3，相较与模式0和模式1，仅是SCK时钟极性变化而已。</p>
+<h3 id="SPI时序"><a href="#SPI时序" class="headerlink" title="SPI时序"></a>SPI时序</h3><p>示例时序均为模式0</p>
+<p><strong>发送指令</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162831064.png" class="" title="image-20231021162831064">
+
+<p>向SS指定的设备，发送指令（0x06）写使能。</p>
+<p><strong>指定地址写</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162932666.png" class="" title="image-20231021162932666">
+
+<p>向SS指定的设备，发送写指令（0x02），</p>
+<p>   随后在指定地址（Address[23:0]）下，写入指定数据（Data）。</p>
+<p><strong>指定地址读</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163047497.png" class="" title="image-20231021163047497">
+
+<p>向SS指定的设备，发送读指令（0x03），</p>
+<p>   随后在指定地址（Address[23:0]）下，读取从机数据（Data）</p>
+<h2 id="W25Q64"><a href="#W25Q64" class="headerlink" title="W25Q64"></a>W25Q64</h2><p><strong>W25Q64简介：</strong></p>
+<p>•　W25Qxx系列是一种低成本、小型化、使用简单的非易失性存储器，常应用于数据存储、字库存储、固件程序存储等场景</p>
+<p>•　存储介质：Nor Flash（闪存）</p>
+<p>•　时钟频率：80MHz &#x2F; 160MHz (Dual SPI) &#x2F; 320MHz (Quad SPI)</p>
+<p>•　存储容量（24位地址）： （最大寻址能达到16M）</p>
+<p> W25Q40：  4Mbit &#x2F; 512KByte</p>
+<p> W25Q80：  8Mbit &#x2F; 1MByte</p>
+<p> W25Q16：  16Mbit &#x2F; 2MByte</p>
+<p> W25Q32：  32Mbit &#x2F; 4MByte</p>
+<p> W25Q64：  64Mbit &#x2F; 8MByte</p>
+<p> W25Q128： 128Mbit &#x2F; 16MByte</p>
+<p> W25Q256： 256Mbit &#x2F; 32MByte</p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163200365-16978771242631.png" class="" title="image-20231021163200365">
+
+
+
+<p><strong>硬件电路：</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163235865.png" class="" title="image-20231021163235865">
+
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163239383.png" class="" title="image-20231021163239383">
+
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163249323.png" class="" title="image-20231021163249323">
+
+
+
+<p>CS在图中引脚标识为“&#x2F;CS”，表示低电平有效其余同理。有需要时，可启用IO2和IO3，相当于多线并行传输，提高传输效率。</p>
+<p><strong>W25Q64框图</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021172150480.png" class="" title="image-20231021172150480">
+
+<p>W25Q64有相应的写保护和地址锁存。需要注意的是地址分配方式。以8M芯片为例（最后一位地址到7F），64KB划为一页，每页又可以以4KB为单位分成扇区。</p>
+<p><strong>Flash操作注意事项：</strong></p>
+<p>写入操作时：</p>
+<p>•　写入操作前，必须先进行写使能</p>
+<p>•　每个数据位只能由1改写为0，不能由0改写为1</p>
+<p>•　<strong>写入数据前必须先擦除，擦除后，所有数据位变为1</strong></p>
+<p>•　擦除必须按最小擦除单元进行（例如示例芯片的最小单位为4KB扇区）</p>
+<p>•　连续写入多字节时，最多写入一页的数据，超过页尾位置的数据，会回到页首覆盖写入</p>
+<p>•　写入操作结束后，芯片进入忙状态，不响应新的读写操作</p>
+<p>读取操作时：</p>
+<p>•　直接调用读取时序，无需使能，无需额外操作，没有页的限制，读取操作结束后不会进入忙状态，但不能在忙状态时读取</p>
+<h3 id="程序示例-2"><a href="#程序示例-2" class="headerlink" title="程序示例"></a>程序示例</h3>
+
+<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"                  // Device header
+#include "Delay.h"
+#include "OLED.h"
+#include "W25Q64.h"
+//
+uint8_t MID;
+uint16_t DID;
+uint8_t ArrayWrite[] = &#123;0x55, 0x66, 0x77, 0x88&#125;;
+uint8_t ArrayRead[4];
+int main(void)
+&#123;
+//初始化
+    OLED_Init();
+    W25Q64_Init();
+    OLED_ShowString(1, 1, "MID:   DID:");
+    OLED_ShowString(2, 1, "W:");
+    OLED_ShowString(3, 1, "R:");
+    W25Q64_ReadID(&MID,&DID);       //读取设备ID号
+    OLED_ShowHexNum(1,5,MID,2);     //显示设备ID号
+    OLED_ShowHexNum(1,12,DID,4);
+//
+    W25Q64_SectorErase(0X000000);   //擦除扇区，为写入数据做准备
+    W25Q64_PageProgram(0X000000,ArrayWrite,4); //向指定地址写入数据，写入四个数据
+    W25Q64_ReadData(0X000000,ArrayRead,4);     //向指定地址读数据
+//显示写入数据	
+    OLED_ShowHexNum(2,3,ArrayWrite[0],2);
+    OLED_ShowHexNum(2,6,ArrayWrite[1],2);
+    OLED_ShowHexNum(2,9,ArrayWrite[2],2);
+    OLED_ShowHexNum(2,12,ArrayWrite[3],2);
+//显示读取数据	
+    OLED_ShowHexNum(3,3, ArrayRead[0],2);
+    OLED_ShowHexNum(3,6, ArrayRead[1],2);
+    OLED_ShowHexNum(3,9, ArrayRead[2],2);
+    OLED_ShowHexNum(3,12,ArrayRead[3],2);
+    while (1)
+    &#123;
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MySPI.C</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"
+// 对引脚操控进行基础的封装
+void MySPI_W_SS(uint8_t BitValue)
+&#123;
+    GPIO_WriteBit(GPIOA, GPIO_Pin_4, (BitAction)BitValue);    // 设置片选信号 (SS/CS) 的状态
+&#125;
+void MySPI_W_SCK(uint8_t BitValue)
+&#123;
+    GPIO_WriteBit(GPIOA, GPIO_Pin_5, (BitAction)BitValue);    // 设置时钟信号 (SCK) 的状态
+&#125;
+void MySPI_W_MOSI(uint8_t BitValue)
+&#123;
+    GPIO_WriteBit(GPIOA, GPIO_Pin_7, (BitAction)BitValue);    // 设置主机输出从机输入 (MOSI) 的状态
+&#125;
+uint8_t MySPI_R_MISO(void)
+&#123;
+    return GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6);         // 读取从机输出主机输入 (MISO) 的状态
+&#125;
+// 初始化SPI相关的GPIO引脚
+void MySPI_Init(void)
+&#123;
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+    // 配置引脚为推挽输出
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    // 配置引脚为上拉输入
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    // 初始化SPI外设，设置初始状态
+    MySPI_W_SS(1);    // 片选信号高电平
+    MySPI_W_SCK(0);  // 时钟信号低电平
+&#125;
+//起始时序
+void MySPI_Start(void)  
+&#123;
+    MySPI_W_SS(0); 
+&#125;
+//终止时序
+void MySPI_STOP(void)
+&#123;
+    MySPI_W_SS(1); 
+&#125;
+//交换数据
+uint8_t MySPI_SwapByte(uint8_t ByteSend)
+&#123;
+    uint8_t i, ByteReceive = 0x00;
+    for(i = 0; i < 8; i++)
+    &#123;
+        MySPI_W_MOSI(ByteSend & (0x80 >> i)); // 设置主机输出数据
+        MySPI_W_SCK(1);                      // 拉高时钟信号
+        if(MySPI_R_MISO() == 1) 
+            ByteReceive |= (0x80 >> i);     // 读取从机输出的数据
+        MySPI_W_SCK(0);                    // 拉低时钟信号
+    &#125;
+    return ByteReceive;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">W25Q64.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"
+#include "MySPI.h"
+#include "W25Q64_Ins.h"
+// 初始化SPI接口
+void W25Q64_Init(void)
+&#123;
+    MySPI_Init(); 
+&#125;
+//读设备ID
+void W25Q64_ReadID(uint8_t *MID, uint16_t *DID)
+&#123;
+    MySPI_Start();                              // 起始条件时序
+    MySPI_SwapByte(W25Q64_JEDEC_ID);            // 发送指令
+    *MID = MySPI_SwapByte(W25Q64_DUMMY_BYTE);   // 读取制造商ID
+    *DID = MySPI_SwapByte(W25Q64_DUMMY_BYTE);   // 读取设备ID的低8位
+    *DID <<= 8;
+    *DID |= MySPI_SwapByte(W25Q64_DUMMY_BYTE);  // 读取设备ID的高8位
+    MySPI_STOP();                               // 终止条件时序
+&#125;
+//写使能
+void W25Q64_WriteEnable(void)
+&#123;
+    MySPI_Start();
+    MySPI_SwapByte(W25Q64_WRITE_ENABLE); // 发送写使能指令
+    MySPI_STOP(); 
+&#125;
+//等待设备忙，并规定时间限制
+void W25Q64_WaitBusy(void)
+&#123;
+    uint32_t Timeout = 100000;
+    MySPI_Start();                     
+    MySPI_SwapByte(W25Q64_READ_STATUS_REGISTER_1); // 发送读状态寄存器指令
+    while ((MySPI_SwapByte(W25Q64_READ_STATUS_REGISTER_1) & 0x01) == 0x01)
+    &#123;
+        Timeout--;
+        if (Timeout == 0)
+        &#123;
+            break;
+        &#125;
+    &#125;
+    MySPI_STOP(); 
+&#125;
+//指定地址写入数据，
+void W25Q64_PageProgram(uint32_t Address, uint8_t *DataArray, uint16_t Count)
+&#123;
+    W25Q64_WriteEnable();                  // 写使能
+    uint16_t i;
+    MySPI_Start();                          
+    MySPI_SwapByte(W25Q64_PAGE_PROGRAM);    // 发送页编程指令
+    MySPI_SwapByte(Address >> 16);          // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);           // 发送地址的中间8位
+    MySPI_SwapByte(Address);                // 发送地址的低8位
+    for (i = 0; i < Count; i++)
+    &#123;
+        MySPI_SwapByte(DataArray[i]);    // 发送要写入的数据
+    &#125;
+    MySPI_STOP(); 
+    W25Q64_WaitBusy();                  // 等待操作完成
+&#125;
+//擦除指定地址的扇区
+void W25Q64_SectorErase(uint32_t Address)
+&#123;
+    W25Q64_WriteEnable();    // 启用写操作
+    MySPI_Start();            
+    MySPI_SwapByte(W25Q64_SECTOR_ERASE_4KB); // 发送扇区擦除指令
+    MySPI_SwapByte(Address >> 16);          // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);          // 发送地址的中间8位
+    MySPI_SwapByte(Address);              // 发送地址的低8位
+    MySPI_STOP(); 
+    W25Q64_WaitBusy(); // 等待操作完成
+&#125;
+//指定地址读
+void W25Q64_ReadData(uint32_t Address, uint8_t *DataArray, uint32_t Count)
+&#123;
+    uint32_t i;
+    MySPI_Start(); 
+    MySPI_SwapByte(W25Q64_READ_DATA);      // 发送读数据指令
+    MySPI_SwapByte(Address >> 16);        // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);        // 发送地址的中间8位
+    MySPI_SwapByte(Address);            // 发送地址的低8位
+    for (i = 0; i < Count; i++)
+    &#123;
+        DataArray[i] = MySPI_SwapByte(W25Q64_DUMMY_BYTE);  // 读取数据
+    &#125;
+    MySPI_STOP(); 
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">W25Q64_Ins.h</font></summary>  <pre><code class="language-c">
+#ifndef    __W25Q64_Ins__H
+#define    __W25Q64_Ins__H
+// W25Q64指令
+#define W25Q64_WRITE_ENABLE							0x06
+#define W25Q64_WRITE_DISABLE						0x04
+#define W25Q64_READ_STATUS_REGISTER_1				0x05
+#define W25Q64_READ_STATUS_REGISTER_2				0x35
+#define W25Q64_WRITE_STATUS_REGISTER				0x01
+#define W25Q64_PAGE_PROGRAM							0x02
+#define W25Q64_QUAD_PAGE_PROGRAM					0x32
+#define W25Q64_BLOCK_ERASE_64KB						0xD8
+#define W25Q64_BLOCK_ERASE_32KB						0x52
+#define W25Q64_SECTOR_ERASE_4KB						0x20
+#define W25Q64_CHIP_ERASE							0xC7
+#define W25Q64_ERASE_SUSPEND						0x75
+#define W25Q64_ERASE_RESUME							0x7A
+#define W25Q64_POWER_DOWN							0xB9
+#define W25Q64_HIGH_PERFORMANCE_MODE				0xA3
+#define W25Q64_CONTINUOUS_READ_MODE_RESET			0xFF
+#define W25Q64_RELEASE_POWER_DOWN_HPM_DEVICE_ID		0xAB
+#define W25Q64_MANUFACTURER_DEVICE_ID				0x90
+#define W25Q64_READ_UNIQUE_ID						0x4B
+#define W25Q64_JEDEC_ID								0x9F
+#define W25Q64_READ_DATA							0x03
+#define W25Q64_FAST_READ							0x0B
+#define W25Q64_FAST_READ_DUAL_OUTPUT				0x3B
+#define W25Q64_FAST_READ_DUAL_IO					0xBB
+#define W25Q64_FAST_READ_QUAD_OUTPUT				0x6B
+#define W25Q64_FAST_READ_QUAD_IO					0xEB
+#define W25Q64_OCTAL_WORD_READ_QUAD_IO				0xE3
+#define W25Q64_DUMMY_BYTE							0xFF
+ #endif
+</code> </pre> </details>
+
+<p>程序设计思路和I2C差不多，都是先用软件模拟SPI时序基本单元，再将基本单元组成传输时序。然后再根据硬件对其再封装。写指令的常量将用宏定义代替，便于理解。</p>
+<h2 id="STM32硬件SPI通信"><a href="#STM32硬件SPI通信" class="headerlink" title="STM32硬件SPI通信"></a>STM32硬件SPI通信</h2><h3 id="SPI外设简介"><a href="#SPI外设简介" class="headerlink" title="SPI外设简介"></a>SPI外设简介</h3><p>•　STM32内部集成了硬件SPI收发电路，可以由硬件自动执行时钟生成、数据收发等功能，减轻CPU的负担</p>
+<p>•　可配置8位&#x2F;16位数据帧、高位先行&#x2F;低位先行</p>
+<p>•　时钟频率： fPCLK &#x2F; (2, 4, 8, 16, 32, 64, 128, 256)</p>
+<p>•　支持多主机模型、主或从操作</p>
+<p>•　可精简为半双工&#x2F;单工通信</p>
+<p>•　支持DMA</p>
+<p>•　兼容I2S协议</p>
+<p>•　STM32F103C8T6 硬件SPI资源：SPI1、SPI2</p>
+<p>SPI1挂载在APB2最大允许频率为72MHz，SPI2挂载在APB1最大允许频率为36MHz。使用不同的SPI时，应注意挂载的总线时钟。</p>
+<h3 id="主模式全双工连续传输"><a href="#主模式全双工连续传输" class="headerlink" title="主模式全双工连续传输"></a>主模式全双工连续传输</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021230447228.png" class="" title="image-20231021230447228">
+
+<p>连续传输将传输效率最大化。先写入数据0xF1到发送缓冲器，再开始传输。每次数据传输，都是如图，第二个数据0xF2发送时，0xF1才被接收。并不是0xF1发送 → 0xF1接收，再0xF2发送 → 0xF2接收。而是0xF1先写入发送缓冲器，时序开始时发送 0xF1，并将 0xF2写入发送缓冲器，再0xF1接收 → （同时）0xF2发送。0xF2接收 → （同时）0xF3发送以此类推。。。发送总比接收早，数据传输是紧跟的。</p>
+<h3 id="非连续传输"><a href="#非连续传输" class="headerlink" title="非连续传输"></a>非连续传输</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231022000603924.png" class="" title="image-20231022000603924">
+
+<p>非连续传输相较于连续传输简单，效率不如连续传输。因为连续传输的数据是紧挨着传输，而非连续传输，0xF1发送 → 0xF1接收。将等待接收完毕后再发送，而不是先将0xF1写入缓冲器，时序开始时0xF1挂载到数据线，在交换数据，接收0xF1的同时发送0xF2.</p>
+<p><strong>当然，SPI通信的核心是主从两机寄存器数据交换，描述只是便于表达，切记数据是双向同时传输</strong></p>
+<h3 id="软件-x2F-硬件波形对比-1"><a href="#软件-x2F-硬件波形对比-1" class="headerlink" title="软件&#x2F;硬件波形对比"></a>软件&#x2F;硬件波形对比</h3><p><strong>软件模拟SPI</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231022001711028.png" class="" title="image-20231022001711028">
+
+<p><strong>硬件SPI</strong></p>
+<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231022001734433.png" class="" title="image-20231022001734433">
+
+<p>区别无非是软件有延迟，并且波形没有硬件平滑等等，和I2C波形软硬件对比差不多。</p>
+<h3 id="程序示例-3"><a href="#程序示例-3" class="headerlink" title="程序示例"></a>程序示例</h3><details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"                  // Device header
+#include "Delay.h"
+#include "OLED.h"
+#include "W25Q64.h"
+//
+uint8_t MID;
+uint16_t DID;
+uint8_t ArrayWrite[] = &#123;0x55, 0x66, 0x77, 0x88&#125;;
+uint8_t ArrayRead[4];
+int main(void)
+&#123;
+//初始化
+    OLED_Init();
+    W25Q64_Init();
+    OLED_ShowString(1, 1, "MID:   DID:");
+    OLED_ShowString(2, 1, "W:");
+    OLED_ShowString(3, 1, "R:");
+    W25Q64_ReadID(&MID,&DID);       //读取设备ID号
+    OLED_ShowHexNum(1,5,MID,2);     //显示设备ID号
+    OLED_ShowHexNum(1,12,DID,4);
+//
+    W25Q64_SectorErase(0X000000);   //擦除扇区，为写入数据做准备
+    W25Q64_PageProgram(0X000000,ArrayWrite,4); //向指定地址写入数据，写入四个数据
+    W25Q64_ReadData(0X000000,ArrayRead,4);     //向指定地址读数据
+//显示写入数据	
+    OLED_ShowHexNum(2,3,ArrayWrite[0],2);
+    OLED_ShowHexNum(2,6,ArrayWrite[1],2);
+    OLED_ShowHexNum(2,9,ArrayWrite[2],2);
+    OLED_ShowHexNum(2,12,ArrayWrite[3],2);
+//显示读取数据	
+    OLED_ShowHexNum(3,3, ArrayRead[0],2);
+    OLED_ShowHexNum(3,6, ArrayRead[1],2);
+    OLED_ShowHexNum(3,9, ArrayRead[2],2);
+    OLED_ShowHexNum(3,12,ArrayRead[3],2);
+    while (1)
+    &#123;
+    &#125;
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">MySPI.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"
+//对引脚操控进行基础的封装
+void MySPI_W_SS(uint8_t BitValue)    //片选信号，SS也称CS引脚
+&#123;
+    GPIO_WriteBit(GPIOA,GPIO_Pin_4,(BitAction)BitValue);
+&#125;
+void MySPI_Init(void)
+&#123;
+//GPIO引脚根据API硬件外设配置
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1,ENABLE);
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA,&GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA,&GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA,&GPIO_InitStructure);
+//配置硬件SPI
+    SPI_InitTypeDef SPI_InitStructure;
+    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_128;  //分频系数为128.
+    SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;    //第一个边沿采样
+    SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;     //空闲状态时，SCK为低电平
+    SPI_InitStructure.SPI_CRCPolynomial = 7;      //CRC校验的多项式
+    SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;   //8位数据帧   
+    SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;  //选择为双线全双工
+    SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;  //高位先行
+    SPI_InitStructure.SPI_Mode = SPI_Mode_Master;       //指定设备为主机或从机
+    SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;           //配置为软件NSS
+    SPI_Init(SPI1,&SPI_InitStructure);
+//SPI使能
+    SPI_Cmd(SPI1,ENABLE);
+//初始化
+    MySPI_W_SS(1);  //默认不选中从机
+&#125;
+//起始时序
+void MySPI_Start(void)
+&#123;
+    MySPI_W_SS(0);
+&#125;
+//终止时序
+void MySPI_STOP(void)
+&#123;
+    MySPI_W_SS(1);
+&#125;
+//交换数据
+uint8_t MySPI_SwapByte(uint8_t ByteSend)
+&#123;
+    while (SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
+    SPI_I2S_SendData(SPI1,ByteSend);
+    while (SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_RXNE) == RESET);
+    return SPI_I2S_ReceiveData(SPI1);
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">W25Q64.c</font></summary>  <pre><code class="language-c">
+#include "stm32f10x.h"
+#include "MySPI.h"
+#include "W25Q64_Ins.h"
+// 初始化SPI接口
+void W25Q64_Init(void)
+&#123;
+    MySPI_Init(); 
+&#125;
+//读设备ID
+void W25Q64_ReadID(uint8_t *MID, uint16_t *DID)
+&#123;
+    MySPI_Start();                              // 起始条件时序
+    MySPI_SwapByte(W25Q64_JEDEC_ID);            // 发送指令
+    *MID = MySPI_SwapByte(W25Q64_DUMMY_BYTE);   // 读取制造商ID
+    *DID = MySPI_SwapByte(W25Q64_DUMMY_BYTE);   // 读取设备ID的低8位
+    *DID <<= 8;
+    *DID |= MySPI_SwapByte(W25Q64_DUMMY_BYTE);  // 读取设备ID的高8位
+    MySPI_STOP();                               // 终止条件时序
+&#125;
+//写使能
+void W25Q64_WriteEnable(void)
+&#123;
+    MySPI_Start();
+    MySPI_SwapByte(W25Q64_WRITE_ENABLE); // 发送写使能指令
+    MySPI_STOP(); 
+&#125;
+//等待设备忙，并规定时间限制
+void W25Q64_WaitBusy(void)
+&#123;
+    uint32_t Timeout = 100000;
+    MySPI_Start();                     
+    MySPI_SwapByte(W25Q64_READ_STATUS_REGISTER_1); // 发送读状态寄存器指令
+    while ((MySPI_SwapByte(W25Q64_READ_STATUS_REGISTER_1) & 0x01) == 0x01)
+    &#123;
+        Timeout--;
+        if (Timeout == 0)
+        &#123;
+            break;
+        &#125;
+    &#125;
+    MySPI_STOP(); 
+&#125;
+//指定地址写入数据，
+void W25Q64_PageProgram(uint32_t Address, uint8_t *DataArray, uint16_t Count)
+&#123;
+    W25Q64_WriteEnable();                  // 写使能
+    uint16_t i;
+    MySPI_Start();                          
+    MySPI_SwapByte(W25Q64_PAGE_PROGRAM);    // 发送页编程指令
+    MySPI_SwapByte(Address >> 16);          // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);           // 发送地址的中间8位
+    MySPI_SwapByte(Address);                // 发送地址的低8位
+    for (i = 0; i < Count; i++)
+    &#123;
+        MySPI_SwapByte(DataArray[i]);    // 发送要写入的数据
+    &#125;
+    MySPI_STOP(); 
+    W25Q64_WaitBusy();                  // 等待操作完成
+&#125;
+//擦除指定地址的扇区
+void W25Q64_SectorErase(uint32_t Address)
+&#123;
+    W25Q64_WriteEnable();    // 启用写操作
+    MySPI_Start();            
+    MySPI_SwapByte(W25Q64_SECTOR_ERASE_4KB); // 发送扇区擦除指令
+    MySPI_SwapByte(Address >> 16);          // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);          // 发送地址的中间8位
+    MySPI_SwapByte(Address);              // 发送地址的低8位
+    MySPI_STOP(); 
+    W25Q64_WaitBusy(); // 等待操作完成
+&#125;
+//指定地址读
+void W25Q64_ReadData(uint32_t Address, uint8_t *DataArray, uint32_t Count)
+&#123;
+    uint32_t i;
+    MySPI_Start(); 
+    MySPI_SwapByte(W25Q64_READ_DATA);      // 发送读数据指令
+    MySPI_SwapByte(Address >> 16);        // 发送地址的高8位
+    MySPI_SwapByte(Address >> 8);        // 发送地址的中间8位
+    MySPI_SwapByte(Address);            // 发送地址的低8位
+    for (i = 0; i < Count; i++)
+    &#123;
+        DataArray[i] = MySPI_SwapByte(W25Q64_DUMMY_BYTE);  // 读取数据
+    &#125;
+    MySPI_STOP(); 
+&#125;
+</code> </pre> </details>
+
+<details>  <summary><font size="4" color="orange">W25Q64_Ins.h</font></summary>  <pre><code class="language-c">
+#ifndef    __W25Q64_Ins__H
+#define    __W25Q64_Ins__H
+// W25Q64指令
+#define W25Q64_WRITE_ENABLE							0x06
+#define W25Q64_WRITE_DISABLE						0x04
+#define W25Q64_READ_STATUS_REGISTER_1				0x05
+#define W25Q64_READ_STATUS_REGISTER_2				0x35
+#define W25Q64_WRITE_STATUS_REGISTER				0x01
+#define W25Q64_PAGE_PROGRAM							0x02
+#define W25Q64_QUAD_PAGE_PROGRAM					0x32
+#define W25Q64_BLOCK_ERASE_64KB						0xD8
+#define W25Q64_BLOCK_ERASE_32KB						0x52
+#define W25Q64_SECTOR_ERASE_4KB						0x20
+#define W25Q64_CHIP_ERASE							0xC7
+#define W25Q64_ERASE_SUSPEND						0x75
+#define W25Q64_ERASE_RESUME							0x7A
+#define W25Q64_POWER_DOWN							0xB9
+#define W25Q64_HIGH_PERFORMANCE_MODE				0xA3
+#define W25Q64_CONTINUOUS_READ_MODE_RESET			0xFF
+#define W25Q64_RELEASE_POWER_DOWN_HPM_DEVICE_ID		0xAB
+#define W25Q64_MANUFACTURER_DEVICE_ID				0x90
+#define W25Q64_READ_UNIQUE_ID						0x4B
+#define W25Q64_JEDEC_ID								0x9F
+#define W25Q64_READ_DATA							0x03
+#define W25Q64_FAST_READ							0x0B
+#define W25Q64_FAST_READ_DUAL_OUTPUT				0x3B
+#define W25Q64_FAST_READ_DUAL_IO					0xBB
+#define W25Q64_FAST_READ_QUAD_OUTPUT				0x6B
+#define W25Q64_FAST_READ_QUAD_IO					0xEB
+#define W25Q64_OCTAL_WORD_READ_QUAD_IO				0xE3
+#define W25Q64_DUMMY_BYTE							0xFF
+ #endif
+</code> </pre> </details>
+
+<p>软硬件SPI的主函数没什么差别，只是将MySPI.c中的软件模拟部分替换成STM32标准库中的SPI函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//NRF24L01寄存器操作命令</span><br><span class="line">#define NRF_READ_REG    0x00  //读配置寄存器,低5位为寄存器地址</span><br><span class="line">#define NRF_WRITE_REG   0x20  //写配置寄存器,低5位为寄存器地址</span><br><span class="line">#define RD_RX_PLOAD     0x61  //读RX有效数据,1~32字节</span><br><span class="line">#define WR_TX_PLOAD     0xA0  //写TX有效数据,1~32字节</span><br><span class="line">#define FLUSH_TX        0xE1  //清除TX FIFO寄存器.发射模式下用</span><br><span class="line">#define FLUSH_RX        0xE2  //清除RX FIFO寄存器.接收模式下用</span><br><span class="line">#define REUSE_TX_PL     0xE3  //重新使用上一包数据,CE为高,数据包被不断发送.</span><br><span class="line">#define NOP             0xFF  //空操作,可以用来读状态寄存器</span><br><span class="line">	 </span><br><span class="line">//SPI(NRF24L01)寄存器地址</span><br><span class="line">#define CONFIG          0x00  //配置寄存器地址;bit0:1接收模式,0发射模式;bit1:电选 </span><br><span class="line">                              //择;bit2:CRC模式;bit3:CRC使能;</span><br><span class="line">                              //bit4:中断MAX_RT(达到最大重发次数中断)使能;bit5:中断TX_DS使 </span><br><span class="line">                              //能;bit6:中断RX_DR使能</span><br><span class="line">#define EN_AA           0x01  //使能自动应答功能  bit0~5,对应通道0~5</span><br><span class="line">#define EN_RXADDR       0x02  //接收地址允许,bit0~5,对应通道0~5</span><br><span class="line">#define SETUP_AW        0x03  //设置地址宽度(所有数据通道):bit1,0:00,3字节;01,4字节;02,5字 </span><br><span class="line">                              //节;</span><br><span class="line">#define SETUP_RETR      0x04  //建立自动重发;bit3:0,自动重发计数器;bit7:4,自动重发延时 </span><br><span class="line">                              //250*x+86us</span><br><span class="line">#define RF_CH           0x05  //RF通道,bit6:0,工作通道频率;</span><br><span class="line">#define RF_SETUP        0x06  //RF寄存器;bit3:传输速率(0:1Mbps,1:2Mbps);bit2:1,发射功 </span><br><span class="line">                              //率;bit0:低噪声放大器增益</span><br><span class="line">#define STATUS          0x07  //状态寄存器;bit0:TX FIFO满标志;bit3:1,接收数据通道号(最 </span><br><span class="line">                              //大:6);bit4,达到最多次重发</span><br><span class="line">                              //bit5:数据发送完成中断;bit6:接收数据中断;</span><br><span class="line">#define MAX_TX  		0x10  //达到最大发送次数中断</span><br><span class="line">#define TX_OK   		0x20  //TX发送完成中断</span><br><span class="line">#define RX_OK   		0x40  //接收到数据中断</span><br><span class="line"> </span><br><span class="line">#define OBSERVE_TX      0x08  //发送检测寄存器,bit7:4,数据包丢失计数器;bit3:0,重发计数器</span><br><span class="line">#define CD              0x09  //载波检测寄存器,bit0,载波检测;</span><br><span class="line">#define RX_ADDR_P0      0x0A  //数据通道0接收地址,最大长度5个字节,低字节在前</span><br><span class="line">#define RX_ADDR_P1      0x0B  //数据通道1接收地址,最大长度5个字节,低字节在前</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P2      0x0C  //数据通道2接收地址,最低字节可设置</span><br><span class="line">                              //高字节,必须同 RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P3      0x0D  //数据通道3接收地址,最低字节可设置</span><br><span class="line">                              //高字节,必须同 RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P4      0x0E  //数据通道4接收地址,最低字节可设置</span><br><span class="line">                              //高字节,必须同RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P5      0x0F  //数据通道5接收地址,最低字节可设置,</span><br><span class="line">                              //高字节,必须同RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define TX_ADDR         0x10  //发送地址(低字节在前),ShockBurstTM模式下,RX_ADDR_P0与此地址 </span><br><span class="line">                                相等</span><br><span class="line">#define RX_PW_P0        0x11  //接收数据通道0有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P1        0x12  //接收数据通道1有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P2        0x13  //接收数据通道2有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P3        0x14  //接收数据通道3有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P4        0x15  //接收数据通道4有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P5        0x16  //接收数据通道5有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define NRF_FIFO_STATUS 0x17  //FIFO状态寄存器;bit0,RX FIFO寄存器空标志;</span><br><span class="line">                              //bit1,RX FIFO满标志;bit2,3,保留</span><br><span class="line">                              //bit4,TX FIFO空标志;bit5,TX FIFO满标志;bit6,1,循环发送上一 </span><br><span class="line">                              //数据包.0,不循环;</span><br><span class="line">/</span><br><span class="line">//24L01操作线</span><br><span class="line">#define NRF24L01_CE   PAout(4) //24L01片选信号</span><br><span class="line">#define NRF24L01_CSN  PCout(4) //SPI片选信号	   </span><br><span class="line">#define NRF24L01_IRQ  PAin(1)  //IRQ主机数据输入</span><br><span class="line">//24L01发送接收数据宽度定义</span><br><span class="line">#define TX_ADR_WIDTH    5   	//5字节的地址宽度</span><br><span class="line">#define RX_ADR_WIDTH    5   	//5字节的地址宽度</span><br><span class="line">#define TX_PLOAD_WIDTH  32  	//32字节的用户数据宽度</span><br><span class="line">#define RX_PLOAD_WIDTH  32  	//32字节的用户数据宽度</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>stm32归档</category>
+      </categories>
+      <tags>
+        <tag>单片机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>stm32综述</title>
+    <url>/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/</url>
+    <content><![CDATA[<p>　　大概有一段时间没看stm32，通过之前学51的经历，大概是明白自己一段时间不看就会忘，虽然随便翻翻又能快速上手，但是东找西翻比较麻烦。所以打算复习的时候，顺便做个笔记记录一下。自己所用的型号为<strong>STM32F103C8T6</strong>。<span id="more"></span></p>
+<h6 id="STM简述"><a href="#STM简述" class="headerlink" title="STM简述"></a>STM简述</h6><p>　　STM32是ST公司基于ARM- Cortex-M内核开发的32位微控制器（MCU）。自己所用的是STM32F1系列，属于Mainstream，内核Cortex-M3。ARM公司设计ARM内核，半导体厂商完善内核周边电路并产生芯片。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104303863.png" class="" title="image-20230724104303863">
+
+<p>图中的ARM由ARM公司设计，芯片内的存储和外设（比如GPIO,定时器）由ST公司设计。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104427576.png" class="" title="image-20230724104427576">
+
+<p>这是一枚STM32F103C8T6的芯片，由芯片可以看出型号和封装。封装为LQFP48，芯片表面左下角有个圆点，圆点下的引脚为1顺着原点逆时针开始数。如果芯片有两个圆点，则从最小的圆点开始数。</p>
+<h6 id="片上资源-x2F-外设"><a href="#片上资源-x2F-外设" class="headerlink" title="片上资源&#x2F;外设"></a><strong>片上资源&#x2F;外设</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104939703.png" class="" title="image-20230724104939703">
+
+<p>绿色背景加黑的是位于内核的外设。另外C8T6并没有表中的DAC,SDIO,FSMC和USB OTG外设。</p>
+<p>NVIC:内核里面用于管理中断的设备，例如配置中断优先级。</p>
+<p>SysTick:用来给操作系统提供定时服务。应为STM32可以加入Freektos，ucos等操作系统，利用SysTick提供定时进行任务切换的功能。</p>
+<p>RCC：复位和时钟控制，可以对系统的时钟进行配置，还能使能各模块的时钟。在STM32中，外设上电后是默认没有时钟。没有时钟，外设无法工作。</p>
+<p>GPIO：通用的IO口，可以用于操控模块，比如灯，马达等。</p>
+<p>AFIO：完成复用功能端口的重定义，还有中断端口的置配。</p>
+<p>EXTI：配置好外部中断后，当引脚有电平变化时，就可以触发中断，让CPU来处理任务。</p>
+<p>TIM定时器：分为基本定时器，通用定时器，高级定时器。不仅可以完成定时中断的任务，还可以用于测频率，生成PWM波形，配置为专用的编码器接口。</p>
+<p>ADC：模数转换器，STM32内置了12位的AD转换器，可以直接读取IO口的模拟电压，无需外置。</p>
+<p>DMA：直接内存访问，可以帮助CPU搬运大量数据等这种繁杂任务。</p>
+<p>I2C&#x2F;SPI：两种常见的通信协议。</p>
+<p>RTC：实时时钟，在STM32内部完成时，分，秒的计时功能，还可以外接电源，即使掉电也能</p>
+<p>正常运行（此时会启用芯片备用电池）。</p>
+<p>CRC：一种数据校验方式，用于判断接受的数据是否正确。</p>
+<p>IWDG&#x2F;WWDG:当单片机因为电磁干扰死机或者程序设计不合理导致的死循环时，看门狗可以及时复位，保证系统稳定。</p>
+<p>DAC：数模转换器，可以在IO口直接输出模拟电压。</p>
+<p>OTG：使STM32作为USB主机去读取其它USB设备。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111613998.png" class="" title="image-20230724111613998">
+
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111625157.png" class="" title="image-20230724111625157">
+
+
+
+<h6 id="系统结构"><a href="#系统结构" class="headerlink" title="系统结构"></a><strong>系统结构</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111735194.png" class="" title="image-20230724111735194">
+
+<p>ICode（指令总线）和Dcode（数据总线）用来连接Flash闪存，Flash存放的是我们编写的程序，ICode用于加载程序指令，Dcode用于加载数据，如常数和调试数据。</p>
+<p>系统总线就连接到如SRAM（用于存储程序运行时的变量数据）</p>
+<p>AHB系统总线：用于挂载主要的外设，AHB指先进高性能总线，挂载最基本的或者性能比较高的外设，如复位和时钟控制  SDIO。</p>
+<p>APB：先进外设总线，用于连接一般的外设。</p>
+<p>DMA：大量的数据搬运，防止覆盖。</p>
+<h6 id="引脚定义"><a href="#引脚定义" class="headerlink" title="引脚定义"></a>引脚定义</h6><p>红色是电源相关的引脚</p>
+<p>蓝色是最小系统相关的引脚</p>
+<p>绿色是IO口&#x2F;功能口相关的引脚</p>
+<p>S代表电源，I&#x2F;O代表输入输出，I&#x2F;O电平代表所能容忍的电压。FT代表能容忍5V，默认复用是IO口上同时连接的外设功能引脚。重定义：如果有2个功能同时复用在了1个IO口上，可以把其中一个复用功能重映射到其他端口上。</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230726084013246.png" class="" title="image-20230726084013246">
+
+
+
+<p>1.　　　VBAT：备用电池供电引脚，当系统电源断电时，备用电池可以给内部的RTC时钟和备份寄存器提供电源。</p>
+<p>2.　　　IO口&#x2F;侵入检测&#x2F;RTC：IO口可以根据程序输出读取高低电平</p>
+<p>3.4　IO口&#x2F;接32.768kHZ的RTC晶振</p>
+<p>5,6　接系统的主晶振，芯片内有锁相环电路，对8MHZ进行倍频形成72MHZ。</p>
+<p>7　　系统复位引脚，N代表低电平复位</p>
+<p>8,9　内部模拟部分的电源，如ADC,RC振荡器  VSS(-) VDD(+)</p>
+<p>10-19　都是IO口，10号引脚还兼具了WKUP用于唤醒对于待机模式的STM32</p>
+<p>20　IO口&#x2F;BOOT1引脚，BOOT用来配置启动模式    44.　BOOT0</p>
+<p>21.22.25-33.41-43.45.46 都是IO口</p>
+<p>23,24是系统的主电源口， 35.36.47.48    STM32采用分区供电模式</p>
+<p>34,37-40　IO口&#x2F;调试端口      STM32支持SWD和JTAG两种调试方法</p>
+<p>启动配置（BOOT0和BOOT1）</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140258741.png" class="" title="image-20230801140258741">
+
+<p>作用：指定程序开始运行的位置，一般情况下，程序是在Flash程序存储器开始执行</p>
+<p>接1指3.3V电源正的意思</p>
+<p>系统存储器就是STM32中的一段BootLoader(接受串口数据，然后刷新到主闪存中)</p>
+<p>核心板原理图</p>
+<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140602387.png" class="" title="image-20230801140602387">
+
+]]></content>
+      <categories>
+        <category>stm32归档</category>
+      </categories>
+      <tags>
+        <tag>单片机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>idea</title>
+    <url>/2023/11/17/idea/</url>
+    <content><![CDATA[<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="啥？你不知道？不知道还输。你到底在期待什么？？_____:(´□`」 ∠):_____蒙暗号是没用的，或许你贿赂城主（博主）能满足你的小小的愿望好奇心¯\" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="bb01410711b972baf714a72a081de345f07904acbecab333b769c06dd62d715e">76fc3ae391b3c4b89afc7f8f81acab4b9f801fe66e60cd8eb555aaaa4e722a621ecf71896bcd87f869a047b4fc1b2019d331c403b9600638916955bc4a2b949e9a293b2ad6f730e3be193d4b7ea726f295feb46a207f69ea1086ea81ddfb19851bae848f43666e5ec4852ee8a6712ec2d610eb1add1598183b4ffa6378a858ae92cbb6395c960140303e450202a660cf5219f59b40aaeef9fc0d492ab0d68b3617ac82ffee29717785cd3fa40a1fb5ae55a91c92e27f839a6a12927112284d83b7a848b05e64496540a335d8c1e80e90013b62f244b519447c274bd44e96145c65bdefdc3f58bb29d0f7c60279c1523458046189362879436061fb5505f3697268837727a20a09017506b9c39cbbb782209994544c51ec9c91c5b8a6d28dca375c6383e076a6c87019704ffed6469ffb56b6543d7579a23e9c8679648ba2cbd452f543cdb3b7d3fdf9fcdf7aa8352d27df64162d607cca045e64a45584bce03e75b1e2e490060995966e4dcbed9f61bc1f07406334534b8d6973f69ef5602f2e9af2c9ffc760607f4b115bbc971b3a27f6c6db178155e05bded73f82eeaad026b3c24b7a158b4a59c725bfe5096ee4095495f022a7464f9c31a7091c2ab23c0c17f872ed4de86471e890f54d80fcb736179e87728053ee3bd802e28fdddb74e5ed03e0a9577c105609b47d3613475e9670930df1e9c5f28eb99f38949038d9e3989effa15587f27192c7d8566e6983e8223f001d5eb4657a7d47084400b0bd68e5d4adda0fef3d0a016dbac1576a5d6e5fa87c75093bfed1a96939bdcf8f3f64a2329b417e401926bf677a7bba3caf53f8c5a90a3b041fbd78822e6862a88a2bbda289a71d4005d1d6a86e1e9cdcc642934e4853e5a7058449e5aa6a67e0c8bc2a440bc041a68441a7895ca1572afa7f1cea82cd82bed0fed00d1d7bcad94a7cee443376bc49a36a2a100fabd2a9d9ab77d0b4b8551049a6476af4856a32a33556173bae11db0de3299a6fc1b25e4b0b</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">站住！！！请输入暗号！_(:3 」∠ )_</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">]]></content>
+  </entry>
+  <entry>
     <title>STM32归档（上）</title>
     <url>/2023/08/02/STM32%E5%BD%92%E6%A1%A3/</url>
     <content><![CDATA[<p>个人学习笔记，将对知识点进行概述，主要学习请参考B站江科大的视频。或者STM32手册。<span id="more"></span></p>
@@ -3435,1567 +4996,6 @@ void Serial_Printf(char *format, ...);                   // 带格式的字符�
       </tags>
   </entry>
   <entry>
-    <title>STM32归档（下）</title>
-    <url>/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/</url>
-    <content><![CDATA[<p>个人学习笔记，因为STM32归档越来越长（怕目录太长出问题），所以有了下。<span id="more"></span></p>
-<h1 id="I2C通信"><a href="#I2C通信" class="headerlink" title="I2C通信"></a>I2C通信</h1><h2 id="I2C软件模拟通信"><a href="#I2C软件模拟通信" class="headerlink" title="I2C软件模拟通信"></a>I2C软件模拟通信</h2><h3 id="I2C简介"><a href="#I2C简介" class="headerlink" title="I2C简介"></a>I2C简介</h3><p>•　I2C（Inter IC Bus）是由Philips公司开发的一种通用数据总线</p>
-<p>•　两根通信线：SCL（Serial Clock）、SDA（Serial Data）</p>
-<p>•　同步，半双工</p>
-<p>•　带数据应答</p>
-<p>•　支持总线挂载多设备（一主多从、多主多从）</p>
-<h3 id="硬件电路"><a href="#硬件电路" class="headerlink" title="硬件电路"></a>硬件电路</h3><p>•　所有I2C设备的SCL连在一起，SDA连在一起</p>
-<p>•　设备的SCL和SDA均要配置成开漏输出模式</p>
-<p>•　SCL和SDA各添加一个上拉电阻，阻值一般为4.7KΩ左右</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017100133237.png" class="" title="image-20231017100133237">
-
-<p>开漏输出模式有个线与的现象，只要有一个设备输出低电平，总线就处于低电平。</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017100448237.png" class="" title="image-20231017100448237">
-
-<p>SCLKN1OUT输出低电平时，mos管导通。输出高电平时，MOS管断开，处于浮空输入。</p>
-<h3 id="I2C时序基本单元"><a href="#I2C时序基本单元" class="headerlink" title="I2C时序基本单元"></a>I2C时序基本单元</h3><p><strong>起始条件：</strong></p>
-<p>SCL高电平期间，SDA从高电平切换到低电平</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101034445.png" class="" title="image-20231017101034445">
-
-<p><strong>终止条件：</strong></p>
-<p>SCL高电平期间，SDA从低电平切换到高电平</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101135745.png" class="" title="image-20231017101135745">
-
-
-
-
-
-<p>只能由主机产生起始或终止条件，从机不允许，且SCL和SDA置高电平都由上拉电阻实现。</p>
-<p><strong>发送一个字节：</strong></p>
-<p>SCL低电平期间，主机将数据位依次放到SDA线上（<strong>高位先行</strong>），然后释放SCL，<strong>从机将在SCL高电平期间读取数据位</strong>，所以SCL高电平期间SDA不允许有数据变化，依次循环上述过程8次，即可发送一个字节</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101630300.png" class="" title="image-20231017101630300">
-
-
-
-<p>一般情况下，当SCL产生上升沿时，从机就从SDA读取数据完毕，所以主机需要提前放置数据置SDA。</p>
-<p><strong>接收一个字节：</strong></p>
-<p>SCL低电平期间，从机将数据位依次放到SDA线上（<strong>高位先行</strong>），然后释放SCL，<strong>主机将在SCL高电平期间读取数据位</strong>，所以SCL高电平期间SDA不允许有数据变化，依次循环上述过程8次，即可接收一个字节（主机在接收之前，需要释放SDA）</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017101927913.png" class="" title="image-20231017101927913">
-
-
-
-<p><strong>发送应答：</strong></p>
-<p>主机在接收完一个字节之后，在下一个时钟发送一位数据，数据0表示应答，数据1表示非应答</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017103533941.png" class="" title="image-20231017103533941">
-
-
-
-<p><strong>接收应答：</strong></p>
-<p>主机在发送完一个字节之后，在下一个时钟接收一位数据，判断从机是否应答，数据0表示应答，数据1表示非应答（主机在接收之前，需要释放SDA）</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017103543583.png" class="" title="image-20231017103543583">
-
-
-
-<p>应答功能可用于判断数据是否传输成功，也可以用于判断是否需要继续传输。</p>
-<h3 id="数据帧示例"><a href="#数据帧示例" class="headerlink" title="数据帧示例"></a>数据帧示例</h3><p><strong>指定地址写</strong>：</p>
-<p>对于指定设备（Slave Address），在指定地址（Reg Address）下，写入指定数据（Data）。</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017103904501.png" class="" title="image-20231017103904501">
-
-<p><strong>当前地址读：</strong></p>
-<p>对于指定设备（Slave Address），在当前地址指针指示的地址下，读取从机数据（Data）</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017104007377.png" class="" title="image-20231017104007377">
-
-<p><strong>指定地址读：</strong></p>
-<p>对于指定设备（Slave Address），在指定地址（Reg Address）下，读取从机数据（Data）。</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231017104053149.png" class="" title="image-20231017104053149">
-
-
-
-<h2 id="MPU6050"><a href="#MPU6050" class="headerlink" title="MPU6050"></a>MPU6050</h2><p><strong>MPU6050简介：</strong></p>
-<p>•　MPU6050是一个6轴姿态传感器，可以测量芯片自身X、Y、Z轴的加速度、角速度参数，通过数据融合，可进一步得到姿态角（欧拉角），常应用于平衡车、飞行器等需要检测自身姿态的场景</p>
-<p>•　3轴加速度计（Accelerometer）：测量X、Y、Z轴的加速度</p>
-<p>•　3轴陀螺仪传感器（Gyroscope）：测量X、Y、Z轴的角速度</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018084608575.png" class="" title="image-20231018084608575">
-
-<p>芯片上会有个小图标标示x与y轴。</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018084638732.png" class="" title="image-20231018084638732">
-
-<p>加速度计可以理解为一个弹簧测力计，当物体有加速度时，将使弹簧受力，改变电位器。</p>
-<p>另外，该加速度计只具有静态稳定性，不具备动态稳定性。</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018084759528.png" class="" title="image-20231018084759528">
-
-<p>而陀螺仪传感器只具有动态稳定性，不具备静态稳定性。</p>
-<p><strong>MPU6050参数：</strong></p>
-<p>•　16位ADC采集传感器的模拟信号，量化范围：-32768~32767</p>
-<p>•　加速度计满量程选择：±2、±4、±8、±16（g）</p>
-<p>•　陀螺仪满量程选择： ±250、±500、±1000、±2000（°&#x2F;sec）</p>
-<p>•　可配置的数字低通滤波器</p>
-<p>•　可配置的时钟源</p>
-<p>•　可配置的采样分频</p>
-<p>•　I2C从机地址：1101000（AD0&#x3D;0） 1101001（AD0&#x3D;1）</p>
-<p>值得注意的是，I2C的数据格式为8位一个包，地址位为7位，此后有一位为读写位。所以写入MPU6050的地址为0x68再或上读写位，也可以直接写入0xD0，读写位和地址位合为一个8位数据。</p>
-<p><strong>硬件电路：</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090147960.png" class="" title="image-20231018090147960">
-
-<p>整体硬件电路由左上角的稳压器，左下引出排针和右侧芯片组成，有排针引脚可知该硬件支持拓展。</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090159079.png" class="" title="image-20231018090159079">
-
-
-
-<p>另外，在配置硬件的自由落体检测，运动检测等，可触发INT输出中段信号。</p>
-<p><strong>MPU6050框图：</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090613475.png" class="" title="image-20231018090613475">
-
-
-
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018090849895.png" class="" title="image-20231018090849895">
-
-
-
-<p><strong>MPU6050的I2C通信格式：</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018091413370.png" class="" title="image-20231018091413370">
-
-
-
-<p><strong>寄存器地址：</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018091543354.png" class="" title="image-20231018091543354">
-
-<p>Addr(Hex)：16进制地址</p>
-<p>Addr(Dec)：10进制地址</p>
-<p>Register Name：寄存器名称</p>
-<p>SerialI&#x2F;F：读写权限</p>
-<p>在文档“RM-MPU-6000A”中有该硬件的寄存器表，通过此表，可得知相应的寄存器地址。如果需要读取特定的寄存器数据（比如加速度计的数据）可由此表查询地址。当然，也可以写入命名到寄存器，用于设置硬件模式等等。</p>
-<p>所有寄存器上电默认为0x00，除了107号寄存器上电默认为0x40(睡眠)，117号寄存器为0x68。</p>
-<h3 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h3>
-
-<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
-#include "stm32f10x.h"                  // Device header
-#include "Delay.h"
-#include "OLED.h"
-#include "MPU6050.h"
-uint8_t ID;                 //设备ID号
-int16_t AX,AY,AZ,GX,GY,GZ;  //xyz加速度和角速度
-int main(void)
-&#123;
-    //初始化
-    OLED_Init();
-    MPU6050_Init();
-    ID = MPU6050_GetID();        //获取设备ID号
-    OLED_ShowString(1,1,"ID:");
-    OLED_ShowHexNum(1,4,ID,2);
-    while (1)
-    &#123;
-MPU6050_GetData(&AX,&AY,&AZ,&GX,&GY,&GZ);   //获取加速度和角速度的参数
-        OLED_ShowSignedNum(2,1,AX,5);
-        OLED_ShowSignedNum(3,1,AY,5);
-        OLED_ShowSignedNum(4,1,AZ,5);
-        OLED_ShowSignedNum(2,8,GX,5);
-        OLED_ShowSignedNum(3,8,GY,5);
-        OLED_ShowSignedNum(4,8,GZ,5);
-    &#125;
-&#125;
-</code> </pre> </details>
-
-<details>  <summary><font size="4" color="orange">MyI2c.c</font></summary>  <pre><code class="language-c">
-#include "stm32f10x.h"
-#include "Delay.h"
-void MyI2C_W_SCL(uint8_t BitValue)  //封装写SCL（时钟线）函数，并加上小延时确保相应。
-&#123;
-    GPIO_WriteBit(GPIOB,GPIO_Pin_10,(BitAction)BitValue);
-    Delay_us(10);
-&#125;
-void MyI2C_W_SDA(uint8_t BitValue)  //封装写SDA（数据线）函数，
-&#123;
-    GPIO_WriteBit(GPIOB,GPIO_Pin_11,(BitAction)BitValue);
-    Delay_us(10);
-&#125;
-uint8_t MyI2C_R_SDA(void)    //读SDA
-&#123;
-    uint8_t BitValue;
-    BitValue = GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_11);
-    Delay_us(10);
-    return BitValue;
-&#125;
-void MyI2C_Init(void)   //初始化
-&#123;
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
-    GPIO_InitTypeDef GPIO_InitStructure;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOB,&GPIO_InitStructure);
-    GPIO_SetBits(GPIOB,GPIO_Pin_10 | GPIO_Pin_11);  //初始化I2C双线为高电平
-&#125;
-void MyI2C_Start(void)  //启动
-&#123;
-    MyI2C_W_SDA(1);
-    MyI2C_W_SCL(1);
-    MyI2C_W_SDA(0);
-    MyI2C_W_SCL(0);
-&#125;
-void MyI2C_STOP(void)  //停止
-&#123;
-    MyI2C_W_SDA(0);
-    MyI2C_W_SCL(1);
-    MyI2C_W_SDA(1);
-&#125;
-void MyI2C_SendByte(uint8_t Byte)  //发送一位字节
-&#123;
-    uint8_t i;
-    for(i=0;i<8;i++)
-    &#123;
-        MyI2C_W_SDA(Byte & (0x80 >> i));
-        MyI2C_W_SCL(1);
-        MyI2C_W_SCL(0);
-    &#125;
-&#125;
-uint8_t MyI2C_ReceiveByte(void)  //接收一位字节
-&#123;
-    uint8_t i,Byte = 0x00;
-    for(i=0;i<8;i++)
-    &#123;
-        MyI2C_W_SDA(1);
-        MyI2C_W_SCL(1);
-        if(MyI2C_R_SDA() == 1) Byte |= (0x80>>i);
-        MyI2C_W_SCL(0);	
-    &#125;
-    return Byte;
-&#125;
-void MyI2C_SendAck(uint8_t AckBit)  //发送应答
-&#123;
-    MyI2C_W_SDA(AckBit);
-    MyI2C_W_SCL(1);
-    MyI2C_W_SCL(0);
-&#125;
-uint8_t MyI2C_ReceiveAck(void)      //接收应答
-&#123;
-    uint8_t AckBit;
-    MyI2C_W_SDA(1);
-    MyI2C_W_SCL(1);
-    AckBit = MyI2C_R_SDA();
-    MyI2C_W_SCL(0);	
-    return AckBit;
-&#125;
-</code> </pre> </details>
-
-<details>  <summary><font size="4" color="orange">MPU6050.c</font></summary>  <pre><code class="language-c">
-#include "stm32f10x.h" 
-#include "MyI2C.h"
-#include "MPU6050_Reg.h"
-#define MPU6050_ADDRESS 0xD0      //宏定义MPU6050地址，应该为0x68,0xD0为7位地址或上读写位的整合。
-void MPU6050_WriteReg(uint8_t RegAddress,uint8_t Data)   //指定地址写数据
-&#123;
-    MyI2C_Start();
-    MyI2C_SendByte(MPU6050_ADDRESS);
-    MyI2C_ReceiveAck();
-    MyI2C_SendByte(RegAddress);
-    MyI2C_ReceiveAck();
-    MyI2C_SendByte(Data);      //如果需要连续写多个字节，可用for循环执行注释的这两句。
-    MyI2C_ReceiveAck();        //当写入多字节时，每写入一个字节，地址自动+1。
-    MyI2C_STOP();
-&#125;
-uint8_t MPU6050_ReadReg(uint8_t RegAddress)       //指定地址读数据
-&#123;
-    uint8_t Data;
-    //第一个起始条件发送地址
-    MyI2C_Start();
-    MyI2C_SendByte(MPU6050_ADDRESS);
-    MyI2C_ReceiveAck();
-    MyI2C_SendByte(RegAddress);
-    MyI2C_ReceiveAck();
-    //第二个起始条件读地址，读写地址位重新指定，通信协议读写位只能在起始条件后的一个字节设定。
-    MyI2C_Start();
-    MyI2C_SendByte(MPU6050_ADDRESS | 0x01);        //指定地址或上“读数据”位
-    MyI2C_ReceiveAck();
-    Data = MyI2C_ReceiveByte();
-    MyI2C_SendAck(1);
-    MyI2C_STOP();
-    return Data;
-&#125;
-void MPU6050_Init(void)
-&#123;
-    MyI2C_Init();
-    MPU6050_WriteReg(MPU6050_PWR_MGMT_1, 0x01);        //解除睡眠，时钟源为陀螺仪时钟
-    MPU6050_WriteReg(MPU6050_PWR_MGMT_2, 0x00);        //6轴一直启用，均不待机
-    MPU6050_WriteReg(MPU6050_SMPLRT_DIV, 0x09);        //采样分频为10
-    MPU6050_WriteReg(MPU6050_CONFIG, 0x06);            //滤波参数为最大
-    MPU6050_WriteReg(MPU6050_GYRO_CONFIG, 0x18);       //陀螺仪为最大量程
-    MPU6050_WriteReg(MPU6050_ACCEL_CONFIG, 0x18);      //加速度为最大量程
-&#125;
-uint8_t MPU6050_GetID(void)		//获取设备ID号
-&#123;
-    return MPU6050_ReadReg(MPU6050_WHO_AM_I);
-&#125;
-void MPU6050_GetData(int16_t *AccX, int16_t *AccY, int16_t *AccZ,
-                     int16_t *GyroX, int16_t *GyroY, int16_t *GyroZ)  //获取搜集的参数
-&#123;
-    uint8_t DataH, DataL;
-    DataH = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_H);
-    DataL = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_L);
-    *AccX = (DataH << 8)| DataL;
-    DataH = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_H);
-    DataL = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_L);
-    *AccY = (DataH << 8)| DataL;
-    DataH = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_H);
-    DataL = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_L);
-    *AccZ = (DataH << 8)| DataL;
-    DataH = MPU6050_ReadReg(MPU6050_GYRO_XOUT_H);
-    DataL = MPU6050_ReadReg(MPU6050_GYRO_XOUT_L);
-    *GyroX = (DataH << 8)| DataL;
-    DataH = MPU6050_ReadReg(MPU6050_GYRO_YOUT_H);
-    DataL = MPU6050_ReadReg(MPU6050_GYRO_YOUT_L);
-    *GyroY = (DataH << 8)| DataL;
-    DataH = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_H);
-    DataL = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_L);
-    *GyroZ = (DataH << 8)| DataL;        
-&#125;
-</code> </pre> </details>
-
-<details>  <summary><font size="4" color="orange">MPU6050_Reg.h</font></summary>  <pre><code class="language-c">
-#ifndef    __MPU6050_Reg__H
-#define    __MPU6050_Reg__H
-//控制寄存器
-#define	MPU6050_SMPLRT_DIV		0x19
-#define	MPU6050_CONFIG			0x1A
-#define	MPU6050_GYRO_CONFIG		0x1B
-#define	MPU6050_ACCEL_CONFIG	0x1C
-//收集的数据存放的寄存器
-#define	MPU6050_ACCEL_XOUT_H	0x3B
-#define	MPU6050_ACCEL_XOUT_L	0x3C
-#define	MPU6050_ACCEL_YOUT_H	0x3D
-#define	MPU6050_ACCEL_YOUT_L	0x3E
-#define	MPU6050_ACCEL_ZOUT_H	0x3F
-#define	MPU6050_ACCEL_ZOUT_L	0x40
-#define	MPU6050_TEMP_OUT_H		0x41
-#define	MPU6050_TEMP_OUT_L		0x42
-#define	MPU6050_GYRO_XOUT_H		0x43
-#define	MPU6050_GYRO_XOUT_L		0x44
-#define	MPU6050_GYRO_YOUT_H		0x45
-#define	MPU6050_GYRO_YOUT_L		0x46
-#define	MPU6050_GYRO_ZOUT_H		0x47
-#define	MPU6050_GYRO_ZOUT_L		0x48
-//电源管理寄存器和设备ID寄存器
-#define	MPU6050_PWR_MGMT_1		0x6B
-#define	MPU6050_PWR_MGMT_2		0x6C
-#define	MPU6050_WHO_AM_I		0x75   
- #endif
-</code> </pre> </details>
-
-<p>先写好I2C通讯时序，再通过时序组成数据帧。然后在MPU6050中对数据帧进行封装，此后可在主函数直接调用对硬件的读写函数。因为直接写0x3c一类写入寄存器不易于理解和后续维护，所以引入“MPU6050—Reg”，将寄存器地址进行宏定义。</p>
-<h2 id="STM32硬件I2C通信"><a href="#STM32硬件I2C通信" class="headerlink" title="STM32硬件I2C通信"></a>STM32硬件I2C通信</h2><h3 id="I2C外设简介"><a href="#I2C外设简介" class="headerlink" title="I2C外设简介"></a>I2C外设简介</h3><p>•　STM32内部集成了硬件I2C收发电路，可以由硬件自动执行时钟生成、起始终止条件生成、应答位收发、数据收发等功能，减轻CPU的负担</p>
-<p>•　支持多主机模型</p>
-<p>•　支持7位&#x2F;10位地址模式</p>
-<p>•　支持不同的通讯速度，标准速度(高达100 kHz)，快速(高达400 kHz)</p>
-<p>•　支持DMA</p>
-<p>•　兼容SMBus协议（系统管理总线）</p>
-<p>•　STM32F103C8T6 硬件I2C资源：I2C1、I2C2</p>
-<h3 id="I2C框图"><a href="#I2C框图" class="headerlink" title="I2C框图"></a>I2C框图</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100349831.png" class="" title="image-20231018100349831">
-
-<h3 id="I2C基本结构"><a href="#I2C基本结构" class="headerlink" title="I2C基本结构"></a>I2C基本结构</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100439583.png" class="" title="image-20231018100439583">
-
-<p>移位寄存器左移，高位先行。</p>
-<h3 id="主机发送"><a href="#主机发送" class="headerlink" title="主机发送"></a>主机发送</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100533249.png" class="" title="image-20231018100533249">
-
-<p>7位和10位主要差别为寻址位是7位或是10位。当一个时序完成后，STM32会置EVx位(可理解为大标志位)。通过对此位的查询，可得知事件状态。</p>
-<h3 id="主机接收"><a href="#主机接收" class="headerlink" title="主机接收"></a>主机接收</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100801037.png" class="" title="image-20231018100801037">
-
-<p>EV5事件表示起始条件已发送</p>
-<p>EV6事件表示寻址已完成</p>
-<h3 id="软件-x2F-硬件波形对比"><a href="#软件-x2F-硬件波形对比" class="headerlink" title="软件&#x2F;硬件波形对比"></a>软件&#x2F;硬件波形对比</h3><p><strong>软件波形：</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100928963.png" class="" title="image-20231018100928963">
-
-<p><strong>硬件波形：</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231018100939975.png" class="" title="image-20231018100939975">
-
-<p>通过对比可知：<br>硬件I2C的波形会更加规整，每个时钟的周期和占空比都非常一致，而软件I2C由于操作引脚后加入了延时，导致每个时钟的周期和占空比不规整。由于I2C是同步时序，所以影响不大。</p>
-<p>SCL低电平写，高电平读。保证尽早的原则，直接在SCL下降沿写，上升沿读。</p>
-<h3 id="程序示例-1"><a href="#程序示例-1" class="headerlink" title="程序示例"></a>程序示例</h3>
-
-<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
-#include "stm32f10x.h"                  // Device header
-#include "Delay.h"
-#include "OLED.h"
-#include "MPU6050.h"
-uint8_t ID;
-int16_t AX,AY,AZ,GX,GY,GZ;
-int main(void)
-&#123;
-    OLED_Init();
-    MPU6050_Init();
-    ID = MPU6050_GetID();
-    OLED_ShowString(1,1,"ID:");
-    OLED_ShowHexNum(1,4,ID,2);
-    while (1)
-    &#123;
-        MPU6050_GetData(&AX,&AY,&AZ,&GX,&GY,&GZ);
-        OLED_ShowSignedNum(2,1,AX,5);
-        OLED_ShowSignedNum(3,1,AY,5);
-        OLED_ShowSignedNum(4,1,AZ,5);
-        OLED_ShowSignedNum(2,8,GX,5);
-        OLED_ShowSignedNum(3,8,GY,5);
-        OLED_ShowSignedNum(4,8,GZ,5);
-    &#125;
-&#125;
-</code> </pre> </details>
-
-<details>  <summary><font size="4" color="orange">MPU6050.c</font></summary>  <pre><code class="language-c">
-#include "stm32f10x.h" 
-#include "MPU6050_Reg.h"
-#define MPU6050_ADDRESS 0xD0      //宏定义MPU6050地址
-void MPU6050_WaitEvent(I2C_TypeDef* I2Cx, uint32_t I2C_EVENT)  //等待EV事件，防止用while卡死，改用定时退出
-&#123;
-    uint32_t TimeOut;
-    TimeOut = 10000;
-    while(I2C_CheckEvent(I2Cx,I2C_EVENT) != SUCCESS)
-    &#123;
-        TimeOut--;
-        if(TimeOut == 0) break;
-    &#125;
-&#125;
-void MPU6050_WriteReg(uint8_t RegAddress,uint8_t Data)   //写字节
-&#123;
-    I2C_GenerateSTART(I2C2,ENABLE);
-    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT) != SUCCESS);
-    I2C_Send7bitAddress(I2C2,MPU6050_ADDRESS,I2C_Direction_Transmitter);
-    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED) != SUCCESS);
-    I2C_SendData(I2C2,RegAddress);
-    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTING) != SUCCESS);
-    I2C_SendData(I2C2,Data);
-    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED) != SUCCESS);
-    I2C_GenerateSTOP(I2C2,ENABLE);
-&#125;
-uint8_t MPU6050_ReadReg(uint8_t RegAddress)    //读字节
-&#123;
-    uint8_t Data;
-    I2C_GenerateSTART(I2C2,ENABLE);
-    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT);
-    I2C_Send7bitAddress(I2C2,MPU6050_ADDRESS,I2C_Direction_Transmitter);
-    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED);
-    I2C_SendData(I2C2,RegAddress);
-    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED);
-    I2C_GenerateSTART(I2C2,ENABLE);
-    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT);
-    I2C_Send7bitAddress(I2C2,MPU6050_ADDRESS,I2C_Direction_Receiver);
-    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED);
-    I2C_AcknowledgeConfig(I2C2,DISABLE);
-    I2C_GenerateSTOP(I2C2,ENABLE);
-    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_BYTE_RECEIVED);
-    Data = I2C_ReceiveData(I2C2);
-    I2C_AcknowledgeConfig(I2C2,ENABLE);
-    return Data;
-&#125;
-void MPU6050_Init(void)
-&#123;
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2,ENABLE);
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
-    GPIO_InitTypeDef GPIO_InitStructure;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOB,&GPIO_InitStructure);
-    I2C_InitTypeDef I2C_InitStructure;
-    I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
-    I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-    I2C_InitStructure.I2C_ClockSpeed = 50000;
-    I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
-    I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
-    I2C_InitStructure.I2C_OwnAddress1 = 0x00;
-    I2C_Init(I2C2,&I2C_InitStructure);
-    I2C_Cmd(I2C2,ENABLE);
-    MPU6050_WriteReg(MPU6050_PWR_MGMT_1, 0x01);        //解除睡眠，时钟源为陀螺仪时钟
-    MPU6050_WriteReg(MPU6050_PWR_MGMT_2, 0x00);        //6轴一直启用，均不待机
-    MPU6050_WriteReg(MPU6050_SMPLRT_DIV, 0x09);        //采样分频为10
-    MPU6050_WriteReg(MPU6050_CONFIG, 0x06);            //滤波参数为最大
-    MPU6050_WriteReg(MPU6050_GYRO_CONFIG, 0x18);       //陀螺仪为最大量程
-    MPU6050_WriteReg(MPU6050_ACCEL_CONFIG, 0x18);      //加速度为最大量程
-&#125;
-uint8_t MPU6050_GetID(void)      //获取设备ID号
-&#123;
-    return MPU6050_ReadReg(MPU6050_WHO_AM_I);
-&#125;
-void MPU6050_GetData(int16_t *AccX, int16_t *AccY, int16_t *AccZ,
-                     int16_t *GyroX, int16_t *GyroY, int16_t *GyroZ)  //获取数据
-&#123;
-    uint8_t DataH, DataL;
-    DataH = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_H);
-    DataL = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_L);
-    *AccX = (DataH << 8)| DataL;
-    DataH = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_H);
-    DataL = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_L);
-    *AccY = (DataH << 8)| DataL;
-    DataH = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_H);
-    DataL = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_L);
-    *AccZ = (DataH << 8)| DataL;
-    DataH = MPU6050_ReadReg(MPU6050_GYRO_XOUT_H);
-    DataL = MPU6050_ReadReg(MPU6050_GYRO_XOUT_L);
-    *GyroX = (DataH << 8)| DataL;
-    DataH = MPU6050_ReadReg(MPU6050_GYRO_YOUT_H);
-    DataL = MPU6050_ReadReg(MPU6050_GYRO_YOUT_L);
-    *GyroY = (DataH << 8)| DataL;
-    DataH = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_H);
-    DataL = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_L);
-    *GyroZ = (DataH << 8)| DataL;        
-&#125;
-</code> </pre> </details>
-
-<details>  <summary><font size="4" color="orange">MPU6050_Reg.h</font></summary>  <pre><code class="language-c">
-#ifndef    __MPU6050_Reg__H
-#define    __MPU6050_Reg__H
-#define	MPU6050_SMPLRT_DIV		0x19
-#define	MPU6050_CONFIG			0x1A
-#define	MPU6050_GYRO_CONFIG		0x1B
-#define	MPU6050_ACCEL_CONFIG	0x1C
-#define	MPU6050_ACCEL_XOUT_H	0x3B
-#define	MPU6050_ACCEL_XOUT_L	0x3C
-#define	MPU6050_ACCEL_YOUT_H	0x3D
-#define	MPU6050_ACCEL_YOUT_L	0x3E
-#define	MPU6050_ACCEL_ZOUT_H	0x3F
-#define	MPU6050_ACCEL_ZOUT_L	0x40
-#define	MPU6050_TEMP_OUT_H		0x41
-#define	MPU6050_TEMP_OUT_L		0x42
-#define	MPU6050_GYRO_XOUT_H		0x43
-#define	MPU6050_GYRO_XOUT_L		0x44
-#define	MPU6050_GYRO_YOUT_H		0x45
-#define	MPU6050_GYRO_YOUT_L		0x46
-#define	MPU6050_GYRO_ZOUT_H		0x47
-#define	MPU6050_GYRO_ZOUT_L		0x48
-#define	MPU6050_PWR_MGMT_1		0x6B
-#define	MPU6050_PWR_MGMT_2		0x6C
-#define	MPU6050_WHO_AM_I		0x75   
- #endif
-</code> </pre> </details>
-程序执行逻辑和软件I2C示例差不多，仅是将软件时序替换为STM32标准库函数，并且STM32对通信的状态有事件标志位和定义，通过读取标志位就明白时序是否完成。
-
-
-
-<h2 id="I2C缺点"><a href="#I2C缺点" class="headerlink" title="I2C缺点"></a>I2C缺点</h2><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021144801473.png" class="" title="image-20231021144801473">
-
-<p>I2C的电路结构是开漏外加上拉电阻，使通信线高电平的驱动能力比较弱，导致通信线由低电平到高电平时上升沿耗时长，这限制了I2C的最大通信速度。而SPI设计简单粗暴，传输速度也比I2C快很多。</p>
-<h1 id="SPI通信"><a href="#SPI通信" class="headerlink" title="SPI通信"></a>SPI通信</h1><h2 id="SPI软件模拟通信"><a href="#SPI软件模拟通信" class="headerlink" title="SPI软件模拟通信"></a>SPI软件模拟通信</h2><h3 id="SPI简介"><a href="#SPI简介" class="headerlink" title="SPI简介"></a>SPI简介</h3><p>•　SPI（Serial Peripheral Interface）是由Motorola公司开发的一种通用数据总线</p>
-<p>•　四根通信线：SCK（Serial Clock）、MOSI（Master Output Slave Input）、MISO（Master Input Slave Output）、SS（Slave Select）</p>
-<p>•　同步，全双工</p>
-<p>•　支持总线挂载多设备（一主多从，不支持多主多从）</p>
-<p>SCK提供时钟信号，数据位的输出输入都是在SCK的上升沿或下降沿进行的，此时数据位的收发时刻就可以明确确定。</p>
-<h3 id="硬件电路-1"><a href="#硬件电路-1" class="headerlink" title="硬件电路"></a>硬件电路</h3><p>•　所有SPI设备的SCK、MOSI、MISO分别连在一起</p>
-<p>•　主机另外引出多条SS控制线，分别接到各从机的SS引脚</p>
-<p>•　输出引脚配置为推挽输出，输入引脚配置为浮空或上拉输入（SS为低电平片选时，从机才允许变为推挽输出）</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021145137608.png" class="" title="image-20231021145137608">
-
-<h3 id="移位示意图"><a href="#移位示意图" class="headerlink" title="移位示意图"></a>移位示意图</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160333584.png" class="" title="image-20231021160333584">
-
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160419734.png" class="" title="image-20231021160419734">
-
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160504117.png" class="" title="image-20231021160504117">
-
-<p>该示例为高位先行。</p>
-<p>由波特率发生器产生的时钟驱动主机的移位寄存器进行移位。时钟的上升沿，所有移位寄存器向左移一位，移位的数据放在MOSI和MISO上，发生器的下降沿，将采样MOSI和MISO到移位寄存器最低位存储。</p>
-<h3 id="SPI时序基本单元"><a href="#SPI时序基本单元" class="headerlink" title="SPI时序基本单元"></a>SPI时序基本单元</h3><p><strong>起始条件：</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160533341.png" class="" title="image-20231021160533341">
-
-<p>SS从高电平切换到低电平</p>
-<p><strong>终止条件：</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160616896.png" class="" title="image-20231021160616896">
-
-<p>SS从低电平切换到高电平</p>
-<p><strong>交换一个字节（模式0）</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021160653541.png" class="" title="image-20231021160653541">
-
-<p>CPOL（时钟极性） &#x3D; 0：空闲状态时，SCK为低电平</p>
-<p>CPHA（时钟相位） &#x3D; 0：SCK第一个边沿<strong>移入数据</strong>，第二个边沿<strong>移出数据</strong></p>
-<p>因为SCK第一个边沿要移入数据至寄存器，所以需提前写入数据到数据线上，相较于模式1提前了数据线的相位。 </p>
-<p><strong>交换一个字节（模式1）</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021161150625.png" class="" title="image-20231021161150625">
-
-<p>CPOL &#x3D; 0：空闲状态时，SCK为低电平</p>
-<p>CPHA &#x3D; 1：SCK第一个边沿<strong>移出数据</strong>，第二个边沿<strong>移入数据</strong></p>
-<p>即：SCK第一个上升沿（第一个边沿），双方移位寄存器同时移出寄存器数据置MOSI和MISO上，SCK下降沿（第二个边沿）的时候，双方移位寄存器同时移入MOSI和MISO的数据置寄存器，达成数据交换。</p>
-<p><strong>交换一个字节（模式2）</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162610968.png" class="" title="image-20231021162610968">
-
-<p>CPOL&#x3D;1：空闲状态时，SCK为高电平</p>
-<p>CPHA&#x3D;0：SCK第一个边沿移入数据，第二个边沿移出数据</p>
-<p><strong>交换一个字节（模式3）</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162638853.png" class="" title="image-20231021162638853">
-
-<p>CPOL&#x3D;1：空闲状态时，SCK为高电平</p>
-<p>CPHA&#x3D;1：SCK第一个边沿移出数据，第二个边沿移入数据</p>
-<p>模式2和模式3，相较与模式0和模式1，仅是SCK时钟极性变化而已。</p>
-<h3 id="SPI时序"><a href="#SPI时序" class="headerlink" title="SPI时序"></a>SPI时序</h3><p>示例时序均为模式0</p>
-<p><strong>发送指令</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162831064.png" class="" title="image-20231021162831064">
-
-<p>向SS指定的设备，发送指令（0x06）写使能。</p>
-<p><strong>指定地址写</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021162932666.png" class="" title="image-20231021162932666">
-
-<p>向SS指定的设备，发送写指令（0x02），</p>
-<p>   随后在指定地址（Address[23:0]）下，写入指定数据（Data）。</p>
-<p><strong>指定地址读</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163047497.png" class="" title="image-20231021163047497">
-
-<p>向SS指定的设备，发送读指令（0x03），</p>
-<p>   随后在指定地址（Address[23:0]）下，读取从机数据（Data）</p>
-<h2 id="W25Q64"><a href="#W25Q64" class="headerlink" title="W25Q64"></a>W25Q64</h2><p><strong>W25Q64简介：</strong></p>
-<p>•　W25Qxx系列是一种低成本、小型化、使用简单的非易失性存储器，常应用于数据存储、字库存储、固件程序存储等场景</p>
-<p>•　存储介质：Nor Flash（闪存）</p>
-<p>•　时钟频率：80MHz &#x2F; 160MHz (Dual SPI) &#x2F; 320MHz (Quad SPI)</p>
-<p>•　存储容量（24位地址）： （最大寻址能达到16M）</p>
-<p> W25Q40：  4Mbit &#x2F; 512KByte</p>
-<p> W25Q80：  8Mbit &#x2F; 1MByte</p>
-<p> W25Q16：  16Mbit &#x2F; 2MByte</p>
-<p> W25Q32：  32Mbit &#x2F; 4MByte</p>
-<p> W25Q64：  64Mbit &#x2F; 8MByte</p>
-<p> W25Q128： 128Mbit &#x2F; 16MByte</p>
-<p> W25Q256： 256Mbit &#x2F; 32MByte</p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163200365-16978771242631.png" class="" title="image-20231021163200365">
-
-
-
-<p><strong>硬件电路：</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163235865.png" class="" title="image-20231021163235865">
-
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163239383.png" class="" title="image-20231021163239383">
-
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021163249323.png" class="" title="image-20231021163249323">
-
-
-
-<p>CS在图中引脚标识为“&#x2F;CS”，表示低电平有效其余同理。有需要时，可启用IO2和IO3，相当于多线并行传输，提高传输效率。</p>
-<p><strong>W25Q64框图</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021172150480.png" class="" title="image-20231021172150480">
-
-<p>W25Q64有相应的写保护和地址锁存。需要注意的是地址分配方式。以8M芯片为例（最后一位地址到7F），64KB划为一页，每页又可以以4KB为单位分成扇区。</p>
-<p><strong>Flash操作注意事项：</strong></p>
-<p>写入操作时：</p>
-<p>•　写入操作前，必须先进行写使能</p>
-<p>•　每个数据位只能由1改写为0，不能由0改写为1</p>
-<p>•　<strong>写入数据前必须先擦除，擦除后，所有数据位变为1</strong></p>
-<p>•　擦除必须按最小擦除单元进行（例如示例芯片的最小单位为4KB扇区）</p>
-<p>•　连续写入多字节时，最多写入一页的数据，超过页尾位置的数据，会回到页首覆盖写入</p>
-<p>•　写入操作结束后，芯片进入忙状态，不响应新的读写操作</p>
-<p>读取操作时：</p>
-<p>•　直接调用读取时序，无需使能，无需额外操作，没有页的限制，读取操作结束后不会进入忙状态，但不能在忙状态时读取</p>
-<h3 id="程序示例-2"><a href="#程序示例-2" class="headerlink" title="程序示例"></a>程序示例</h3>
-
-<details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
-#include "stm32f10x.h"                  // Device header
-#include "Delay.h"
-#include "OLED.h"
-#include "W25Q64.h"
-//
-uint8_t MID;
-uint16_t DID;
-uint8_t ArrayWrite[] = &#123;0x55, 0x66, 0x77, 0x88&#125;;
-uint8_t ArrayRead[4];
-int main(void)
-&#123;
-//初始化
-    OLED_Init();
-    W25Q64_Init();
-    OLED_ShowString(1, 1, "MID:   DID:");
-    OLED_ShowString(2, 1, "W:");
-    OLED_ShowString(3, 1, "R:");
-    W25Q64_ReadID(&MID,&DID);       //读取设备ID号
-    OLED_ShowHexNum(1,5,MID,2);     //显示设备ID号
-    OLED_ShowHexNum(1,12,DID,4);
-//
-    W25Q64_SectorErase(0X000000);   //擦除扇区，为写入数据做准备
-    W25Q64_PageProgram(0X000000,ArrayWrite,4); //向指定地址写入数据，写入四个数据
-    W25Q64_ReadData(0X000000,ArrayRead,4);     //向指定地址读数据
-//显示写入数据	
-    OLED_ShowHexNum(2,3,ArrayWrite[0],2);
-    OLED_ShowHexNum(2,6,ArrayWrite[1],2);
-    OLED_ShowHexNum(2,9,ArrayWrite[2],2);
-    OLED_ShowHexNum(2,12,ArrayWrite[3],2);
-//显示读取数据	
-    OLED_ShowHexNum(3,3, ArrayRead[0],2);
-    OLED_ShowHexNum(3,6, ArrayRead[1],2);
-    OLED_ShowHexNum(3,9, ArrayRead[2],2);
-    OLED_ShowHexNum(3,12,ArrayRead[3],2);
-    while (1)
-    &#123;
-    &#125;
-&#125;
-</code> </pre> </details>
-
-<details>  <summary><font size="4" color="orange">MySPI.C</font></summary>  <pre><code class="language-c">
-#include "stm32f10x.h"
-// 对引脚操控进行基础的封装
-void MySPI_W_SS(uint8_t BitValue)
-&#123;
-    GPIO_WriteBit(GPIOA, GPIO_Pin_4, (BitAction)BitValue);    // 设置片选信号 (SS/CS) 的状态
-&#125;
-void MySPI_W_SCK(uint8_t BitValue)
-&#123;
-    GPIO_WriteBit(GPIOA, GPIO_Pin_5, (BitAction)BitValue);    // 设置时钟信号 (SCK) 的状态
-&#125;
-void MySPI_W_MOSI(uint8_t BitValue)
-&#123;
-    GPIO_WriteBit(GPIOA, GPIO_Pin_7, (BitAction)BitValue);    // 设置主机输出从机输入 (MOSI) 的状态
-&#125;
-uint8_t MySPI_R_MISO(void)
-&#123;
-    return GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6);         // 读取从机输出主机输入 (MISO) 的状态
-&#125;
-// 初始化SPI相关的GPIO引脚
-void MySPI_Init(void)
-&#123;
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
-    // 配置引脚为推挽输出
-    GPIO_InitTypeDef GPIO_InitStructure;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
-    // 配置引脚为上拉输入
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
-    // 初始化SPI外设，设置初始状态
-    MySPI_W_SS(1);    // 片选信号高电平
-    MySPI_W_SCK(0);  // 时钟信号低电平
-&#125;
-//起始时序
-void MySPI_Start(void)  
-&#123;
-    MySPI_W_SS(0); 
-&#125;
-//终止时序
-void MySPI_STOP(void)
-&#123;
-    MySPI_W_SS(1); 
-&#125;
-//交换数据
-uint8_t MySPI_SwapByte(uint8_t ByteSend)
-&#123;
-    uint8_t i, ByteReceive = 0x00;
-    for(i = 0; i < 8; i++)
-    &#123;
-        MySPI_W_MOSI(ByteSend & (0x80 >> i)); // 设置主机输出数据
-        MySPI_W_SCK(1);                      // 拉高时钟信号
-        if(MySPI_R_MISO() == 1) 
-            ByteReceive |= (0x80 >> i);     // 读取从机输出的数据
-        MySPI_W_SCK(0);                    // 拉低时钟信号
-    &#125;
-    return ByteReceive;
-&#125;
-</code> </pre> </details>
-
-<details>  <summary><font size="4" color="orange">W25Q64.c</font></summary>  <pre><code class="language-c">
-#include "stm32f10x.h"
-#include "MySPI.h"
-#include "W25Q64_Ins.h"
-// 初始化SPI接口
-void W25Q64_Init(void)
-&#123;
-    MySPI_Init(); 
-&#125;
-//读设备ID
-void W25Q64_ReadID(uint8_t *MID, uint16_t *DID)
-&#123;
-    MySPI_Start();                              // 起始条件时序
-    MySPI_SwapByte(W25Q64_JEDEC_ID);            // 发送指令
-    *MID = MySPI_SwapByte(W25Q64_DUMMY_BYTE);   // 读取制造商ID
-    *DID = MySPI_SwapByte(W25Q64_DUMMY_BYTE);   // 读取设备ID的低8位
-    *DID <<= 8;
-    *DID |= MySPI_SwapByte(W25Q64_DUMMY_BYTE);  // 读取设备ID的高8位
-    MySPI_STOP();                               // 终止条件时序
-&#125;
-//写使能
-void W25Q64_WriteEnable(void)
-&#123;
-    MySPI_Start();
-    MySPI_SwapByte(W25Q64_WRITE_ENABLE); // 发送写使能指令
-    MySPI_STOP(); 
-&#125;
-//等待设备忙，并规定时间限制
-void W25Q64_WaitBusy(void)
-&#123;
-    uint32_t Timeout = 100000;
-    MySPI_Start();                     
-    MySPI_SwapByte(W25Q64_READ_STATUS_REGISTER_1); // 发送读状态寄存器指令
-    while ((MySPI_SwapByte(W25Q64_READ_STATUS_REGISTER_1) & 0x01) == 0x01)
-    &#123;
-        Timeout--;
-        if (Timeout == 0)
-        &#123;
-            break;
-        &#125;
-    &#125;
-    MySPI_STOP(); 
-&#125;
-//指定地址写入数据，
-void W25Q64_PageProgram(uint32_t Address, uint8_t *DataArray, uint16_t Count)
-&#123;
-    W25Q64_WriteEnable();                  // 写使能
-    uint16_t i;
-    MySPI_Start();                          
-    MySPI_SwapByte(W25Q64_PAGE_PROGRAM);    // 发送页编程指令
-    MySPI_SwapByte(Address >> 16);          // 发送地址的高8位
-    MySPI_SwapByte(Address >> 8);           // 发送地址的中间8位
-    MySPI_SwapByte(Address);                // 发送地址的低8位
-    for (i = 0; i < Count; i++)
-    &#123;
-        MySPI_SwapByte(DataArray[i]);    // 发送要写入的数据
-    &#125;
-    MySPI_STOP(); 
-    W25Q64_WaitBusy();                  // 等待操作完成
-&#125;
-//擦除指定地址的扇区
-void W25Q64_SectorErase(uint32_t Address)
-&#123;
-    W25Q64_WriteEnable();    // 启用写操作
-    MySPI_Start();            
-    MySPI_SwapByte(W25Q64_SECTOR_ERASE_4KB); // 发送扇区擦除指令
-    MySPI_SwapByte(Address >> 16);          // 发送地址的高8位
-    MySPI_SwapByte(Address >> 8);          // 发送地址的中间8位
-    MySPI_SwapByte(Address);              // 发送地址的低8位
-    MySPI_STOP(); 
-    W25Q64_WaitBusy(); // 等待操作完成
-&#125;
-//指定地址读
-void W25Q64_ReadData(uint32_t Address, uint8_t *DataArray, uint32_t Count)
-&#123;
-    uint32_t i;
-    MySPI_Start(); 
-    MySPI_SwapByte(W25Q64_READ_DATA);      // 发送读数据指令
-    MySPI_SwapByte(Address >> 16);        // 发送地址的高8位
-    MySPI_SwapByte(Address >> 8);        // 发送地址的中间8位
-    MySPI_SwapByte(Address);            // 发送地址的低8位
-    for (i = 0; i < Count; i++)
-    &#123;
-        DataArray[i] = MySPI_SwapByte(W25Q64_DUMMY_BYTE);  // 读取数据
-    &#125;
-    MySPI_STOP(); 
-&#125;
-</code> </pre> </details>
-
-<details>  <summary><font size="4" color="orange">W25Q64_Ins.h</font></summary>  <pre><code class="language-c">
-#ifndef    __W25Q64_Ins__H
-#define    __W25Q64_Ins__H
-// W25Q64指令
-#define W25Q64_WRITE_ENABLE							0x06
-#define W25Q64_WRITE_DISABLE						0x04
-#define W25Q64_READ_STATUS_REGISTER_1				0x05
-#define W25Q64_READ_STATUS_REGISTER_2				0x35
-#define W25Q64_WRITE_STATUS_REGISTER				0x01
-#define W25Q64_PAGE_PROGRAM							0x02
-#define W25Q64_QUAD_PAGE_PROGRAM					0x32
-#define W25Q64_BLOCK_ERASE_64KB						0xD8
-#define W25Q64_BLOCK_ERASE_32KB						0x52
-#define W25Q64_SECTOR_ERASE_4KB						0x20
-#define W25Q64_CHIP_ERASE							0xC7
-#define W25Q64_ERASE_SUSPEND						0x75
-#define W25Q64_ERASE_RESUME							0x7A
-#define W25Q64_POWER_DOWN							0xB9
-#define W25Q64_HIGH_PERFORMANCE_MODE				0xA3
-#define W25Q64_CONTINUOUS_READ_MODE_RESET			0xFF
-#define W25Q64_RELEASE_POWER_DOWN_HPM_DEVICE_ID		0xAB
-#define W25Q64_MANUFACTURER_DEVICE_ID				0x90
-#define W25Q64_READ_UNIQUE_ID						0x4B
-#define W25Q64_JEDEC_ID								0x9F
-#define W25Q64_READ_DATA							0x03
-#define W25Q64_FAST_READ							0x0B
-#define W25Q64_FAST_READ_DUAL_OUTPUT				0x3B
-#define W25Q64_FAST_READ_DUAL_IO					0xBB
-#define W25Q64_FAST_READ_QUAD_OUTPUT				0x6B
-#define W25Q64_FAST_READ_QUAD_IO					0xEB
-#define W25Q64_OCTAL_WORD_READ_QUAD_IO				0xE3
-#define W25Q64_DUMMY_BYTE							0xFF
- #endif
-</code> </pre> </details>
-
-<p>程序设计思路和I2C差不多，都是先用软件模拟SPI时序基本单元，再将基本单元组成传输时序。然后再根据硬件对其再封装。写指令的常量将用宏定义代替，便于理解。</p>
-<h2 id="STM32硬件SPI通信"><a href="#STM32硬件SPI通信" class="headerlink" title="STM32硬件SPI通信"></a>STM32硬件SPI通信</h2><h3 id="SPI外设简介"><a href="#SPI外设简介" class="headerlink" title="SPI外设简介"></a>SPI外设简介</h3><p>•　STM32内部集成了硬件SPI收发电路，可以由硬件自动执行时钟生成、数据收发等功能，减轻CPU的负担</p>
-<p>•　可配置8位&#x2F;16位数据帧、高位先行&#x2F;低位先行</p>
-<p>•　时钟频率： fPCLK &#x2F; (2, 4, 8, 16, 32, 64, 128, 256)</p>
-<p>•　支持多主机模型、主或从操作</p>
-<p>•　可精简为半双工&#x2F;单工通信</p>
-<p>•　支持DMA</p>
-<p>•　兼容I2S协议</p>
-<p>•　STM32F103C8T6 硬件SPI资源：SPI1、SPI2</p>
-<p>SPI1挂载在APB2最大允许频率为72MHz，SPI2挂载在APB1最大允许频率为36MHz。使用不同的SPI时，应注意挂载的总线时钟。</p>
-<h3 id="主模式全双工连续传输"><a href="#主模式全双工连续传输" class="headerlink" title="主模式全双工连续传输"></a>主模式全双工连续传输</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231021230447228.png" class="" title="image-20231021230447228">
-
-<p>连续传输将传输效率最大化。先写入数据0xF1到发送缓冲器，再开始传输。每次数据传输，都是如图，第二个数据0xF2发送时，0xF1才被接收。并不是0xF1发送 → 0xF1接收，再0xF2发送 → 0xF2接收。而是0xF1先写入发送缓冲器，时序开始时发送 0xF1，并将 0xF2写入发送缓冲器，再0xF1接收 → （同时）0xF2发送。0xF2接收 → （同时）0xF3发送以此类推。。。发送总比接收早，数据传输是紧跟的。</p>
-<h3 id="非连续传输"><a href="#非连续传输" class="headerlink" title="非连续传输"></a>非连续传输</h3><img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231022000603924.png" class="" title="image-20231022000603924">
-
-<p>非连续传输相较于连续传输简单，效率不如连续传输。因为连续传输的数据是紧挨着传输，而非连续传输，0xF1发送 → 0xF1接收。将等待接收完毕后再发送，而不是先将0xF1写入缓冲器，时序开始时0xF1挂载到数据线，在交换数据，接收0xF1的同时发送0xF2.</p>
-<p><strong>当然，SPI通信的核心是主从两机寄存器数据交换，描述只是便于表达，切记数据是双向同时传输</strong></p>
-<h3 id="软件-x2F-硬件波形对比-1"><a href="#软件-x2F-硬件波形对比-1" class="headerlink" title="软件&#x2F;硬件波形对比"></a>软件&#x2F;硬件波形对比</h3><p><strong>软件模拟SPI</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231022001711028.png" class="" title="image-20231022001711028">
-
-<p><strong>硬件SPI</strong></p>
-<img src="/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/image-20231022001734433.png" class="" title="image-20231022001734433">
-
-<p>区别无非是软件有延迟，并且波形没有硬件平滑等等，和I2C波形软硬件对比差不多。</p>
-<h3 id="程序示例-3"><a href="#程序示例-3" class="headerlink" title="程序示例"></a>程序示例</h3><details>  <summary><font size="4" color="orange">main.c</font></summary>  <pre><code class="language-c">
-#include "stm32f10x.h"                  // Device header
-#include "Delay.h"
-#include "OLED.h"
-#include "W25Q64.h"
-//
-uint8_t MID;
-uint16_t DID;
-uint8_t ArrayWrite[] = &#123;0x55, 0x66, 0x77, 0x88&#125;;
-uint8_t ArrayRead[4];
-int main(void)
-&#123;
-//初始化
-    OLED_Init();
-    W25Q64_Init();
-    OLED_ShowString(1, 1, "MID:   DID:");
-    OLED_ShowString(2, 1, "W:");
-    OLED_ShowString(3, 1, "R:");
-    W25Q64_ReadID(&MID,&DID);       //读取设备ID号
-    OLED_ShowHexNum(1,5,MID,2);     //显示设备ID号
-    OLED_ShowHexNum(1,12,DID,4);
-//
-    W25Q64_SectorErase(0X000000);   //擦除扇区，为写入数据做准备
-    W25Q64_PageProgram(0X000000,ArrayWrite,4); //向指定地址写入数据，写入四个数据
-    W25Q64_ReadData(0X000000,ArrayRead,4);     //向指定地址读数据
-//显示写入数据	
-    OLED_ShowHexNum(2,3,ArrayWrite[0],2);
-    OLED_ShowHexNum(2,6,ArrayWrite[1],2);
-    OLED_ShowHexNum(2,9,ArrayWrite[2],2);
-    OLED_ShowHexNum(2,12,ArrayWrite[3],2);
-//显示读取数据	
-    OLED_ShowHexNum(3,3, ArrayRead[0],2);
-    OLED_ShowHexNum(3,6, ArrayRead[1],2);
-    OLED_ShowHexNum(3,9, ArrayRead[2],2);
-    OLED_ShowHexNum(3,12,ArrayRead[3],2);
-    while (1)
-    &#123;
-    &#125;
-&#125;
-</code> </pre> </details>
-
-<details>  <summary><font size="4" color="orange">MySPI.c</font></summary>  <pre><code class="language-c">
-#include "stm32f10x.h"
-//对引脚操控进行基础的封装
-void MySPI_W_SS(uint8_t BitValue)    //片选信号，SS也称CS引脚
-&#123;
-    GPIO_WriteBit(GPIOA,GPIO_Pin_4,(BitAction)BitValue);
-&#125;
-void MySPI_Init(void)
-&#123;
-//GPIO引脚根据API硬件外设配置
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1,ENABLE);
-    GPIO_InitTypeDef GPIO_InitStructure;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA,&GPIO_InitStructure);
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_7;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA,&GPIO_InitStructure);
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA,&GPIO_InitStructure);
-//配置硬件SPI
-    SPI_InitTypeDef SPI_InitStructure;
-    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_128;  //分频系数为128.
-    SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;    //第一个边沿采样
-    SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;     //空闲状态时，SCK为低电平
-    SPI_InitStructure.SPI_CRCPolynomial = 7;      //CRC校验的多项式
-    SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;   //8位数据帧   
-    SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;  //选择为双线全双工
-    SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;  //高位先行
-    SPI_InitStructure.SPI_Mode = SPI_Mode_Master;       //指定设备为主机或从机
-    SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;           //配置为软件NSS
-    SPI_Init(SPI1,&SPI_InitStructure);
-//SPI使能
-    SPI_Cmd(SPI1,ENABLE);
-//初始化
-    MySPI_W_SS(1);  //默认不选中从机
-&#125;
-//起始时序
-void MySPI_Start(void)
-&#123;
-    MySPI_W_SS(0);
-&#125;
-//终止时序
-void MySPI_STOP(void)
-&#123;
-    MySPI_W_SS(1);
-&#125;
-//交换数据
-uint8_t MySPI_SwapByte(uint8_t ByteSend)
-&#123;
-    while (SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
-    SPI_I2S_SendData(SPI1,ByteSend);
-    while (SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_RXNE) == RESET);
-    return SPI_I2S_ReceiveData(SPI1);
-&#125;
-</code> </pre> </details>
-
-<details>  <summary><font size="4" color="orange">W25Q64.c</font></summary>  <pre><code class="language-c">
-#include "stm32f10x.h"
-#include "MySPI.h"
-#include "W25Q64_Ins.h"
-// 初始化SPI接口
-void W25Q64_Init(void)
-&#123;
-    MySPI_Init(); 
-&#125;
-//读设备ID
-void W25Q64_ReadID(uint8_t *MID, uint16_t *DID)
-&#123;
-    MySPI_Start();                              // 起始条件时序
-    MySPI_SwapByte(W25Q64_JEDEC_ID);            // 发送指令
-    *MID = MySPI_SwapByte(W25Q64_DUMMY_BYTE);   // 读取制造商ID
-    *DID = MySPI_SwapByte(W25Q64_DUMMY_BYTE);   // 读取设备ID的低8位
-    *DID <<= 8;
-    *DID |= MySPI_SwapByte(W25Q64_DUMMY_BYTE);  // 读取设备ID的高8位
-    MySPI_STOP();                               // 终止条件时序
-&#125;
-//写使能
-void W25Q64_WriteEnable(void)
-&#123;
-    MySPI_Start();
-    MySPI_SwapByte(W25Q64_WRITE_ENABLE); // 发送写使能指令
-    MySPI_STOP(); 
-&#125;
-//等待设备忙，并规定时间限制
-void W25Q64_WaitBusy(void)
-&#123;
-    uint32_t Timeout = 100000;
-    MySPI_Start();                     
-    MySPI_SwapByte(W25Q64_READ_STATUS_REGISTER_1); // 发送读状态寄存器指令
-    while ((MySPI_SwapByte(W25Q64_READ_STATUS_REGISTER_1) & 0x01) == 0x01)
-    &#123;
-        Timeout--;
-        if (Timeout == 0)
-        &#123;
-            break;
-        &#125;
-    &#125;
-    MySPI_STOP(); 
-&#125;
-//指定地址写入数据，
-void W25Q64_PageProgram(uint32_t Address, uint8_t *DataArray, uint16_t Count)
-&#123;
-    W25Q64_WriteEnable();                  // 写使能
-    uint16_t i;
-    MySPI_Start();                          
-    MySPI_SwapByte(W25Q64_PAGE_PROGRAM);    // 发送页编程指令
-    MySPI_SwapByte(Address >> 16);          // 发送地址的高8位
-    MySPI_SwapByte(Address >> 8);           // 发送地址的中间8位
-    MySPI_SwapByte(Address);                // 发送地址的低8位
-    for (i = 0; i < Count; i++)
-    &#123;
-        MySPI_SwapByte(DataArray[i]);    // 发送要写入的数据
-    &#125;
-    MySPI_STOP(); 
-    W25Q64_WaitBusy();                  // 等待操作完成
-&#125;
-//擦除指定地址的扇区
-void W25Q64_SectorErase(uint32_t Address)
-&#123;
-    W25Q64_WriteEnable();    // 启用写操作
-    MySPI_Start();            
-    MySPI_SwapByte(W25Q64_SECTOR_ERASE_4KB); // 发送扇区擦除指令
-    MySPI_SwapByte(Address >> 16);          // 发送地址的高8位
-    MySPI_SwapByte(Address >> 8);          // 发送地址的中间8位
-    MySPI_SwapByte(Address);              // 发送地址的低8位
-    MySPI_STOP(); 
-    W25Q64_WaitBusy(); // 等待操作完成
-&#125;
-//指定地址读
-void W25Q64_ReadData(uint32_t Address, uint8_t *DataArray, uint32_t Count)
-&#123;
-    uint32_t i;
-    MySPI_Start(); 
-    MySPI_SwapByte(W25Q64_READ_DATA);      // 发送读数据指令
-    MySPI_SwapByte(Address >> 16);        // 发送地址的高8位
-    MySPI_SwapByte(Address >> 8);        // 发送地址的中间8位
-    MySPI_SwapByte(Address);            // 发送地址的低8位
-    for (i = 0; i < Count; i++)
-    &#123;
-        DataArray[i] = MySPI_SwapByte(W25Q64_DUMMY_BYTE);  // 读取数据
-    &#125;
-    MySPI_STOP(); 
-&#125;
-</code> </pre> </details>
-
-<details>  <summary><font size="4" color="orange">W25Q64_Ins.h</font></summary>  <pre><code class="language-c">
-#ifndef    __W25Q64_Ins__H
-#define    __W25Q64_Ins__H
-// W25Q64指令
-#define W25Q64_WRITE_ENABLE							0x06
-#define W25Q64_WRITE_DISABLE						0x04
-#define W25Q64_READ_STATUS_REGISTER_1				0x05
-#define W25Q64_READ_STATUS_REGISTER_2				0x35
-#define W25Q64_WRITE_STATUS_REGISTER				0x01
-#define W25Q64_PAGE_PROGRAM							0x02
-#define W25Q64_QUAD_PAGE_PROGRAM					0x32
-#define W25Q64_BLOCK_ERASE_64KB						0xD8
-#define W25Q64_BLOCK_ERASE_32KB						0x52
-#define W25Q64_SECTOR_ERASE_4KB						0x20
-#define W25Q64_CHIP_ERASE							0xC7
-#define W25Q64_ERASE_SUSPEND						0x75
-#define W25Q64_ERASE_RESUME							0x7A
-#define W25Q64_POWER_DOWN							0xB9
-#define W25Q64_HIGH_PERFORMANCE_MODE				0xA3
-#define W25Q64_CONTINUOUS_READ_MODE_RESET			0xFF
-#define W25Q64_RELEASE_POWER_DOWN_HPM_DEVICE_ID		0xAB
-#define W25Q64_MANUFACTURER_DEVICE_ID				0x90
-#define W25Q64_READ_UNIQUE_ID						0x4B
-#define W25Q64_JEDEC_ID								0x9F
-#define W25Q64_READ_DATA							0x03
-#define W25Q64_FAST_READ							0x0B
-#define W25Q64_FAST_READ_DUAL_OUTPUT				0x3B
-#define W25Q64_FAST_READ_DUAL_IO					0xBB
-#define W25Q64_FAST_READ_QUAD_OUTPUT				0x6B
-#define W25Q64_FAST_READ_QUAD_IO					0xEB
-#define W25Q64_OCTAL_WORD_READ_QUAD_IO				0xE3
-#define W25Q64_DUMMY_BYTE							0xFF
- #endif
-</code> </pre> </details>
-
-<p>软硬件SPI的主函数没什么差别，只是将MySPI.c中的软件模拟部分替换成STM32标准库中的SPI函数。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//NRF24L01寄存器操作命令</span><br><span class="line">#define NRF_READ_REG    0x00  //读配置寄存器,低5位为寄存器地址</span><br><span class="line">#define NRF_WRITE_REG   0x20  //写配置寄存器,低5位为寄存器地址</span><br><span class="line">#define RD_RX_PLOAD     0x61  //读RX有效数据,1~32字节</span><br><span class="line">#define WR_TX_PLOAD     0xA0  //写TX有效数据,1~32字节</span><br><span class="line">#define FLUSH_TX        0xE1  //清除TX FIFO寄存器.发射模式下用</span><br><span class="line">#define FLUSH_RX        0xE2  //清除RX FIFO寄存器.接收模式下用</span><br><span class="line">#define REUSE_TX_PL     0xE3  //重新使用上一包数据,CE为高,数据包被不断发送.</span><br><span class="line">#define NOP             0xFF  //空操作,可以用来读状态寄存器</span><br><span class="line">	 </span><br><span class="line">//SPI(NRF24L01)寄存器地址</span><br><span class="line">#define CONFIG          0x00  //配置寄存器地址;bit0:1接收模式,0发射模式;bit1:电选 </span><br><span class="line">                              //择;bit2:CRC模式;bit3:CRC使能;</span><br><span class="line">                              //bit4:中断MAX_RT(达到最大重发次数中断)使能;bit5:中断TX_DS使 </span><br><span class="line">                              //能;bit6:中断RX_DR使能</span><br><span class="line">#define EN_AA           0x01  //使能自动应答功能  bit0~5,对应通道0~5</span><br><span class="line">#define EN_RXADDR       0x02  //接收地址允许,bit0~5,对应通道0~5</span><br><span class="line">#define SETUP_AW        0x03  //设置地址宽度(所有数据通道):bit1,0:00,3字节;01,4字节;02,5字 </span><br><span class="line">                              //节;</span><br><span class="line">#define SETUP_RETR      0x04  //建立自动重发;bit3:0,自动重发计数器;bit7:4,自动重发延时 </span><br><span class="line">                              //250*x+86us</span><br><span class="line">#define RF_CH           0x05  //RF通道,bit6:0,工作通道频率;</span><br><span class="line">#define RF_SETUP        0x06  //RF寄存器;bit3:传输速率(0:1Mbps,1:2Mbps);bit2:1,发射功 </span><br><span class="line">                              //率;bit0:低噪声放大器增益</span><br><span class="line">#define STATUS          0x07  //状态寄存器;bit0:TX FIFO满标志;bit3:1,接收数据通道号(最 </span><br><span class="line">                              //大:6);bit4,达到最多次重发</span><br><span class="line">                              //bit5:数据发送完成中断;bit6:接收数据中断;</span><br><span class="line">#define MAX_TX  		0x10  //达到最大发送次数中断</span><br><span class="line">#define TX_OK   		0x20  //TX发送完成中断</span><br><span class="line">#define RX_OK   		0x40  //接收到数据中断</span><br><span class="line"> </span><br><span class="line">#define OBSERVE_TX      0x08  //发送检测寄存器,bit7:4,数据包丢失计数器;bit3:0,重发计数器</span><br><span class="line">#define CD              0x09  //载波检测寄存器,bit0,载波检测;</span><br><span class="line">#define RX_ADDR_P0      0x0A  //数据通道0接收地址,最大长度5个字节,低字节在前</span><br><span class="line">#define RX_ADDR_P1      0x0B  //数据通道1接收地址,最大长度5个字节,低字节在前</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P2      0x0C  //数据通道2接收地址,最低字节可设置</span><br><span class="line">                              //高字节,必须同 RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P3      0x0D  //数据通道3接收地址,最低字节可设置</span><br><span class="line">                              //高字节,必须同 RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P4      0x0E  //数据通道4接收地址,最低字节可设置</span><br><span class="line">                              //高字节,必须同RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define RX_ADDR_P5      0x0F  //数据通道5接收地址,最低字节可设置,</span><br><span class="line">                              //高字节,必须同RX_ADDR_P1[39:8]相等;</span><br><span class="line"> </span><br><span class="line">#define TX_ADDR         0x10  //发送地址(低字节在前),ShockBurstTM模式下,RX_ADDR_P0与此地址 </span><br><span class="line">                                相等</span><br><span class="line">#define RX_PW_P0        0x11  //接收数据通道0有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P1        0x12  //接收数据通道1有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P2        0x13  //接收数据通道2有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P3        0x14  //接收数据通道3有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P4        0x15  //接收数据通道4有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define RX_PW_P5        0x16  //接收数据通道5有效数据宽度(1~32字节),设置为0则非法</span><br><span class="line">#define NRF_FIFO_STATUS 0x17  //FIFO状态寄存器;bit0,RX FIFO寄存器空标志;</span><br><span class="line">                              //bit1,RX FIFO满标志;bit2,3,保留</span><br><span class="line">                              //bit4,TX FIFO空标志;bit5,TX FIFO满标志;bit6,1,循环发送上一 </span><br><span class="line">                              //数据包.0,不循环;</span><br><span class="line">/</span><br><span class="line">//24L01操作线</span><br><span class="line">#define NRF24L01_CE   PAout(4) //24L01片选信号</span><br><span class="line">#define NRF24L01_CSN  PCout(4) //SPI片选信号	   </span><br><span class="line">#define NRF24L01_IRQ  PAin(1)  //IRQ主机数据输入</span><br><span class="line">//24L01发送接收数据宽度定义</span><br><span class="line">#define TX_ADR_WIDTH    5   	//5字节的地址宽度</span><br><span class="line">#define RX_ADR_WIDTH    5   	//5字节的地址宽度</span><br><span class="line">#define TX_PLOAD_WIDTH  32  	//32字节的用户数据宽度</span><br><span class="line">#define RX_PLOAD_WIDTH  32  	//32字节的用户数据宽度</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>stm32归档</category>
-      </categories>
-      <tags>
-        <tag>单片机</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>STM32标准库</title>
-    <url>/2023/08/02/STM32%E6%A0%87%E5%87%86%E5%BA%93/</url>
-    <content><![CDATA[<p>整理笔记时发现自己如果列举代码，会更加有效。但插入代码块到其中会比较繁琐，而且各个知识的代码的耦合性较强，反复列举较为麻烦，所以开一个新的文章，专门记录整理标准库代码。仅记录个人常用，建议参考手册，或直接跳转函数定义，浏览官方说明。<span id="more"></span></p>
-<h3 id="时钟控制"><a href="#时钟控制" class="headerlink" title="时钟控制"></a>时钟控制</h3><p>时钟就像人的心跳，人的运动先需要跳动心脏。STM32的片上外设也是一样，如果要使用外设，例如：GPIO，NVIC，ADC等等，需要先开启外设挂载的总线时钟。</p>
-<p>以下是标准库中对时钟控制函数的定义：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//AHB总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_AHBPeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_AHBPeriph, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//APB2总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_APB2PeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_APB2Periph, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//APB1总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_APB1PeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_APB1Periph, FunctionalState NewState)</span>;</span><br></pre></td></tr></table></figure>
-
-<p>第一个参数为外设，例如APB2的外设：RCC_APB2Periph_GPIOA，RCC_APB2Periph_GPIOB，RCC_APB2Periph_TIM1等，</p>
-<p>第二个参数为使能或者失能。（ENABLE&#x2F;DISABLE）</p>
-<p>比如开启APB2的GPIOA为例：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);</span><br></pre></td></tr></table></figure>
-
-<p>外设的使用必须先开启时钟。</p>
-<h3 id="GPIO"><a href="#GPIO" class="headerlink" title="GPIO"></a>GPIO</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//指定GPIO初始化为默认值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_DeInit</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//功能复用，重新映射事件控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_AFIODeInit</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="comment">//用结构体参数初始化GPIO</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Init</span><span class="params">(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct)</span>;</span><br><span class="line"><span class="comment">//将结构体的变量，赋为初始值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_StructInit</span><span class="params">(GPIO_InitTypeDef* GPIO_InitStruct)</span>;</span><br><span class="line"><span class="comment">//读取指定输入GPIO口的值，返回0/1</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">GPIO_ReadInputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//读取指定输入GPIO组的数据端口</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">GPIO_ReadInputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//读取指定输出GPIO口的值，返回0/1</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">GPIO_ReadOutputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//读取指定输出GPIO组的数据端口</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">GPIO_ReadOutputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//指定端口输出为高电平</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_SetBits</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//指定端口输出为低电平</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_ResetBits</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//指定GPIO组的某个GPIO并赋值（高低电平）。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_WriteBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin, BitAction BitVal)</span>;</span><br><span class="line"><span class="comment">//指定GPIO组，并写入端口输出数据寄存器（ODR寄存器）的值。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Write</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> PortVal)</span>;</span><br><span class="line"><span class="comment">//锁定GPIO管脚配置寄存器</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_PinLockConfig</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//选择用作事件输出的GPIO引脚</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EventOutputConfig</span><span class="params">(<span class="type">uint8_t</span> GPIO_PortSource, <span class="type">uint8_t</span> GPIO_PinSource)</span>;</span><br><span class="line"><span class="comment">//使能输出事件</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EventOutputCmd</span><span class="params">(FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//改变指定管脚的映射，为了更大利用IO口，部分IO口可以进行复用或者映射。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_PinRemapConfig</span><span class="params">(<span class="type">uint32_t</span> GPIO_Remap, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//选择 GPIO 管脚用作外部中断源</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EXTILineConfig</span><span class="params">(<span class="type">uint8_t</span> GPIO_PortSource, <span class="type">uint8_t</span> GPIO_PinSource)</span>;</span><br><span class="line"><span class="comment">//选择以太网媒体接口</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_ETH_MediaInterfaceConfig</span><span class="params">(<span class="type">uint32_t</span> GPIO_ETH_MediaInterface)</span>;</span><br></pre></td></tr></table></figure>
-
-<p><strong>结构体</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">uint16_t</span> GPIO_Pin;             <span class="comment">//选择GPIO口</span></span><br><span class="line">  GPIOSpeed_TypeDef GPIO_Speed;  <span class="comment">//选择运行速度</span></span><br><span class="line">  GPIOMode_TypeDef GPIO_Mode;    <span class="comment">//配置G</span></span><br><span class="line">&#125;GPIO_InitTypeDef;</span><br></pre></td></tr></table></figure>
-
-<p><strong>GPIO模式</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span></span></span><br><span class="line"><span class="class">&#123;</span> GPIO_Mode_AIN = <span class="number">0x0</span>,               <span class="comment">//模拟输入</span></span><br><span class="line">  GPIO_Mode_IN_FLOATING = <span class="number">0x04</span>,      <span class="comment">//浮空输入</span></span><br><span class="line">  GPIO_Mode_IPD = <span class="number">0x28</span>,              <span class="comment">//下拉输入</span></span><br><span class="line">  GPIO_Mode_IPU = <span class="number">0x48</span>,              <span class="comment">//上拉输入</span></span><br><span class="line">  GPIO_Mode_Out_OD = <span class="number">0x14</span>,           <span class="comment">//开漏输出</span></span><br><span class="line">  GPIO_Mode_Out_PP = <span class="number">0x10</span>,           <span class="comment">//推挽输出</span></span><br><span class="line">  GPIO_Mode_AF_OD = <span class="number">0x1C</span>,            <span class="comment">//复用开漏</span></span><br><span class="line">  GPIO_Mode_AF_PP = <span class="number">0x18</span>             <span class="comment">//复用推挽</span></span><br><span class="line">&#125;GPIOMode_TypeDef;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="NVIC"><a href="#NVIC" class="headerlink" title="NVIC"></a>NVIC</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">NVIC_PriorityGroupConfig</span><span class="params">(<span class="type">uint32_t</span> NVIC_PriorityGroup)</span>;                  <span class="comment">//设置中断优先级分组</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_Init</span><span class="params">(NVIC_InitTypeDef* NVIC_InitStruct)</span>;                           <span class="comment">//用结构体参数配置NVIC</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_SetVectorTable</span><span class="params">(<span class="type">uint32_t</span> NVIC_VectTab, <span class="type">uint32_t</span> Offset)</span>;            <span class="comment">//设置中断向量表</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_SystemLPConfig</span><span class="params">(<span class="type">uint8_t</span> LowPowerMode, FunctionalState NewState)</span>;    <span class="comment">//系统低功耗配置</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="EXIT"><a href="#EXIT" class="headerlink" title="EXIT"></a>EXIT</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">EXTI_DeInit</span><span class="params">(<span class="type">void</span>)</span>;              	                   <span class="comment">//清除EXTI配置</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_Init</span><span class="params">(EXTI_InitTypeDef* EXTI_InitStruct)</span>;         <span class="comment">//用结构体参数配置EXTI</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_StructInit</span><span class="params">(EXTI_InitTypeDef* EXTI_InitStruct)</span>;   <span class="comment">//给结构体赋予默认值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_GenerateSWInterrupt</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;         <span class="comment">//软件触发外部中断</span></span><br><span class="line">FlagStatus <span class="title function_">EXTI_GetFlagStatus</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;         <span class="comment">//获取指定的的中断标志位</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_ClearFlag</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;                   <span class="comment">//清除中断标志位</span></span><br><span class="line">ITStatus <span class="title function_">EXTI_GetITStatus</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;             <span class="comment">//在中断函数里获取标志位</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_ClearITPendingBit</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;           <span class="comment">//在中断函数里清除标志位</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>结构体</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">uint32_t</span> EXTI_Line;               <span class="comment">//指定配置的中断线</span></span><br><span class="line">  EXTIMode_TypeDef EXTI_Mode;       <span class="comment">//指定中断模式</span></span><br><span class="line">  EXTITrigger_TypeDef EXTI_Trigger; <span class="comment">//指定配置的中断线</span></span><br><span class="line">  FunctionalState EXTI_LineCmd;     <span class="comment">//指定触发中断的模式</span></span><br><span class="line">&#125;EXTI_InitTypeDef;</span><br></pre></td></tr></table></figure>
-
-<h3 id="TIM"><a href="#TIM" class="headerlink" title="TIM"></a>TIM</h3><p>过长，具体参考STM32固件函数库手册。</p>
-<table>
-<thead>
-<tr>
-<th>函数名</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>TIM_DeInit</td>
-<td>将外设 TIMx 寄存器重设为缺省值</td>
-</tr>
-<tr>
-<td>TIM_TimeBaseInit</td>
-<td>根据 TIM_TimeBaseInitStruct 中指定的参数初始化   间基数单位</td>
-</tr>
-<tr>
-<td>TIM_OCInit</td>
-<td>根据 TIM_OCInitStruct 中指定的参数初始化外设</td>
-</tr>
-<tr>
-<td>TIM_ICInit</td>
-<td>根据 TIM_ICInitStruct 中指定的参数初始化外设 T</td>
-</tr>
-<tr>
-<td>TIM_TimeBaseStructInit</td>
-<td>把 TIM_TimeBaseInitStruct 中的每一个参数按缺省</td>
-</tr>
-<tr>
-<td>TIM_OCStructInit</td>
-<td>把 TIM_OCInitStruct 中的每一个参数按缺省值填</td>
-</tr>
-<tr>
-<td>TIM_ICStructInit</td>
-<td>把 TIM_ICInitStruct 中的每一个参数按缺省值填入</td>
-</tr>
-<tr>
-<td>TIM_Cmd</td>
-<td>使能或者失能 TIMx 外设</td>
-</tr>
-<tr>
-<td>TIM _ITConfig</td>
-<td>使能或者失能指定的 TIM 中断</td>
-</tr>
-<tr>
-<td>TIM_DMAConfig</td>
-<td>设置 TIMx 的 DMA 接口</td>
-</tr>
-<tr>
-<td>TIM_DMACmd</td>
-<td>使能或者失能指定的 TIMx 的 DMA 请求</td>
-</tr>
-<tr>
-<td>TIM_InternalClockConfig</td>
-<td>设置 TIMx 内部时钟</td>
-</tr>
-<tr>
-<td>TIM_ITRxExternalClockConfig</td>
-<td>设置 TIMx 内部触发为外部时钟模式</td>
-</tr>
-<tr>
-<td>TIM_TIxExternalClockConfig</td>
-<td>设置 TIMx 触发为外部时钟</td>
-</tr>
-<tr>
-<td>TIM_ETRClockMode1Config</td>
-<td>配置 TIMx 外部时钟模式  1</td>
-</tr>
-<tr>
-<td>TIM_ETRClockMode2Config</td>
-<td>配置 TIMx 外部时钟模式  2</td>
-</tr>
-<tr>
-<td>TIM_ETRConfig</td>
-<td>配置 TIMx 外部触发</td>
-</tr>
-<tr>
-<td>TIM_SelectInputTrigger</td>
-<td>选择 TIMx 输入触发源</td>
-</tr>
-<tr>
-<td>TIM_PrescalerConfig</td>
-<td>设置 TIMx 预分频</td>
-</tr>
-<tr>
-<td>TIM_CounterModeConfig</td>
-<td>设置 TIMx 计数器模式</td>
-</tr>
-<tr>
-<td>TIM_ForcedOC1Config</td>
-<td>置 TIMx 输出 1 为活动或者非活动电平</td>
-</tr>
-<tr>
-<td>TIM_ForcedOC2Config</td>
-<td>置 TIMx 输出 2 为活动或者非活动电平</td>
-</tr>
-<tr>
-<td>TIM_ForcedOC3Config</td>
-<td>置 TIMx 输出 3 为活动或者非活动电平</td>
-</tr>
-<tr>
-<td>TIM_ForcedOC4Config</td>
-<td>置 TIMx 输出 4 为活动或者非活动电平</td>
-</tr>
-<tr>
-<td>TIM_ARRPreloadConfig</td>
-<td>使能或者失能 TIMx 在 ARR 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_SelectCCDMA</td>
-<td>选择 TIMx 外设的捕获比较  DMA 源</td>
-</tr>
-<tr>
-<td>TIM_OC1PreloadConfig</td>
-<td>使能或者失能 TIMx 在 CCR1 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_OC2PreloadConfig</td>
-<td>使能或者失能 TIMx 在 CCR2 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_OC3PreloadConfig</td>
-<td>使能或者失能 TIMx 在 CCR3 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_OC4PreloadConfig</td>
-<td>使能或者失能 TIMx 在 CCR4 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_OC1FastConfig</td>
-<td>设置 TIMx 捕获比较  1 快速特征</td>
-</tr>
-<tr>
-<td>TIM_OC2FastConfig</td>
-<td>设置 TIMx 捕获比较 2  快速特征</td>
-</tr>
-<tr>
-<td>TIM_OC3FastConfig</td>
-<td>设置 TIMx 捕获比较 3  快速特征</td>
-</tr>
-<tr>
-<td>TIM_OC4FastConfig</td>
-<td>设置 TIMx 捕获比较 4  快速特征</td>
-</tr>
-<tr>
-<td>TIM_ClearOC1Ref</td>
-<td>在一个外部事件时清除或者保持 OCREF1 信号</td>
-</tr>
-<tr>
-<td>TIM_ClearOC2Ref</td>
-<td>在一个外部事件时清除或者保持 OCREF2 信号</td>
-</tr>
-<tr>
-<td>TIM_ClearOC3Ref</td>
-<td>在一个外部事件时清除或者保持 OCREF3 信号</td>
-</tr>
-<tr>
-<td>TIM_ClearOC4Ref</td>
-<td>在一个外部事件时清除或者保持 OCREF4 信号</td>
-</tr>
-<tr>
-<td>TIM_UpdateDisableConfig</td>
-<td>使能或者失能 TIMx 更新事件</td>
-</tr>
-<tr>
-<td>TIM_EncoderInterfaceConfig</td>
-<td>设置 TIMx 编码界面</td>
-</tr>
-<tr>
-<td>TIM_GenerateEvent</td>
-<td>设置 TIMx 事件由软件产生</td>
-</tr>
-<tr>
-<td>TIM_OC1PolarityConfig</td>
-<td>设置 TIMx 通道 1 极性</td>
-</tr>
-<tr>
-<td>TIM_OC2PolarityConfig</td>
-<td>设置 TIMx 通道 2 极性</td>
-</tr>
-<tr>
-<td>TIM_OC3PolarityConfig</td>
-<td>设置 TIMx 通道 3 极性</td>
-</tr>
-<tr>
-<td>TIM_OC4PolarityConfig</td>
-<td>设置 TIMx 通道 4 极性</td>
-</tr>
-<tr>
-<td>TIM_UpdateRequestConfig</td>
-<td>设置 TIMx 更新请求源</td>
-</tr>
-<tr>
-<td>TIM_SelectHallSensor</td>
-<td>使能或者失能 TIMx 霍尔传感器接口</td>
-</tr>
-<tr>
-<td>TIM_SelectOnePulseMode</td>
-<td>设置 TIMx 单脉冲模式</td>
-</tr>
-<tr>
-<td>TIM_SelectOutputTrigger</td>
-<td>选择 TIMx 触发输出模式</td>
-</tr>
-<tr>
-<td>TIM_SelectSlaveMode</td>
-<td>选择 TIMx 从模式</td>
-</tr>
-<tr>
-<td>TIM_SelectMasterSlaveMode</td>
-<td>设置或者重置 TIMx 主&#x2F;从模式</td>
-</tr>
-<tr>
-<td>TIM_SetCounter</td>
-<td>设置 TIMx 计数器寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetAutoreload</td>
-<td>设置 TIMx 自动重装载寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetCompare1</td>
-<td>设置 TIMx 捕获比较 1  寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetCompare2</td>
-<td>设置 TIMx 捕获比较 2  寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetCompare3</td>
-<td>设置 TIMx 捕获比较 3  寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetCompare4</td>
-<td>设置 TIMx 捕获比较 4  寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetIC1Prescaler</td>
-<td>设置 TIMx 输入捕获 1  预分频</td>
-</tr>
-<tr>
-<td>TIM_SetIC2Prescaler</td>
-<td>设置 TIMx 输入捕获 2  预分频</td>
-</tr>
-<tr>
-<td>TIM_SetIC3Prescaler</td>
-<td>设置 TIMx 输入捕获 3  预分频</td>
-</tr>
-<tr>
-<td>TIM_SetIC4Prescaler</td>
-<td>设置 TIMx 输入捕获 4  预分频</td>
-</tr>
-<tr>
-<td>TIM_SetClockDivision</td>
-<td>设置 TIMx 的时钟分割值</td>
-</tr>
-<tr>
-<td>TIM_GetCapture1</td>
-<td>获得 TIMx 输入捕获 1  的值</td>
-</tr>
-<tr>
-<td>TIM_GetCapture2</td>
-<td>获得 TIMx 输入捕获 2  的值</td>
-</tr>
-<tr>
-<td>TIM_GetCapture3</td>
-<td>获得 TIMx 输入捕获 3  的值</td>
-</tr>
-<tr>
-<td>TIM_GetCapture4</td>
-<td>获得 TIMx 输入捕获 4  的值</td>
-</tr>
-<tr>
-<td>TIM_GetCounter</td>
-<td>获得 TIMx 计数器的值</td>
-</tr>
-<tr>
-<td>TIM_GetPrescaler</td>
-<td>获得 TIMx 预分频值</td>
-</tr>
-<tr>
-<td>TIM_GetFlagStatus</td>
-<td>检查指定的 TIM 标志位设置与否</td>
-</tr>
-<tr>
-<td>TIM_ClearFlag</td>
-<td>清除 TIMx 的待处理标志位</td>
-</tr>
-<tr>
-<td>TIM_GetITStatus</td>
-<td>检查指定的 TIM 中断发生与否</td>
-</tr>
-<tr>
-<td>TIM_ClearITPendingBit</td>
-<td>清除 TIMx 的中断待处理位</td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>stm32归档</category>
-      </categories>
-      <tags>
-        <tag>单片机</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>stm32综述</title>
-    <url>/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/</url>
-    <content><![CDATA[<p>　　大概有一段时间没看stm32，通过之前学51的经历，大概是明白自己一段时间不看就会忘，虽然随便翻翻又能快速上手，但是东找西翻比较麻烦。所以打算复习的时候，顺便做个笔记记录一下。自己所用的型号为<strong>STM32F103C8T6</strong>。<span id="more"></span></p>
-<h6 id="STM简述"><a href="#STM简述" class="headerlink" title="STM简述"></a>STM简述</h6><p>　　STM32是ST公司基于ARM- Cortex-M内核开发的32位微控制器（MCU）。自己所用的是STM32F1系列，属于Mainstream，内核Cortex-M3。ARM公司设计ARM内核，半导体厂商完善内核周边电路并产生芯片。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104303863.png" class="" title="image-20230724104303863">
-
-<p>图中的ARM由ARM公司设计，芯片内的存储和外设（比如GPIO,定时器）由ST公司设计。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104427576.png" class="" title="image-20230724104427576">
-
-<p>这是一枚STM32F103C8T6的芯片，由芯片可以看出型号和封装。封装为LQFP48，芯片表面左下角有个圆点，圆点下的引脚为1顺着原点逆时针开始数。如果芯片有两个圆点，则从最小的圆点开始数。</p>
-<h6 id="片上资源-x2F-外设"><a href="#片上资源-x2F-外设" class="headerlink" title="片上资源&#x2F;外设"></a><strong>片上资源&#x2F;外设</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724104939703.png" class="" title="image-20230724104939703">
-
-<p>绿色背景加黑的是位于内核的外设。另外C8T6并没有表中的DAC,SDIO,FSMC和USB OTG外设。</p>
-<p>NVIC:内核里面用于管理中断的设备，例如配置中断优先级。</p>
-<p>SysTick:用来给操作系统提供定时服务。应为STM32可以加入Freektos，ucos等操作系统，利用SysTick提供定时进行任务切换的功能。</p>
-<p>RCC：复位和时钟控制，可以对系统的时钟进行配置，还能使能各模块的时钟。在STM32中，外设上电后是默认没有时钟。没有时钟，外设无法工作。</p>
-<p>GPIO：通用的IO口，可以用于操控模块，比如灯，马达等。</p>
-<p>AFIO：完成复用功能端口的重定义，还有中断端口的置配。</p>
-<p>EXTI：配置好外部中断后，当引脚有电平变化时，就可以触发中断，让CPU来处理任务。</p>
-<p>TIM定时器：分为基本定时器，通用定时器，高级定时器。不仅可以完成定时中断的任务，还可以用于测频率，生成PWM波形，配置为专用的编码器接口。</p>
-<p>ADC：模数转换器，STM32内置了12位的AD转换器，可以直接读取IO口的模拟电压，无需外置。</p>
-<p>DMA：直接内存访问，可以帮助CPU搬运大量数据等这种繁杂任务。</p>
-<p>I2C&#x2F;SPI：两种常见的通信协议。</p>
-<p>RTC：实时时钟，在STM32内部完成时，分，秒的计时功能，还可以外接电源，即使掉电也能</p>
-<p>正常运行（此时会启用芯片备用电池）。</p>
-<p>CRC：一种数据校验方式，用于判断接受的数据是否正确。</p>
-<p>IWDG&#x2F;WWDG:当单片机因为电磁干扰死机或者程序设计不合理导致的死循环时，看门狗可以及时复位，保证系统稳定。</p>
-<p>DAC：数模转换器，可以在IO口直接输出模拟电压。</p>
-<p>OTG：使STM32作为USB主机去读取其它USB设备。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111613998.png" class="" title="image-20230724111613998">
-
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111625157.png" class="" title="image-20230724111625157">
-
-
-
-<h6 id="系统结构"><a href="#系统结构" class="headerlink" title="系统结构"></a><strong>系统结构</strong></h6><img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230724111735194.png" class="" title="image-20230724111735194">
-
-<p>ICode（指令总线）和Dcode（数据总线）用来连接Flash闪存，Flash存放的是我们编写的程序，ICode用于加载程序指令，Dcode用于加载数据，如常数和调试数据。</p>
-<p>系统总线就连接到如SRAM（用于存储程序运行时的变量数据）</p>
-<p>AHB系统总线：用于挂载主要的外设，AHB指先进高性能总线，挂载最基本的或者性能比较高的外设，如复位和时钟控制  SDIO。</p>
-<p>APB：先进外设总线，用于连接一般的外设。</p>
-<p>DMA：大量的数据搬运，防止覆盖。</p>
-<h6 id="引脚定义"><a href="#引脚定义" class="headerlink" title="引脚定义"></a>引脚定义</h6><p>红色是电源相关的引脚</p>
-<p>蓝色是最小系统相关的引脚</p>
-<p>绿色是IO口&#x2F;功能口相关的引脚</p>
-<p>S代表电源，I&#x2F;O代表输入输出，I&#x2F;O电平代表所能容忍的电压。FT代表能容忍5V，默认复用是IO口上同时连接的外设功能引脚。重定义：如果有2个功能同时复用在了1个IO口上，可以把其中一个复用功能重映射到其他端口上。</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230726084013246.png" class="" title="image-20230726084013246">
-
-
-
-<p>1.　　　VBAT：备用电池供电引脚，当系统电源断电时，备用电池可以给内部的RTC时钟和备份寄存器提供电源。</p>
-<p>2.　　　IO口&#x2F;侵入检测&#x2F;RTC：IO口可以根据程序输出读取高低电平</p>
-<p>3.4　IO口&#x2F;接32.768kHZ的RTC晶振</p>
-<p>5,6　接系统的主晶振，芯片内有锁相环电路，对8MHZ进行倍频形成72MHZ。</p>
-<p>7　　系统复位引脚，N代表低电平复位</p>
-<p>8,9　内部模拟部分的电源，如ADC,RC振荡器  VSS(-) VDD(+)</p>
-<p>10-19　都是IO口，10号引脚还兼具了WKUP用于唤醒对于待机模式的STM32</p>
-<p>20　IO口&#x2F;BOOT1引脚，BOOT用来配置启动模式    44.　BOOT0</p>
-<p>21.22.25-33.41-43.45.46 都是IO口</p>
-<p>23,24是系统的主电源口， 35.36.47.48    STM32采用分区供电模式</p>
-<p>34,37-40　IO口&#x2F;调试端口      STM32支持SWD和JTAG两种调试方法</p>
-<p>启动配置（BOOT0和BOOT1）</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140258741.png" class="" title="image-20230801140258741">
-
-<p>作用：指定程序开始运行的位置，一般情况下，程序是在Flash程序存储器开始执行</p>
-<p>接1指3.3V电源正的意思</p>
-<p>系统存储器就是STM32中的一段BootLoader(接受串口数据，然后刷新到主闪存中)</p>
-<p>核心板原理图</p>
-<img src="/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/image-20230801140602387.png" class="" title="image-20230801140602387">
-
-]]></content>
-      <categories>
-        <category>stm32归档</category>
-      </categories>
-      <tags>
-        <tag>单片机</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>idea</title>
-    <url>/2023/11/17/idea/</url>
-    <content><![CDATA[<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="啥？你不知道？不知道还输。你到底在期待什么？？_____:(´□`」 ∠):_____蒙暗号是没用的，或许你贿赂城主（博主）能满足你的小小的愿望好奇心¯\" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
-  <script id="hbeData" type="hbeData" data-hmacdigest="bb01410711b972baf714a72a081de345f07904acbecab333b769c06dd62d715e">76fc3ae391b3c4b89afc7f8f81acab4b9f801fe66e60cd8eb555aaaa4e722a621ecf71896bcd87f869a047b4fc1b2019d331c403b9600638916955bc4a2b949e9a293b2ad6f730e3be193d4b7ea726f295feb46a207f69ea1086ea81ddfb19851bae848f43666e5ec4852ee8a6712ec2d610eb1add1598183b4ffa6378a858ae92cbb6395c960140303e450202a660cf5219f59b40aaeef9fc0d492ab0d68b3617ac82ffee29717785cd3fa40a1fb5ae55a91c92e27f839a6a12927112284d83b7a848b05e64496540a335d8c1e80e90013b62f244b519447c274bd44e96145c65bdefdc3f58bb29d0f7c60279c1523458046189362879436061fb5505f3697268837727a20a09017506b9c39cbbb782209994544c51ec9c91c5b8a6d28dca375c6383e076a6c87019704ffed6469ffb56b6543d7579a23e9c8679648ba2cbd452f543cdb3b7d3fdf9fcdf7aa8352d27df64162d607cca045e64a45584bce03e75b1e2e490060995966e4dcbed9f61bc1f07406334534b8d6973f69ef5602f2e9af2c9ffc760607f4b115bbc971b3a27f6c6db178155e05bded73f82eeaad026b3c24b7a158b4a59c725bfe5096ee4095495f022a7464f9c31a7091c2ab23c0c17f872ed4de86471e890f54d80fcb736179e87728053ee3bd802e28fdddb74e5ed03e0a9577c105609b47d3613475e9670930df1e9c5f28eb99f38949038d9e3989effa15587f27192c7d8566e6983e8223f001d5eb4657a7d47084400b0bd68e5d4adda0fef3d0a016dbac1576a5d6e5fa87c75093bfed1a96939bdcf8f3f64a2329b417e401926bf677a7bba3caf53f8c5a90a3b041fbd78822e6862a88a2bbda289a71d4005d1d6a86e1e9cdcc642934e4853e5a7058449e5aa6a67e0c8bc2a440bc041a68441a7895ca1572afa7f1cea82cd82bed0fed00d1d7bcad94a7cee443376bc49a36a2a100fabd2a9d9ab77d0b4b8551049a6476af4856a32a33556173bae11db0de3299a6fc1b25e4b0b</script>
-  <div class="hbe hbe-content">
-    <div class="hbe hbe-input hbe-input-default">
-      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
-      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
-        <span class="hbe hbe-input-label-content hbe-input-label-content-default">站住！！！请输入暗号！_(:3 」∠ )_</span>
-      </label>
-    </div>
-  </div>
-</div>
-<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">]]></content>
-  </entry>
-  <entry>
     <title>？？？？？（未解密）</title>
     <url>/2023/09/26/Shelter%E7%9A%84%E5%9C%B0%E4%B8%8B%E5%9F%8E/</url>
     <content><![CDATA[<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="啥？你不知道？不知道还输。你到底在期待什么？？_____:(´□`」 ∠):_____蒙暗号是没用的，或许你贿赂城主（博主）能满足你的小小好奇心¯\_(ツ)_/¯" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
@@ -5909,6 +5909,44 @@ c5m5_bridge           5桥
 <p>　　这是我目前的草履车，现在，这只鸟要靠翅膀飞了。我现在很有惰性，实在懒得改。草履车的进度还是太慢了，从10号开始到现在。草履车只完成了一半，它还需要超声波的部分，然后加以完善。</p>
 <p>　　开始做的有点意思，然后感觉啥啊，我花了这么长时间，才这点进度。而且很无聊，无非就是几个PWM，定时器，ADC，外加一些数据管理和格式。它花费的时间比我想象的多很多很多。有时候还是挺有挫败感的。我并没有感觉到自己在创造什么（虽然一开始也打算是一个练手的项目）。</p>
 <h3 id="2023-12-5"><a href="#2023-12-5" class="headerlink" title="2023-12-5"></a>2023-12-5</h3><p>白驹过隙。时间就像海绵里的水，越挤越费劲。</p>
+<h3 id="2023-12-25"><a href="#2023-12-25" class="headerlink" title="2023-12-25"></a>2023-12-25</h3><p>急急急急，这学期过的好快。印象中就是自己学了学stm32，整了草履车，浅尝了一下freeRTOS，摸鱼了这学期很多的专业课，翘了一学期的嵌入式课程和实验，玩了玩游戏。</p>
+<p>然后期末开始飞速学习，庆幸自己还尚有一些学习能力。倒是可以尽快补上。</p>
+<h3 id="2023-12-30"><a href="#2023-12-30" class="headerlink" title="2023-12-30"></a>2023-12-30</h3><p>我妹的妈妈走了，车祸，猝不及防。一时间不知道如何安慰，也不知道说什么，觉得说什么都很苍白。我觉得，她会想她妈吧，而且这段时间就像梦一样，总会有种不真实的感觉。</p>
+<p>希望时间能够治愈。</p>
+<p>PLAN（2024）：</p>
+<p>一，考试不挂科，嵌入式成绩满分（90+应该有，希望老师能给满分，虽然大概率不可能）</p>
+<p>二，考试结束后，将用一星期时间，补完freeRTOS那本书的内容，并且移植到草履车。</p>
+<p>三，寒假将复习并跑一下蓝桥杯嵌入式的代码。</p>
+<p>四，玩游戏玩游戏玩游戏玩游戏玩游戏玩游戏。</p>
+<p>五，送灯给姐，尝试跟妹整点乱七八糟的东西玩。</p>
+<p>六，拿到业余无线电的设台执照。</p>
+<p>七，整理并且搁置RGB广州塔（RGB灯好贵，我觉得这个计划要废了）</p>
+<p>八，尝试”飞舞蛋”的可行性。（个人猜想可行性极低）</p>
+<p>九，补完洛谷基础C语言题目。</p>
+<p>十，掌握手持无线电的基础使用。</p>
+<p>十一，玩游戏玩游戏玩游戏玩游戏玩游戏玩游戏。</p>
+<p>十二，希望有个白嫖的二级域名，不然明年冬，我的博客评论系统就炸了。</p>
+<p>十三，好歹把荒野之息给结了吧。</p>
+]]></content>
+      <categories>
+        <category>说说</category>
+      </categories>
+      <tags>
+        <tag>杂七杂八</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>说说(2024)</title>
+    <url>/2024/12/31/%E8%AF%B4%E8%AF%B4(2024)/</url>
+    <content><![CDATA[<p>　　<span id="more"></span></p>
+<h3 id="2024-1-11"><a href="#2024-1-11" class="headerlink" title="2024-1-11"></a>2024-1-11</h3><p>　　40收的一个kwp1，屏幕还行，就是不能触屏。这个价位还行吧，真的太难找了。(话说我每次咸鱼淘到好垃圾都会挺高兴的)。又赌了一些，电子墨水屏好贵好贵啊。好吧，其实也不贵，就是溢价高。希望不会翻车吧。计划寒假玩玩这些。</p>
+<h3 id="2024-1-6"><a href="#2024-1-6" class="headerlink" title="2024-1-6"></a>2024-1-6</h3><p>　　大佬好多，感觉都不在一个维度上。emo…ing……</p>
+<p>　　现在我只想躺平。。。</p>
+<p>　　我觉得我以后要是能成为一个躺平的大佬就好了，技能过硬不愁工作，然后也不卷，朝九晚五，带薪拉屎。上班摸摸鱼，去网上发挥互联网精神。开源和分享是很有意义的。虽然我仅仅是搬运工，也尝试过做漫画汉化嵌字。有时候看到他人的评论或反馈，都会觉得这一切都有意义。</p>
+<p>　　大概是受益太多，印象较深的有z-library，vol.moe(kindle漫画站)，以及各种bt站。</p>
+<h3 id="2024-1-5"><a href="#2024-1-5" class="headerlink" title="2024-1-5"></a>2024-1-5</h3><p>　　馋死我了。有点想整个墨水屏相册玩玩，今天逛了一天。原计划是拆Kindle的屏，加上驱动板。因为我发现直接买模块太贵太贵太贵了。同是6寸屏，我整个二手的kindle也就100左右，单买屏基本就200+。然后我拆了我的kindle青春版，发现屏是18pin的，跟通用的24pin和34pin差别甚大。然后就去咸鱼逛啊逛，真的没啥好东西，基本是坏屏或者贩子。我是想整个坏的Kindle拆屏，整个咸鱼的价位大概是50+，虽然比单买好很多，但屏难找。</p>
+<p>　　直到我看到了AUO墨水屏，6寸38元，9寸68。要了规格书，Pin是40，还好，github的开源epdiy也适配pin40的。只是两者的分辨率不太一样，项目示例是（758 x 1024），屏是（768 x 1024）。</p>
+<p>　　这分辨率，这大屏，这价格，挺合我心。还在纠结。</p>
 ]]></content>
       <categories>
         <category>说说</category>
