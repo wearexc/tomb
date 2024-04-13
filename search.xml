@@ -1300,344 +1300,6 @@
       </tags>
   </entry>
   <entry>
-    <title>STM32标准库</title>
-    <url>/2023/08/02/STM32%E6%A0%87%E5%87%86%E5%BA%93/</url>
-    <content><![CDATA[<p>整理笔记时发现自己如果列举代码，会更加有效。但插入代码块到其中会比较繁琐，而且各个知识的代码的耦合性较强，反复列举较为麻烦，所以开一个新的文章，专门记录整理标准库代码。仅记录个人常用，建议参考手册，或直接跳转函数定义，浏览官方说明。<span id="more"></span></p>
-<h3 id="时钟控制"><a href="#时钟控制" class="headerlink" title="时钟控制"></a>时钟控制</h3><p>时钟就像人的心跳，人的运动先需要跳动心脏。STM32的片上外设也是一样，如果要使用外设，例如：GPIO，NVIC，ADC等等，需要先开启外设挂载的总线时钟。</p>
-<p>以下是标准库中对时钟控制函数的定义：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//AHB总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_AHBPeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_AHBPeriph, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//APB2总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_APB2PeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_APB2Periph, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//APB1总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_APB1PeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_APB1Periph, FunctionalState NewState)</span>;</span><br></pre></td></tr></table></figure>
-
-<p>第一个参数为外设，例如APB2的外设：RCC_APB2Periph_GPIOA，RCC_APB2Periph_GPIOB，RCC_APB2Periph_TIM1等，</p>
-<p>第二个参数为使能或者失能。（ENABLE&#x2F;DISABLE）</p>
-<p>比如开启APB2的GPIOA为例：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);</span><br></pre></td></tr></table></figure>
-
-<p>外设的使用必须先开启时钟。</p>
-<h3 id="GPIO"><a href="#GPIO" class="headerlink" title="GPIO"></a>GPIO</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//指定GPIO初始化为默认值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_DeInit</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//功能复用，重新映射事件控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_AFIODeInit</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="comment">//用结构体参数初始化GPIO</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Init</span><span class="params">(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct)</span>;</span><br><span class="line"><span class="comment">//将结构体的变量，赋为初始值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_StructInit</span><span class="params">(GPIO_InitTypeDef* GPIO_InitStruct)</span>;</span><br><span class="line"><span class="comment">//读取指定输入GPIO口的值，返回0/1</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">GPIO_ReadInputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//读取指定输入GPIO组的数据端口</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">GPIO_ReadInputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//读取指定输出GPIO口的值，返回0/1</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">GPIO_ReadOutputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//读取指定输出GPIO组的数据端口</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">GPIO_ReadOutputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//指定端口输出为高电平</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_SetBits</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//指定端口输出为低电平</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_ResetBits</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//指定GPIO组的某个GPIO并赋值（高低电平）。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_WriteBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin, BitAction BitVal)</span>;</span><br><span class="line"><span class="comment">//指定GPIO组，并写入端口输出数据寄存器（ODR寄存器）的值。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Write</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> PortVal)</span>;</span><br><span class="line"><span class="comment">//锁定GPIO管脚配置寄存器</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_PinLockConfig</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//选择用作事件输出的GPIO引脚</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EventOutputConfig</span><span class="params">(<span class="type">uint8_t</span> GPIO_PortSource, <span class="type">uint8_t</span> GPIO_PinSource)</span>;</span><br><span class="line"><span class="comment">//使能输出事件</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EventOutputCmd</span><span class="params">(FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//改变指定管脚的映射，为了更大利用IO口，部分IO口可以进行复用或者映射。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_PinRemapConfig</span><span class="params">(<span class="type">uint32_t</span> GPIO_Remap, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//选择 GPIO 管脚用作外部中断源</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EXTILineConfig</span><span class="params">(<span class="type">uint8_t</span> GPIO_PortSource, <span class="type">uint8_t</span> GPIO_PinSource)</span>;</span><br><span class="line"><span class="comment">//选择以太网媒体接口</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_ETH_MediaInterfaceConfig</span><span class="params">(<span class="type">uint32_t</span> GPIO_ETH_MediaInterface)</span>;</span><br></pre></td></tr></table></figure>
-
-<p><strong>结构体</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">uint16_t</span> GPIO_Pin;             <span class="comment">//选择GPIO口</span></span><br><span class="line">  GPIOSpeed_TypeDef GPIO_Speed;  <span class="comment">//选择运行速度</span></span><br><span class="line">  GPIOMode_TypeDef GPIO_Mode;    <span class="comment">//配置G</span></span><br><span class="line">&#125;GPIO_InitTypeDef;</span><br></pre></td></tr></table></figure>
-
-<p><strong>GPIO模式</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span></span></span><br><span class="line"><span class="class">&#123;</span> GPIO_Mode_AIN = <span class="number">0x0</span>,               <span class="comment">//模拟输入</span></span><br><span class="line">  GPIO_Mode_IN_FLOATING = <span class="number">0x04</span>,      <span class="comment">//浮空输入</span></span><br><span class="line">  GPIO_Mode_IPD = <span class="number">0x28</span>,              <span class="comment">//下拉输入</span></span><br><span class="line">  GPIO_Mode_IPU = <span class="number">0x48</span>,              <span class="comment">//上拉输入</span></span><br><span class="line">  GPIO_Mode_Out_OD = <span class="number">0x14</span>,           <span class="comment">//开漏输出</span></span><br><span class="line">  GPIO_Mode_Out_PP = <span class="number">0x10</span>,           <span class="comment">//推挽输出</span></span><br><span class="line">  GPIO_Mode_AF_OD = <span class="number">0x1C</span>,            <span class="comment">//复用开漏</span></span><br><span class="line">  GPIO_Mode_AF_PP = <span class="number">0x18</span>             <span class="comment">//复用推挽</span></span><br><span class="line">&#125;GPIOMode_TypeDef;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="NVIC"><a href="#NVIC" class="headerlink" title="NVIC"></a>NVIC</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">NVIC_PriorityGroupConfig</span><span class="params">(<span class="type">uint32_t</span> NVIC_PriorityGroup)</span>;                  <span class="comment">//设置中断优先级分组</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_Init</span><span class="params">(NVIC_InitTypeDef* NVIC_InitStruct)</span>;                           <span class="comment">//用结构体参数配置NVIC</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_SetVectorTable</span><span class="params">(<span class="type">uint32_t</span> NVIC_VectTab, <span class="type">uint32_t</span> Offset)</span>;            <span class="comment">//设置中断向量表</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_SystemLPConfig</span><span class="params">(<span class="type">uint8_t</span> LowPowerMode, FunctionalState NewState)</span>;    <span class="comment">//系统低功耗配置</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="EXIT"><a href="#EXIT" class="headerlink" title="EXIT"></a>EXIT</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">EXTI_DeInit</span><span class="params">(<span class="type">void</span>)</span>;              	                   <span class="comment">//清除EXTI配置</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_Init</span><span class="params">(EXTI_InitTypeDef* EXTI_InitStruct)</span>;         <span class="comment">//用结构体参数配置EXTI</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_StructInit</span><span class="params">(EXTI_InitTypeDef* EXTI_InitStruct)</span>;   <span class="comment">//给结构体赋予默认值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_GenerateSWInterrupt</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;         <span class="comment">//软件触发外部中断</span></span><br><span class="line">FlagStatus <span class="title function_">EXTI_GetFlagStatus</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;         <span class="comment">//获取指定的的中断标志位</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_ClearFlag</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;                   <span class="comment">//清除中断标志位</span></span><br><span class="line">ITStatus <span class="title function_">EXTI_GetITStatus</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;             <span class="comment">//在中断函数里获取标志位</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_ClearITPendingBit</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;           <span class="comment">//在中断函数里清除标志位</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>结构体</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">uint32_t</span> EXTI_Line;               <span class="comment">//指定配置的中断线</span></span><br><span class="line">  EXTIMode_TypeDef EXTI_Mode;       <span class="comment">//指定中断模式</span></span><br><span class="line">  EXTITrigger_TypeDef EXTI_Trigger; <span class="comment">//指定配置的中断线</span></span><br><span class="line">  FunctionalState EXTI_LineCmd;     <span class="comment">//指定触发中断的模式</span></span><br><span class="line">&#125;EXTI_InitTypeDef;</span><br></pre></td></tr></table></figure>
-
-<h3 id="TIM"><a href="#TIM" class="headerlink" title="TIM"></a>TIM</h3><p>过长，具体参考STM32固件函数库手册。</p>
-<table>
-<thead>
-<tr>
-<th>函数名</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>TIM_DeInit</td>
-<td>将外设 TIMx 寄存器重设为缺省值</td>
-</tr>
-<tr>
-<td>TIM_TimeBaseInit</td>
-<td>根据 TIM_TimeBaseInitStruct 中指定的参数初始化   间基数单位</td>
-</tr>
-<tr>
-<td>TIM_OCInit</td>
-<td>根据 TIM_OCInitStruct 中指定的参数初始化外设</td>
-</tr>
-<tr>
-<td>TIM_ICInit</td>
-<td>根据 TIM_ICInitStruct 中指定的参数初始化外设 T</td>
-</tr>
-<tr>
-<td>TIM_TimeBaseStructInit</td>
-<td>把 TIM_TimeBaseInitStruct 中的每一个参数按缺省</td>
-</tr>
-<tr>
-<td>TIM_OCStructInit</td>
-<td>把 TIM_OCInitStruct 中的每一个参数按缺省值填</td>
-</tr>
-<tr>
-<td>TIM_ICStructInit</td>
-<td>把 TIM_ICInitStruct 中的每一个参数按缺省值填入</td>
-</tr>
-<tr>
-<td>TIM_Cmd</td>
-<td>使能或者失能 TIMx 外设</td>
-</tr>
-<tr>
-<td>TIM _ITConfig</td>
-<td>使能或者失能指定的 TIM 中断</td>
-</tr>
-<tr>
-<td>TIM_DMAConfig</td>
-<td>设置 TIMx 的 DMA 接口</td>
-</tr>
-<tr>
-<td>TIM_DMACmd</td>
-<td>使能或者失能指定的 TIMx 的 DMA 请求</td>
-</tr>
-<tr>
-<td>TIM_InternalClockConfig</td>
-<td>设置 TIMx 内部时钟</td>
-</tr>
-<tr>
-<td>TIM_ITRxExternalClockConfig</td>
-<td>设置 TIMx 内部触发为外部时钟模式</td>
-</tr>
-<tr>
-<td>TIM_TIxExternalClockConfig</td>
-<td>设置 TIMx 触发为外部时钟</td>
-</tr>
-<tr>
-<td>TIM_ETRClockMode1Config</td>
-<td>配置 TIMx 外部时钟模式  1</td>
-</tr>
-<tr>
-<td>TIM_ETRClockMode2Config</td>
-<td>配置 TIMx 外部时钟模式  2</td>
-</tr>
-<tr>
-<td>TIM_ETRConfig</td>
-<td>配置 TIMx 外部触发</td>
-</tr>
-<tr>
-<td>TIM_SelectInputTrigger</td>
-<td>选择 TIMx 输入触发源</td>
-</tr>
-<tr>
-<td>TIM_PrescalerConfig</td>
-<td>设置 TIMx 预分频</td>
-</tr>
-<tr>
-<td>TIM_CounterModeConfig</td>
-<td>设置 TIMx 计数器模式</td>
-</tr>
-<tr>
-<td>TIM_ForcedOC1Config</td>
-<td>置 TIMx 输出 1 为活动或者非活动电平</td>
-</tr>
-<tr>
-<td>TIM_ForcedOC2Config</td>
-<td>置 TIMx 输出 2 为活动或者非活动电平</td>
-</tr>
-<tr>
-<td>TIM_ForcedOC3Config</td>
-<td>置 TIMx 输出 3 为活动或者非活动电平</td>
-</tr>
-<tr>
-<td>TIM_ForcedOC4Config</td>
-<td>置 TIMx 输出 4 为活动或者非活动电平</td>
-</tr>
-<tr>
-<td>TIM_ARRPreloadConfig</td>
-<td>使能或者失能 TIMx 在 ARR 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_SelectCCDMA</td>
-<td>选择 TIMx 外设的捕获比较  DMA 源</td>
-</tr>
-<tr>
-<td>TIM_OC1PreloadConfig</td>
-<td>使能或者失能 TIMx 在 CCR1 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_OC2PreloadConfig</td>
-<td>使能或者失能 TIMx 在 CCR2 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_OC3PreloadConfig</td>
-<td>使能或者失能 TIMx 在 CCR3 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_OC4PreloadConfig</td>
-<td>使能或者失能 TIMx 在 CCR4 上的预装载寄存器</td>
-</tr>
-<tr>
-<td>TIM_OC1FastConfig</td>
-<td>设置 TIMx 捕获比较  1 快速特征</td>
-</tr>
-<tr>
-<td>TIM_OC2FastConfig</td>
-<td>设置 TIMx 捕获比较 2  快速特征</td>
-</tr>
-<tr>
-<td>TIM_OC3FastConfig</td>
-<td>设置 TIMx 捕获比较 3  快速特征</td>
-</tr>
-<tr>
-<td>TIM_OC4FastConfig</td>
-<td>设置 TIMx 捕获比较 4  快速特征</td>
-</tr>
-<tr>
-<td>TIM_ClearOC1Ref</td>
-<td>在一个外部事件时清除或者保持 OCREF1 信号</td>
-</tr>
-<tr>
-<td>TIM_ClearOC2Ref</td>
-<td>在一个外部事件时清除或者保持 OCREF2 信号</td>
-</tr>
-<tr>
-<td>TIM_ClearOC3Ref</td>
-<td>在一个外部事件时清除或者保持 OCREF3 信号</td>
-</tr>
-<tr>
-<td>TIM_ClearOC4Ref</td>
-<td>在一个外部事件时清除或者保持 OCREF4 信号</td>
-</tr>
-<tr>
-<td>TIM_UpdateDisableConfig</td>
-<td>使能或者失能 TIMx 更新事件</td>
-</tr>
-<tr>
-<td>TIM_EncoderInterfaceConfig</td>
-<td>设置 TIMx 编码界面</td>
-</tr>
-<tr>
-<td>TIM_GenerateEvent</td>
-<td>设置 TIMx 事件由软件产生</td>
-</tr>
-<tr>
-<td>TIM_OC1PolarityConfig</td>
-<td>设置 TIMx 通道 1 极性</td>
-</tr>
-<tr>
-<td>TIM_OC2PolarityConfig</td>
-<td>设置 TIMx 通道 2 极性</td>
-</tr>
-<tr>
-<td>TIM_OC3PolarityConfig</td>
-<td>设置 TIMx 通道 3 极性</td>
-</tr>
-<tr>
-<td>TIM_OC4PolarityConfig</td>
-<td>设置 TIMx 通道 4 极性</td>
-</tr>
-<tr>
-<td>TIM_UpdateRequestConfig</td>
-<td>设置 TIMx 更新请求源</td>
-</tr>
-<tr>
-<td>TIM_SelectHallSensor</td>
-<td>使能或者失能 TIMx 霍尔传感器接口</td>
-</tr>
-<tr>
-<td>TIM_SelectOnePulseMode</td>
-<td>设置 TIMx 单脉冲模式</td>
-</tr>
-<tr>
-<td>TIM_SelectOutputTrigger</td>
-<td>选择 TIMx 触发输出模式</td>
-</tr>
-<tr>
-<td>TIM_SelectSlaveMode</td>
-<td>选择 TIMx 从模式</td>
-</tr>
-<tr>
-<td>TIM_SelectMasterSlaveMode</td>
-<td>设置或者重置 TIMx 主&#x2F;从模式</td>
-</tr>
-<tr>
-<td>TIM_SetCounter</td>
-<td>设置 TIMx 计数器寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetAutoreload</td>
-<td>设置 TIMx 自动重装载寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetCompare1</td>
-<td>设置 TIMx 捕获比较 1  寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetCompare2</td>
-<td>设置 TIMx 捕获比较 2  寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetCompare3</td>
-<td>设置 TIMx 捕获比较 3  寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetCompare4</td>
-<td>设置 TIMx 捕获比较 4  寄存器值</td>
-</tr>
-<tr>
-<td>TIM_SetIC1Prescaler</td>
-<td>设置 TIMx 输入捕获 1  预分频</td>
-</tr>
-<tr>
-<td>TIM_SetIC2Prescaler</td>
-<td>设置 TIMx 输入捕获 2  预分频</td>
-</tr>
-<tr>
-<td>TIM_SetIC3Prescaler</td>
-<td>设置 TIMx 输入捕获 3  预分频</td>
-</tr>
-<tr>
-<td>TIM_SetIC4Prescaler</td>
-<td>设置 TIMx 输入捕获 4  预分频</td>
-</tr>
-<tr>
-<td>TIM_SetClockDivision</td>
-<td>设置 TIMx 的时钟分割值</td>
-</tr>
-<tr>
-<td>TIM_GetCapture1</td>
-<td>获得 TIMx 输入捕获 1  的值</td>
-</tr>
-<tr>
-<td>TIM_GetCapture2</td>
-<td>获得 TIMx 输入捕获 2  的值</td>
-</tr>
-<tr>
-<td>TIM_GetCapture3</td>
-<td>获得 TIMx 输入捕获 3  的值</td>
-</tr>
-<tr>
-<td>TIM_GetCapture4</td>
-<td>获得 TIMx 输入捕获 4  的值</td>
-</tr>
-<tr>
-<td>TIM_GetCounter</td>
-<td>获得 TIMx 计数器的值</td>
-</tr>
-<tr>
-<td>TIM_GetPrescaler</td>
-<td>获得 TIMx 预分频值</td>
-</tr>
-<tr>
-<td>TIM_GetFlagStatus</td>
-<td>检查指定的 TIM 标志位设置与否</td>
-</tr>
-<tr>
-<td>TIM_ClearFlag</td>
-<td>清除 TIMx 的待处理标志位</td>
-</tr>
-<tr>
-<td>TIM_GetITStatus</td>
-<td>检查指定的 TIM 中断发生与否</td>
-</tr>
-<tr>
-<td>TIM_ClearITPendingBit</td>
-<td>清除 TIMx 的中断待处理位</td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>stm32归档</category>
-      </categories>
-      <tags>
-        <tag>单片机</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>STM32归档（下）</title>
     <url>/2023/10/16/STM32%E5%BD%92%E6%A1%A3%EF%BC%88%E4%B8%8B%EF%BC%89/</url>
     <content><![CDATA[<p>个人学习笔记，因为STM32归档越来越长（怕目录太长出问题），所以有了下。<span id="more"></span></p>
@@ -2766,6 +2428,344 @@ void W25Q64_ReadData(uint32_t Address, uint8_t *DataArray, uint32_t Count)
       </tags>
   </entry>
   <entry>
+    <title>STM32标准库</title>
+    <url>/2023/08/02/STM32%E6%A0%87%E5%87%86%E5%BA%93/</url>
+    <content><![CDATA[<p>整理笔记时发现自己如果列举代码，会更加有效。但插入代码块到其中会比较繁琐，而且各个知识的代码的耦合性较强，反复列举较为麻烦，所以开一个新的文章，专门记录整理标准库代码。仅记录个人常用，建议参考手册，或直接跳转函数定义，浏览官方说明。<span id="more"></span></p>
+<h3 id="时钟控制"><a href="#时钟控制" class="headerlink" title="时钟控制"></a>时钟控制</h3><p>时钟就像人的心跳，人的运动先需要跳动心脏。STM32的片上外设也是一样，如果要使用外设，例如：GPIO，NVIC，ADC等等，需要先开启外设挂载的总线时钟。</p>
+<p>以下是标准库中对时钟控制函数的定义：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//AHB总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_AHBPeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_AHBPeriph, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//APB2总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_APB2PeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_APB2Periph, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//APB1总线时钟控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RCC_APB1PeriphClockCmd</span><span class="params">(<span class="type">uint32_t</span> RCC_APB1Periph, FunctionalState NewState)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>第一个参数为外设，例如APB2的外设：RCC_APB2Periph_GPIOA，RCC_APB2Periph_GPIOB，RCC_APB2Periph_TIM1等，</p>
+<p>第二个参数为使能或者失能。（ENABLE&#x2F;DISABLE）</p>
+<p>比如开启APB2的GPIOA为例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);</span><br></pre></td></tr></table></figure>
+
+<p>外设的使用必须先开启时钟。</p>
+<h3 id="GPIO"><a href="#GPIO" class="headerlink" title="GPIO"></a>GPIO</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//指定GPIO初始化为默认值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_DeInit</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//功能复用，重新映射事件控制</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_AFIODeInit</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="comment">//用结构体参数初始化GPIO</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Init</span><span class="params">(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct)</span>;</span><br><span class="line"><span class="comment">//将结构体的变量，赋为初始值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_StructInit</span><span class="params">(GPIO_InitTypeDef* GPIO_InitStruct)</span>;</span><br><span class="line"><span class="comment">//读取指定输入GPIO口的值，返回0/1</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">GPIO_ReadInputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//读取指定输入GPIO组的数据端口</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">GPIO_ReadInputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//读取指定输出GPIO口的值，返回0/1</span></span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">GPIO_ReadOutputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//读取指定输出GPIO组的数据端口</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">GPIO_ReadOutputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span>;</span><br><span class="line"><span class="comment">//指定端口输出为高电平</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_SetBits</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//指定端口输出为低电平</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_ResetBits</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//指定GPIO组的某个GPIO并赋值（高低电平）。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_WriteBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin, BitAction BitVal)</span>;</span><br><span class="line"><span class="comment">//指定GPIO组，并写入端口输出数据寄存器（ODR寄存器）的值。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_Write</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> PortVal)</span>;</span><br><span class="line"><span class="comment">//锁定GPIO管脚配置寄存器</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_PinLockConfig</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span>;</span><br><span class="line"><span class="comment">//选择用作事件输出的GPIO引脚</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EventOutputConfig</span><span class="params">(<span class="type">uint8_t</span> GPIO_PortSource, <span class="type">uint8_t</span> GPIO_PinSource)</span>;</span><br><span class="line"><span class="comment">//使能输出事件</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EventOutputCmd</span><span class="params">(FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//改变指定管脚的映射，为了更大利用IO口，部分IO口可以进行复用或者映射。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_PinRemapConfig</span><span class="params">(<span class="type">uint32_t</span> GPIO_Remap, FunctionalState NewState)</span>;</span><br><span class="line"><span class="comment">//选择 GPIO 管脚用作外部中断源</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_EXTILineConfig</span><span class="params">(<span class="type">uint8_t</span> GPIO_PortSource, <span class="type">uint8_t</span> GPIO_PinSource)</span>;</span><br><span class="line"><span class="comment">//选择以太网媒体接口</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">GPIO_ETH_MediaInterfaceConfig</span><span class="params">(<span class="type">uint32_t</span> GPIO_ETH_MediaInterface)</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>结构体</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">uint16_t</span> GPIO_Pin;             <span class="comment">//选择GPIO口</span></span><br><span class="line">  GPIOSpeed_TypeDef GPIO_Speed;  <span class="comment">//选择运行速度</span></span><br><span class="line">  GPIOMode_TypeDef GPIO_Mode;    <span class="comment">//配置G</span></span><br><span class="line">&#125;GPIO_InitTypeDef;</span><br></pre></td></tr></table></figure>
+
+<p><strong>GPIO模式</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span></span></span><br><span class="line"><span class="class">&#123;</span> GPIO_Mode_AIN = <span class="number">0x0</span>,               <span class="comment">//模拟输入</span></span><br><span class="line">  GPIO_Mode_IN_FLOATING = <span class="number">0x04</span>,      <span class="comment">//浮空输入</span></span><br><span class="line">  GPIO_Mode_IPD = <span class="number">0x28</span>,              <span class="comment">//下拉输入</span></span><br><span class="line">  GPIO_Mode_IPU = <span class="number">0x48</span>,              <span class="comment">//上拉输入</span></span><br><span class="line">  GPIO_Mode_Out_OD = <span class="number">0x14</span>,           <span class="comment">//开漏输出</span></span><br><span class="line">  GPIO_Mode_Out_PP = <span class="number">0x10</span>,           <span class="comment">//推挽输出</span></span><br><span class="line">  GPIO_Mode_AF_OD = <span class="number">0x1C</span>,            <span class="comment">//复用开漏</span></span><br><span class="line">  GPIO_Mode_AF_PP = <span class="number">0x18</span>             <span class="comment">//复用推挽</span></span><br><span class="line">&#125;GPIOMode_TypeDef;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="NVIC"><a href="#NVIC" class="headerlink" title="NVIC"></a>NVIC</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">NVIC_PriorityGroupConfig</span><span class="params">(<span class="type">uint32_t</span> NVIC_PriorityGroup)</span>;                  <span class="comment">//设置中断优先级分组</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_Init</span><span class="params">(NVIC_InitTypeDef* NVIC_InitStruct)</span>;                           <span class="comment">//用结构体参数配置NVIC</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_SetVectorTable</span><span class="params">(<span class="type">uint32_t</span> NVIC_VectTab, <span class="type">uint32_t</span> Offset)</span>;            <span class="comment">//设置中断向量表</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">NVIC_SystemLPConfig</span><span class="params">(<span class="type">uint8_t</span> LowPowerMode, FunctionalState NewState)</span>;    <span class="comment">//系统低功耗配置</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="EXIT"><a href="#EXIT" class="headerlink" title="EXIT"></a>EXIT</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">EXTI_DeInit</span><span class="params">(<span class="type">void</span>)</span>;              	                   <span class="comment">//清除EXTI配置</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_Init</span><span class="params">(EXTI_InitTypeDef* EXTI_InitStruct)</span>;         <span class="comment">//用结构体参数配置EXTI</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_StructInit</span><span class="params">(EXTI_InitTypeDef* EXTI_InitStruct)</span>;   <span class="comment">//给结构体赋予默认值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_GenerateSWInterrupt</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;         <span class="comment">//软件触发外部中断</span></span><br><span class="line">FlagStatus <span class="title function_">EXTI_GetFlagStatus</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;         <span class="comment">//获取指定的的中断标志位</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_ClearFlag</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;                   <span class="comment">//清除中断标志位</span></span><br><span class="line">ITStatus <span class="title function_">EXTI_GetITStatus</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;             <span class="comment">//在中断函数里获取标志位</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">EXTI_ClearITPendingBit</span><span class="params">(<span class="type">uint32_t</span> EXTI_Line)</span>;           <span class="comment">//在中断函数里清除标志位</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>结构体</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">uint32_t</span> EXTI_Line;               <span class="comment">//指定配置的中断线</span></span><br><span class="line">  EXTIMode_TypeDef EXTI_Mode;       <span class="comment">//指定中断模式</span></span><br><span class="line">  EXTITrigger_TypeDef EXTI_Trigger; <span class="comment">//指定配置的中断线</span></span><br><span class="line">  FunctionalState EXTI_LineCmd;     <span class="comment">//指定触发中断的模式</span></span><br><span class="line">&#125;EXTI_InitTypeDef;</span><br></pre></td></tr></table></figure>
+
+<h3 id="TIM"><a href="#TIM" class="headerlink" title="TIM"></a>TIM</h3><p>过长，具体参考STM32固件函数库手册。</p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TIM_DeInit</td>
+<td>将外设 TIMx 寄存器重设为缺省值</td>
+</tr>
+<tr>
+<td>TIM_TimeBaseInit</td>
+<td>根据 TIM_TimeBaseInitStruct 中指定的参数初始化   间基数单位</td>
+</tr>
+<tr>
+<td>TIM_OCInit</td>
+<td>根据 TIM_OCInitStruct 中指定的参数初始化外设</td>
+</tr>
+<tr>
+<td>TIM_ICInit</td>
+<td>根据 TIM_ICInitStruct 中指定的参数初始化外设 T</td>
+</tr>
+<tr>
+<td>TIM_TimeBaseStructInit</td>
+<td>把 TIM_TimeBaseInitStruct 中的每一个参数按缺省</td>
+</tr>
+<tr>
+<td>TIM_OCStructInit</td>
+<td>把 TIM_OCInitStruct 中的每一个参数按缺省值填</td>
+</tr>
+<tr>
+<td>TIM_ICStructInit</td>
+<td>把 TIM_ICInitStruct 中的每一个参数按缺省值填入</td>
+</tr>
+<tr>
+<td>TIM_Cmd</td>
+<td>使能或者失能 TIMx 外设</td>
+</tr>
+<tr>
+<td>TIM _ITConfig</td>
+<td>使能或者失能指定的 TIM 中断</td>
+</tr>
+<tr>
+<td>TIM_DMAConfig</td>
+<td>设置 TIMx 的 DMA 接口</td>
+</tr>
+<tr>
+<td>TIM_DMACmd</td>
+<td>使能或者失能指定的 TIMx 的 DMA 请求</td>
+</tr>
+<tr>
+<td>TIM_InternalClockConfig</td>
+<td>设置 TIMx 内部时钟</td>
+</tr>
+<tr>
+<td>TIM_ITRxExternalClockConfig</td>
+<td>设置 TIMx 内部触发为外部时钟模式</td>
+</tr>
+<tr>
+<td>TIM_TIxExternalClockConfig</td>
+<td>设置 TIMx 触发为外部时钟</td>
+</tr>
+<tr>
+<td>TIM_ETRClockMode1Config</td>
+<td>配置 TIMx 外部时钟模式  1</td>
+</tr>
+<tr>
+<td>TIM_ETRClockMode2Config</td>
+<td>配置 TIMx 外部时钟模式  2</td>
+</tr>
+<tr>
+<td>TIM_ETRConfig</td>
+<td>配置 TIMx 外部触发</td>
+</tr>
+<tr>
+<td>TIM_SelectInputTrigger</td>
+<td>选择 TIMx 输入触发源</td>
+</tr>
+<tr>
+<td>TIM_PrescalerConfig</td>
+<td>设置 TIMx 预分频</td>
+</tr>
+<tr>
+<td>TIM_CounterModeConfig</td>
+<td>设置 TIMx 计数器模式</td>
+</tr>
+<tr>
+<td>TIM_ForcedOC1Config</td>
+<td>置 TIMx 输出 1 为活动或者非活动电平</td>
+</tr>
+<tr>
+<td>TIM_ForcedOC2Config</td>
+<td>置 TIMx 输出 2 为活动或者非活动电平</td>
+</tr>
+<tr>
+<td>TIM_ForcedOC3Config</td>
+<td>置 TIMx 输出 3 为活动或者非活动电平</td>
+</tr>
+<tr>
+<td>TIM_ForcedOC4Config</td>
+<td>置 TIMx 输出 4 为活动或者非活动电平</td>
+</tr>
+<tr>
+<td>TIM_ARRPreloadConfig</td>
+<td>使能或者失能 TIMx 在 ARR 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_SelectCCDMA</td>
+<td>选择 TIMx 外设的捕获比较  DMA 源</td>
+</tr>
+<tr>
+<td>TIM_OC1PreloadConfig</td>
+<td>使能或者失能 TIMx 在 CCR1 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_OC2PreloadConfig</td>
+<td>使能或者失能 TIMx 在 CCR2 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_OC3PreloadConfig</td>
+<td>使能或者失能 TIMx 在 CCR3 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_OC4PreloadConfig</td>
+<td>使能或者失能 TIMx 在 CCR4 上的预装载寄存器</td>
+</tr>
+<tr>
+<td>TIM_OC1FastConfig</td>
+<td>设置 TIMx 捕获比较  1 快速特征</td>
+</tr>
+<tr>
+<td>TIM_OC2FastConfig</td>
+<td>设置 TIMx 捕获比较 2  快速特征</td>
+</tr>
+<tr>
+<td>TIM_OC3FastConfig</td>
+<td>设置 TIMx 捕获比较 3  快速特征</td>
+</tr>
+<tr>
+<td>TIM_OC4FastConfig</td>
+<td>设置 TIMx 捕获比较 4  快速特征</td>
+</tr>
+<tr>
+<td>TIM_ClearOC1Ref</td>
+<td>在一个外部事件时清除或者保持 OCREF1 信号</td>
+</tr>
+<tr>
+<td>TIM_ClearOC2Ref</td>
+<td>在一个外部事件时清除或者保持 OCREF2 信号</td>
+</tr>
+<tr>
+<td>TIM_ClearOC3Ref</td>
+<td>在一个外部事件时清除或者保持 OCREF3 信号</td>
+</tr>
+<tr>
+<td>TIM_ClearOC4Ref</td>
+<td>在一个外部事件时清除或者保持 OCREF4 信号</td>
+</tr>
+<tr>
+<td>TIM_UpdateDisableConfig</td>
+<td>使能或者失能 TIMx 更新事件</td>
+</tr>
+<tr>
+<td>TIM_EncoderInterfaceConfig</td>
+<td>设置 TIMx 编码界面</td>
+</tr>
+<tr>
+<td>TIM_GenerateEvent</td>
+<td>设置 TIMx 事件由软件产生</td>
+</tr>
+<tr>
+<td>TIM_OC1PolarityConfig</td>
+<td>设置 TIMx 通道 1 极性</td>
+</tr>
+<tr>
+<td>TIM_OC2PolarityConfig</td>
+<td>设置 TIMx 通道 2 极性</td>
+</tr>
+<tr>
+<td>TIM_OC3PolarityConfig</td>
+<td>设置 TIMx 通道 3 极性</td>
+</tr>
+<tr>
+<td>TIM_OC4PolarityConfig</td>
+<td>设置 TIMx 通道 4 极性</td>
+</tr>
+<tr>
+<td>TIM_UpdateRequestConfig</td>
+<td>设置 TIMx 更新请求源</td>
+</tr>
+<tr>
+<td>TIM_SelectHallSensor</td>
+<td>使能或者失能 TIMx 霍尔传感器接口</td>
+</tr>
+<tr>
+<td>TIM_SelectOnePulseMode</td>
+<td>设置 TIMx 单脉冲模式</td>
+</tr>
+<tr>
+<td>TIM_SelectOutputTrigger</td>
+<td>选择 TIMx 触发输出模式</td>
+</tr>
+<tr>
+<td>TIM_SelectSlaveMode</td>
+<td>选择 TIMx 从模式</td>
+</tr>
+<tr>
+<td>TIM_SelectMasterSlaveMode</td>
+<td>设置或者重置 TIMx 主&#x2F;从模式</td>
+</tr>
+<tr>
+<td>TIM_SetCounter</td>
+<td>设置 TIMx 计数器寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetAutoreload</td>
+<td>设置 TIMx 自动重装载寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetCompare1</td>
+<td>设置 TIMx 捕获比较 1  寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetCompare2</td>
+<td>设置 TIMx 捕获比较 2  寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetCompare3</td>
+<td>设置 TIMx 捕获比较 3  寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetCompare4</td>
+<td>设置 TIMx 捕获比较 4  寄存器值</td>
+</tr>
+<tr>
+<td>TIM_SetIC1Prescaler</td>
+<td>设置 TIMx 输入捕获 1  预分频</td>
+</tr>
+<tr>
+<td>TIM_SetIC2Prescaler</td>
+<td>设置 TIMx 输入捕获 2  预分频</td>
+</tr>
+<tr>
+<td>TIM_SetIC3Prescaler</td>
+<td>设置 TIMx 输入捕获 3  预分频</td>
+</tr>
+<tr>
+<td>TIM_SetIC4Prescaler</td>
+<td>设置 TIMx 输入捕获 4  预分频</td>
+</tr>
+<tr>
+<td>TIM_SetClockDivision</td>
+<td>设置 TIMx 的时钟分割值</td>
+</tr>
+<tr>
+<td>TIM_GetCapture1</td>
+<td>获得 TIMx 输入捕获 1  的值</td>
+</tr>
+<tr>
+<td>TIM_GetCapture2</td>
+<td>获得 TIMx 输入捕获 2  的值</td>
+</tr>
+<tr>
+<td>TIM_GetCapture3</td>
+<td>获得 TIMx 输入捕获 3  的值</td>
+</tr>
+<tr>
+<td>TIM_GetCapture4</td>
+<td>获得 TIMx 输入捕获 4  的值</td>
+</tr>
+<tr>
+<td>TIM_GetCounter</td>
+<td>获得 TIMx 计数器的值</td>
+</tr>
+<tr>
+<td>TIM_GetPrescaler</td>
+<td>获得 TIMx 预分频值</td>
+</tr>
+<tr>
+<td>TIM_GetFlagStatus</td>
+<td>检查指定的 TIM 标志位设置与否</td>
+</tr>
+<tr>
+<td>TIM_ClearFlag</td>
+<td>清除 TIMx 的待处理标志位</td>
+</tr>
+<tr>
+<td>TIM_GetITStatus</td>
+<td>检查指定的 TIM 中断发生与否</td>
+</tr>
+<tr>
+<td>TIM_ClearITPendingBit</td>
+<td>清除 TIMx 的中断待处理位</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>stm32归档</category>
+      </categories>
+      <tags>
+        <tag>单片机</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>stm32综述</title>
     <url>/2023/07/24/STM32%E7%BB%BC%E8%BF%B0/</url>
     <content><![CDATA[<p>　　大概有一段时间没看stm32，通过之前学51的经历，大概是明白自己一段时间不看就会忘，虽然随便翻翻又能快速上手，但是东找西翻比较麻烦。所以打算复习的时候，顺便做个笔记记录一下。自己所用的型号为<strong>STM32F103C8T6</strong>。<span id="more"></span></p>
@@ -2843,22 +2843,6 @@ void W25Q64_ReadData(uint32_t Address, uint8_t *DataArray, uint32_t Count)
       <tags>
         <tag>单片机</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>idea</title>
-    <url>/2023/11/17/idea/</url>
-    <content><![CDATA[<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="啥？你不知道？不知道还输。你到底在期待什么？？_____:(´□`」 ∠):_____蒙暗号是没用的，或许你贿赂城主（博主）能满足你的小小的愿望好奇心¯\" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
-  <script id="hbeData" type="hbeData" data-hmacdigest="bb01410711b972baf714a72a081de345f07904acbecab333b769c06dd62d715e">76fc3ae391b3c4b89afc7f8f81acab4b9f801fe66e60cd8eb555aaaa4e722a621ecf71896bcd87f869a047b4fc1b2019d331c403b9600638916955bc4a2b949e9a293b2ad6f730e3be193d4b7ea726f295feb46a207f69ea1086ea81ddfb19851bae848f43666e5ec4852ee8a6712ec2d610eb1add1598183b4ffa6378a858ae92cbb6395c960140303e450202a660cf5219f59b40aaeef9fc0d492ab0d68b3617ac82ffee29717785cd3fa40a1fb5ae55a91c92e27f839a6a12927112284d83b7a848b05e64496540a335d8c1e80e90013b62f244b519447c274bd44e96145c65bdefdc3f58bb29d0f7c60279c1523458046189362879436061fb5505f3697268837727a20a09017506b9c39cbbb782209994544c51ec9c91c5b8a6d28dca375c6383e076a6c87019704ffed6469ffb56b6543d7579a23e9c8679648ba2cbd452f543cdb3b7d3fdf9fcdf7aa8352d27df64162d607cca045e64a45584bce03e75b1e2e490060995966e4dcbed9f61bc1f07406334534b8d6973f69ef5602f2e9af2c9ffc760607f4b115bbc971b3a27f6c6db178155e05bded73f82eeaad026b3c24b7a158b4a59c725bfe5096ee4095495f022a7464f9c31a7091c2ab23c0c17f872ed4de86471e890f54d80fcb736179e87728053ee3bd802e28fdddb74e5ed03e0a9577c105609b47d3613475e9670930df1e9c5f28eb99f38949038d9e3989effa15587f27192c7d8566e6983e8223f001d5eb4657a7d47084400b0bd68e5d4adda0fef3d0a016dbac1576a5d6e5fa87c75093bfed1a96939bdcf8f3f64a2329b417e401926bf677a7bba3caf53f8c5a90a3b041fbd78822e6862a88a2bbda289a71d4005d1d6a86e1e9cdcc642934e4853e5a7058449e5aa6a67e0c8bc2a440bc041a68441a7895ca1572afa7f1cea82cd82bed0fed00d1d7bcad94a7cee443376bc49a36a2a100fabd2a9d9ab77d0b4b8551049a6476af4856a32a33556173bae11db0de3299a6fc1b25e4b0b</script>
-  <div class="hbe hbe-content">
-    <div class="hbe hbe-input hbe-input-default">
-      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
-      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
-        <span class="hbe hbe-input-label-content hbe-input-label-content-default">站住！！！请输入暗号！_(:3 」∠ )_</span>
-      </label>
-    </div>
-  </div>
-</div>
-<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">]]></content>
   </entry>
   <entry>
     <title>STM32归档（上）</title>
@@ -5018,6 +5002,22 @@ void Serial_Printf(char *format, ...);                   // 带格式的字符�
       </tags>
   </entry>
   <entry>
+    <title>idea</title>
+    <url>/2023/11/17/idea/</url>
+    <content><![CDATA[<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="啥？你不知道？不知道还输。你到底在期待什么？？_____:(´□`」 ∠):_____蒙暗号是没用的，或许你贿赂城主（博主）能满足你的小小的愿望好奇心¯\" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="bb01410711b972baf714a72a081de345f07904acbecab333b769c06dd62d715e">76fc3ae391b3c4b89afc7f8f81acab4b9f801fe66e60cd8eb555aaaa4e722a621ecf71896bcd87f869a047b4fc1b2019d331c403b9600638916955bc4a2b949e9a293b2ad6f730e3be193d4b7ea726f295feb46a207f69ea1086ea81ddfb19851bae848f43666e5ec4852ee8a6712ec2d610eb1add1598183b4ffa6378a858ae92cbb6395c960140303e450202a660cf5219f59b40aaeef9fc0d492ab0d68b3617ac82ffee29717785cd3fa40a1fb5ae55a91c92e27f839a6a12927112284d83b7a848b05e64496540a335d8c1e80e90013b62f244b519447c274bd44e96145c65bdefdc3f58bb29d0f7c60279c1523458046189362879436061fb5505f3697268837727a20a09017506b9c39cbbb782209994544c51ec9c91c5b8a6d28dca375c6383e076a6c87019704ffed6469ffb56b6543d7579a23e9c8679648ba2cbd452f543cdb3b7d3fdf9fcdf7aa8352d27df64162d607cca045e64a45584bce03e75b1e2e490060995966e4dcbed9f61bc1f07406334534b8d6973f69ef5602f2e9af2c9ffc760607f4b115bbc971b3a27f6c6db178155e05bded73f82eeaad026b3c24b7a158b4a59c725bfe5096ee4095495f022a7464f9c31a7091c2ab23c0c17f872ed4de86471e890f54d80fcb736179e87728053ee3bd802e28fdddb74e5ed03e0a9577c105609b47d3613475e9670930df1e9c5f28eb99f38949038d9e3989effa15587f27192c7d8566e6983e8223f001d5eb4657a7d47084400b0bd68e5d4adda0fef3d0a016dbac1576a5d6e5fa87c75093bfed1a96939bdcf8f3f64a2329b417e401926bf677a7bba3caf53f8c5a90a3b041fbd78822e6862a88a2bbda289a71d4005d1d6a86e1e9cdcc642934e4853e5a7058449e5aa6a67e0c8bc2a440bc041a68441a7895ca1572afa7f1cea82cd82bed0fed00d1d7bcad94a7cee443376bc49a36a2a100fabd2a9d9ab77d0b4b8551049a6476af4856a32a33556173bae11db0de3299a6fc1b25e4b0b</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">站住！！！请输入暗号！_(:3 」∠ )_</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">]]></content>
+  </entry>
+  <entry>
     <title>分支结构</title>
     <url>/2023/07/13/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/</url>
     <content><![CDATA[<h5 id="小学数学-N-合一"><a href="#小学数学-N-合一" class="headerlink" title="小学数学 N 合一"></a>小学数学 N 合一</h5><p><strong>题目描述</strong><span id="more"></span></p>
@@ -5532,6 +5532,20 @@ void Serial_Printf(char *format, ...);                   // 带格式的字符�
       </tags>
   </entry>
   <entry>
+    <title>童年的正午小路</title>
+    <url>/2023/07/10/%E7%AB%A5%E5%B9%B4%E7%9A%84%E6%AD%A3%E5%8D%88%E5%B0%8F%E8%B7%AF/</url>
+    <content><![CDATA[<p>​		在我小学的时候，蛮喜欢玩的。有邻居好友，有同学玩伴。上课学习一下，中午跑到学校附近一个类似于“托管班”的地儿。<span id="more"></span>应该是一个私人住宅，主人是原先小学的老师，应该退休了。叫“陈老师”。和班上几位同学，同校的一些校友在里头吃中午饭，年纪小的要睡午觉，大孩子则到二楼闹腾。</p>
+<p>​		小学生嘛，流行什么玩什么。在那里，玩过老鹰抓小鸡，蒙过眼睛抓人，玩过弹珠，比过陀螺，也有那种砸卡。硬币大小的卡套，可以放几张圆形的卡进去。卡套两边有个小坡，可以被其他卡套滑上去。一般规则就是谁被滑上去了，卡套里的卡归就归谁了，有时候卡套也算在内。后面五六年级，就是打扑克，三国杀为主了。也有一些西游杀等等。</p>
+<p>​		那附近也有一个小卖部。有卖一根葱之类的小零食。印象比较深的是小卖部有一次进了那种花钱抽奖的小纸片。5毛还是1块钱一张。同学第一次中了5块，老板娘不认账了。说这5块只能继续拿来抽卡，然后气不过，又没办法。只能再抽，不过爆率是真的高。后续是一盒纸片，给我们抽了个六成，倒是过了把瘾。后面就没再见过店里有这个了。</p>
+<p>​		中午闹腾够了，下午则结伴上学去了。路途有一个废弃的房子，斑驳的锁，关不严的门。曾偷偷顺着门缝儿往里面看去。一片土地，零星的水泥，几点的杂草。还有一滩白骨和一个猫脑袋的骷髅。白骨看上去像是粉末一般，已经是一片了，看不出是什么。看那骷髅脑袋推断的。当初是很想拿出来瞅瞅的，感觉如果带到学校去，一定很酷。</p>
+<p>​		也在下午结伴的时候，甩书包玩，像是电视里甩链球的动画一样，抓着书包，原地转圈甩出去。有个玩伴，丢的时候，书包正好飞向小河的方向。好巧不巧，那里正好有个小石凳，书包磕到石凳边缘。然后从石凳上缓慢滚了一下，最后还是滑下去了。冲过去的时候，书包正飘在水面上。自己当时觉得这个画面太滑稽了，笑的上气不接下气，还是叫住了前面另一个玩伴。然后他用树枝想把书包划到岸边，结果书包在水的一阵阵涟漪中反复横跳。不肯走也不肯来，小孩子的喧哗倒是惊动了附近的一位老太太。她从家中找了跟长竹竿，最后书包才得以上岸，最后作业当然是全湿了。</p>
+<p>​		也是那条路，傍晚回家的时候，每每走到巷子里的时候，总会远远地见到一直猫，黑猫，但它会笑，而且笑起来特别诡异。令我毛骨悚然。它的微笑直接咧到耳根子。一向它走去，它就扭头撒丫子跑了。一连几天。那时候自己看了老哥送的《笑猫日记——寻找黑骑士》。似乎还看了《马小跳》。杨红樱的作品看了零星点点。当初是有点相信世界上有会笑的猫的，不过也没见过，想象中应该笑的很可爱。后续啊后续，终于它有一次从我面前跳了出来。瞟了我一眼，我清晰的看到它脸上有两条印。就两条黄黑色的线，从嘴巴斜着到眼睛，两边都很均匀。配合它一身黑毛，远远的看上去，就像是只看到一双眼睛，和眼睛下的一个“V”。非常渗人。还好最后还是明白的它的笑是怎么一回事。不过后面就再也没有见过它了。</p>
+]]></content>
+      <categories>
+        <category>朝花夕拾</category>
+      </categories>
+  </entry>
+  <entry>
     <title>求生之路2双人分屏归档</title>
     <url>/2023/10/06/%E6%B1%82%E7%94%9F%E4%B9%8B%E8%B7%AF2%E5%8F%8C%E4%BA%BA%E5%88%86%E5%B1%8F%E5%BD%92%E6%A1%A3/</url>
     <content><![CDATA[<p>本方式无需MOD，无需虚拟键盘等杂七杂八的玩意。可用于求生之路2本地分屏双人游玩。</p>
@@ -5594,20 +5608,6 @@ c5m5_bridge           5桥
       <tags>
         <tag>杂七杂八</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>童年的正午小路</title>
-    <url>/2023/07/10/%E7%AB%A5%E5%B9%B4%E7%9A%84%E6%AD%A3%E5%8D%88%E5%B0%8F%E8%B7%AF/</url>
-    <content><![CDATA[<p>​		在我小学的时候，蛮喜欢玩的。有邻居好友，有同学玩伴。上课学习一下，中午跑到学校附近一个类似于“托管班”的地儿。<span id="more"></span>应该是一个私人住宅，主人是原先小学的老师，应该退休了。叫“陈老师”。和班上几位同学，同校的一些校友在里头吃中午饭，年纪小的要睡午觉，大孩子则到二楼闹腾。</p>
-<p>​		小学生嘛，流行什么玩什么。在那里，玩过老鹰抓小鸡，蒙过眼睛抓人，玩过弹珠，比过陀螺，也有那种砸卡。硬币大小的卡套，可以放几张圆形的卡进去。卡套两边有个小坡，可以被其他卡套滑上去。一般规则就是谁被滑上去了，卡套里的卡归就归谁了，有时候卡套也算在内。后面五六年级，就是打扑克，三国杀为主了。也有一些西游杀等等。</p>
-<p>​		那附近也有一个小卖部。有卖一根葱之类的小零食。印象比较深的是小卖部有一次进了那种花钱抽奖的小纸片。5毛还是1块钱一张。同学第一次中了5块，老板娘不认账了。说这5块只能继续拿来抽卡，然后气不过，又没办法。只能再抽，不过爆率是真的高。后续是一盒纸片，给我们抽了个六成，倒是过了把瘾。后面就没再见过店里有这个了。</p>
-<p>​		中午闹腾够了，下午则结伴上学去了。路途有一个废弃的房子，斑驳的锁，关不严的门。曾偷偷顺着门缝儿往里面看去。一片土地，零星的水泥，几点的杂草。还有一滩白骨和一个猫脑袋的骷髅。白骨看上去像是粉末一般，已经是一片了，看不出是什么。看那骷髅脑袋推断的。当初是很想拿出来瞅瞅的，感觉如果带到学校去，一定很酷。</p>
-<p>​		也在下午结伴的时候，甩书包玩，像是电视里甩链球的动画一样，抓着书包，原地转圈甩出去。有个玩伴，丢的时候，书包正好飞向小河的方向。好巧不巧，那里正好有个小石凳，书包磕到石凳边缘。然后从石凳上缓慢滚了一下，最后还是滑下去了。冲过去的时候，书包正飘在水面上。自己当时觉得这个画面太滑稽了，笑的上气不接下气，还是叫住了前面另一个玩伴。然后他用树枝想把书包划到岸边，结果书包在水的一阵阵涟漪中反复横跳。不肯走也不肯来，小孩子的喧哗倒是惊动了附近的一位老太太。她从家中找了跟长竹竿，最后书包才得以上岸，最后作业当然是全湿了。</p>
-<p>​		也是那条路，傍晚回家的时候，每每走到巷子里的时候，总会远远地见到一直猫，黑猫，但它会笑，而且笑起来特别诡异。令我毛骨悚然。它的微笑直接咧到耳根子。一向它走去，它就扭头撒丫子跑了。一连几天。那时候自己看了老哥送的《笑猫日记——寻找黑骑士》。似乎还看了《马小跳》。杨红樱的作品看了零星点点。当初是有点相信世界上有会笑的猫的，不过也没见过，想象中应该笑的很可爱。后续啊后续，终于它有一次从我面前跳了出来。瞟了我一眼，我清晰的看到它脸上有两条印。就两条黄黑色的线，从嘴巴斜着到眼睛，两边都很均匀。配合它一身黑毛，远远的看上去，就像是只看到一双眼睛，和眼睛下的一个“V”。非常渗人。还好最后还是明白的它的笑是怎么一回事。不过后面就再也没有见过它了。</p>
-]]></content>
-      <categories>
-        <category>朝花夕拾</category>
-      </categories>
   </entry>
   <entry>
     <title>第一篇博客</title>
@@ -5939,6 +5939,26 @@ c5m5_bridge           5桥
     <title>说说(2024)</title>
     <url>/2024/12/31/%E8%AF%B4%E8%AF%B4(2024)/</url>
     <content><![CDATA[<p>　　<span id="more"></span></p>
+<h3 id="2024-4-13"><a href="#2024-4-13" class="headerlink" title="2024-4-13"></a>2024-4-13</h3><img src="/2024/12/31/%E8%AF%B4%E8%AF%B4(2024)/image-20240413105014436.png" class="" title="image-20240413105014436">
+
+<img src="/2024/12/31/%E8%AF%B4%E8%AF%B4(2024)/image-20240413105034654.png" class="" title="image-20240413105034654">
+
+<p>最喜欢的解谜游戏，《环绕走廊》，有些许的想法整个这个当摆件玩，不同的角速度想到的就是齿轮了，不过自己对此了解不多，有空再仔细琢磨构造，应该先找些建模或者动画啥的软件，跑跑看，再翻翻有什么合适的齿轮。多级这方面比较头疼吧。。。</p>
+<h3 id="2024-4-12"><a href="#2024-4-12" class="headerlink" title="2024-4-12"></a>2024-4-12</h3><p>忙于蓝桥杯和曾益慧创。应该要花些时间的，不过还是想整整墨水屏，原来想的很简单，不就是驱动一个屏幕嘛，提供电源，再看看驱动，改改代码调用函数的事。然后就是打了四五次板，直到现在，发现硬件没啥问题了。但却不熟悉arduion的开发环境，倒腾倒腾了许久，还是很难受。至始至终连demo都没跑起来，有些怀疑是环境配置问题，如果这周依旧没啥收获，就拾撮拾撮，开始看看蓝桥杯了，21号就比赛了，还没开始整。</p>
+<h3 id="2024-4-1"><a href="#2024-4-1" class="headerlink" title="2024-4-1"></a>2024-4-1</h3><p>突然晓有兴致的画了点PCB玩</p>
+<img src="/2024/12/31/%E8%AF%B4%E8%AF%B4(2024)/5D9F28C176F88C965A2932B90DBF66A7.jpg" class="" title="img">
+
+<img src="/2024/12/31/%E8%AF%B4%E8%AF%B4(2024)/1D9343CDA919A50FAACA0353174CBC27.jpg" class="" title="img">
+
+<img src="/2024/12/31/%E8%AF%B4%E8%AF%B4(2024)/036D155FEAE5E9BE5D16D94CA67DE2A4.jpg" class="" title="img">
+
+<p>白嫖嘉立创的沉金，感觉确实比较漂亮，原先是只想加个丝印头像，后来感觉单调了些，又加了些玩意，搭配上花了些许心思，最满意P3的构图。原先是想沉金上色在眼睛上，但是打样后发现效果极差。</p>
+<p>绘制用专业版移动丝印不卡，图片最好进行阈值图像处理，或者铅笔素描。PCB绘制时，可没有橡皮擦铅笔一类的工具</p>
+<p>毕竟板子形状可以自定义，也或许能借此整些玩意。以后闲时再说。</p>
+<h3 id="2024-3-20"><a href="#2024-3-20" class="headerlink" title="2024-3-20"></a>2024-3-20</h3><p>站在巨人的肩膀上，然后不以为意的跳下去，往上爬到一半才后知后觉。</p>
+<h3 id="2024-3-18"><a href="#2024-3-18" class="headerlink" title="2024-3-18"></a>2024-3-18</h3><p>I NEED TEAMMMM!!!!!!!!!!</p>
+<h3 id="2024-3-11"><a href="#2024-3-11" class="headerlink" title="2024-3-11"></a>2024-3-11</h3><p>​	现在已经特别烦了，C语言叫函数，为什么JAVA不能也叫函数呢？叫方法也太抽象了吧。</p>
+<h3 id="2024-3-1"><a href="#2024-3-1" class="headerlink" title="2024-3-1"></a>2024-3-1</h3><p>电磁老师说φ有三种写法，我想到了孔乙己。</p>
 <h3 id="2024-1-11"><a href="#2024-1-11" class="headerlink" title="2024-1-11"></a>2024-1-11</h3><p>　　40收的一个kwp1，屏幕还行，就是不能触屏。这个价位还行吧，真的太难找了。(话说我每次咸鱼淘到好垃圾都会挺高兴的)。又赌了一些，电子墨水屏好贵好贵啊。好吧，其实也不贵，就是溢价高。希望不会翻车吧。计划寒假玩玩这些。</p>
 <h3 id="2024-1-6"><a href="#2024-1-6" class="headerlink" title="2024-1-6"></a>2024-1-6</h3><p>　　大佬好多，感觉都不在一个维度上。emo…ing……</p>
 <p>　　现在我只想躺平。。。</p>
